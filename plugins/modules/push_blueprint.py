@@ -56,7 +56,7 @@ from ansible.module_utils._text import to_native, to_text
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            path=dict(type='str', default='', required=True),
+            path=dict(type='str', required=True),
         ),
     )
 
@@ -78,7 +78,7 @@ def main():
 
         cmd = []
         cmd.append(module.get_bin_path("composer-cli"))
-        cmd += ['blueprint', 'show', bp_name]
+        cmd += ['blueprints', 'show', bp_name]
         rc, out, err = module.run_command(cmd)
         if rc != 0:
             changed = True
@@ -89,7 +89,7 @@ def main():
 
         cmd = []
         cmd.append(module.get_bin_path("composer-cli"))
-        cmd += ['blueprint', 'push', module.params['path']]
+        cmd += ['blueprints', 'push', module.params['path']]
         rc, out, err = module.run_command(cmd)
 
         if rc != 0:
