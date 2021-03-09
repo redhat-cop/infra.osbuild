@@ -83,6 +83,9 @@ def main():
         if rc != 0:
             changed = True
 
+        # We have to strip all whitespace because composer parses the toml, stores
+        # the serialized data and then re-generates the toml for 'blueprints show'
+        # and that doesn't preserve whitespace from the original file pushed in
         changed = not (
             [i for i in cbp_lines if i] == [i for i in out.split('\n') if i]
         )
