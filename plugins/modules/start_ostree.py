@@ -27,7 +27,7 @@ requirements:
 options:
     blueprint:
         description:
-            - Name of bluerprint to iniate a build for
+            - Name of blueprint to iniate a build for
         type: str
         default: ""
         required: true
@@ -55,9 +55,16 @@ options:
         type: str
         default: ""
         required: false
+    allow_duplicate:
+        description:
+            - Allow a duplicate version'd compose.
+            - NOTE: Default osbuild composer functionality is to allow duplicate composes 
+        type: bool
+        default: True
+        required: false
 notes:
-    - THIS MODULE IS NOT IDEMPOTENT BECAUSE COMPOSER DOES NOT MAINTAIN STATE
-    - The params C('profile') and C('image_name') are required together.
+    - THIS MODULE IS NOT IDEMPOTENT UNLESS C(allow_duplicate) is set to C(false)
+    - The params C(profile) and C(image_name) are required together.
 """
 
 EXAMPLES = """
@@ -68,15 +75,17 @@ EXAMPLES = """
     size: 4096
     profile: testprofile.toml
 
-- name: Start ostree compose 
+- name: Start ostree compose with idempotent transaction
   osbuild.composer.start_ostree
     blueprint: rhel-for-edge-demo
+    allow_duplicate: false
 """
 
 import re
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
+
 
 
 def main():
@@ -87,6 +96,7 @@ def main():
             size=dict(type="int", required=False, default=8192),
             profile=dict(type="str", required=False, default=""),
             image_name=dict(type="str", required=False, default=""),
+            allow_duplicate=dict(type=bool, required=False, default=True),
         ),
         required_together=[["image_name", "profile"]],
     )
@@ -107,51 +117,90 @@ def main():
             cmd=" ".join(cmd),
             changed=changed,
         )
-    cmd += [module.get_bin_path("composer-cli"), "compose"]
-    cmd += ["start-ostree", "--size", to_text(module.params["size"])]
-    cmd += [to_text(module.params["blueprint"]), to_text(module.params["image_type"])]
-    if module.params["image_name"]:
-        cmd += [to_text(module.params["image_name"]), to_text(module.params["profile"])]
 
+    # Check for an existing copmose
+    cmd = [ccli, "blueprints", "show", module.params['blueprint']]
     rc, out, err = module.run_command(cmd)
-    if rc == 0:
-        changed = True
+    bp_version = [
+        x for x in out.split("\n")
+        if "version" in x
+    ][0].split()[-1].strip("'\"")
+
+    cmd = [ccli, "compose", "list"]
+    rc, out, err = module.run_command(cmd)
+    dup_version_compose = [
+        x for x in out.split("\n")
+        if (module.params['blueprint'] in x) 
+        and ("FAILED" not in x)
+        and (module.params['image_type'] in x)
+        and (bp_version in x)
+    ]
+    if dup_version_compose:
+        dup_version = dup_version_compose[0].split()[3]
     else:
-        module.fail_json(
-            msg="Unknown error occurred.",
+        dup_version = ""
+
+    if (not dup_version) or module.params['allow_duplicate']:
+
+        # Queue a new compose
+        cmd = [ccli, "compose"]
+        cmd += ["start-ostree", "--size", to_text(module.params["size"])]
+        cmd += [to_text(module.params["blueprint"]), to_text(module.params["image_type"])]
+        if module.params["image_name"]:
+            cmd += [to_text(module.params["image_name"]), to_text(module.params["profile"])]
+
+        rc, out, err = module.run_command(cmd)
+        if rc == 0:
+            changed = True
+        else:
+            module.fail_json(
+                msg="Unknown error occurred.",
+                stdout=out,
+                stderr=err,
+                rc=rc,
+                uuid="",
+                cmd=" ".join(cmd),
+                changed=changed,
+            )
+
+        recomp = re.compile(
+            r"[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"
+        )
+        try:
+            compose_uuid = recomp.search(out).group()
+        except AttributeError:
+            module.fail_json(
+                msg="Unable to find uuid, an unknown error occurred",
+                stdout=out,
+                stderr=err,
+                rc=rc,
+                uuid="",
+                cmd=" ".join(cmd),
+                changed=changed,
+            )
+
+        module.exit_json(
+            msg="Compose %s added to the queue." % compose_uuid,
+            uuid=compose_uuid,
+            changed=changed,
             stdout=out,
             stderr=err,
-            rc=rc,
-            uuid="",
             cmd=" ".join(cmd),
-            changed=changed,
+            rc=rc,
         )
 
-    recomp = re.compile(
-        r"[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"
-    )
-    try:
-        compose_uuid = recomp.search(out).group()
-    except AttributeError:
-        module.fail_json(
-            msg="Unable to find uuid, an unknown error occurred",
-            stdout=out,
-            stderr=err,
-            rc=rc,
-            uuid="",
-            cmd=" ".join(cmd),
+    else:
+        changed = False
+        module.exit_json(
+            msg="Not queuing a duplicate compose without allow_duplicate set to true",
+            uuid=compose_uuid,
             changed=changed,
+            stdout="",
+            stderr="",
+            cmd=" ",
+            rc=rc,
         )
 
-    module.exit_json(
-        msg="Compose %s added to the queue." % compose_uuid,
-        uuid=compose_uuid,
-        changed=changed,
-        stdout=out,
-        stderr=err,
-        cmd=" ".join(cmd),
-        rc=rc,
-    )
 
 
 if __name__ == "__main__":
