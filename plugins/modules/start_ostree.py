@@ -87,59 +87,85 @@ def main():
             size=dict(type="int", required=False, default=8192),
             profile=dict(type="str", required=False, default=""),
             image_name=dict(type="str", required=False, default=""),
-            required_together=(["image_name", "profile"],),
         ),
+        required_together=[["image_name", "profile"]],
     )
 
-    try:
-        changed = False
+    compose_uuid = ""
+    rc, out, err = (-1, "", "")
+    #   try:
+    changed = False
 
-        cmd = []
-        cmd.append(module.get_bin_path("composer-cli"))
-        cmd += ["compose", "start-ostree", "--size", modules.params["size"]]
-        cmd += [module.params["image_type"], module.params["blueprint"]]
-        if module.params["image_name"]:
-            cmd += [module.params["image_name"], module.params["profile"]]
-
-        rc, out, err = module.run_command(cmd)
-        if rc == 0:
-            changed = True
-        else:
-            module.fail_json(
-                msg="Unknown error occurred.",
-                stdout=out,
-                stderr=err,
-                rc=rc,
-                uuid="",
-                changed=changed,
-            )
-
-        recomp = re.compile(
-            r"[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"
-        )
-        try:
-            compose_uuid = recomp.search(out).group()
-        except AttributeError:
-            module.fail_json(
-                msg="Unable to find uuid, an unknown error occurred",
-                stdout=out,
-                stderr=err,
-                rc=rc,
-                uuid="",
-                changed=changed,
-            )
-
-        module.exit_json(
-            msg="Compose %s placed in queue." % compose_uuid,
-            uuid=compose_uuid,
-            changed=changed,
+    ccli = module.get_bin_path("composer-cli")
+    cmd = []
+    if not ccli:
+        module.fail_json(
+            msg="Unable to find composer-cli, make sure it is installed.",
             stdout=out,
             stderr=err,
             rc=rc,
+            uuid="",
+            cmd=cmd,
+            changed=changed,
+        )
+    cmd += [module.get_bin_path("composer-cli"), "compose"]
+    cmd += ["start-ostree", "--size", to_text(module.params["size"])]
+    cmd += [to_text(module.params["blueprint"]), to_text(module.params["image_type"])]
+    if module.params["image_name"]:
+        cmd += [to_text(module.params["image_name"]), to_text(module.params["profile"])]
+
+    rc, out, err = module.run_command(cmd)
+    if rc == 0:
+        changed = True
+    else:
+        module.fail_json(
+            msg="Unknown error occurred.",
+            stdout=out,
+            stderr=err,
+            rc=rc,
+            uuid="",
+            cmd=cmd,
+            changed=changed,
         )
 
-    except Exception as e:
-        module.fail_json(msg=to_native(e), exception=traceback.format_exc())
+    recomp = re.compile(
+        r"[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"
+    )
+    try:
+        compose_uuid = recomp.search(out).group()
+    except AttributeError:
+        module.fail_json(
+            msg="Unable to find uuid, an unknown error occurred",
+            stdout=out,
+            stderr=err,
+            rc=rc,
+            uuid="",
+            cmd=cmd,
+            changed=changed,
+        )
+
+    module.exit_json(
+        msg="Compose %s added to the queue." % compose_uuid,
+        uuid=compose_uuid,
+        changed=changed,
+        stdout=out,
+        stderr=err,
+        cmd=cmd,
+        rc=rc,
+    )
+
+
+#   except Exception as e:
+#       import traceback
+#       module.exit_json(
+#           msg="Compose %s added to the queue." % compose_uuid,
+#           uuid=compose_uuid,
+#           changed=changed,
+#           stdout=out,
+#           stderr=err,
+#           rc=rc,
+#           e=to_text(e.with_traceback),
+#       )
 
 
 if __name__ == "__main__":
