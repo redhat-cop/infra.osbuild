@@ -93,7 +93,6 @@ def main():
 
     compose_uuid = ""
     rc, out, err = (-1, "", "")
-    #   try:
     changed = False
 
     ccli = module.get_bin_path("composer-cli")
@@ -105,7 +104,7 @@ def main():
             stderr=err,
             rc=rc,
             uuid="",
-            cmd=cmd,
+            cmd=" ".join(cmd),
             changed=changed,
         )
     cmd += [module.get_bin_path("composer-cli"), "compose"]
@@ -124,7 +123,7 @@ def main():
             stderr=err,
             rc=rc,
             uuid="",
-            cmd=cmd,
+            cmd=" ".join(cmd),
             changed=changed,
         )
 
@@ -140,7 +139,7 @@ def main():
             stderr=err,
             rc=rc,
             uuid="",
-            cmd=cmd,
+            cmd=" ".join(cmd),
             changed=changed,
         )
 
@@ -150,22 +149,9 @@ def main():
         changed=changed,
         stdout=out,
         stderr=err,
-        cmd=cmd,
+        cmd=" ".join(cmd),
         rc=rc,
     )
-
-
-#   except Exception as e:
-#       import traceback
-#       module.exit_json(
-#           msg="Compose %s added to the queue." % compose_uuid,
-#           uuid=compose_uuid,
-#           changed=changed,
-#           stdout=out,
-#           stderr=err,
-#           rc=rc,
-#           e=to_text(e.with_traceback),
-#       )
 
 
 if __name__ == "__main__":
