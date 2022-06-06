@@ -78,7 +78,7 @@ def main():
     if module.params['blueprint']:
         data = weldr.toml.loads(module.params['blueprint'])
 
-    results = weldr.api.post_blueprint_new(to_bytes(data))
+    results = weldr.api.post_blueprint_new(weldr.toml.dumps(data))
     module.exit_json(results=results, msg="Blueprint pushed to osbuild composer")
 
 

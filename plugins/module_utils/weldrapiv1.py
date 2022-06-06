@@ -53,7 +53,7 @@ class WeldrV1(object):
         if type(blueprint) != bytes:
             blueprint = to_bytes(blueprint)
         results = json.load(
-            self.weldr.request.open('POST', 'http://localhost/api/v1/blueprints/new', data=blueprint)
+            self.weldr.request.open('POST', 'http://localhost/api/v1/blueprints/new', data=blueprint, headers={"Content-Type": "text/x-toml"})
         )
         return results
 
