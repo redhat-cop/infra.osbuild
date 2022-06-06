@@ -5,6 +5,9 @@
 
 from ansible.module_utils._text import to_bytes, to_native, to_text
 from ansible_collections.osbuild.composer.plugins.module_utils.weldrapiv1 import WeldrV1
+from ansible.module_utils.urls import Request
+
+import json
 
 class Weldr(object):
     """
@@ -25,9 +28,9 @@ class Weldr(object):
         self.unix_socket = unix_socket
         self.request = Request(unix_socket=self.unix_socket)
 
-        status = self.request.open('GET', 'http://localhost/api/status').read()
+        status = json.load(self.request.open('GET', 'http://localhost/api/status'))
         if status['api'] == "1":
-            self.api = WeldrV1(module, unix_socket)
+            self.api = WeldrV1(self)
         else:
             module.fail_json(msg='Unsupported Weldr API found. Expected "1", got "%s"' % status['api'])
 

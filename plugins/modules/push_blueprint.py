@@ -54,14 +54,12 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-
+from ansible.module_utils._text import to_bytes, to_native, to_text
 
 def main():
     module = AnsibleModule(
         argument_spec=dict(
             path=dict(type="str", required=False),
-        ),
-        argument_spec=dict(
             blueprint=dict(type="str", required=False),
         ),
         required_one_of=[['path','blueprint']]
@@ -72,19 +70,17 @@ def main():
 
     if module.params['path']:
         try:
-            with open(module.params['path'], 'r') as fdr:
-                data = weldr.toml.load(fdr.read())
+            with open(module.params['path'], 'rb') as fin:
+                data = weldr.toml.load(fin)
         except FileNotFoundError:
             module.fail_json(msg="Unable to find or access blueprint file provided at path: %s" % module.params['path'])
 
     if module.params['blueprint']:
-        data = weldr.toml.load(module.params['blueprint'])
+        data = weldr.toml.loads(module.params['blueprint'])
 
-    weldr.api.post_blueprint_new(data)
+    results = weldr.api.post_blueprint_new(to_bytes(data))
+    module.exit_json(results=results, msg="Blueprint pushed to osbuild composer")
 
-
-    except Exception as e:
-        module.fail_json(msg=to_text(e), exception=traceback.format_exc())
 
 
 if __name__ == "__main__":

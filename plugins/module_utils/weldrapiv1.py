@@ -3,8 +3,8 @@
 # (c) 2022, Adam Miller (admiller@redhat.com)
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from ansible.module_utils.urls import Request
 from ansible.module_utils._text import to_bytes, to_native, to_text
+import json
 
 class WeldrV1(object):
     """
@@ -13,16 +13,14 @@ class WeldrV1(object):
     Base wrapper around the Weldr local socket V1 API
     """
 
-    def __init__(self, module, unix_socket):
+    def __init__(self, weldr):
         """
         initializer
 
         :module:          AnsibleModule, instance of AnsibleModule
         :unix_socket:     string, local UNIX Socket that Weldr service is listening on
         """
-        self.module = module
-        self.unix_socket = unix_socket
-        self.request = Request(unix_socket=self.unix_socket)
+        self.weldr = weldr
 
     def get_projects_source_list(self):
         """
@@ -30,8 +28,10 @@ class WeldrV1(object):
 
         :return:        list, list of sources
         """
-        req_read = self.request.open('GET', 'http://localhost/api/v1/projects/source/list').read()
-        return req_read['sources']
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/projects/source/list')
+        )
+        return results
 
     def get_projects_source_info(self, source):
         """
@@ -39,9 +39,35 @@ class WeldrV1(object):
 
         :return:        dict, dict containing source information
         """
-        req_read = self.request.open('GET', 'http://localhost/api/v1/projects/source/info/%s' % source).read()
-        return req_read
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/projects/source/info/%s' % source)
+        )
+        return results
 
+    def post_blueprint_new(self, blueprint):
+        """
+        post_blueprint_new
+
+        :blueprint:     dict, a dictionary of a blueprint
+        """
+        if type(blueprint) != bytes:
+            blueprint = to_bytes(blueprint)
+        results = json.load(
+            self.weldr.request.open('POST', 'http://localhost/api/v1/blueprints/new', data=blueprint)
+        )
+        return results
+
+
+    def get_modules_list(self):
+        """
+        get a list of modules back from Weldr
+
+        :return:        list, list of modules dicts
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/modules/list')
+        )
+        return results
 
     def get_projects_source_info_sources(self, sources):
         """
@@ -72,15 +98,6 @@ class WeldrV1(object):
         # api.router.GET("/api/v:version/projects/depsolve/*projects", api.projectsDepsolveHandler)
         """
         raise NotImplementedError
-
-    def get_modules_list(self):
-        """
-        get a list of modules back from Weldr
-
-        :return:        list, list of modules dicts
-        """
-        req_read = self.request.open('GET', 'http://localhost/api/v1/modules/list').read()
-        return req_read['modules']
 
     def get_modules_list_modules(self, modules):
         """
@@ -137,12 +154,6 @@ class WeldrV1(object):
     def get_blueprints_changes(self, blueprints):
         """
         # api.router.GET("/api/v:version/blueprints/changes/*blueprints", api.blueprintsChangesHandler)
-        """
-        raise NotImplementedError
-
-    def post_blueprint_new(self, blueprint):
-        """
-        # api.router.POST("/api/v:version/blueprints/new", api.blueprintsNewHandler)
         """
         raise NotImplementedError
 
