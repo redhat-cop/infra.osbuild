@@ -122,94 +122,224 @@ class WeldrV1(object):
         """
         raise NotImplementedError
 
+    def get_projects_list(self):
+        """
         # api.router.GET("/api/v:version/projects/list", api.projectsListHandler)
-        raise NotImplementedError
         # api.router.GET("/api/v:version/projects/list/", api.projectsListHandler)
+        """
         raise NotImplementedError
 
+    def get_modules_info(self):
+        """
         # // these are the same, except that modules/info also includes dependencies
         # api.router.GET("/api/v:version/modules/info", api.modulesInfoHandler)
-        raise NotImplementedError
         # api.router.GET("/api/v:version/modules/info/*modules", api.modulesInfoHandler)
-        raise NotImplementedError
         # api.router.GET("/api/v:version/projects/info", api.modulesInfoHandler)
-        raise NotImplementedError
         # api.router.GET("/api/v:version/projects/info/*modules", api.modulesInfoHandler)
-        raise NotImplementedError
+        """
 
+    def get_blueprints_list(self):
+        """
         # api.router.GET("/api/v:version/blueprints/list", api.blueprintsListHandler)
-        raise NotImplementedError
-        # api.router.GET("/api/v:version/blueprints/info/*blueprints", api.blueprintsInfoHandler)
-        raise NotImplementedError
-        # api.router.GET("/api/v:version/blueprints/depsolve/*blueprints", api.blueprintsDepsolveHandler)
-        raise NotImplementedError
-        # api.router.GET("/api/v:version/blueprints/freeze/*blueprints", api.blueprintsFreezeHandler)
-        raise NotImplementedError
-        # api.router.GET("/api/v:version/blueprints/diff/:blueprint/:from/:to", api.blueprintsDiffHandler)
-        raise NotImplementedError
-        # api.router.GET("/api/v:version/blueprints/changes/*blueprints", api.blueprintsChangesHandler)
-        raise NotImplementedError
-        # api.router.POST("/api/v:version/blueprints/new", api.blueprintsNewHandler)
-        raise NotImplementedError
-        # api.router.POST("/api/v:version/blueprints/workspace", api.blueprintsWorkspaceHandler)
-        raise NotImplementedError
-        # api.router.POST("/api/v:version/blueprints/undo/:blueprint/:commit", api.blueprintUndoHandler)
-        raise NotImplementedError
-        # api.router.POST("/api/v:version/blueprints/tag/:blueprint", api.blueprintsTagHandler)
-        raise NotImplementedError
-        # api.router.DELETE("/api/v:version/blueprints/delete/:blueprint", api.blueprintDeleteHandler)
-        raise NotImplementedError
-        # api.router.DELETE("/api/v:version/blueprints/workspace/:blueprint", api.blueprintDeleteWorkspaceHandler# # )
+        """
         raise NotImplementedError
 
+    def get_blueprints_info(self, blueprints):
+        """
+        # api.router.GET("/api/v:version/blueprints/info/*blueprints", api.blueprintsInfoHandler)
+        """
+        raise NotImplementedError
+
+    def get_blueprints_depsolve(self, blueprints):
+        """
+        # api.router.GET("/api/v:version/blueprints/depsolve/*blueprints", api.blueprintsDepsolveHandler)
+        """
+        raise NotImplementedError
+
+    def get_blueprints_freeze(self, blueprints):
+        """
+        # api.router.GET("/api/v:version/blueprints/freeze/*blueprints", api.blueprintsFreezeHandler)
+        """
+        raise NotImplementedError
+
+    def get_blueprints_diff(self, blueprint_from, blueprint_to):
+        """
+        # api.router.GET("/api/v:version/blueprints/diff/:blueprint/:from/:to", api.blueprintsDiffHandler)
+        """
+        raise NotImplementedError
+
+    def get_blueprints_changes(self, blueprints):
+        """
+        # api.router.GET("/api/v:version/blueprints/changes/*blueprints", api.blueprintsChangesHandler)
+        """
+        raise NotImplementedError
+
+    def post_blueprint_new(self, blueprint):
+        """
+        # api.router.POST("/api/v:version/blueprints/new", api.blueprintsNewHandler)
+        """
+        raise NotImplementedError
+
+    def post_blueprints_workspace(self, workspace):
+        """
+        # api.router.POST("/api/v:version/blueprints/workspace", api.blueprintsWorkspaceHandler)
+        """
+        raise NotImplementedError
+
+    def post_blueprints_undo_commit(self, blueprint, commit):
+        """
+        # api.router.POST("/api/v:version/blueprints/undo/:blueprint/:commit", api.blueprintUndoHandler)
+        """
+        raise NotImplementedError
+
+    def post_blueprints_tag(self, blueprint):
+        """
+        # api.router.POST("/api/v:version/blueprints/tag/:blueprint", api.blueprintsTagHandler)
+        """
+        raise NotImplementedError
+
+    def delete_blueprints(self, blueprint):
+        """
+        # api.router.DELETE("/api/v:version/blueprints/delete/:blueprint", api.blueprintDeleteHandler)
+        # api.router.DELETE("/api/v:version/blueprints/workspace/:blueprint", api.blueprintDeleteWorkspaceHandler# # )
+        """
+        raise NotImplementedError
+
+    def post_compose(self, compose):
+        """
         # api.router.POST("/api/v:version/compose", api.composeHandler)
+        """
         raise NotImplementedError
+
+    def delete_compose(self, compose):
+        """
         # api.router.DELETE("/api/v:version/compose/delete/:uuids", api.composeDeleteHandler)
+        """
         raise NotImplementedError
+
+    def get_compose_types(self, compose):
+        """
         # api.router.GET("/api/v:version/compose/types", api.composeTypesHandler)
+        """
         raise NotImplementedError
+
+    def get_compose_queue(self, compose):
+        """
         # api.router.GET("/api/v:version/compose/queue", api.composeQueueHandler)
+        """
         raise NotImplementedError
+
+    def get_compuse_status(self, compose_uuids):
+        """
         # api.router.GET("/api/v:version/compose/status/:uuids", api.composeStatusHandler)
         raise NotImplementedError
+        """
+
+    def get_compose_info(self, compose_uuid):
+        """
         # api.router.GET("/api/v:version/compose/info/:uuid", api.composeInfoHandler)
+        """
         raise NotImplementedError
+
+    def get_compose_finished(self):
+        """
         # api.router.GET("/api/v:version/compose/finished", api.composeFinishedHandler)
+        """
         raise NotImplementedError
+
+    def get_compose_failed(self):
+        """
         # api.router.GET("/api/v:version/compose/failed", api.composeFailedHandler)
+        """
         raise NotImplementedError
+
+    def get_compose_image(self, compuse_uuid):
+        """
         # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
+        """
         raise NotImplementedError
+
+    def get_compose_metadata(self, compose_uuid):
+        """
         # api.router.GET("/api/v:version/compose/metadata/:uuid", api.composeMetadataHandler)
+        """
         raise NotImplementedError
+
+    def get_compose_results(self, compose_uuid):
+        """
         # api.router.GET("/api/v:version/compose/results/:uuid", api.composeResultsHandler)
+        """
         raise NotImplementedError
+
+    def get_compose_logs(self, compose_uuid):
+        """
         # api.router.GET("/api/v:version/compose/logs/:uuid", api.composeLogsHandler)
-        raise NotImplementedError
         # api.router.GET("/api/v:version/compose/log/:uuid", api.composeLogHandler)
+        """
         raise NotImplementedError
+
+    def post_compose_updloads_schedule(self, compose_uuid):
+        """
         # api.router.POST("/api/v:version/compose/uploads/schedule/:uuid", api.uploadsScheduleHandler)
+        """
         raise NotImplementedError
+
+    def compose_cancel(self, compose_uuid):
+        """
         # api.router.DELETE("/api/v:version/compose/cancel/:uuid", api.composeCancelHandler)
+        """
         raise NotImplementedError
 
+    def delete_compose_upload(self, compose_uuid):
+        """
         # api.router.DELETE("/api/v:version/upload/delete/:uuid", api.uploadsDeleteHandler)
+        """
         raise NotImplementedError
+
+    def get_version_info(self, compose_uuid):
+        """
         # api.router.GET("/api/v:version/upload/info/:uuid", api.uploadsInfoHandler)
+        """
         raise NotImplementedError
+
+    def get_version_upload_log(self, compose_uuid):
+        """
         # api.router.GET("/api/v:version/upload/log/:uuid", api.uploadsLogHandler)
+        """
         raise NotImplementedError
+
+    def upload_reset(self, compose_uuid):
+        """
         # api.router.POST("/api/v:version/upload/reset/:uuid", api.uploadsResetHandler)
+        """
         raise NotImplementedError
+
+    def upload_cancel(self, compose_uuid):
+        """
         # api.router.DELETE("/api/v:version/upload/cancel/:uuid", api.uploadsCancelHandler)
+        """
         raise NotImplementedError
 
+    def get_upload_providers(self):
+        """
         # api.router.GET("/api/v:version/upload/providers", api.providersHandler)
-        raise NotImplementedError
-        # api.router.POST("/api/v:version/upload/providers/save", api.providersSaveHandler)
-        raise NotImplementedError
-        # api.router.DELETE("/api/v:version/upload/providers/delete/:provider/:profile", api.providersDeleteHandler)
+        """
         raise NotImplementedError
 
+    def save_providers(self):
+        """
+        # api.router.POST("/api/v:version/upload/providers/save", api.providersSaveHandler)
+        """
+        raise NotImplementedError
+
+    def delete_provider(self, provider, profile):
+        """
+        # api.router.DELETE("/api/v:version/upload/providers/delete/:provider/:profile", api.providersDeleteHandler)
+        """
+        raise NotImplementedError
+
+    def get_distros_list(self):
+        """
         # api.router.GET("/api/v:version/distros/list", api.distrosListHandler)
+        """
         raise NotImplementedError
