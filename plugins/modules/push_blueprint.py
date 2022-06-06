@@ -58,6 +58,7 @@ def main():
 
     weldr = Weldr(module)
     try:
+        weldr.
 
 
     except Exception as e:

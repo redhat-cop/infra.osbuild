@@ -4,6 +4,7 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from ansible.module_utils.urls import Request
+from ansible.module_utils._text import to_bytes, to_native, to_text
 
 class Weldr(object):
     """
@@ -26,16 +27,42 @@ class Weldr(object):
 
         status = self.request.open('GET', 'http://localhost/api/status').read()
         if status['api'] == "1":
-            weldr = WeldrV1(module, unix_socket)
+            self.api = WeldrV1(module, unix_socket)
         else:
             module.fail_json(msg='Unsupported Weldr API found. Expected "1", got "%s"' % status['api'])
 
+        # Because we can't have nice things
+        try:
+            try:
+                import toml
+                HAS_TOML = True
+                self.toml = toml
+            except ImportError:
+                HAS_TOML = False
+
+            if not HAS_TOML:
+                try:
+                    import pytoml as toml
+                    HAS_TOML = True
+                    self.toml = toml
+                except ImportError:
+                    HAS_TOML = False
+            self.HAS_TOML = HAS_TOML
+        except exception as e:
+            self.module.fail_json(msg="Exception encountered during execution: %s" % to_text(e)
 
     def check_status(self):
         """
         check_status of local weldr
 
         """
+
+    def blueprint_sanity_check(self):
+        """
+        blueprint_sanity_check
+        """
+        if not self.HAS_TOML:
+            self.module.fail_json(msg='The python "pytom" or "toml" library is required for working with blueprints.')
 
 
 
