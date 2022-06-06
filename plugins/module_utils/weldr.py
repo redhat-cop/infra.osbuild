@@ -58,7 +58,7 @@ class WeldrV1(object):
         self.unix_socket = unix_socket
         self.request = Request(unix_socket=self.unix_socket)
 
-    def get_projects_source_list():
+    def get_projects_source_list(self):
         """
         get a list of sources back from Weldr
 
@@ -67,7 +67,7 @@ class WeldrV1(object):
         req_read = self.request.open('GET', 'http://localhost/api/v1/projects/source/list').read()
         return req_read['sources']
 
-    def get_projects_source_info(source):
+    def get_projects_source_info(self, source):
         """
         get detailed information about a particular source
 
@@ -77,27 +77,37 @@ class WeldrV1(object):
         return req_read
 
 
-    def get_projects_source_info_sources(sources):
+    def get_projects_source_info_sources(self, sources):
+        """
         # api.router.GET("/api/v:version/projects/source/info/:sources", api.sourceInfoHandler)
+        """
         raise NotImplementedError
 
-    def post_projects_source_new(source):
+    def post_projects_source_new(self, source):
+        """
         # api.router.POST("/api/v:version/projects/source/new", api.sourceNewHandler)
+        """
         raise NotImplementedError
 
-    def delete_projects_source(source):
+    def delete_projects_source(self, source):
+        """
         # api.router.DELETE("/api/v:version/projects/source/delete/*source", api.sourceDeleteHandler)
+        """
         raise NotImplementedError
 
-    def get_projects_depsolve():
+    def get_projects_depsolve(self):
+        """
         # api.router.GET("/api/v:version/projects/depsolve", api.projectsDepsolveHandler)
+        """
         raise NotImplementedError
 
-    def get_projects_depsolve_projects(projects):
+    def get_projects_depsolve_projects(self, projects):
+        """
         # api.router.GET("/api/v:version/projects/depsolve/*projects", api.projectsDepsolveHandler)
+        """
         raise NotImplementedError
 
-    def get_modules_list():
+    def get_modules_list(self):
         """
         get a list of modules back from Weldr
 
@@ -106,10 +116,12 @@ class WeldrV1(object):
         req_read = self.request.open('GET', 'http://localhost/api/v1/modules/list').read()
         return req_read['modules']
 
-        # api.router.GET("/api/v:version/modules/list", api.modulesListHandler)
-        raise NotImplementedError
+    def get_modules_list_modules(self, modules):
+        """
         # api.router.GET("/api/v:version/modules/list/*modules", api.modulesListHandler)
+        """
         raise NotImplementedError
+
         # api.router.GET("/api/v:version/projects/list", api.projectsListHandler)
         raise NotImplementedError
         # api.router.GET("/api/v:version/projects/list/", api.projectsListHandler)
