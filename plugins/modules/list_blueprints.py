@@ -1,0 +1,57 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# Copyright: Red Hat Inc.
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import absolute_import, division, print_function
+from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
+
+__metaclass__ = type
+
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
+
+DOCUMENTATION = """
+---
+module: list_blueprints
+short_description: Info module to get a list of blueprints from Weldr
+description:
+    - Info module to get a list of blueprints from Weldr
+author:
+- Adam Miller (@maxamillion)
+options:
+"""
+
+EXAMPLES = """
+- name: Get list of blueprints
+  osbuild.composer.list_blueprints:
+  register: list_blueprints_out
+
+- debug: var=list_blueprints
+"""
+
+
+import os
+import traceback
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils._text import to_native, to_text
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+        ),
+    )
+
+    weldr = Weldr(module)
+
+    results = weldr.api.get_blueprints_list()
+    module.exit_json(blueprints=results['blueprints'], msg="Blueprints list available at 'blueprints' index of registered var.")
+
+
+if __name__ == "__main__":
+    main()

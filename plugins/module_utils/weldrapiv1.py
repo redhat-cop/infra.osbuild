@@ -22,6 +22,15 @@ class WeldrV1(object):
         """
         self.weldr = weldr
 
+    def get_blueprints_list(self):
+        """
+        # api.router.GET("/api/v:version/blueprints/list", api.blueprintsListHandler)
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/blueprints/list')
+        )
+        return results
+
     def get_projects_source_list(self):
         """
         get a list of sources back from Weldr
@@ -68,6 +77,22 @@ class WeldrV1(object):
             self.weldr.request.open('GET', 'http://localhost/api/v1/modules/list')
         )
         return results
+
+    def post_compose(self, compose):
+        """
+        # api.router.POST("/api/v:version/compose", api.composeHandler)
+        """
+        if type(blueprint) != bytes:
+            blueprint = to_bytes(blueprint)
+        results = json.load(
+            self.weldr.request.open('POST', 'http://localhost/api/v1/blueprints/new', data=blueprint, headers={"Content-Type": "text/x-toml"})
+        )
+        return results
+
+
+###############################################################################
+# Everything below here has not been implemented yet and will be as needed
+###############################################################################
 
     def get_projects_source_info_sources(self, sources):
         """
@@ -121,12 +146,6 @@ class WeldrV1(object):
         # api.router.GET("/api/v:version/projects/info/*modules", api.modulesInfoHandler)
         """
 
-    def get_blueprints_list(self):
-        """
-        # api.router.GET("/api/v:version/blueprints/list", api.blueprintsListHandler)
-        """
-        raise NotImplementedError
-
     def get_blueprints_info(self, blueprints):
         """
         # api.router.GET("/api/v:version/blueprints/info/*blueprints", api.blueprintsInfoHandler)
@@ -179,12 +198,6 @@ class WeldrV1(object):
         """
         # api.router.DELETE("/api/v:version/blueprints/delete/:blueprint", api.blueprintDeleteHandler)
         # api.router.DELETE("/api/v:version/blueprints/workspace/:blueprint", api.blueprintDeleteWorkspaceHandler# # )
-        """
-        raise NotImplementedError
-
-    def post_compose(self, compose):
-        """
-        # api.router.POST("/api/v:version/compose", api.composeHandler)
         """
         raise NotImplementedError
 
