@@ -24,7 +24,9 @@ class WeldrV1(object):
 
     def get_blueprints_list(self):
         """
-        # api.router.GET("/api/v:version/blueprints/list", api.blueprintsListHandler)
+        get a list of blueprints back from Weldr
+
+        :return:    dict
         """
         results = json.load(
             self.weldr.request.open('GET', 'http://localhost/api/v1/blueprints/list')
@@ -35,7 +37,7 @@ class WeldrV1(object):
         """
         get a list of sources back from Weldr
 
-        :return:        list, list of sources
+        :return:        dict
         """
         results = json.load(
             self.weldr.request.open('GET', 'http://localhost/api/v1/projects/source/list')
@@ -46,7 +48,7 @@ class WeldrV1(object):
         """
         get detailed information about a particular source
 
-        :return:        dict, dict containing source information
+        :return:        dict
         """
         results = json.load(
             self.weldr.request.open('GET', 'http://localhost/api/v1/projects/source/info/%s' % source)
@@ -81,7 +83,11 @@ class WeldrV1(object):
     def post_compose(self, compose):
         """
         # api.router.POST("/api/v:version/compose", api.composeHandler)
+        iniiate a compose
+
+        :return:    dict
         """
+        # FIXME - actually implement the right thing here
         if type(blueprint) != bytes:
             blueprint = to_bytes(blueprint)
         results = json.load(
@@ -89,10 +95,105 @@ class WeldrV1(object):
         )
         return results
 
+    def get_compose_types(self, compose):
+        """
+        get compose types currently supported by weldr instance
+
+        :return:        dict
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/types')
+        )
+        return results
+
+    def get_compose_queue(self, compose):
+        """
+        query current compose queue 
+
+        :return:        dict
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/queue')
+        )
+        return results
+
+    def get_compuse_status(self, compose_uuids):
+        """
+        # api.router.GET("/api/v:version/compose/status/:uuids", api.composeStatusHandler)
+        query current status of existing compose
+
+        :return:        dict
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/status/%s' % compose_uuids)
+        )
+        return results
+
+    def get_compose_info(self, compose_uuid):
+        """
+        # api.router.GET("/api/v:version/compose/info/:uuid", api.composeInfoHandler)
+        query info of existing compose
+
+        :return:        dict
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/info/%s' % compose_uuids)
+        )
+        return results
+
+    def get_compose_finished(self):
+        """
+        # api.router.GET("/api/v:version/compose/finished", api.composeFinishedHandler)
+        query info of completed composes
+
+        :return:        dict
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/finished')
+        )
+        return results
+
+    def get_compose_failed(self):
+        """
+        # api.router.GET("/api/v:version/compose/failed", api.composeFailedHandler)
+        query list of failed composes
+
+        :return:        dict
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/failed')
+        )
+        return results
+
 
 ###############################################################################
 # Everything below here has not been implemented yet and will be as needed
 ###############################################################################
+
+    def get_compose_image(self, compuse_uuid):
+        """
+        # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
+        """
+        raise NotImplementedError
+
+    def get_compose_metadata(self, compose_uuid):
+        """
+        # api.router.GET("/api/v:version/compose/metadata/:uuid", api.composeMetadataHandler)
+        """
+        raise NotImplementedError
+
+    def get_compose_results(self, compose_uuid):
+        """
+        # api.router.GET("/api/v:version/compose/results/:uuid", api.composeResultsHandler)
+        """
+        raise NotImplementedError
+
+    def get_compose_logs(self, compose_uuid):
+        """
+        # api.router.GET("/api/v:version/compose/logs/:uuid", api.composeLogsHandler)
+        # api.router.GET("/api/v:version/compose/log/:uuid", api.composeLogHandler)
+        """
+        raise NotImplementedError
 
     def get_projects_source_info_sources(self, sources):
         """
@@ -207,66 +308,6 @@ class WeldrV1(object):
         """
         raise NotImplementedError
 
-    def get_compose_types(self, compose):
-        """
-        # api.router.GET("/api/v:version/compose/types", api.composeTypesHandler)
-        """
-        raise NotImplementedError
-
-    def get_compose_queue(self, compose):
-        """
-        # api.router.GET("/api/v:version/compose/queue", api.composeQueueHandler)
-        """
-        raise NotImplementedError
-
-    def get_compuse_status(self, compose_uuids):
-        """
-        # api.router.GET("/api/v:version/compose/status/:uuids", api.composeStatusHandler)
-        raise NotImplementedError
-        """
-
-    def get_compose_info(self, compose_uuid):
-        """
-        # api.router.GET("/api/v:version/compose/info/:uuid", api.composeInfoHandler)
-        """
-        raise NotImplementedError
-
-    def get_compose_finished(self):
-        """
-        # api.router.GET("/api/v:version/compose/finished", api.composeFinishedHandler)
-        """
-        raise NotImplementedError
-
-    def get_compose_failed(self):
-        """
-        # api.router.GET("/api/v:version/compose/failed", api.composeFailedHandler)
-        """
-        raise NotImplementedError
-
-    def get_compose_image(self, compuse_uuid):
-        """
-        # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
-        """
-        raise NotImplementedError
-
-    def get_compose_metadata(self, compose_uuid):
-        """
-        # api.router.GET("/api/v:version/compose/metadata/:uuid", api.composeMetadataHandler)
-        """
-        raise NotImplementedError
-
-    def get_compose_results(self, compose_uuid):
-        """
-        # api.router.GET("/api/v:version/compose/results/:uuid", api.composeResultsHandler)
-        """
-        raise NotImplementedError
-
-    def get_compose_logs(self, compose_uuid):
-        """
-        # api.router.GET("/api/v:version/compose/logs/:uuid", api.composeLogsHandler)
-        # api.router.GET("/api/v:version/compose/log/:uuid", api.composeLogHandler)
-        """
-        raise NotImplementedError
 
     def post_compose_updloads_schedule(self, compose_uuid):
         """
