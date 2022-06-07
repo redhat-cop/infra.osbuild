@@ -146,6 +146,9 @@ def main():
             ostree_url=dict(type="str", required=False, default=""),
         ),
         required_together=[["image_name", "profile"]],
+        required_if=[
+            ['compose_type', 'edge-installer', ['ostree_url']],
+        ],
     )
 
     changed = False
