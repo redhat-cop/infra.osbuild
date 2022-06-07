@@ -147,7 +147,6 @@ def main():
         ),
     )
 
-    compose_uuid = ""
     changed = False
 
     weldr = Weldr(module)
@@ -180,7 +179,7 @@ def main():
         # {"finished":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":8192,"queue_status":"FINISHED","job_created":1654620015.4107578,"job_started":1654620015.415151,"job_finished":1654620302.9069786}]}
         compose_finished_dupe = [
             compose
-            for compose in compose_queue["finished"]
+            for compose in compose_finished["finished"]
             if (compose["blueprint"] == module.params["blueprint"])
             and (compose["version"] == blueprint_version)
         ]
@@ -189,7 +188,7 @@ def main():
         # {"failed":[]}
         compose_failed_dupe = [
             compose
-            for compose in compose_queue["failed"]
+            for compose in compose_failed["failed"]
             if (compose["blueprint"] == module.params["blueprint"])
             and (compose["version"] == blueprint_version)
         ]
