@@ -22,8 +22,6 @@ description:
     - Push a blueprint file into composer
 author:
 - Adam Miller (@maxamillion)
-requirements:
-  - composer-cli
 options:
     path:
         description:
