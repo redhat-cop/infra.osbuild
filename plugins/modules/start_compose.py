@@ -60,13 +60,31 @@ options:
         type: bool
         default: True
         required: false
-    type:
+    compose_type:
         description:
             - type of compose
         type: str
         default: "edge-commit"
         required: false
         choices: ["ami", "edge-commit", "edge-container", "edge-installer", "edge-raw-image", "edge-simplified-installer", "image-installer", "oci", "openstack", "qcow2", "tar", "vhd", "vmdk"]
+    ostree_ref:
+        description:
+            - ostree ref
+        type: str
+        default: ""
+        required: false
+    ostree_parent:
+        description:
+            - ostree parent
+        type: str
+        default: ""
+        required: false
+    ostree_url:
+        description:
+            - ostree URL
+        type: str
+        default: ""
+        required: false
 notes:
     - THIS MODULE IS NOT IDEMPOTENT UNLESS C(allow_duplicate) is set to C(false)
     - The params C(profile) and C(image_name) are required together.
@@ -101,8 +119,12 @@ def main():
             profile=dict(type="str", required=False, default=""),
             image_name=dict(type="str", required=False, default=""),
             allow_duplicate=dict(type=bool, required=False, default=True),
-        ),
+            compose_type=dict(type="str", required=False, default="edge-commit", choices=["ami", "edge-commit", "edge-container", "edge-installer", "edge-raw-image", "edge-simplified-installer", "image-installer", "oci", "openstack", "qcow2", "tar", "vhd", "vmdk"]),
+            ostree_ref=dict(type="str", required=False, default=""),
+            ostree_parent=dict(type="str", required=False, default=""),
+            ostree_url=dict(type="str", required=False, default=""),
         required_together=[["image_name", "profile"]],
+        ),
     )
 
     compose_uuid = ""
@@ -154,18 +176,29 @@ def main():
     if module.params['allow_duplicate'] or (len(dupe_compose) == 0):
 
         # FIXME - build to POST payload and POST that ish
-        pass
+        compose_settings = {
+            "blueprint_name": module.params['blueprint'],
+            "compose_type": module.params['type'],
+            "branch": "master",
+            "size": module.params['size'],
+        }
+
+        if 'edge' in module.params['compose_type']:
+            compose_settings['ostree'] = {
+                "ref": module.params['ostree_ref'],
+                "parent": module.params['ostree_parent'],
+                "url": module.params['ostree_url']
+            }
+
+        result = weldr.api.post_compose(compose_settings)
+
+        module.exit_json(msg="Compose submitted to queue", result=result)
 
     else:
         changed = False
         module.exit_json(
-            msg="Not queuing a duplicate compose without allow_duplicate set to true",
-            uuid=compose_uuid,
+            msg="Not queuing a duplicate versioned compose without allow_duplicate set to true",
             changed=changed,
-            stdout="",
-            stderr="",
-            cmd=" ",
-            rc=rc,
         )
 
 
