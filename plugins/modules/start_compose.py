@@ -143,8 +143,8 @@ def main():
             ostree_ref=dict(type="str", required=False, default=""),
             ostree_parent=dict(type="str", required=False, default=""),
             ostree_url=dict(type="str", required=False, default=""),
-            required_together=[["image_name", "profile"]],
         ),
+        required_together=[["image_name", "profile"]],
     )
 
     changed = False
@@ -205,7 +205,7 @@ def main():
         # FIXME - build to POST payload and POST that ish
         compose_settings = {
             "blueprint_name": module.params["blueprint"],
-            "compose_type": module.params["type"],
+            "compose_type": module.params["compose_type"],
             "branch": "master",
             "size": module.params["size"],
         }
