@@ -41,16 +41,19 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
 from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
 
+
 def main():
     module = AnsibleModule(
-        argument_spec=dict(
-        ),
+        argument_spec=dict(),
     )
 
     weldr = Weldr(module)
 
     results = weldr.api.get_blueprints_list()
-    module.exit_json(blueprints=results['blueprints'], msg="Blueprints list available at 'blueprints' index of registered var.")
+    module.exit_json(
+        blueprints=results["blueprints"],
+        msg="Blueprints list available at 'blueprints' index of registered var.",
+    )
 
 
 if __name__ == "__main__":

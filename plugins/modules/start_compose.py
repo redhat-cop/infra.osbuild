@@ -110,6 +110,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
 from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
 
+
 def main():
     module = AnsibleModule(
         argument_spec=dict(
@@ -119,11 +120,30 @@ def main():
             profile=dict(type="str", required=False, default=""),
             image_name=dict(type="str", required=False, default=""),
             allow_duplicate=dict(type=bool, required=False, default=True),
-            compose_type=dict(type="str", required=False, default="edge-commit", choices=["ami", "edge-commit", "edge-container", "edge-installer", "edge-raw-image", "edge-simplified-installer", "image-installer", "oci", "openstack", "qcow2", "tar", "vhd", "vmdk"]),
+            compose_type=dict(
+                type="str",
+                required=False,
+                default="edge-commit",
+                choices=[
+                    "ami",
+                    "edge-commit",
+                    "edge-container",
+                    "edge-installer",
+                    "edge-raw-image",
+                    "edge-simplified-installer",
+                    "image-installer",
+                    "oci",
+                    "openstack",
+                    "qcow2",
+                    "tar",
+                    "vhd",
+                    "vmdk",
+                ],
+            ),
             ostree_ref=dict(type="str", required=False, default=""),
             ostree_parent=dict(type="str", required=False, default=""),
             ostree_url=dict(type="str", required=False, default=""),
-        required_together=[["image_name", "profile"]],
+            required_together=[["image_name", "profile"]],
         ),
     )
 
@@ -134,60 +154,68 @@ def main():
 
     dupe_compose = []
 
-    if not module.params['allow_duplicate']:
+    if not module.params["allow_duplicate"]:
         # only do all this query and filtering if needed
 
-        blueprint_info = weldr.api.get_blueprint_info(module.params['blueprint'])
-        blueprint_version = blueprint_info['blueprints'][0]['version']
+        blueprint_info = weldr.api.get_blueprint_info(module.params["blueprint"])
+        blueprint_version = blueprint_info["blueprints"][0]["version"]
 
         compose_queue = weldr.api.get_compose_queue()
         # {"new":[],"run":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":0,"queue_status":"RUNNING","job_created":1654620015.4107578,"job_started":1654620015.415151}]}
 
         compose_queue_run_dupe = [
-            compose for compose in compose_queue['run']
-            if ( compose['blueprint'] == module.params['blueprint'])
-            and ( compose['version'] == blueprint_version )
+            compose
+            for compose in compose_queue["run"]
+            if (compose["blueprint"] == module.params["blueprint"])
+            and (compose["version"] == blueprint_version)
         ]
         compose_queue_new_dupe = [
-            compose for compose in compose_queue['new']
-            if ( compose['blueprint'] == module.params['blueprint'])
-            and ( compose['version'] == blueprint_version )
+            compose
+            for compose in compose_queue["new"]
+            if (compose["blueprint"] == module.params["blueprint"])
+            and (compose["version"] == blueprint_version)
         ]
 
         compose_finished = weldr.api.get_compose_finished()
         # {"finished":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":8192,"queue_status":"FINISHED","job_created":1654620015.4107578,"job_started":1654620015.415151,"job_finished":1654620302.9069786}]}
         compose_finished_dupe = [
-            compose for compose in compose_queue['finished']
-            if ( compose['blueprint'] == module.params['blueprint'])
-            and ( compose['version'] == blueprint_version )
+            compose
+            for compose in compose_queue["finished"]
+            if (compose["blueprint"] == module.params["blueprint"])
+            and (compose["version"] == blueprint_version)
         ]
 
         compose_failed = weldr.api.get_compose_failed()
         # {"failed":[]}
         compose_failed_dupe = [
-            compose for compose in compose_queue['failed']
-            if ( compose['blueprint'] == module.params['blueprint'])
-            and ( compose['version'] == blueprint_version )
+            compose
+            for compose in compose_queue["failed"]
+            if (compose["blueprint"] == module.params["blueprint"])
+            and (compose["version"] == blueprint_version)
         ]
 
-        dupe_compose = compose_queue_run_dupe + compose_queue_new_dupe + compose_failed_dupe + compose_finished_dupe 
+        dupe_compose = (
+            compose_queue_run_dupe
+            + compose_queue_new_dupe
+            + compose_failed_dupe
+            + compose_finished_dupe
+        )
 
-
-    if module.params['allow_duplicate'] or (len(dupe_compose) == 0):
+    if module.params["allow_duplicate"] or (len(dupe_compose) == 0):
 
         # FIXME - build to POST payload and POST that ish
         compose_settings = {
-            "blueprint_name": module.params['blueprint'],
-            "compose_type": module.params['type'],
+            "blueprint_name": module.params["blueprint"],
+            "compose_type": module.params["type"],
             "branch": "master",
-            "size": module.params['size'],
+            "size": module.params["size"],
         }
 
-        if 'edge' in module.params['compose_type']:
-            compose_settings['ostree'] = {
-                "ref": module.params['ostree_ref'],
-                "parent": module.params['ostree_parent'],
-                "url": module.params['ostree_url']
+        if "edge" in module.params["compose_type"]:
+            compose_settings["ostree"] = {
+                "ref": module.params["ostree_ref"],
+                "parent": module.params["ostree_parent"],
+                "url": module.params["ostree_url"],
             }
 
         result = weldr.api.post_compose(compose_settings)
@@ -200,7 +228,6 @@ def main():
             msg="Not queuing a duplicate versioned compose without allow_duplicate set to true",
             changed=changed,
         )
-
 
 
 if __name__ == "__main__":
