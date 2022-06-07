@@ -33,6 +33,17 @@ class WeldrV1(object):
         )
         return results
 
+    def get_blueprints_info(self, blueprint):
+        """
+        get a list of blueprints back from Weldr
+
+        :return:    dict
+        """
+        results = json.load(
+            self.weldr.request.open('GET', 'http://localhost/api/v1/blueprints/info/%s' % blueprint)
+        )
+        return results
+
     def get_projects_source_list(self):
         """
         get a list of sources back from Weldr
@@ -95,7 +106,7 @@ class WeldrV1(object):
         )
         return results
 
-    def get_compose_types(self, compose):
+    def get_compose_types(self):
         """
         get compose types currently supported by weldr instance
 
@@ -106,7 +117,7 @@ class WeldrV1(object):
         )
         return results
 
-    def get_compose_queue(self, compose):
+    def get_compose_queue(self):
         """
         query current compose queue 
 
@@ -246,12 +257,6 @@ class WeldrV1(object):
         # api.router.GET("/api/v:version/projects/info", api.modulesInfoHandler)
         # api.router.GET("/api/v:version/projects/info/*modules", api.modulesInfoHandler)
         """
-
-    def get_blueprints_info(self, blueprints):
-        """
-        # api.router.GET("/api/v:version/blueprints/info/*blueprints", api.blueprintsInfoHandler)
-        """
-        raise NotImplementedError
 
     def get_blueprints_depsolve(self, blueprints):
         """

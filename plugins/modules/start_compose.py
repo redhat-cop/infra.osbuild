@@ -16,14 +16,12 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-module: start_ostree
+module: start_compose
 short_description: Start an ostree compose
 description:
     - Start an ostree compose
 author:
     - Adam Miller (@maxamillion)
-requirements:
-    - composer-cli
 options:
     blueprint:
         description:
@@ -62,6 +60,13 @@ options:
         type: bool
         default: True
         required: false
+    type:
+        description:
+            - type of compose
+        type: str
+        default: "edge-commit"
+        required: false
+        choices: ["ami", "edge-commit", "edge-container", "edge-installer", "edge-raw-image", "edge-simplified-installer", "image-installer", "oci", "openstack", "qcow2", "tar", "vhd", "vmdk"]
 notes:
     - THIS MODULE IS NOT IDEMPOTENT UNLESS C(allow_duplicate) is set to C(false)
     - The params C(profile) and C(image_name) are required together.
@@ -85,8 +90,7 @@ import re
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-
-
+from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
 
 def main():
     module = AnsibleModule(
@@ -102,92 +106,55 @@ def main():
     )
 
     compose_uuid = ""
-    rc, out, err = (-1, "", "")
     changed = False
 
-    ccli = module.get_bin_path("composer-cli")
-    cmd = []
-    if not ccli:
-        module.fail_json(
-            msg="Unable to find composer-cli, make sure it is installed.",
-            stdout=out,
-            stderr=err,
-            rc=rc,
-            uuid="",
-            cmd=" ".join(cmd),
-            changed=changed,
-        )
+    weldr = Weldr(module)
 
-    # Check for an existing copmose
-    cmd = [ccli, "blueprints", "show", module.params['blueprint']]
-    rc, out, err = module.run_command(cmd)
-    bp_version = [
-        x for x in out.split("\n")
-        if "version" in x
-    ][0].split()[-1].strip("'\"")
+    dupe_compose = []
 
-    cmd = [ccli, "compose", "list"]
-    rc, out, err = module.run_command(cmd)
-    dup_version_compose = [
-        x for x in out.split("\n")
-        if (module.params['blueprint'] in x) 
-        and ("FAILED" not in x)
-        and (module.params['image_type'] in x)
-        and (bp_version in x)
-    ]
-    if dup_version_compose:
-        dup_version = dup_version_compose[0].split()[3]
-    else:
-        dup_version = ""
+    if not module.params['allow_duplicate']:
+        # only do all this query and filtering if needed
 
-    if (not dup_version) or module.params['allow_duplicate']:
+        blueprint_info = weldr.api.get_blueprint_info(module.params['blueprint'])
+        blueprint_version = blueprint_info['blueprints'][0]['version']
 
-        # Queue a new compose
-        cmd = [ccli, "compose"]
-        cmd += ["start-ostree", "--size", to_text(module.params["size"])]
-        cmd += [to_text(module.params["blueprint"]), to_text(module.params["image_type"])]
-        if module.params["image_name"]:
-            cmd += [to_text(module.params["image_name"]), to_text(module.params["profile"])]
+        compose_queue = weldr.api.get_compose_queue()
+        # {"new":[],"run":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":0,"queue_status":"RUNNING","job_created":1654620015.4107578,"job_started":1654620015.415151}]}
 
-        rc, out, err = module.run_command(cmd)
-        if rc == 0:
-            changed = True
-        else:
-            module.fail_json(
-                msg="Unknown error occurred.",
-                stdout=out,
-                stderr=err,
-                rc=rc,
-                uuid="",
-                cmd=" ".join(cmd),
-                changed=changed,
-            )
+        compose_queue_run_dupe = [
+            compose for compose in compose_queue['run']
+            if ( compose['blueprint'] == module.params['blueprint'])
+            and ( compose['version'] == blueprint_version )
+        ]
+        compose_queue_new_dupe = [
+            compose for compose in compose_queue['new']
+            if ( compose['blueprint'] == module.params['blueprint'])
+            and ( compose['version'] == blueprint_version )
+        ]
 
-        recomp = re.compile(
-            r"[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"
-        )
-        try:
-            compose_uuid = recomp.search(out).group()
-        except AttributeError:
-            module.fail_json(
-                msg="Unable to find uuid, an unknown error occurred",
-                stdout=out,
-                stderr=err,
-                rc=rc,
-                uuid="",
-                cmd=" ".join(cmd),
-                changed=changed,
-            )
+        compose_finished = weldr.api.get_compose_finished()
+        # {"finished":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":8192,"queue_status":"FINISHED","job_created":1654620015.4107578,"job_started":1654620015.415151,"job_finished":1654620302.9069786}]}
+        compose_finished_dupe = [
+            compose for compose in compose_queue['finished']
+            if ( compose['blueprint'] == module.params['blueprint'])
+            and ( compose['version'] == blueprint_version )
+        ]
 
-        module.exit_json(
-            msg="Compose %s added to the queue." % compose_uuid,
-            uuid=compose_uuid,
-            changed=changed,
-            stdout=out,
-            stderr=err,
-            cmd=" ".join(cmd),
-            rc=rc,
-        )
+        compose_failed = weldr.api.get_compose_failed()
+        # {"failed":[]}
+        compose_failed_dupe = [
+            compose for compose in compose_queue['failed']
+            if ( compose['blueprint'] == module.params['blueprint'])
+            and ( compose['version'] == blueprint_version )
+        ]
+
+        dupe_compose = compose_queue_run_dupe + compose_queue_new_dupe + compose_failed_dupe + compose_finished_dupe 
+
+
+    if module.params['allow_duplicate'] or (len(dupe_compose) == 0):
+
+        # FIXME - build to POST payload and POST that ish
+        pass
 
     else:
         changed = False
