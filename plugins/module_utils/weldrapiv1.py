@@ -93,16 +93,15 @@ class WeldrV1(object):
 
     def post_compose(self, compose_settings):
         """
-        # api.router.POST("/api/v:version/compose", api.composeHandler)
         iniiate a compose
 
         :return:    dict
         """
         # FIXME - actually implement the right thing here
         if type(compose_settings) != bytes:
-            compose_settings= to_bytes(compose_settings)
+            compose_settings = to_bytes(compose_settings)
         results = json.load(
-            self.weldr.request.open('POST', 'http://localhost/api/v1/blueprints/new', data=compose_settings, headers={"Accept": "application/json"})
+            self.weldr.request.open('POST', 'http://localhost/api/v1/compose', data=compose_settings, headers={"Content-Type": "application/json"})
         )
         return results
 

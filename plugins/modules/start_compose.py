@@ -88,6 +88,7 @@ options:
 notes:
     - THIS MODULE IS NOT IDEMPOTENT UNLESS C(allow_duplicate) is set to C(false)
     - The params C(profile) and C(image_name) are required together.
+    - The C(profile) option is not fully implemented at this time.
 """
 
 EXAMPLES = """
@@ -96,7 +97,6 @@ EXAMPLES = """
     blueprint: rhel-for-edge-demo
     image_name: testimage
     size: 4096
-    profile: testprofile.toml
 
 - name: Start ostree compose with idempotent transaction
   osbuild.composer.start_ostree
@@ -105,6 +105,7 @@ EXAMPLES = """
 """
 
 import re
+import json
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
@@ -217,7 +218,7 @@ def main():
                 "url": module.params["ostree_url"],
             }
 
-        result = weldr.api.post_compose(compose_settings)
+        result = weldr.api.post_compose(json.dumps(compose_settings))
 
         module.exit_json(msg="Compose submitted to queue", result=result)
 
