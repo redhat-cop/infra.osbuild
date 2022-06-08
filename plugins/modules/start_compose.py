@@ -29,12 +29,6 @@ options:
         type: str
         default: ""
         required: true
-    image_type:
-        description:
-            - Image output type
-        type: str
-        default: "rhel-edge-commit"
-        required: false
     size:
         description:
             - Image size expressed in MiB
@@ -116,7 +110,6 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             blueprint=dict(type="str", required=True),
-            image_type=dict(type="str", required=False, default="rhel-edge-commit"),
             size=dict(type="int", required=False, default=8192),
             profile=dict(type="str", required=False, default=""),
             image_name=dict(type="str", required=False, default=""),

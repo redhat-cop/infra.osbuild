@@ -23,7 +23,7 @@ description:
 author:
 - Adam Miller (@maxamillion)
 options:
-    path:
+    src:
         description:
             - Path to blueprint toml file on osbuild system that should be pushed into composer
         type: str
@@ -36,13 +36,13 @@ options:
         default: ""
         required: false
 notes:
-- Requires one of: C(path), C(blueprint)
+- Requires one of: C(src), C(blueprint)
 """
 
 EXAMPLES = """
 - name: Push a blueprint
   osbuild.composer.push_blueprint:
-    path: /tmp/blueprint.toml
+    src: /tmp/blueprint.toml
 """
 
 
@@ -57,23 +57,23 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weld
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            path=dict(type="str", required=False),
+            src=dict(type="str", required=False),
             blueprint=dict(type="str", required=False),
         ),
-        required_one_of=[["path", "blueprint"]],
+        required_one_of=[["src", "blueprint"]],
     )
 
     weldr = Weldr(module)
     weldr.blueprint_sanity_check()
 
-    if module.params["path"]:
+    if module.params["src"]:
         try:
-            with open(module.params["path"], "rb") as fin:
+            with open(module.params["src"], "rb") as fin:
                 data = weldr.toml.load(fin)
         except FileNotFoundError:
             module.fail_json(
-                msg="Unable to find or access blueprint file provided at path: %s"
-                % module.params["path"]
+                msg="Unable to find or access blueprint file provided at src: %s"
+                % module.params["src"]
             )
 
     if module.params["blueprint"]:

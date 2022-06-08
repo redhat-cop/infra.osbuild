@@ -68,13 +68,13 @@ options:
 EXAMPLES = """
 - name: create blueprint on  host
   osbuild.composer.create_blueprint:
-    dest: /tmp/blueprint.toml
-    name: my-rhel-edge-blueprint
-    version: 0.0.5
+    dest: "/tmp/blueprint.toml"
+    name: "my-rhel-edge-blueprint"
+    version: "0.0.5"
     packages:
-      - vim-enhanced
-      - ansible-core
-      - git
+      - "vim-enhanced"
+      - "ansible-core"
+      - "git"
     customizations:
       kernel:
         append: "nomst=force"
@@ -111,17 +111,22 @@ def main():
     )
 
     weldr = Weldr(module)
+    if not module.params['description']:
+        description = module.params['name']
+    else:
+        description = module.params['description']
+
     toml_file = (
-        f'name = {module.params["name"]}\n'
-        f'description = {module.params["description"]}\n'
-        f'version = {module.params["version"]}\n'
+        f'name = "{module.params["name"]}"\n'
+        f'description = "{description}"\n'
+        f'version = "{module.params["version"]}"\n'
         f'\n'
     )
 
     for package in module.params['packages']:
         toml_file += (
             f'[[packages]]\n'
-            f'name = {package}\n'
+            f'name = "{package}"\n'
             f'version = "*"\n'
             f'\n'
         )
@@ -129,14 +134,14 @@ def main():
     for group in module.params['groups']:
         toml_file += (
             f'[[groups]]\n'
-            f'name = {group}\n'
+            f'name = "{group}"\n'
             f'\n'
         )
 
     for key, customization in module.params['customizations'].items():
         toml_file += f'[[customizations.{key}]]\n'
         for k, v in customization.items():
-            toml_file += f'{k} = {v}\n'
+            toml_file += f'{k} = "{v}"\n'
 
         toml_file += '\n'
 

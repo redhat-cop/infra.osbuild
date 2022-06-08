@@ -63,6 +63,7 @@ def main():
         argument_spec=dict(
             compose_id=dict(type="str", required=True),
             timeout=dict(type="int", required=False, default=1800),
+            query_frequency=dict(type="int", required=False, default=20),
         ),
     )
 
