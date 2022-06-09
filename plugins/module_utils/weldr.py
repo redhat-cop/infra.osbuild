@@ -8,6 +8,7 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldrapiv1 import
 from ansible.module_utils.urls import Request
 
 import json
+import urllib
 
 class Weldr(object):
     """
@@ -27,12 +28,16 @@ class Weldr(object):
         self.module = module
         self.unix_socket = unix_socket
         self.request = Request(unix_socket=self.unix_socket)
-
-        status = json.load(self.request.open('GET', 'http://localhost/api/status'))
-        if status['api'] == "1":
-            self.api = WeldrV1(self)
-        else:
-            module.fail_json(msg='Unsupported Weldr API found. Expected "1", got "%s"' % status['api'])
+        try:
+            status = json.load(self.request.open('GET', 'http://localhost/api/status'))
+            if status['api'] == "1":
+                self.api = WeldrV1(self)
+            else:
+                module.fail_json(msg='Unsupported Weldr API found. Expected "1", got "%s"' % status['api'])
+        except (ConnectionRefusedError, OSError, urllib.error.URLError):
+            module.fail_json(msg="Connection to osbuild-composer service failed, please ensure service is running")
+        except Exception as e:
+            module.fail_json(msg=to_text(e))
 
         # Because we can't have nice things
         try:
@@ -53,12 +58,6 @@ class Weldr(object):
             self.HAS_TOML = HAS_TOML
         except exception as e:
             self.module.fail_json(msg="Exception encountered during execution: %s" % to_text(e))
-
-    def check_status(self):
-        """
-        check_status of local weldr
-
-        """
 
     def blueprint_sanity_check(self):
         """
