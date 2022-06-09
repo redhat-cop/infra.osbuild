@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   vars:
-    blueprint_src_path: "/tmp/testblueprint.yml"
+    blueprint_src_path: "/tmp/testblueprint.toml"
   tasks:
     - name: create a blueprint
       osbuild.composer.create_blueprint:
