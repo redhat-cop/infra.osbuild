@@ -69,7 +69,13 @@ def main():
     if module.params["src"]:
         try:
             with open(module.params["src"], "rb") as fin:
-                data = weldr.toml.load(fin)
+                # ### NOTE ###
+                # python3-pytoml and python3-toml act differently and pytoml is
+                # what's in RHEL8 but toml is in RHEL9 so we have to read and
+                # then toml.loads(to_text(to_text_data) for compatibility with
+                # both libraries.
+                to_text_data = fin.read()
+                data = weldr.toml.loads(to_text(to_text_data))
         except FileNotFoundError:
             module.fail_json(
                 msg="Unable to find or access blueprint file provided at src: %s"
