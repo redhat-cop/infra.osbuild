@@ -41,6 +41,8 @@ options:
         type: int
         default: 20
         required: false
+notes:
+- if the compose fails, so will the task
 """
 
 EXAMPLES = """
@@ -80,7 +82,7 @@ def main():
         failed_composes = weldr.api.get_compose_failed()
         found_compose = [ compose for compose in failed_composes['failed'] if compose['id'] == module.params['compose_id']]
         if len(found_compose) > 0:
-            module.exit_json(msg="Compose FAILED", result=found_compose[0])
+            module.fail_json(msg="Compose FAILED", result=found_compose[0])
 
         time.sleep(module.params['query_frequency'])
 
