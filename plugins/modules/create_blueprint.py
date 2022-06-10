@@ -141,7 +141,7 @@ def main():
     for key, customization in module.params['customizations'].items():
         toml_file += f'[[customizations.{key}]]\n'
         for k, v in customization.items():
-            if v.startswith('['):
+            if (type(v) == list) or v.startswith('['):
                 toml_file += f'{k} = {v}\n'
             else:
                 toml_file += f'{k} = "{v}"\n'
