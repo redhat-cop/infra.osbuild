@@ -186,6 +186,18 @@ def main():
         "-eltorito-alt-boot", "-e" "images/efiboot.img", "-no-emul-boot",
         module.params["workdir"]
     ]
+    genisoimage_out = run_cmd(module, genisoimage_cmd)
+
+    # make it bootable
+    isohybrid_cmd = [isohybrid, "--uefi", module.params['dest_iso']]
+    isohybrid_out = run_cmd(module, isohybrid_cmd)
+
+    # implant md5 checksum
+    implantisomd5_cmd = [implantisomd5, module.params['dest_iso']]
+    implantisomd5_out = run_cmd(module, implantisomd5_cmd)
+
+
+    module.exit_json(msg="New ISO can be found at: %s" % module.params['dest_iso'])
 
 
 if __name__ == "__main__":
