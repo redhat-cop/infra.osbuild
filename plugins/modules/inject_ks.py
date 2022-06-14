@@ -71,6 +71,8 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
 from ansible.module_utils.common.locale import get_best_parsable_locale
 
+import os
+
 
 def main():
     module = AnsibleModule(
@@ -84,6 +86,10 @@ def main():
 
     locale = get_best_parsable_locale(module)
     lang_env = dict(LANG=locale, LC_ALL=locale, LC_MESSAGES=locale)
+
+    isolinux_config = os.path.join(module.params['workdir'], '/isolinux/isolinux.cfg')
+    efi_grub_config = os.path.join(module.params['workdir'], '/EFI/BOOT/grub.cfg')
+    efi_dir = os.path.join(module.params['workdir'], '/EFI/BOOT')
 
 
     rc, out, err = module.run_command([], environ_update=lang_env)
