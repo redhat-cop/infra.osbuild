@@ -23,17 +23,17 @@ description:
 author:
 - Adam Miller (@maxamillion)
 options:
-    path:
+    kickstart:
         description:
             - Path to kickstart file
         type: str
         required: true
-    src:
+    iso_src:
         description:
             - Path to ISO file that will be used as source to create new ISO with kickstart injected
         type: str
         required: true
-    dest:
+    iso_dest:
         description:
             - Path the ISO file with kickstart injected into it should be in
         type: str
@@ -52,6 +52,7 @@ requires:
 - genisoimage
 - syslinux
 - isomd5sum
+- lorax
 """
 
 EXAMPLES = """
@@ -74,26 +75,49 @@ from ansible.module_utils.common.locale import get_best_parsable_locale
 import os
 
 
+
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            path=dict(type="str", required=True),
-            src=dict(type="str", required=True),
-            dest=dict(type="str", required=True),
-            workdir=dict(type="str", required=True),
-        ),
+
+    arg_spec=dict(
+        kickstart=dict(type="str", required=True),
+        iso_src=dict(type="str", required=True),
+        iso_dest=dict(type="str", required=True),
+        workdir=dict(type="str", required=True),
     )
 
+    module = AnsibleModule(
+        argument_spec=arg_spec,
+    )
+
+    # Sanity checking the paths exist
+    for key in arg_spec:
+        if not os.path.exists(module.params[key]):
+            module.fail_json("No such file found: %s" % fname)
+
+
+    # get local for shelling out
     locale = get_best_parsable_locale(module)
     lang_env = dict(LANG=locale, LC_ALL=locale, LC_MESSAGES=locale)
 
+    # define paths to things we need
     isolinux_config = os.path.join(module.params['workdir'], '/isolinux/isolinux.cfg')
     efi_grub_config = os.path.join(module.params['workdir'], '/EFI/BOOT/grub.cfg')
     efi_dir = os.path.join(module.params['workdir'], '/EFI/BOOT')
     efiboot_imagepath = os.path.join(module.params['workdir'], '/images/efiboot.img')
 
-    ksvalidator = 
+    # get binary paths
+    ksvalidator = module.get_bin_path('ksvalidator')
+    isoinfo = module.get_bin_path('isoinfo')
+    xorriso = module.get_bin_path('xorriso')
+    mtype = module.get_bin_path('mtype')
+    mcopy = module.get_bin_path('mcopy')
+    mkefiboot = module.get_bin_path('mkefiboot')
+    genisoimage = module.get_bin_path('genisoimage')
+    isohybrid = module.get_bin_path('isohybrid')
+    implantisomd5 = module.get_bin_path('implantisomd5')
 
+    # do work
+    ksvalidator_cmd = [ksvalidator, '-v', '
     rc, out, err = module.run_command([], environ_update=lang_env)
 
     try:
