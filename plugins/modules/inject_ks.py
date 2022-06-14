@@ -81,6 +81,7 @@ from ansible.module_utils._text import to_native, to_text
 from ansible.module_utils.common.locale import get_best_parsable_locale
 
 import os
+import shutil
 
 def run_cmd(module, cmd_list):
 
@@ -110,7 +111,7 @@ def main():
 
     # Sanity checking the paths exist
     for key in arg_spec:
-        if key != "version":
+        if key in ["kickstart", "src_iso", "workdir"]:
             if not os.path.exists(module.params[key]):
                 module.fail_json("No such file found: %s" % fname)
 
@@ -137,13 +138,54 @@ def main():
     ]
     ksvalidator_out = run_cmd(module, ksvalidator_cmd)
 
-    # validate the kickstart
-    isovolid_cmd = [isoinfo, '-d', '-i', module.params['src_']]
+    # get ISO volume id
+    isovolid_cmd = [isoinfo, '-d', '-i', module.params['src_iso']]
     isovolid_out = run_cmd(module, isovolid_cmd)
-    # FIXME - need to make sure I'm 
+    try:
+        isovolid = [
+            line for line in isovolid_out.split('\n') if "Volume id:" in line
+        ][0].split(':')[-1].strip()
+    except IndexError as e:
+        module.fail_json(
+            msg="ERROR: Unable to find Volume ID for source ISO: %s" % module.params['src_iso']
+        )
+
+    # explode the ISO
+    xorriso_cmd = [xorriso, '-osirrox', 'on', '-indev', module.params['src_iso'], '-extract', '/', module.params['workdir']]
+    xorriso_out = run_cmd(module, xorriso_cmd)
+
+    # insert kickstart
+    shutil.copy(
+        module.params['kickstart'],
+        os.path.join(module.params['workdir'], module.params['kickstart']),
+    )
+
+    # FIXME - edit isolinux
+
+    # FIXME - edit efiboot
+
+    # modify efiboot image
+    mtype_cmd = [mtype, "-i", efiboot_imagepath, "::EFI/BOOT/grub.cfg"]
+    mtype_out1 = run_cmd(module, mtype_cmd)
+
+    mcopy_cmd = [
+        mcopy, "-o", "-i", efiboot_imagepath, efi_grub_config, "::EFI/BOOT/grub.cfg"
+    ]
+    mcopy_out = run_cmd(module, mcopy_cmd)
+
+    mtype_cmd = [mtype, "-i", efiboot_imagepath, "::EFI/BOOT/grub.cfg"]
+    mtype_out2 = run_cmd(module, mtype_cmd)
 
 
-    module.exit_json(msg=f'Blueprint file written to location: {module.params["dest"]}')
+    # make the new iso image
+    genisoimage_cmd = [
+        "genisoimage", "-o", module.params["dest_iso"], "-R", "-J", "-V",
+        isovolid, "-A", isovolid, "-volset", isovolid, "-b",
+        "isolinux/isolinux.bin", "-c", "isolinux/boot.cat", "-boot-load-size",
+        "4", "-boot-info-table", "-no-emul-boot", "-verbose", "-debug",
+        "-eltorito-alt-boot", "-e" "images/efiboot.img", "-no-emul-boot",
+        module.params["workdir"]
+    ]
 
 
 if __name__ == "__main__":
