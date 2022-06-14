@@ -28,12 +28,12 @@ options:
             - Path to kickstart file
         type: str
         required: true
-    iso_src:
+    src_iso:
         description:
             - Path to ISO file that will be used as source to create new ISO with kickstart injected
         type: str
         required: true
-    iso_dest:
+    dest_iso:
         description:
             - Path the ISO file with kickstart injected into it should be in
         type: str
@@ -43,6 +43,14 @@ options:
             - A working directory to expand the ISO into
         type: str
         required: true
+    version:
+        description:
+            - RHEL version to validate the kickstart against, styled as "RHEL8", "RHEL9", etc
+        type: str
+        required: false
+        default: "RHEL8"
+        choices: ["RHEL8","RHEL9"]
+
 requires:
 - coreutils-single
 - glibc-minimal-langpack
@@ -58,9 +66,9 @@ requires:
 EXAMPLES = """
 - name: inject kickstart into ISO
   osbuild.composer.inject_ks:
-    path: "/tmp/mykickstart.ks"
-    src: "/tmp/previously_composed.iso"
-    dest: "/tmp/with_my_kickstart.iso"
+    kickstart: "/tmp/mykickstart.ks"
+    src_iso: "/tmp/previously_composed.iso"
+    dest_iso: "/tmp/with_my_kickstart.iso"
     workdir: "/root/edgeiso/
 """
 
@@ -74,15 +82,26 @@ from ansible.module_utils.common.locale import get_best_parsable_locale
 
 import os
 
+def run_cmd(module, cmd_list):
 
+    # get local for shelling out
+    locale = get_best_parsable_locale(module)
+    lang_env = dict(LANG=locale, LC_ALL=locale, LC_MESSAGES=locale)
+
+    rc, out, err = module.run_command(cmd_list, environ_update=lang_env)
+    if (rc != 0) or err:
+        module.fail_json("ERROR: Command '%s' failed with return code: %s and error message, '%s'" % (' '.join(cmd_list), rc, err))
+
+    return out
 
 def main():
 
     arg_spec=dict(
         kickstart=dict(type="str", required=True),
-        iso_src=dict(type="str", required=True),
-        iso_dest=dict(type="str", required=True),
+        src_iso=dict(type="str", required=True),
+        dest_iso=dict(type="str", required=True),
         workdir=dict(type="str", required=True),
+        version=dict(type="str", required=False, default="RHEL8", choices=['RHEL8', 'RHEL9']),
     )
 
     module = AnsibleModule(
@@ -91,13 +110,9 @@ def main():
 
     # Sanity checking the paths exist
     for key in arg_spec:
-        if not os.path.exists(module.params[key]):
-            module.fail_json("No such file found: %s" % fname)
-
-
-    # get local for shelling out
-    locale = get_best_parsable_locale(module)
-    lang_env = dict(LANG=locale, LC_ALL=locale, LC_MESSAGES=locale)
+        if key != "version":
+            if not os.path.exists(module.params[key]):
+                module.fail_json("No such file found: %s" % fname)
 
     # define paths to things we need
     isolinux_config = os.path.join(module.params['workdir'], '/isolinux/isolinux.cfg')
@@ -116,15 +131,17 @@ def main():
     isohybrid = module.get_bin_path('isohybrid')
     implantisomd5 = module.get_bin_path('implantisomd5')
 
-    # do work
-    ksvalidator_cmd = [ksvalidator, '-v', '
-    rc, out, err = module.run_command([], environ_update=lang_env)
+    # validate the kickstart
+    ksvalidator_cmd = [
+        ksvalidator, '-v', module.params['version'], module.params['kickstart']
+    ]
+    ksvalidator_out = run_cmd(module, ksvalidator_cmd)
 
-    try:
-        with open(module.params['dest'], 'w') as fd:
-            fd.write()
-    except Exception as e:
-        module.fail_json(msg=f'Failed to write to file: {module.params["dest"]}', error=e)
+    # validate the kickstart
+    isovolid_cmd = [isoinfo, '-d', '-i', module.params['src_']]
+    isovolid_out = run_cmd(module, isovolid_cmd)
+    # FIXME - need to make sure I'm 
+
 
     module.exit_json(msg=f'Blueprint file written to location: {module.params["dest"]}')
 
