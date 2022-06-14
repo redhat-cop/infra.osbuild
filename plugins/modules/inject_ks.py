@@ -90,7 +90,9 @@ def main():
     isolinux_config = os.path.join(module.params['workdir'], '/isolinux/isolinux.cfg')
     efi_grub_config = os.path.join(module.params['workdir'], '/EFI/BOOT/grub.cfg')
     efi_dir = os.path.join(module.params['workdir'], '/EFI/BOOT')
+    efiboot_imagepath = os.path.join(module.params['workdir'], '/images/efiboot.img')
 
+    ksvalidator = 
 
     rc, out, err = module.run_command([], environ_update=lang_env)
 
