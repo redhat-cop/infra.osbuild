@@ -131,6 +131,7 @@ def main():
     genisoimage = module.get_bin_path('genisoimage')
     isohybrid = module.get_bin_path('isohybrid')
     implantisomd5 = module.get_bin_path('implantisomd5')
+    sed = module.get_bin_path('sed')
 
     # validate the kickstart
     ksvalidator_cmd = [
@@ -160,9 +161,63 @@ def main():
         os.path.join(module.params['workdir'], module.params['kickstart']),
     )
 
-    # FIXME - edit isolinux
+    # FIXME - do this more cleanly than sed 
+    # edit isolinux
 
-    # FIXME - edit efiboot
+    # Remove an existing inst.ks instruction
+    sed_cmd = [
+        sed, "-i", r"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*//g" % isovolid, isolinux_config
+    ]
+    sed_cmd_out = run_cmd(module, sed_cmd)
+
+    # Replace an existing inst.ks instruction
+    sed_cmd = [
+        sed, "-i", 
+        r"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*/inst.ks=hd:LABEL=%s:\/%s None/g" % (
+            isovolid, isovolid, module.params['kickstart']
+        ),
+        isolinux_config
+    ]
+    sed_cmd_out = run_cmd(module, sed_cmd)
+
+    # Inject an inst.ks instruction
+    sed_cmd = [
+        sed, "-i",
+        r"/inst.ks=/n;/rescue/n;/LABEL=%s/ s/$/ inst.ks=hd:LABEL=%s:\/%s None/g" % (
+            isovolid, isovolid, module.params['kickstart']
+        ),
+        isolinux_config
+    ]
+    sed_cmd_out = run_cmd(module, sed_cmd)
+
+    # FIXME - do this more cleanly than sed 
+    # edit efiboot
+
+    # Remove an existing inst.ks instruction
+    sed_cmd = [
+        sed, "-i",
+        r"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*//g" % isovolid,
+        efi_grub_config
+    ]
+    sed_cmd_out = run_cmd(module, sed_cmd)
+
+    # Replace an existing inst.ks instruction
+    sed_cmd = [
+        sed, "-i",
+        r"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*/inst.ks=hd:LABEL=%s:\/%s None/g" % (
+            isovolid, isovolid, module.params['kickstart']),
+        efi_grub_config
+    ]
+    sed_cmd_out = run_cmd(module, sed_cmd)
+
+    # Inject an inst.ks instruction
+    sed_cmd = [
+        sed, "-i",
+        r"/inst.ks=/n;/rescue/n;/LABEL=%s/ s/$/ inst.ks=hd:LABEL=%s:\/%s None/g" % (
+            isovolid, isovolid, module.params['kickstart']),
+        efi_grub_config
+    ]
+    sed_cmd_out = run_cmd(module, sed_cmd)
 
     # modify efiboot image
     mtype_cmd = [mtype, "-i", efiboot_imagepath, "::EFI/BOOT/grub.cfg"]
