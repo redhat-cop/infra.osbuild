@@ -166,14 +166,14 @@ def main():
 
     # Remove an existing inst.ks instruction
     sed_cmd = [
-        sed, "-i", r"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*//g" % isovolid, isolinux_config
+        sed, "-i", r'"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*//g"' % isovolid, isolinux_config
     ]
     sed_cmd_out = run_cmd(module, sed_cmd)
 
     # Replace an existing inst.ks instruction
     sed_cmd = [
         sed, "-i", 
-        r"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*/inst.ks=hd:LABEL=%s:\/%s None/g" % (
+        r'"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*/inst.ks=hd:LABEL=%s:\/%s None/g"' % (
             isovolid, isovolid, module.params['kickstart']
         ),
         isolinux_config
@@ -183,7 +183,7 @@ def main():
     # Inject an inst.ks instruction
     sed_cmd = [
         sed, "-i",
-        r"/inst.ks=/n;/rescue/n;/LABEL=%s/ s/$/ inst.ks=hd:LABEL=%s:\/%s None/g" % (
+        r'"/inst.ks=/n;/rescue/n;/LABEL=%s/ s/$/ inst.ks=hd:LABEL=%s:\/%s None/g"' % (
             isovolid, isovolid, module.params['kickstart']
         ),
         isolinux_config
@@ -196,7 +196,7 @@ def main():
     # Remove an existing inst.ks instruction
     sed_cmd = [
         sed, "-i",
-        r"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*//g" % isovolid,
+        r'"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*//g"' % isovolid,
         efi_grub_config
     ]
     sed_cmd_out = run_cmd(module, sed_cmd)
@@ -204,7 +204,7 @@ def main():
     # Replace an existing inst.ks instruction
     sed_cmd = [
         sed, "-i",
-        r"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*/inst.ks=hd:LABEL=%s:\/%s None/g" % (
+        r'"/rescue/n;/LABEL=%s/ s/\<inst.ks[^ ]*/inst.ks=hd:LABEL=%s:\/%s None/g"' % (
             isovolid, isovolid, module.params['kickstart']),
         efi_grub_config
     ]
@@ -213,7 +213,7 @@ def main():
     # Inject an inst.ks instruction
     sed_cmd = [
         sed, "-i",
-        r"/inst.ks=/n;/rescue/n;/LABEL=%s/ s/$/ inst.ks=hd:LABEL=%s:\/%s None/g" % (
+        r'"/inst.ks=/n;/rescue/n;/LABEL=%s/ s/$/ inst.ks=hd:LABEL=%s:\/%s None/g"' % (
             isovolid, isovolid, module.params['kickstart']),
         efi_grub_config
     ]
