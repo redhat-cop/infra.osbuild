@@ -4,6 +4,7 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from ansible.module_utils._text import to_bytes, to_native, to_text
+from ansible.module_utils.urls import fetch_file
 import json
 import os
 import shutil
@@ -177,13 +178,14 @@ class WeldrV1(object):
         )
         return results
 
-    def get_compose_image(self, compuse_uuid, dest):
+    def get_compose_image(self, compose_uuid, dest):
         """
         # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
         """
-        tmpfile = self.weldr.request.fetch_file(
-            'GET',
-            'http://localhost/api/v1/compose/image/%s' % compose_uuid
+        tmpfile = fetch_file(
+            self.weldr.module,
+            'http://localhost/api/v1/compose/image/%s' % compose_uuid,
+            method='GET'
         )
         shutil.copy(tmpfile, dest)
         os.remove(tmpfile)
