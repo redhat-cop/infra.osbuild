@@ -181,9 +181,12 @@ class WeldrV1(object):
         """
         # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
         """
-            tmpfile = self.weldr.request.fetch_file('GET', 'http://localhost/api/v1/compose/image/%s' % compose_uuid)
-            shutil.copy(tmpfile, dest)
-            os.remove(tmpfile)
+        tmpfile = self.weldr.request.fetch_file(
+            'GET',
+            'http://localhost/api/v1/compose/image/%s' % compose_uuid
+        )
+        shutil.copy(tmpfile, dest)
+        os.remove(tmpfile)
 
 ###############################################################################
 # Everything below here has not been implemented yet and will be as needed
