@@ -5,6 +5,8 @@
 
 from ansible.module_utils._text import to_bytes, to_native, to_text
 import json
+import os
+import shutil
 
 class WeldrV1(object):
     """
@@ -175,16 +177,18 @@ class WeldrV1(object):
         )
         return results
 
+    def get_compose_image(self, compuse_uuid, dest):
+        """
+        # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
+        """
+            tmpfile = self.weldr.request.fetch_file('GET', 'http://localhost/api/v1/compose/image/%s' % compose_uuid)
+            shutil.copy(tmpfile, dest)
+            os.remove(tmpfile)
 
 ###############################################################################
 # Everything below here has not been implemented yet and will be as needed
 ###############################################################################
 
-    def get_compose_image(self, compuse_uuid):
-        """
-        # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
-        """
-        raise NotImplementedError
 
     def get_compose_metadata(self, compose_uuid):
         """
