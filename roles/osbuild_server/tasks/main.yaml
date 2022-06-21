@@ -1,0 +1,68 @@
+---
+- name: Setup Repositories
+  community.general.rhsm_repository:
+    state: enabled
+    purge: yes
+    name:
+      - "rhel-{{ansbile_distribution_major_version}}-for-x86_64-appstream-rpms"
+      - "rhel-{{ansible_distribution_major_version}}-for-x86_64-baseos-rpms"
+  when:
+    - ansible_distribution == 'RedHat'
+
+- name: Install Packages
+  ansible.builtin.dnf:
+    state: latest
+    name:
+      - osbuild-composer
+      - composer-cli
+      - cockpit-composer
+      - bash-completion
+      - firewalld
+      - genisoimage
+      - httpd
+      - syslinux
+      - cockpit
+
+- name: RHEL8 specific setup
+  block:
+    - name: install pytoml
+      ansible.builtin.dnf:
+        state: latest
+        name:
+          - python3-pytoml
+  when:
+    - ansible_distribution in ['RedHat', 'CentOS']
+    - ansible_distribution_major_release|int == 8
+
+- name: RHEL8 specific setup
+  block:
+    - name: install toml
+      ansible.builtin.dnf:
+        state: latest
+        name:
+          - python3-toml
+  when:
+    - ansible_distribution in ['RedHat', 'CentOS']
+    - ansible_distribution_major_release|int == 9
+
+- name: Enable Cockpit/Composer/Firewalld/Apache
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: "{{ item }}"
+  loop:
+    - osbuild-composer.socket
+    - cockpit.socket
+    - httpd.service
+    - firewalld
+
+- name: Enable Firewall Ports for Cockpit/Composer/Apache
+  ansible.posix.firewalld:
+    permanent: yes
+    immediate: yes
+    service: "{{ item }}"
+    state: enabled
+  loop:
+    - cockpit
+    - http
+
