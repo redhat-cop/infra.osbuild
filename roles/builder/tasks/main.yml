@@ -1,0 +1,45 @@
+---
+- name: create a blueprint
+  osbuild.composer.create_blueprint:
+    dest: "{{ blueprint_src_path }}"
+    name: "my-rhel-edge-test"
+    version: "0.0.1"
+    packages:
+      - "vim-enhanced"
+      - "ansible-core"
+      - "git"
+    customizations:
+      user:
+        name: "admiller"
+        description: "test user"
+        password: "openshift"
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKsfN0OHqBBk306pOehDFJ9ZPhjrOlym1QrQQL6OmnO3WskPHXqtrL4WtwJCQvrgUVZ4A65ax4lLz/EygoIpv997aYh0pGFAs0l8peHWsDkMalRr2bxZ5KbwjVyAPv5bJ8Qu1h+PY8Qf6aW+hAYfefU5CHzPian6l4R+++JO0//l8ugZZtujSPgPCllz+eJWuI44Qou0/XrrGTqwjwkb8hJjFlBEgGmPt45gjghBn9/xc6H1n8cyI1jDxRG66Q4dVD0pwCopg6WDeC7LReDvUFB8N9BI5teUugyc/x6j97eykZ07xw6tamerVEC+vFMvxPmkCs3H8zN66h9u+8+CLIqSm7A0StbM+p7REthAtZdNvDuL/usz1pqbRMM+MtaPuNL/LhN12JYK7aRjm84D4Hfs25AzwD20ottWVoHKTi335m3L0egNQ6mMS4hvbDp6q05vuyNtl7sUFGkBv46H3oX26UNoEs6RIM/LLlBkXEfulF6fYu3HIAwN3hHeXsP773RwT27KXU3MMGVWjDMfO+AOFcOUX0jVC6mvC4iYZbseNiDdqcF27sCYgmHUPlGb2Dait1Zj2f7lShOyIjzjR6RXUvu9JlKiICPDBtgzCQPz/IAsp0SqLGPxZojLkfNaVWoF4j+XDqhHSN07Bg36MXgR4vN//PeKY9U3NPYMsdJQ=="
+        groups: '["users", "wheel"]'
+
+- name: push the blueprint into image builder
+  osbuild.composer.push_blueprint:
+    src: "{{ blueprint_src_path }}"
+
+- name: start compose
+  osbuild.composer.start_compose:
+    blueprint: "my-rhel-edge-test"
+    compose_type: "edge-commit"
+  register: compose_start_out
+
+- debug: var=compose_start_out
+
+- name: wait for compose to finish
+  osbuild.composer.wait_compose:
+    compose_id: "{{ compose_start_out['result']['build_id'] }}"
+
+- name: export the compose artifact
+  osbuild.composer.export_compose:
+    compose_id: "{{ compose_start_out['result']['build_id'] }}"
+    dest: "/tmp/composer-compose.tar"
+
+- name: download mycompose.tar
+  ansible.posix.synchronize:
+    mode: pull
+    src: "/tmp/composer-compose.tar"
+    dest: "/tmp/compose-{{ compose_start_out['result']['build_id'] }}.tar"
+
