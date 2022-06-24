@@ -71,7 +71,7 @@ def main():
         module.params['dest'],
     )
 
-    module.exit_json("Exported compose payload to %s" % module.params['dest'])
+    module.exit_json(msg="Exported compose payload to %s" % module.params['dest'])
 
 if __name__ == "__main__":
     main()

@@ -6,9 +6,12 @@
 from ansible.module_utils._text import to_bytes, to_native, to_text
 from ansible_collections.osbuild.composer.plugins.module_utils.weldrapiv1 import WeldrV1
 from ansible.module_utils.urls import Request
+from ansible.module_utils.urls import fetch_url
 
 import json
 import urllib
+import os
+import tempfile
 
 class Weldr(object):
     """
@@ -67,5 +70,47 @@ class Weldr(object):
             self.module.fail_json(msg='The python "pytom" or "toml" library is required for working with blueprints.')
 
 
+    def fetch_file(self, module, url, data=None, headers=None, method=None,
+                    use_proxy=True, force=False, last_mod_time=None, timeout=10,
+                    unredirected_headers=None, unix_socket=None):
+        '''
 
+        NOTE: This is an unix_socket patched version of ansible.module_utils.urls.fetch_file 
+              and will be removed in the future once this PR has shipped GA:
+                https://github.com/ansible/ansible/pull/78143
 
+        Download and save a file via HTTP(S) or FTP (needs the module as parameter).
+        This is basically a wrapper around fetch_url().
+
+        :arg module: The AnsibleModule (used to get username, password etc. (s.b.).
+        :arg url:             The url to use.
+
+        :kwarg data:          The data to be sent (in case of POST/PUT).
+        :kwarg headers:       A dict with the request headers.
+        :kwarg method:        "POST", "PUT", etc.
+        :kwarg boolean use_proxy:     Default: True
+        :kwarg boolean force: If True: Do not get a cached copy (Default: False)
+        :kwarg last_mod_time: Default: None
+        :kwarg int timeout:   Default: 10
+        :kwarg unredirected_headers: (optional) A list of headers to not attach on a redirected request
+
+        :returns: A string, the path to the downloaded file.
+        '''
+        # download file
+        bufsize = 65536
+        file_name, file_ext = os.path.splitext(str(url.rsplit('/', 1)[1]))
+        fetch_temp_file = tempfile.NamedTemporaryFile(dir=module.tmpdir, prefix=file_name, suffix=file_ext, delete=False)
+        module.add_cleanup_file(fetch_temp_file.name)
+        try:
+            rsp, info = fetch_url(module, url, data, headers, method, use_proxy, force, last_mod_time, timeout,
+                                unredirected_headers=unredirected_headers, unix_socket=unix_socket)
+            if not rsp:
+                module.fail_json(msg="Failure downloading %s, %s" % (url, info['msg']))
+            data = rsp.read(bufsize)
+            while data:
+                fetch_temp_file.write(data)
+                data = rsp.read(bufsize)
+            fetch_temp_file.close()
+        except Exception as e:
+            module.fail_json(msg="Failure downloading %s, %s" % (url, to_native(e)))
+        return fetch_temp_file.name
