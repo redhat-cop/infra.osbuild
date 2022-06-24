@@ -8,6 +8,7 @@ from ansible.module_utils.urls import fetch_file
 import json
 import os
 import shutil
+import urllib
 
 class WeldrV1(object):
     """
@@ -100,13 +101,17 @@ class WeldrV1(object):
 
         :return:    dict
         """
-        # FIXME - actually implement the right thing here
-        if type(compose_settings) != bytes:
-            compose_settings = to_bytes(compose_settings)
-        results = json.load(
-            self.weldr.request.open('POST', 'http://localhost/api/v1/compose', data=compose_settings, headers={"Content-Type": "application/json"})
-        )
-        return results
+        try:
+            if type(compose_settings) != bytes:
+                compose_settings = to_bytes(compose_settings)
+            results = json.load(
+                self.weldr.request.open('POST', 'http://localhost/api/v1/compose', data=compose_settings, headers={"Content-Type": "application/json"})
+            )
+            return results
+        except urllib.error.HTTPError as e:
+            if e.code == 500:
+                if 'RepoError' in e.msg:
+                    self.weldr.module.fail_json(msg="OSBUILD COMPOSER ERROR: RepoError")
 
     def get_compose_types(self):
         """
