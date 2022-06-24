@@ -140,7 +140,7 @@ def main():
         ),
         required_together=[["image_name", "profile"]],
         required_if=[
-            ['compose_type', 'edge-installer', ['ostree_url']],
+            ["compose_type", "edge-installer", ["ostree_url"]],
         ],
     )
 

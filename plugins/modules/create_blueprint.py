@@ -111,48 +111,41 @@ def main():
     )
 
     weldr = Weldr(module)
-    if not module.params['description']:
-        description = module.params['name']
+    if not module.params["description"]:
+        description = module.params["name"]
     else:
-        description = module.params['description']
+        description = module.params["description"]
 
     toml_file = (
         f'name = "{module.params["name"]}"\n'
         f'description = "{description}"\n'
         f'version = "{module.params["version"]}"\n'
-        f'\n'
+        f"\n"
     )
 
-    for package in module.params['packages']:
-        toml_file += (
-            f'[[packages]]\n'
-            f'name = "{package}"\n'
-            f'version = "*"\n'
-            f'\n'
-        )
+    for package in module.params["packages"]:
+        toml_file += f"[[packages]]\n" f'name = "{package}"\n' f'version = "*"\n' f"\n"
 
-    for group in module.params['groups']:
-        toml_file += (
-            f'[[groups]]\n'
-            f'name = "{group}"\n'
-            f'\n'
-        )
+    for group in module.params["groups"]:
+        toml_file += f"[[groups]]\n" f'name = "{group}"\n' f"\n"
 
-    for key, customization in module.params['customizations'].items():
-        toml_file += f'[[customizations.{key}]]\n'
+    for key, customization in module.params["customizations"].items():
+        toml_file += f"[[customizations.{key}]]\n"
         for k, v in customization.items():
-            if (type(v) == list) or v.startswith('['):
-                toml_file += f'{k} = {v}\n'
+            if (type(v) == list) or v.startswith("["):
+                toml_file += f"{k} = {v}\n"
             else:
                 toml_file += f'{k} = "{v}"\n'
 
-        toml_file += '\n'
+        toml_file += "\n"
 
     try:
-        with open(module.params['dest'], 'w') as fd:
+        with open(module.params["dest"], "w") as fd:
             fd.write(toml_file)
     except Exception as e:
-        module.fail_json(msg=f'Failed to write to file: {module.params["dest"]}', error=e)
+        module.fail_json(
+            msg=f'Failed to write to file: {module.params["dest"]}', error=e
+        )
 
     module.exit_json(msg=f'Blueprint file written to location: {module.params["dest"]}')
 

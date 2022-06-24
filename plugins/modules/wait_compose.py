@@ -71,20 +71,28 @@ def main():
 
     weldr = Weldr(module)
 
-    timeout_time = time.time() + module.params['timeout']
+    timeout_time = time.time() + module.params["timeout"]
     while time.time() < timeout_time:
 
         finished_composes = weldr.api.get_compose_finished()
-        found_compose = [ compose for compose in finished_composes['finished'] if compose['id'] == module.params['compose_id']]
+        found_compose = [
+            compose
+            for compose in finished_composes["finished"]
+            if compose["id"] == module.params["compose_id"]
+        ]
         if len(found_compose) > 0:
             module.exit_json(msg="Compose FINISHED", result=found_compose[0])
 
         failed_composes = weldr.api.get_compose_failed()
-        found_compose = [ compose for compose in failed_composes['failed'] if compose['id'] == module.params['compose_id']]
+        found_compose = [
+            compose
+            for compose in failed_composes["failed"]
+            if compose["id"] == module.params["compose_id"]
+        ]
         if len(found_compose) > 0:
             module.fail_json(msg="Compose FAILED", result=found_compose[0])
 
-        time.sleep(module.params['query_frequency'])
+        time.sleep(module.params["query_frequency"])
 
     # FIXME - should this be a failure case?
     module.exit_json(msg="TIMEOUT REACHED", result={})

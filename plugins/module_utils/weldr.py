@@ -13,6 +13,7 @@ import urllib
 import os
 import tempfile
 
+
 class Weldr(object):
     """
     Weldr
@@ -22,7 +23,7 @@ class Weldr(object):
 
     def __init__(self, module, unix_socket="/run/weldr/api.socket"):
         """
-        initializer 
+        initializer
 
         :module:          AnsibleModule, instance of AnsibleModule
         :unix_socket:     string, local UNIX Socket that Weldr service is listening on
@@ -32,13 +33,18 @@ class Weldr(object):
         self.unix_socket = unix_socket
         self.request = Request(unix_socket=self.unix_socket)
         try:
-            status = json.load(self.request.open('GET', 'http://localhost/api/status'))
-            if status['api'] == "1":
+            status = json.load(self.request.open("GET", "http://localhost/api/status"))
+            if status["api"] == "1":
                 self.api = WeldrV1(self)
             else:
-                module.fail_json(msg='Unsupported Weldr API found. Expected "1", got "%s"' % status['api'])
+                module.fail_json(
+                    msg='Unsupported Weldr API found. Expected "1", got "%s"'
+                    % status["api"]
+                )
         except (ConnectionRefusedError, OSError, urllib.error.URLError):
-            module.fail_json(msg="Connection to osbuild-composer service failed, please ensure service is running")
+            module.fail_json(
+                msg="Connection to osbuild-composer service failed, please ensure service is running"
+            )
         except Exception as e:
             module.fail_json(msg=to_text(e))
 
@@ -46,6 +52,7 @@ class Weldr(object):
         try:
             try:
                 import toml
+
                 HAS_TOML = True
                 self.toml = toml
             except ImportError:
@@ -54,28 +61,43 @@ class Weldr(object):
             if not HAS_TOML:
                 try:
                     import pytoml as toml
+
                     HAS_TOML = True
                     self.toml = toml
                 except ImportError:
                     HAS_TOML = False
             self.HAS_TOML = HAS_TOML
         except exception as e:
-            self.module.fail_json(msg="Exception encountered during execution: %s" % to_text(e))
+            self.module.fail_json(
+                msg="Exception encountered during execution: %s" % to_text(e)
+            )
 
     def blueprint_sanity_check(self):
         """
         blueprint_sanity_check
         """
         if not self.HAS_TOML:
-            self.module.fail_json(msg='The python "pytom" or "toml" library is required for working with blueprints.')
+            self.module.fail_json(
+                msg='The python "pytom" or "toml" library is required for working with blueprints.'
+            )
 
+    def fetch_file(
+        self,
+        module,
+        url,
+        data=None,
+        headers=None,
+        method=None,
+        use_proxy=True,
+        force=False,
+        last_mod_time=None,
+        timeout=10,
+        unredirected_headers=None,
+        unix_socket=None,
+    ):
+        """
 
-    def fetch_file(self, module, url, data=None, headers=None, method=None,
-                    use_proxy=True, force=False, last_mod_time=None, timeout=10,
-                    unredirected_headers=None, unix_socket=None):
-        '''
-
-        NOTE: This is an unix_socket patched version of ansible.module_utils.urls.fetch_file 
+        NOTE: This is an unix_socket patched version of ansible.module_utils.urls.fetch_file
               and will be removed in the future once this PR has shipped GA:
                 https://github.com/ansible/ansible/pull/78143
 
@@ -95,17 +117,30 @@ class Weldr(object):
         :kwarg unredirected_headers: (optional) A list of headers to not attach on a redirected request
 
         :returns: A string, the path to the downloaded file.
-        '''
+        """
         # download file
         bufsize = 65536
-        file_name, file_ext = os.path.splitext(str(url.rsplit('/', 1)[1]))
-        fetch_temp_file = tempfile.NamedTemporaryFile(dir=module.tmpdir, prefix=file_name, suffix=file_ext, delete=False)
+        file_name, file_ext = os.path.splitext(str(url.rsplit("/", 1)[1]))
+        fetch_temp_file = tempfile.NamedTemporaryFile(
+            dir=module.tmpdir, prefix=file_name, suffix=file_ext, delete=False
+        )
         module.add_cleanup_file(fetch_temp_file.name)
         try:
-            rsp, info = fetch_url(module, url, data, headers, method, use_proxy, force, last_mod_time, timeout,
-                                unredirected_headers=unredirected_headers, unix_socket=unix_socket)
+            rsp, info = fetch_url(
+                module,
+                url,
+                data,
+                headers,
+                method,
+                use_proxy,
+                force,
+                last_mod_time,
+                timeout,
+                unredirected_headers=unredirected_headers,
+                unix_socket=unix_socket,
+            )
             if not rsp:
-                module.fail_json(msg="Failure downloading %s, %s" % (url, info['msg']))
+                module.fail_json(msg="Failure downloading %s, %s" % (url, info["msg"]))
             data = rsp.read(bufsize)
             while data:
                 fetch_temp_file.write(data)

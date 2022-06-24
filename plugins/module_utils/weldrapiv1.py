@@ -9,6 +9,7 @@ import os
 import shutil
 import urllib
 
+
 class WeldrV1(object):
     """
     WeldrV1
@@ -32,7 +33,7 @@ class WeldrV1(object):
         :return:    dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/blueprints/list')
+            self.weldr.request.open("GET", "http://localhost/api/v1/blueprints/list")
         )
         return results
 
@@ -43,7 +44,9 @@ class WeldrV1(object):
         :return:    dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/blueprints/info/%s' % blueprint)
+            self.weldr.request.open(
+                "GET", "http://localhost/api/v1/blueprints/info/%s" % blueprint
+            )
         )
         return results
 
@@ -54,7 +57,9 @@ class WeldrV1(object):
         :return:        dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/projects/source/list')
+            self.weldr.request.open(
+                "GET", "http://localhost/api/v1/projects/source/list"
+            )
         )
         return results
 
@@ -65,7 +70,9 @@ class WeldrV1(object):
         :return:        dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/projects/source/info/%s' % source)
+            self.weldr.request.open(
+                "GET", "http://localhost/api/v1/projects/source/info/%s" % source
+            )
         )
         return results
 
@@ -78,10 +85,14 @@ class WeldrV1(object):
         if type(blueprint) != bytes:
             blueprint = to_bytes(blueprint)
         results = json.load(
-            self.weldr.request.open('POST', 'http://localhost/api/v1/blueprints/new', data=blueprint, headers={"Content-Type": "text/x-toml"})
+            self.weldr.request.open(
+                "POST",
+                "http://localhost/api/v1/blueprints/new",
+                data=blueprint,
+                headers={"Content-Type": "text/x-toml"},
+            )
         )
         return results
-
 
     def get_modules_list(self):
         """
@@ -90,7 +101,7 @@ class WeldrV1(object):
         :return:        list, list of modules dicts
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/modules/list')
+            self.weldr.request.open("GET", "http://localhost/api/v1/modules/list")
         )
         return results
 
@@ -104,12 +115,17 @@ class WeldrV1(object):
             if type(compose_settings) != bytes:
                 compose_settings = to_bytes(compose_settings)
             results = json.load(
-                self.weldr.request.open('POST', 'http://localhost/api/v1/compose', data=compose_settings, headers={"Content-Type": "application/json"})
+                self.weldr.request.open(
+                    "POST",
+                    "http://localhost/api/v1/compose",
+                    data=compose_settings,
+                    headers={"Content-Type": "application/json"},
+                )
             )
             return results
         except urllib.error.HTTPError as e:
             if e.code == 500:
-                if 'RepoError' in e.msg:
+                if "RepoError" in e.msg:
                     self.weldr.module.fail_json(msg="OSBUILD COMPOSER ERROR: RepoError")
 
     def get_compose_types(self):
@@ -119,18 +135,18 @@ class WeldrV1(object):
         :return:        dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/types')
+            self.weldr.request.open("GET", "http://localhost/api/v1/compose/types")
         )
         return results
 
     def get_compose_queue(self):
         """
-        query current compose queue 
+        query current compose queue
 
         :return:        dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/queue')
+            self.weldr.request.open("GET", "http://localhost/api/v1/compose/queue")
         )
         return results
 
@@ -142,7 +158,9 @@ class WeldrV1(object):
         :return:        dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/status/%s' % compose_uuids)
+            self.weldr.request.open(
+                "GET", "http://localhost/api/v1/compose/status/%s" % compose_uuids
+            )
         )
         return results
 
@@ -154,7 +172,9 @@ class WeldrV1(object):
         :return:        dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/info/%s' % compose_uuids)
+            self.weldr.request.open(
+                "GET", "http://localhost/api/v1/compose/info/%s" % compose_uuids
+            )
         )
         return results
 
@@ -166,7 +186,7 @@ class WeldrV1(object):
         :return:        dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/finished')
+            self.weldr.request.open("GET", "http://localhost/api/v1/compose/finished")
         )
         return results
 
@@ -178,7 +198,7 @@ class WeldrV1(object):
         :return:        dict
         """
         results = json.load(
-            self.weldr.request.open('GET', 'http://localhost/api/v1/compose/failed')
+            self.weldr.request.open("GET", "http://localhost/api/v1/compose/failed")
         )
         return results
 
@@ -188,17 +208,16 @@ class WeldrV1(object):
         """
         tmpfile = self.weldr.fetch_file(
             self.weldr.module,
-            'http://localhost/api/v1/compose/image/%s' % compose_uuid,
-            method='GET',
-            unix_socket=self.weldr.unix_socket
+            "http://localhost/api/v1/compose/image/%s" % compose_uuid,
+            method="GET",
+            unix_socket=self.weldr.unix_socket,
         )
         shutil.copy(tmpfile, dest)
         os.remove(tmpfile)
 
-###############################################################################
-# Everything below here has not been implemented yet and will be as needed
-###############################################################################
-
+    ###############################################################################
+    # Everything below here has not been implemented yet and will be as needed
+    ###############################################################################
 
     def get_compose_metadata(self, compose_uuid):
         """
@@ -325,7 +344,6 @@ class WeldrV1(object):
         # api.router.DELETE("/api/v:version/compose/delete/:uuids", api.composeDeleteHandler)
         """
         raise NotImplementedError
-
 
     def post_compose_updloads_schedule(self, compose_uuid):
         """

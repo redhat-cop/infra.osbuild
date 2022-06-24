@@ -67,11 +67,12 @@ def main():
     weldr = Weldr(module)
 
     weldr.api.get_compose_image(
-        module.params['compose_id'],
-        module.params['dest'],
+        module.params["compose_id"],
+        module.params["dest"],
     )
 
-    module.exit_json(msg="Exported compose payload to %s" % module.params['dest'])
+    module.exit_json(msg="Exported compose payload to %s" % module.params["dest"])
+
 
 if __name__ == "__main__":
     main()
