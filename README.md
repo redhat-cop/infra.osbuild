@@ -16,3 +16,4 @@ To install this collection, you will need to use the [Ansible](https://github.co
 
 Examples of how to use this collection can be found in the [`playbooks`](https://github.com/maxamillion/osbuild.composer/tree/main/playbooks) directory of this repository.
 
+[![GitHub Super-Linter](https://github.com/maxamillion/osbuild.composer/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
