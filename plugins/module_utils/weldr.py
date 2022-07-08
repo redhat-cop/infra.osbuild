@@ -5,11 +5,11 @@
 
 from ansible.module_utils._text import to_bytes, to_native, to_text
 from ansible_collections.osbuild.composer.plugins.module_utils.weldrapiv1 import WeldrV1
+import ansible.module_utils.six.moves.urllib.error as urllib_error
 from ansible.module_utils.urls import Request
 from ansible.module_utils.urls import fetch_url
 
 import json
-import urllib
 import os
 import tempfile
 
@@ -41,7 +41,7 @@ class Weldr(object):
                     msg='Unsupported Weldr API found. Expected "1", got "%s"'
                     % status["api"]
                 )
-        except (ConnectionRefusedError, OSError, urllib.error.URLError):
+        except (ConnectionRefusedError, OSError, urllib_error.URLError):
             module.fail_json(
                 msg="Connection to osbuild-composer service failed, please ensure service is running"
             )

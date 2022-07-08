@@ -4,10 +4,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from ansible.module_utils._text import to_bytes, to_native, to_text
+import ansible.module_utils.six.moves.urllib.error as urllib_error
 import json
 import os
 import shutil
-import urllib
 
 
 class WeldrV1(object):
@@ -111,6 +111,7 @@ class WeldrV1(object):
 
         :return:    dict
         """
+        results = "FOOBAR"
         try:
             if type(compose_settings) != bytes:
                 compose_settings = to_bytes(compose_settings)
@@ -123,10 +124,8 @@ class WeldrV1(object):
                 )
             )
             return results
-        except urllib.error.HTTPError as e:
-            if e.code == 500:
-                if "RepoError" in e.msg:
-                    self.weldr.module.fail_json(msg="OSBUILD COMPOSER ERROR: RepoError")
+        except urllib_error.HTTPError as e:
+            self.weldr.module.fail_json(msg="OSBUILD COMPOSER ERROR: %s" % to_native(e.reason))
 
     def get_compose_types(self):
         """
