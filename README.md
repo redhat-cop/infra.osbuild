@@ -20,4 +20,4 @@ ansible-galaxy collection install git+https://github.com/maxamillion/osbuild.com
 
 Examples of how to use this collection can be found in the [`playbooks`](https://github.com/maxamillion/osbuild.composer/tree/main/playbooks) directory of this repository.
 
-[![GitHub Super-Linter](https://github.com/maxamillion/osbuild.composer/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![GitHub Super-Linter](https://github.com/ansible-collections/osbuild.composer/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
