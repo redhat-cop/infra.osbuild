@@ -67,7 +67,7 @@ class Weldr(object):
                 except ImportError:
                     HAS_TOML = False
             self.HAS_TOML = HAS_TOML
-        except exception as e:
+        except Exception as e:
             self.module.fail_json(
                 msg="Exception encountered during execution: %s" % to_text(e)
             )

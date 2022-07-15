@@ -25,7 +25,7 @@ author:
 options:
     dest:
         description:
-            - Destination location on the remote Weldr host for the blueprint 
+            - Destination location on the remote Weldr host for the blueprint
         type: str
         required: true
     name:
@@ -59,7 +59,7 @@ options:
     customizations:
         description:
             - Dictionary of customizations
-            - Please visit the follow URL for information on valid customizations and reference the Examples section of this document for guideance https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/composing_a_customized_rhel_system_image/creating-system-images-with-composer-command-line-interface_composing-a-customized-rhel-system-image#creating-a-composer-blueprint-with-command-line-interface_creating-system-images-with-composer-command-line-interface
+            - Please visit the following URL for information on valid customizations and reference the Examples section of this document for guideance https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/composing_a_customized_rhel_system_image/creating-system-images-with-composer-command-line-interface_composing-a-customized-rhel-system-image#creating-a-composer-blueprint-with-command-line-interface_creating-system-images-with-composer-command-line-interface
         type: dict
         default: {}
         required: false

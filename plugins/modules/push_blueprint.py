@@ -21,7 +21,7 @@ short_description: Push a blueprint file into composer
 description:
     - Push a blueprint file into composer
 author:
-- Adam Miller (@maxamillion)
+    - Adam Miller (@maxamillion)
 options:
     src:
         description:
@@ -36,7 +36,7 @@ options:
         default: ""
         required: false
 notes:
-- Requires one of: C(src), C(blueprint)
+    - Requires one argument
 """
 
 EXAMPLES = """

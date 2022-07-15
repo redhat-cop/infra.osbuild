@@ -30,7 +30,7 @@ options:
         required: true
     src_iso:
         description:
-            - Path to ISO file that will be used as source to create new ISO with kickstart injected
+            -one of: c(src), c(blueprint) Path to ISO file that will be used as source to create new ISO with kickstart injected
         type: str
         required: true
     dest_iso:
@@ -120,7 +120,7 @@ def main():
     for key in arg_spec:
         if key in ["kickstart", "src_iso", "workdir"]:
             if not os.path.exists(module.params[key]):
-                module.fail_json("No such file found: %s" % fname)
+                module.fail_json("No such file found: %s" % module.params[key])
 
     # define paths to things we need
     isolinux_config = os.path.join(module.params["workdir"], "/isolinux/isolinux.cfg")
@@ -269,28 +269,17 @@ def main():
         "genisoimage",
         "-o",
         module.params["dest_iso"],
-        "-R",
-        "-J",
-        "-V",
-        isovolid,
-        "-A",
-        isovolid,
-        "-volset",
-        isovolid,
-        "-b",
-        "isolinux/isolinux.bin",
-        "-c",
-        "isolinux/boot.cat",
-        "-boot-load-size",
-        "4",
-        "-boot-info-table",
-        "-no-emul-boot",
-        "-verbose",
-        "-debug",
+        "-R", "-J",
+        "-V", isovolid,
+        "-A", isovolid,
+        "-volset", isovolid,
+        "-b", "isolinux/isolinux.bin",
+        "-c", "isolinux/boot.cat",
+        "-boot-load-size", "4",
+        "-boot-info-table", "-no-emul-boot", "-verbose", "-debug",
         "-eltorito-alt-boot",
-        "-e" "images/efiboot.img",
-        "-no-emul-boot",
-        module.params["workdir"],
+        "-e", "images/efiboot.img",
+        "-no-emul-boot", module.params["workdir"],
     ]
     genisoimage_out = run_cmd(module, genisoimage_cmd)
 
