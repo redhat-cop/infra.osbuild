@@ -47,7 +47,7 @@ notes:
 
 EXAMPLES = """
 - name: Wait for compose to complete
-  osbuild.composer.wait_compose
+  osbuild.composer.wait_compose:
     compose_id: "1bb4cc77-828e-42a2-a3de-9517e99ea4e4"
     timeout: 3600
 """

@@ -172,7 +172,7 @@ class WeldrV1(object):
         """
         results = json.load(
             self.weldr.request.open(
-                "GET", "http://localhost/api/v1/compose/info/%s" % compose_uuids
+                "GET", "http://localhost/api/v1/compose/info/%s" % compose_uuid
             )
         )
         return results

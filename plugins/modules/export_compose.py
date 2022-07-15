@@ -37,7 +37,7 @@ options:
 
 EXAMPLES = """
 - name: Export RHEL for Edge compose
-  osbuild.composer.wait_compose
+  osbuild.composer.wait_compose:
     compose_id: "1bb4cc77-828e-42a2-a3de-9517e99ea4e4"
     dest: "/tmp/mycompose_artifact.tar"
 

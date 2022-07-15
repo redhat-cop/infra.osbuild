@@ -50,7 +50,7 @@ options:
     allow_duplicate:
         description:
             - Allow a duplicate version'd compose.
-            - NOTE: Default osbuild composer functionality is to allow duplicate composes 
+            - NOTE: Default osbuild composer functionality is to allow duplicate composes
         type: bool
         default: True
         required: false
@@ -60,7 +60,20 @@ options:
         type: str
         default: "edge-commit"
         required: false
-        choices: ["ami", "edge-commit", "edge-container", "edge-installer", "edge-raw-image", "edge-simplified-installer", "image-installer", "oci", "openstack", "qcow2", "tar", "vhd", "vmdk"]
+        choices:
+            - ami
+            - edge-commit
+            - edge-container
+            - edge-installer
+            - edge-raw-image
+            - edge-simplified-installer
+            - image-installer
+            - oci
+            - openstack
+            - qcow2
+            - tar
+            - vhd
+            - vmdk
     ostree_ref:
         description:
             - ostree ref
@@ -87,7 +100,7 @@ notes:
 
 EXAMPLES = """
 - name: Start ostree compose size 4096
-  osbuild.composer.start_ostree
+  osbuild.composer.start_ostree:
     blueprint: rhel-for-edge-demo
     image_name: testimage
     size: 4096
