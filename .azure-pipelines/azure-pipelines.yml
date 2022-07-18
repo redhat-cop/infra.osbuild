@@ -23,7 +23,7 @@ schedules:
 
 variables:
   - name: checkoutPath
-    value: ansible_collections/consoledot/edgemanagement
+    value: ansible_collections/osbuild/composer
   - name: coverageBranches
     value: main
   - name: pipelinesCoverage
