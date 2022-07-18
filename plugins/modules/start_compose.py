@@ -27,7 +27,6 @@ options:
         description:
             - Name of blueprint to iniate a build for
         type: str
-        default: ""
         required: true
     size:
         description:
@@ -106,7 +105,7 @@ EXAMPLES = """
     size: 4096
 
 - name: Start ostree compose with idempotent transaction
-  osbuild.composer.start_ostree
+  osbuild.composer.start_ostree:
     blueprint: rhel-for-edge-demo
     allow_duplicate: false
 """
@@ -126,7 +125,7 @@ def main():
             size=dict(type="int", required=False, default=8192),
             profile=dict(type="str", required=False, default=""),
             image_name=dict(type="str", required=False, default=""),
-            allow_duplicate=dict(type=bool, required=False, default=True),
+            allow_duplicate=dict(type="bool", required=False, default=True),
             compose_type=dict(
                 type="str",
                 required=False,
@@ -166,49 +165,42 @@ def main():
     if not module.params["allow_duplicate"]:
         # only do all this query and filtering if needed
 
-        blueprint_info = weldr.api.get_blueprint_info(module.params["blueprint"])
+        blueprint_info = weldr.api.get_blueprint_info(
+            module.params["blueprint"])
         blueprint_version = blueprint_info["blueprints"][0]["version"]
 
         compose_queue = weldr.api.get_compose_queue()
         # {"new":[],"run":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":0,"queue_status":"RUNNING","job_created":1654620015.4107578,"job_started":1654620015.415151}]}
 
         compose_queue_run_dupe = [
-            compose
-            for compose in compose_queue["run"]
-            if (compose["blueprint"] == module.params["blueprint"])
-            and (compose["version"] == blueprint_version)
+            compose for compose in compose_queue["run"]
+            if (compose["blueprint"] == module.params["blueprint"]) and (
+                compose["version"] == blueprint_version)
         ]
         compose_queue_new_dupe = [
-            compose
-            for compose in compose_queue["new"]
-            if (compose["blueprint"] == module.params["blueprint"])
-            and (compose["version"] == blueprint_version)
+            compose for compose in compose_queue["new"]
+            if (compose["blueprint"] == module.params["blueprint"]) and (
+                compose["version"] == blueprint_version)
         ]
 
         compose_finished = weldr.api.get_compose_finished()
         # {"finished":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":8192,"queue_status":"FINISHED","job_created":1654620015.4107578,"job_started":1654620015.415151,"job_finished":1654620302.9069786}]}
         compose_finished_dupe = [
-            compose
-            for compose in compose_finished["finished"]
-            if (compose["blueprint"] == module.params["blueprint"])
-            and (compose["version"] == blueprint_version)
+            compose for compose in compose_finished["finished"]
+            if (compose["blueprint"] == module.params["blueprint"]) and (
+                compose["version"] == blueprint_version)
         ]
 
         compose_failed = weldr.api.get_compose_failed()
         # {"failed":[]}
         compose_failed_dupe = [
-            compose
-            for compose in compose_failed["failed"]
-            if (compose["blueprint"] == module.params["blueprint"])
-            and (compose["version"] == blueprint_version)
+            compose for compose in compose_failed["failed"]
+            if (compose["blueprint"] == module.params["blueprint"]) and (
+                compose["version"] == blueprint_version)
         ]
 
-        dupe_compose = (
-            compose_queue_run_dupe
-            + compose_queue_new_dupe
-            + compose_failed_dupe
-            + compose_finished_dupe
-        )
+        dupe_compose = (compose_queue_run_dupe + compose_queue_new_dupe +
+                        compose_failed_dupe + compose_finished_dupe)
 
     if module.params["allow_duplicate"] or (len(dupe_compose) == 0):
 

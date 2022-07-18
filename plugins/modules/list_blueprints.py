@@ -22,7 +22,6 @@ description:
     - Info module to get a list of blueprints from Weldr
 author:
 - Adam Miller (@maxamillion)
-options:
 """
 
 EXAMPLES = """
@@ -33,7 +32,6 @@ EXAMPLES = """
 - debug: var=list_blueprints
 """
 
-
 import os
 import traceback
 
@@ -43,9 +41,7 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weld
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(),
-    )
+    module = AnsibleModule(argument_spec=dict(), )
 
     weldr = Weldr(module)
 

@@ -48,12 +48,14 @@ options:
         description:
             - List of package names to add to the blueprint
         type: list
+        elements: str
         default: []
         required: false
     groups:
         description:
             - List of package groups to add to the blueprint
         type: list
+        elements: str
         default: []
         required: false
     customizations:
@@ -88,7 +90,6 @@ EXAMPLES = """
         groups: '["users", "wheel"]'
 """
 
-
 import os
 import traceback
 
@@ -98,17 +99,15 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weld
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            dest=dict(type="str", required=True),
-            name=dict(type="str", required=True),
-            description=dict(type="str", required=False, default=""),
-            version=dict(type="str", required=False, default="0.0.1"),
-            packages=dict(type="list", required=False, default=[]),
-            groups=dict(type="list", required=False, default=[]),
-            customizations=dict(type="dict", required=False, default={}),
-        ),
-    )
+    module = AnsibleModule(argument_spec=dict(
+        dest=dict(type="str", required=True),
+        name=dict(type="str", required=True),
+        description=dict(type="str", required=False, default=""),
+        version=dict(type="str", required=False, default="0.0.1"),
+        packages=dict(type="list", required=False, elements="str", default=[]),
+        groups=dict(type="list", required=False, elements="str", default=[]),
+        customizations=dict(type="dict", required=False, default={}),
+    ), )
 
     weldr = Weldr(module)
     if not module.params["description"]:
@@ -116,12 +115,10 @@ def main():
     else:
         description = module.params["description"]
 
-    toml_file = (
-        f'name = "{module.params["name"]}"\n'
-        f'description = "{description}"\n'
-        f'version = "{module.params["version"]}"\n'
-        f"\n"
-    )
+    toml_file = (f'name = "{module.params["name"]}"\n'
+                 f'description = "{description}"\n'
+                 f'version = "{module.params["version"]}"\n'
+                 f"\n")
 
     for package in module.params["packages"]:
         toml_file += f"[[packages]]\n" f'name = "{package}"\n' f'version = "*"\n' f"\n"
@@ -132,7 +129,7 @@ def main():
     for key, customization in module.params["customizations"].items():
         toml_file += f"[[customizations.{key}]]\n"
         for k, v in customization.items():
-            if (type(v) == list) or v.startswith("["):
+            if isinstance(v, list) or v.startswith("["):
                 toml_file += f"{k} = {v}\n"
             else:
                 toml_file += f'{k} = "{v}"\n'
@@ -144,10 +141,10 @@ def main():
             fd.write(toml_file)
     except Exception as e:
         module.fail_json(
-            msg=f'Failed to write to file: {module.params["dest"]}', error=e
-        )
+            msg=f'Failed to write to file: {module.params["dest"]}', error=e)
 
-    module.exit_json(msg=f'Blueprint file written to location: {module.params["dest"]}')
+    module.exit_json(
+        msg=f'Blueprint file written to location: {module.params["dest"]}')
 
 
 if __name__ == "__main__":

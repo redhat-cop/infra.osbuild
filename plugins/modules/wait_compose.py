@@ -27,7 +27,6 @@ options:
         description:
             - Compose UUID to wait for
         type: str
-        default: ""
         required: true
     timeout:
         description:
@@ -61,13 +60,11 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weld
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            compose_id=dict(type="str", required=True),
-            timeout=dict(type="int", required=False, default=1800),
-            query_frequency=dict(type="int", required=False, default=20),
-        ),
-    )
+    module = AnsibleModule(argument_spec=dict(
+        compose_id=dict(type="str", required=True),
+        timeout=dict(type="int", required=False, default=1800),
+        query_frequency=dict(type="int", required=False, default=20),
+    ), )
 
     weldr = Weldr(module)
 
@@ -76,8 +73,7 @@ def main():
 
         finished_composes = weldr.api.get_compose_finished()
         found_compose = [
-            compose
-            for compose in finished_composes["finished"]
+            compose for compose in finished_composes["finished"]
             if compose["id"] == module.params["compose_id"]
         ]
         if len(found_compose) > 0:
@@ -85,8 +81,7 @@ def main():
 
         failed_composes = weldr.api.get_compose_failed()
         found_compose = [
-            compose
-            for compose in failed_composes["failed"]
+            compose for compose in failed_composes["failed"]
             if compose["id"] == module.params["compose_id"]
         ]
         if len(found_compose) > 0:

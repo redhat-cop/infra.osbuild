@@ -16,7 +16,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-module: export_image
+module: export_compose
 short_description: Export successfully composed image from osbuild-composer service
 description:
     - Export successfully composed image from osbuild-composer service
@@ -57,12 +57,10 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weld
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            compose_id=dict(type="str", required=True),
-            dest=dict(type="str", required=True),
-        ),
-    )
+    module = AnsibleModule(argument_spec=dict(
+        compose_id=dict(type="str", required=True),
+        dest=dict(type="str", required=True),
+    ), )
 
     weldr = Weldr(module)
 
@@ -71,7 +69,8 @@ def main():
         module.params["dest"],
     )
 
-    module.exit_json(msg="Exported compose payload to %s" % module.params["dest"])
+    module.exit_json(msg="Exported compose payload to %s" %
+                     module.params["dest"])
 
 
 if __name__ == "__main__":
