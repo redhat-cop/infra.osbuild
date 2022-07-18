@@ -93,7 +93,8 @@ def run_cmd(module, cmd_list):
     if (rc != 0) or err:
         module.fail_json(
             "ERROR: Command '%s' failed with return code: %s and error message, '%s'"
-            % (" ".join(cmd_list), rc, err))
+            % (" ".join(cmd_list), rc, err)
+        )
 
     return out
 
@@ -105,13 +106,14 @@ def main():
         src_iso=dict(type="str", required=True),
         dest_iso=dict(type="str", required=True),
         workdir=dict(type="str", required=True),
-        version=dict(type="str",
-                     required=False,
-                     default="RHEL8",
-                     choices=["RHEL8", "RHEL9"]),
+        version=dict(
+            type="str", required=False, default="RHEL8", choices=["RHEL8", "RHEL9"]
+        ),
     )
 
-    module = AnsibleModule(argument_spec=arg_spec, )
+    module = AnsibleModule(
+        argument_spec=arg_spec,
+    )
 
     # Sanity checking the paths exist
     for key in arg_spec:
@@ -120,13 +122,10 @@ def main():
                 module.fail_json("No such file found: %s" % module.params[key])
 
     # define paths to things we need
-    isolinux_config = os.path.join(module.params["workdir"],
-                                   "/isolinux/isolinux.cfg")
-    efi_grub_config = os.path.join(module.params["workdir"],
-                                   "/EFI/BOOT/grub.cfg")
+    isolinux_config = os.path.join(module.params["workdir"], "/isolinux/isolinux.cfg")
+    efi_grub_config = os.path.join(module.params["workdir"], "/EFI/BOOT/grub.cfg")
     efi_dir = os.path.join(module.params["workdir"], "/EFI/BOOT")
-    efiboot_imagepath = os.path.join(module.params["workdir"],
-                                     "/images/efiboot.img")
+    efiboot_imagepath = os.path.join(module.params["workdir"], "/images/efiboot.img")
 
     # get binary paths
     ksvalidator = module.get_bin_path("ksvalidator")
@@ -153,13 +152,16 @@ def main():
     isovolid_cmd = [isoinfo, "-d", "-i", module.params["src_iso"]]
     isovolid_out = run_cmd(module, isovolid_cmd)
     try:
-        isovolid = ([
-            line for line in isovolid_out.split("\n") if "Volume id:" in line
-        ][0].split(":")[-1].strip())
+        isovolid = (
+            [line for line in isovolid_out.split("\n") if "Volume id:" in line][0]
+            .split(":")[-1]
+            .strip()
+        )
     except IndexError as e:
         module.fail_json(
-            msg="ERROR: Unable to find Volume ID for source ISO: %s" %
-            module.params["src_iso"])
+            msg="ERROR: Unable to find Volume ID for source ISO: %s"
+            % module.params["src_iso"]
+        )
 
     # explode the ISO
     xorriso_cmd = [
@@ -300,8 +302,7 @@ def main():
     implantisomd5_cmd = [implantisomd5, module.params["dest_iso"]]
     implantisomd5_out = run_cmd(module, implantisomd5_cmd)
 
-    module.exit_json(msg="New ISO can be found at: %s" %
-                     module.params["dest_iso"])
+    module.exit_json(msg="New ISO can be found at: %s" % module.params["dest_iso"])
 
 
 if __name__ == "__main__":

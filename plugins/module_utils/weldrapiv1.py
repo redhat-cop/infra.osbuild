@@ -125,7 +125,9 @@ class WeldrV1(object):
             )
             return results
         except urllib_error.HTTPError as e:
-            self.weldr.module.fail_json(msg="OSBUILD COMPOSER ERROR: %s" % to_native(e.reason))
+            self.weldr.module.fail_json(
+                msg="OSBUILD COMPOSER ERROR: %s" % to_native(e.reason)
+            )
 
     def get_compose_types(self):
         """

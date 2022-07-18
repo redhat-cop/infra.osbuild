@@ -41,7 +41,9 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weld
 
 
 def main():
-    module = AnsibleModule(argument_spec=dict(), )
+    module = AnsibleModule(
+        argument_spec=dict(),
+    )
 
     weldr = Weldr(module)
 
