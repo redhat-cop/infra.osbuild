@@ -30,7 +30,7 @@ options:
         required: true
     src_iso:
         description:
-            -one of: c(src), c(blueprint) Path to ISO file that will be used as source to create new ISO with kickstart injected
+            - Path to ISO file that will be used as source to create new ISO with kickstart injected
         type: str
         required: true
     dest_iso:

@@ -50,7 +50,7 @@ options:
     allow_duplicate:
         description:
             - Allow a duplicate version'd compose.
-            - NOTE: Default osbuild composer functionality is to allow duplicate composes
+            - (Default osbuild composer functionality is to allow duplicate composes)
         type: bool
         default: True
         required: false
