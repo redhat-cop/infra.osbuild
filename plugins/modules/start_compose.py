@@ -27,7 +27,6 @@ options:
         description:
             - Name of blueprint to iniate a build for
         type: str
-        default: ""
         required: true
     size:
         description:
@@ -50,7 +49,7 @@ options:
     allow_duplicate:
         description:
             - Allow a duplicate version'd compose.
-            - NOTE: Default osbuild composer functionality is to allow duplicate composes
+            - (Default osbuild composer functionality is to allow duplicate composes)
         type: bool
         default: True
         required: false
@@ -106,7 +105,7 @@ EXAMPLES = """
     size: 4096
 
 - name: Start ostree compose with idempotent transaction
-  osbuild.composer.start_ostree
+  osbuild.composer.start_ostree:
     blueprint: rhel-for-edge-demo
     allow_duplicate: false
 """
@@ -126,7 +125,7 @@ def main():
             size=dict(type="int", required=False, default=8192),
             profile=dict(type="str", required=False, default=""),
             image_name=dict(type="str", required=False, default=""),
-            allow_duplicate=dict(type=bool, required=False, default=True),
+            allow_duplicate=dict(type="bool", required=False, default=True),
             compose_type=dict(
                 type="str",
                 required=False,

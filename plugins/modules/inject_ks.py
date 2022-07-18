@@ -30,7 +30,7 @@ options:
         required: true
     src_iso:
         description:
-            -one of: c(src), c(blueprint) Path to ISO file that will be used as source to create new ISO with kickstart injected
+            - Path to ISO file that will be used as source to create new ISO with kickstart injected
         type: str
         required: true
     dest_iso:
@@ -51,7 +51,7 @@ options:
         default: "RHEL8"
         choices: ["RHEL8","RHEL9"]
 
-requires:
+requirements:
 - coreutils-single
 - glibc-minimal-langpack
 - pykickstart
@@ -69,9 +69,8 @@ EXAMPLES = """
     kickstart: "/tmp/mykickstart.ks"
     src_iso: "/tmp/previously_composed.iso"
     dest_iso: "/tmp/with_my_kickstart.iso"
-    workdir: "/root/edgeiso/
+    workdir: "/root/edgeiso/"
 """
-
 
 import os
 import traceback
@@ -269,17 +268,29 @@ def main():
         "genisoimage",
         "-o",
         module.params["dest_iso"],
-        "-R", "-J",
-        "-V", isovolid,
-        "-A", isovolid,
-        "-volset", isovolid,
-        "-b", "isolinux/isolinux.bin",
-        "-c", "isolinux/boot.cat",
-        "-boot-load-size", "4",
-        "-boot-info-table", "-no-emul-boot", "-verbose", "-debug",
+        "-R",
+        "-J",
+        "-V",
+        isovolid,
+        "-A",
+        isovolid,
+        "-volset",
+        isovolid,
+        "-b",
+        "isolinux/isolinux.bin",
+        "-c",
+        "isolinux/boot.cat",
+        "-boot-load-size",
+        "4",
+        "-boot-info-table",
+        "-no-emul-boot",
+        "-verbose",
+        "-debug",
         "-eltorito-alt-boot",
-        "-e", "images/efiboot.img",
-        "-no-emul-boot", module.params["workdir"],
+        "-e",
+        "images/efiboot.img",
+        "-no-emul-boot",
+        module.params["workdir"],
     ]
     genisoimage_out = run_cmd(module, genisoimage_cmd)
 

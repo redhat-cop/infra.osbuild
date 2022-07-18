@@ -48,12 +48,14 @@ options:
         description:
             - List of package names to add to the blueprint
         type: list
+        elements: str
         default: []
         required: false
     groups:
         description:
             - List of package groups to add to the blueprint
         type: list
+        elements: str
         default: []
         required: false
     customizations:
@@ -88,7 +90,6 @@ EXAMPLES = """
         groups: '["users", "wheel"]'
 """
 
-
 import os
 import traceback
 
@@ -104,8 +105,8 @@ def main():
             name=dict(type="str", required=True),
             description=dict(type="str", required=False, default=""),
             version=dict(type="str", required=False, default="0.0.1"),
-            packages=dict(type="list", required=False, default=[]),
-            groups=dict(type="list", required=False, default=[]),
+            packages=dict(type="list", required=False, elements="str", default=[]),
+            groups=dict(type="list", required=False, elements="str", default=[]),
             customizations=dict(type="dict", required=False, default={}),
         ),
     )
@@ -132,7 +133,7 @@ def main():
     for key, customization in module.params["customizations"].items():
         toml_file += f"[[customizations.{key}]]\n"
         for k, v in customization.items():
-            if (type(v) == list) or v.startswith("["):
+            if isinstance(v, list) or v.startswith("["):
                 toml_file += f"{k} = {v}\n"
             else:
                 toml_file += f'{k} = "{v}"\n'

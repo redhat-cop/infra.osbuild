@@ -16,7 +16,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-module: export_image
+module: export_compose
 short_description: Export successfully composed image from osbuild-composer service
 description:
     - Export successfully composed image from osbuild-composer service

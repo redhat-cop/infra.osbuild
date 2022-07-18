@@ -48,4 +48,3 @@
         mode: pull
         src: "/tmp/composer-compose.tar"
         dest: "/tmp/compose-{{ compose_start_out['result']['build_id'] }}.tar"
-

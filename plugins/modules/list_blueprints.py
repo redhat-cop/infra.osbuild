@@ -22,7 +22,6 @@ description:
     - Info module to get a list of blueprints from Weldr
 author:
 - Adam Miller (@maxamillion)
-options:
 """
 
 EXAMPLES = """
@@ -32,7 +31,6 @@ EXAMPLES = """
 
 - debug: var=list_blueprints
 """
-
 
 import os
 import traceback

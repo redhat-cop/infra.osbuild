@@ -27,7 +27,6 @@ options:
         description:
             - Compose UUID to wait for
         type: str
-        default: ""
         required: true
     timeout:
         description:
