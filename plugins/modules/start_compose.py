@@ -165,7 +165,7 @@ def main():
     if not module.params["allow_duplicate"]:
         # only do all this query and filtering if needed
 
-        blueprint_info = weldr.api.get_blueprint_info(module.params["blueprint"])
+        blueprint_info = weldr.api.get_blueprints_info(module.params["blueprint"])
         blueprint_version = blueprint_info["blueprints"][0]["version"]
 
         compose_queue = weldr.api.get_compose_queue()
