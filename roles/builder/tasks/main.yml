@@ -13,7 +13,7 @@
         name: "admiller"
         description: "test user"
         password: "openshift"
-        key: "{{ pubkey }}"
+        key: "{{ pub_key }}"
         groups: '["users", "wheel"]'
 
 - name: push the blueprint into image builder
