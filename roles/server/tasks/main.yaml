@@ -32,7 +32,7 @@
           - python3-pytoml
   when:
     - ansible_distribution in ['RedHat', 'CentOS']
-    - ansible_distribution_major_release|int == 8
+    - ansible_distribution_major_version|int == 8
 
 - name: RHEL9 specific setup
   block:

@@ -2,6 +2,7 @@
 - name: test the collection
   hosts: all
   gather_facts: false
+  become: true
   vars:
     blueprint_src_path: "/tmp/testblueprint.toml"
   tasks:
