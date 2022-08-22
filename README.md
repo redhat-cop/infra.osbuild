@@ -13,7 +13,7 @@ different ideas and concepts are iterated upon.
 To install this collection, you will need to use the [Ansible](https://github.com/ansible/ansible) `ansible-galaxy` command:
 
 ```shell
-ansible-galaxy collection install git+https://github.com/maxamillion/osbuild.composer
+ansible-galaxy collection install git+https://github.com/ansible-collections/osbuild.composer
 ```
 
 ## Examples

@@ -1,6 +1,7 @@
 ---
 - name: Run osbuild_server role
   hosts: all
+  become: true
   tasks:
     - name: run the role
       ansible.builtin.import_role:
