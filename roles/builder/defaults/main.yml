@@ -1,3 +1,3 @@
 ---
 # defaults file for builder
-blueprint_src_path: /tmp
+blueprint_src_path: /tmp/blueprint.toml
