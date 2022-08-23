@@ -65,4 +65,3 @@
   loop:
     - cockpit
     - http
-    - osbuild-composer
