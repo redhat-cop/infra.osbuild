@@ -26,6 +26,8 @@ options:
     user_id:
         description:
             - UID of the remote system user
+        type: str
+        required: true
     compose_id:
         description:
             - Compose UUID to export
