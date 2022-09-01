@@ -45,6 +45,7 @@
         dest: "/tmp/composer-compose.tar"
 
     - name: download mycompose.tar
+      become: false
       ansible.posix.synchronize:
         mode: pull
         src: "/tmp/composer-compose.tar"

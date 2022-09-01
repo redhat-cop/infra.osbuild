@@ -214,6 +214,7 @@ class WeldrV1(object):
             unix_socket=self.weldr.unix_socket,
         )
         shutil.copy(tmpfile, dest)
+        shutil.chown(dest, 1000, 1000)
         os.remove(tmpfile)
 
     ###############################################################################
