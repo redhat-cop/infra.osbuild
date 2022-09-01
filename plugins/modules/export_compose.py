@@ -23,6 +23,9 @@ description:
 author:
     - Adam Miller (@maxamillion)
 options:
+    user_id:
+        description:
+            - UID of the remote system user
     compose_id:
         description:
             - Compose UUID to export
@@ -38,6 +41,7 @@ options:
 EXAMPLES = """
 - name: Export RHEL for Edge compose
   osbuild.composer.wait_compose:
+    user_id: "1000"
     compose_id: "1bb4cc77-828e-42a2-a3de-9517e99ea4e4"
     dest: "/tmp/mycompose_artifact.tar"
 
@@ -59,6 +63,7 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weld
 def main():
     module = AnsibleModule(
         argument_spec=dict(
+            user_id=dict(type="str", required=True),
             compose_id=dict(type="str", required=True),
             dest=dict(type="str", required=True),
         ),
@@ -67,6 +72,7 @@ def main():
     weldr = Weldr(module)
 
     weldr.api.get_compose_image(
+        int(module.params["user_id"]),
         module.params["compose_id"],
         module.params["dest"],
     )

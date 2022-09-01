@@ -203,7 +203,7 @@ class WeldrV1(object):
         )
         return results
 
-    def get_compose_image(self, compose_uuid, dest):
+    def get_compose_image(self, user_id, compose_uuid, dest):
         """
         # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
         """
@@ -213,8 +213,9 @@ class WeldrV1(object):
             method="GET",
             unix_socket=self.weldr.unix_socket,
         )
+        os.remove(dest)
         shutil.copy(tmpfile, dest)
-        shutil.chown(dest, 1000, 1000)
+        shutil.chown(dest, user_id, user_id)
         os.remove(tmpfile)
 
     ###############################################################################
