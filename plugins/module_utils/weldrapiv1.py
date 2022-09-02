@@ -213,7 +213,8 @@ class WeldrV1(object):
             method="GET",
             unix_socket=self.weldr.unix_socket,
         )
-        os.remove(dest)
+        if os.path.exists(dest):
+            os.remove(dest)
         shutil.copy(tmpfile, dest)
         shutil.chown(dest, user_id, user_id)
         os.remove(tmpfile)
