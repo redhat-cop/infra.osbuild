@@ -22,6 +22,7 @@ description:
     - Export successfully composed image from osbuild-composer service
 author:
     - Adam Miller (@maxamillion)
+    - Matthew Sandoval (@matoval)
 options:
     user_id:
         description:
