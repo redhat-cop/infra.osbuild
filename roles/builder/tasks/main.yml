@@ -23,7 +23,7 @@
 - name: start compose
   osbuild.composer.start_compose:
     blueprint: "my-rhel-edge-test"
-    compose_type: "edge-commit"
+    compose_type: "{{ compose_type }}"
   register: compose_start_out
 
 - debug: var=compose_start_out
