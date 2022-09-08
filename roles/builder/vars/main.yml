@@ -1,2 +1,2 @@
 ---
-pub_key: " ~/.ssh/id_rsa.pub"
+pub_key: "~/.ssh/id_rsa.pub"

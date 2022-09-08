@@ -13,6 +13,7 @@
   ansible.builtin.dnf:
     state: latest
     name:
+      - rsync
       - osbuild-composer
       - composer-cli
       - cockpit-composer
