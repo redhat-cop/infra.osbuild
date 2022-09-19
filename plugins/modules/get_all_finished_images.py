@@ -26,8 +26,8 @@ author:
 
 EXAMPLES = """
 - name: Get list of all created images
-  osbuild.composer.get_all_finished_images
-
+  osbuild.composer.get_all_finished_images:
+  register: all_images
 """
 
 from ansible.module_utils.basic import AnsibleModule
