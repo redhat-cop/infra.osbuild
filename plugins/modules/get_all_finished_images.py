@@ -18,7 +18,7 @@ DOCUMENTATION = """
 ---
 module: get_all_finished_images
 short_description: Returns all finished images
-description: 
+description:
     - Returns all finished images
 author:
     - Matthew Sandoval (@matoval)
