@@ -1,32 +1,32 @@
 ---
-
+- debug: var=image_uuid
 - name: Create dir to extract image into
   ansible.builtin.file:
-    path: /var/www/html/images/{{ image_uuid['id'] }}
+    path: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}
     state: directory
     mode: '0755'
 
 - name: export the compose artifact
   osbuild.composer.export_compose:
     compose_id: "{{ image_uuid['id'] }}"
-    dest: "/tmp/composer-compose.tar"
+    dest: "/tmp/composer-compose-built.tar"
 
 - name: Copy image file to server dir
   ansible.builtin.copy:
-    src: /tmp/composer-compose.tar
-    dest: /var/www/html/images/{{ image_uuid['id'] }}/image_{{ image_uuid['id'] }}.tar
-    remote_src: yes
+    src: /tmp/composer-compose-built.tar
+    dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/image_{{ image_uuid['id'] }}.tar
+    remote_src: true
 
 - name: Extract image commit
   ansible.builtin.unarchive:
-    src: /var/www/html/images/{{ image_uuid['id'] }}/image_{{ image_uuid['id'] }}.tar
-    dest: /var/www/html/images/{{ image_uuid['id'] }}
-    remote_src: yes
+    src: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/image_{{ image_uuid['id'] }}.tar
+    dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}
+    remote_src: true
 
 - name: create kickstart file
   ansible.builtin.template:
     src: templates/image_kickstart.j2
-    dest: /var/www/html/images/{{ image_uuid['id'] }}/test_file.ks
+    dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/test_file.ks
 
 - name: Start and enable htttpd service
   ansible.builtin.service:

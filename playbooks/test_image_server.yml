@@ -7,11 +7,43 @@
       osbuild.composer.get_all_finished_images:
       register: all_images
 
-    - name: Create directory to hold all image directories
+    - name: Create directory to hold all rhel version directories
       ansible.builtin.file:
-        path: /var/www/html/images/
+        path: /var/www/html/rhel{{ ansible_distribution_major_version }}/
         state: directory
         mode: '0755'
+
+    - name: Create directory to hold all image directories
+      ansible.builtin.file:
+        path: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/
+        state: directory
+        mode: '0755'
+
+    - name: Create directory to hold boot directories
+      ansible.builtin.file:
+        path: /var/www/html/rhel{{ ansible_distribution_major_version }}/boot/
+        state: directory
+        mode: '0755'
+
+    - name: Create directory to hold all image directories
+      ansible.builtin.file:
+        path: /mnt/bootiso
+        state: directory
+        mode: '0755'
+
+    - name: Extract boot iso
+      ansible.posix.mount:
+        path: /mnt/bootiso
+        src: /var/www/html/rhel{{ ansible_distribution_major_version }}/rhel-baseos-9.0-x86_64-boot.iso
+        fstype: iso9660
+        state: mounted
+
+    - name: copy boot iso files
+      ansible.builtin.copy:
+        src: /mnt/bootiso/
+        dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/boot/
+        mode: '0755'
+        remote_src: true
 
     - name: run the role for each finished image
       with_items: "{{ all_images['result']['finished'] }}"
