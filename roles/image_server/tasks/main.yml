@@ -1,6 +1,6 @@
 ---
 - set_fact: 
-    pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    pub_key: "{{ lookup('file', pub_key_path) }}"
 - name: Create dir to extract image into
   ansible.builtin.file:
     path: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}
