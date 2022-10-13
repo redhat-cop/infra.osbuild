@@ -6,7 +6,7 @@ zerombr
 clearpart --all --initlabel
 autopart
 reboot
-user --name={{ ansible_user }} --group=wheel,user
-sshkey --username={{ ansible_user }} {{ pub_key }}
+user --name={{ kickstart_username }} --group=wheel,user
+sshkey --username={{ kickstart_username }} {{ pub_key }}
 
 ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_host }}/images/{{ image_uuid['id'] }}/repo/ --ref=rhel/8/x86_64/edge
