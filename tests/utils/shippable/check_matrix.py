@@ -18,10 +18,10 @@ except ImportError:
 
 try:
     # noinspection PyCompatibility
-    from urllib2 import url_open  # pylint: disable=ansible-bad-import-from
+    from urllib2 import urlopen  # pylint: disable=ansible-bad-import-from
 except ImportError:
     # noinspection PyCompatibility
-    from urllib.request import url_open
+    from urllib.request import urlopen
 
 
 def main():  # type: () -> None
@@ -58,7 +58,7 @@ def main():  # type: () -> None
     for attempts_remaining in range(4, -1, -1):
         try:
             jobs = json.loads(
-                url_open("https://api.shippable.com/jobs?runIds=%s" % run_id).read()
+                urlopen("https://api.shippable.com/jobs?runIds=%s" % run_id).read()
             )
 
             if not isinstance(jobs, list):
