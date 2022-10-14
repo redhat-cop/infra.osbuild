@@ -1,0 +1,75 @@
+---
+- set_fact: 
+    pub_key: "{{ lookup('file', pub_key_path) }}"
+- name: Create dir to extract image into
+  ansible.builtin.file:
+    path: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}
+    state: directory
+    mode: '0755'
+
+- name: export the compose artifact
+  osbuild.composer.export_compose:
+    compose_id: "{{ image_uuid['id'] }}"
+    dest: "/tmp/composer-compose-built.iso"
+  when: image_uuid['compose_type'] == "edge-installer"
+
+- name: export the compose artifact
+  osbuild.composer.export_compose:
+    compose_id: "{{ image_uuid['id'] }}"
+    dest: "/tmp/composer-compose-built.tar"
+  when: image_uuid['compose_type'] == "edge-commit" or image_uuid['compose_type'] == "edge-container"
+
+- name: Create directory to hold all image directories
+  ansible.builtin.file:
+    path: /mnt/image_{{ image_uuid['id'] }}
+    state: directory
+    mode: '0755'
+  when: image_uuid['compose_type'] == "edge-installer"
+
+- name: Copy image file to server dir
+  ansible.builtin.copy:
+    src: /tmp/composer-compose-built.iso
+    dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/image_{{ image_uuid['id'] }}.iso
+    remote_src: true
+  when: image_uuid['compose_type'] == "edge-installer"
+
+- name: Extract image commit
+  ansible.posix.mount:
+    path: /mnt/image_{{ image_uuid['id'] }}
+    src: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/image_{{ image_uuid['id'] }}.iso
+    fstype: iso9660
+    state: mounted
+  when: image_uuid['compose_type'] == "edge-installer"
+
+- name: copy boot iso files
+  ansible.builtin.copy:
+    src: /mnt/image_{{ image_uuid['id'] }}
+    dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/
+    mode: '0755'
+    remote_src: true
+  when: image_uuid['compose_type'] == "edge-installer"
+
+- name: Copy image file to server dir
+  ansible.builtin.copy:
+    src: /tmp/composer-compose-built.tar
+    dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/image_{{ image_uuid['id'] }}.tar
+    remote_src: true
+  when: image_uuid['compose_type'] == "edge-commit" or image_uuid['compose_type'] == "edge-container"
+
+- name: Extract image commit
+  ansible.builtin.unarchive:
+    src: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/image_{{ image_uuid['id'] }}.tar
+    dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}
+    remote_src: true
+  when: image_uuid['compose_type'] == "edge-commit" or image_uuid['compose_type'] == "edge-container"
+
+- name: create kickstart file
+  ansible.builtin.template:
+    src: templates/image_kickstart.j2
+    dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/test_file.ks
+
+- name: Start and enable htttpd service
+  ansible.builtin.service:
+    name: httpd
+    enabled: true
+    state: started
