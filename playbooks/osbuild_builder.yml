@@ -1,8 +1,10 @@
 ---
 - name: Run osbuild_builder role
   hosts: all
-  become: true
+  # become: true
   tasks:
     - name: run the role
       ansible.builtin.import_role:
         name: osbuild.composer.builder
+      vars:
+        compose_type: edge-commit
