@@ -23,14 +23,13 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - name: Run osbuild_builder role
+    - name: Run osbuild_server role
       hosts: all
+      become: true
       tasks:
         - name: run the role
           ansible.builtin.import_role:
-            name: osbuild.composer.builder
-          vars:
-            compose_type: edge-commit
+            name: osbuild.composer.setup_server
 
 License
 -------

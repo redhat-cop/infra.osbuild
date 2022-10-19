@@ -23,14 +23,33 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - name: Run osbuild_builder role
+    - name: Run osbuild_image_server role
       hosts: all
+      become: true
       tasks:
-        - name: run the role
-          ansible.builtin.import_role:
-            name: osbuild.composer.builder
+        - name: Get list of all created images
+          osbuild.composer.get_all_finished_images:
+          register: all_images
+
+        - name: Create directory to hold all rhel version directories
+          ansible.builtin.file:
+            path: /var/www/html/rhel{{ ansible_distribution_major_version }}/
+            state: directory
+            mode: '0755'
+
+        - name: Create directory to hold all image directories
+          ansible.builtin.file:
+            path: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/
+            state: directory
+            mode: '0755'
+
+        - name: run the role for each finished image
+          with_items: "{{ all_images['result']['finished'] }}"
+          ansible.builtin.include_role:
+            name: osbuild.composer.image_server
           vars:
-            compose_type: edge-commit
+            image_uuid: "{{ item  }}"
+
 
 License
 -------
