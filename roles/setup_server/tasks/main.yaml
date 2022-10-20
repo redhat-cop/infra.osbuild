@@ -45,7 +45,7 @@
           - python3-toml
   when:
     - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 32 or
+    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
       ansible_distribution_major_version|int == 9
 
 - name: Enable Cockpit/Composer/Firewalld/Apache
