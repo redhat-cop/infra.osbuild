@@ -165,11 +165,13 @@ def main():
     # Add check if compose_type is supported
     supported_compose_type = weldr.api.get_compose_types()
 
-    for type in supported_compose_type["types"]:
-        if type["name"] == module.params["compose_type"]:
-            is_compose_type_supported = type["enabled"]
-    if not is_compose_type_supported:
-        module.exit_json(msg=is_compose_type_supported)
+    is_supported = next((item for item in supported_compose_type["types"] if item["name"] == module.params["compose_type"]), None)
+
+    if is_supported is None:
+        module.fail_json(msg="%s is not a valid image type" % module.params["compose_type"])
+    else:
+        if not is_supported["enabled"]:
+            module.fail_json(msg="%s is not a supported image type" % module.params["compose_type"])
 
     if not module.params["allow_duplicate"]:
         # only do all this query and filtering if needed
