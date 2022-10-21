@@ -29,8 +29,6 @@ Including an example of how to use your role (for instance, with variables passe
         - name: run the role
           ansible.builtin.import_role:
             name: osbuild.composer.builder
-          vars:
-            compose_type: edge-commit
 
 License
 -------
