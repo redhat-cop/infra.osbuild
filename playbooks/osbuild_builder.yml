@@ -5,5 +5,3 @@
     - name: run the role
       ansible.builtin.import_role:
         name: osbuild.composer.builder
-      vars:
-        compose_type: edge-commit
