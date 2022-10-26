@@ -1,11 +1,12 @@
 ---
-- set_fact: 
+- name: Set facts
+  ansible.buildin.set_fact:
     pub_key: "{{ lookup('file', pub_key_path) }}"
+
 - name: Create dir to extract image into
   ansible.builtin.file:
     path: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}
     state: directory
-    mode: '0755'
 
 - name: handle edge-commit/edge-container specific compose_type logic
   when: image_uuid['compose_type'] == "edge-commit" or image_uuid['compose_type'] == "edge-container"
@@ -61,7 +62,7 @@
         mode: '0755'
         remote_src: true
 
-- name: create kickstart file
+- name: Create kickstart file
   ansible.builtin.template:
     src: templates/image_kickstart.j2
     dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/test_file.ks
