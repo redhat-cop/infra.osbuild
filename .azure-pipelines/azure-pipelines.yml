@@ -139,7 +139,7 @@ stages:
             - name: RHEL 9.0
               test: rhel/9.0
             - name: RHEL 8.5
-              test: rhel/8.6
+              test: rhel/8.5
           groups:
             - 1
   - stage: Remote_2_12
