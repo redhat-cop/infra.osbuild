@@ -98,6 +98,8 @@ stages:
 ## Remote tests
 # choices of targets defined here:
 #   https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_data/completion/remote.txt
+#
+#   NOTE: defined targets vary by ansible-core branch
   - stage: Remote_devel
     displayName: Remote devel
     dependsOn: []
@@ -136,7 +138,7 @@ stages:
           targets:
             - name: RHEL 9.0
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.5
               test: rhel/8.6
           groups:
             - 1
