@@ -41,5 +41,3 @@
       ansible.builtin.file:
         path: "/tmp/blueprint.toml"
         state: absent
-
-

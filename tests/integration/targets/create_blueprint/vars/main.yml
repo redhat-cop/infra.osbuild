@@ -6,4 +6,3 @@
 blueprint_path: "/tmp/blueprint.toml"
 blueprint_name: "ansible-test-rhel-edge-blueprint"
 blueprint_version: "0.0.1"
-

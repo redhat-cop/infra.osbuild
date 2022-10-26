@@ -12,4 +12,3 @@
   assert:
     that:
       - 'stat_out.stat.exists'
-
