@@ -1,5 +1,6 @@
 galaxy_info:
   standalone: false
   description: >
-    setup osbuild image build server
+    Setup osbuild image hosting server
 dependencies: []
+
