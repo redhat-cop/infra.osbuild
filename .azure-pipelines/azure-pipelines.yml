@@ -112,8 +112,6 @@ stages:
               test: rhel/8.6
           groups:
             - 1
-            - 2
-            - 3
   - stage: Remote_2_14
     displayName: Remote 2.14
     dependsOn: []
@@ -128,8 +126,6 @@ stages:
               test: rhel/8.6
           groups:
             - 1
-            - 2
-            - 3
   - stage: Remote_2_13
     displayName: Remote 2.13
     dependsOn: []
@@ -144,8 +140,6 @@ stages:
               test: rhel/8.6
           groups:
             - 1
-            - 2
-            - 3
   - stage: Remote_2_12
     displayName: Remote 2.12
     dependsOn: []
@@ -158,8 +152,6 @@ stages:
               test: rhel/8.4
           groups:
             - 1
-            - 2
-            - 3
 
 
 ## Finally
