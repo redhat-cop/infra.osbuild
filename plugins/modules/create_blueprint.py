@@ -95,7 +95,6 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
 
 
 def main():
@@ -111,7 +110,6 @@ def main():
         ),
     )
 
-    weldr = Weldr(module)
     if not module.params["description"]:
         description = module.params["name"]
     else:
@@ -148,7 +146,10 @@ def main():
             msg=f'Failed to write to file: {module.params["dest"]}', error=e
         )
 
-    module.exit_json(msg=f'Blueprint file written to location: {module.params["dest"]}')
+    module.exit_json(
+        msg=f'Blueprint file written to location: {module.params["dest"]}',
+        changed=True
+    )
 
 
 if __name__ == "__main__":
