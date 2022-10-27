@@ -33,7 +33,7 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-GNU General Public License v3.0
+GPLv3+
 
 Author Information
 ------------------

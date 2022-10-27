@@ -23,18 +23,14 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - name: Run osbuild_server role
-      hosts: all
-      become: true
-      tasks:
-        - name: run the role
-          ansible.builtin.import_role:
-            name: osbuild.composer.setup_server
+    - hosts: servers
+      roles:
+         - { role: username.rolename, x: 42 }
 
 License
 -------
 
-GNU General Public License v3.0
+GPLv3+
 
 Author Information
 ------------------

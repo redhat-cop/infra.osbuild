@@ -1,16 +1,17 @@
 ---
-- set_fact: 
+- name: Set facts
+  ansible.buildin.set_fact:
     pub_key: "{{ lookup('file', pub_key_path) }}"
+
 - name: Create dir to extract image into
   ansible.builtin.file:
     path: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}
     state: directory
-    mode: '0755'
 
-- name: handle edge-commit/edge-container specific compose_type logic
+- name: Handle edge-commit/edge-container specific compose_type logic
   when: image_uuid['compose_type'] == "edge-commit" or image_uuid['compose_type'] == "edge-container"
   block:
-    - name: export the compose artifact
+    - name: Export the compose artifact
       osbuild.composer.export_compose:
         compose_id: "{{ image_uuid['id'] }}"
         dest: "/tmp/composer-compose-built.tar"
@@ -27,10 +28,10 @@
         dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}
         remote_src: true
 
-- name: handle edge-installer specific compose_type logic
+- name: Handle edge-installer specific compose_type logic
   when: image_uuid['compose_type'] == "edge-installer"
   block:
-    - name: export the compose artifact
+    - name: Export the compose artifact
       osbuild.composer.export_compose:
         compose_id: "{{ image_uuid['id'] }}"
         dest: "/tmp/composer-compose-built.iso"
@@ -54,14 +55,14 @@
         fstype: iso9660
         state: mounted
 
-    - name: copy boot iso files
+    - name: Copy boot iso files
       ansible.builtin.copy:
         src: /mnt/image_{{ image_uuid['id'] }}
         dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/
         mode: '0755'
         remote_src: true
 
-- name: create kickstart file
+- name: Create kickstart file
   ansible.builtin.template:
     src: templates/image_kickstart.j2
     dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/test_file.ks

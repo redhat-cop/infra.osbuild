@@ -1,0 +1,43 @@
+####################################################################
+# WARNING: These are designed specifically for Ansible tests       #
+# and should not be used as examples of how to write Ansible roles #
+####################################################################
+
+# Copyright (c) 2017 Pierre-Louis Bonicoli <pierre-louis.bonicoli@libregerbil.fr>
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: include relevant variables
+  ansible.builtin.include_vars:
+    file: ../vars/main.yml
+
+- name: create a blueprint block
+  block:
+    - name: create a blueprint
+      osbuild.composer.create_blueprint:
+        dest: "{{ blueprint_path }}"
+        name: "{{ blueprint_name }}"
+        version: "{{ blueprint_version }}"
+        packages:
+          - "vim-enhanced"
+          - "ansible-core"
+          - "git"
+        customizations:
+          kernel:
+            append: "nomst=force"
+          user:
+            name: "bob"
+            description: "Bob's a data scientist who like's map reduce"
+            password: "PASSWORD-HASH"
+            key: "PUBLIC-SSH-KEY"
+            home: "/home/bob/"
+            shell: "/usr/bin/bash"
+            groups: '["users", "wheel"]' 
+
+    - ansible.builtin.include_tasks: tests.yml
+
+  always:
+    - name: cleanup after ourselves
+      ansible.builtin.file:
+        path: "/tmp/blueprint.toml"
+        state: absent

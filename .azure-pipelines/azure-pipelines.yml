@@ -95,13 +95,78 @@ stages:
             - name: Units
               test: units
 
-## Finally
+## Remote tests
+# choices of targets defined here:
+#   https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_data/completion/remote.txt
+#
+#   NOTE: defined targets vary by ansible-core branch
+  - stage: Remote_devel
+    displayName: Remote devel
+    dependsOn: []
+    jobs:
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 1
+  - stage: Remote_2_14
+    displayName: Remote 2.14
+    dependsOn: []
+    jobs:
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 1
+  - stage: Remote_2_13
+    displayName: Remote 2.13
+    dependsOn: []
+    jobs:
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 1
+  - stage: Remote_2_12
+    displayName: Remote 2.12
+    dependsOn: []
+    jobs:
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 1
 
+
+## Finally
   - stage: Summary
     condition: succeededOrFailed()
     dependsOn:
       - Sanity_devel
+      - Sanity_2_14
       - Sanity_2_13
       - Sanity_2_12
+      - Remote_devel
+      - Remote_2_14
+      - Remote_2_13
+      - Remote_2_12
     jobs:
       - template: templates/coverage.yml
