@@ -44,7 +44,7 @@
 
 - name: RHEL9 (or newer) specific setup
   when:
-    - (ansible_distribution in ['RedHat', 'CentOS'] and ansible_distribution_major_version|int > 8) or (ansible_distribution in ['Fedora'] and ansible_distribution_major_version|int > 35)
+    - ((ansible_distribution in ['RedHat', 'CentOS']) and ansible_distribution_major_version|int > 8) or ((ansible_distribution in ['Fedora']) and ansible_distribution_major_version|int > 35)
   block:
     - name: Install toml
       ansible.builtin.dnf:
@@ -58,13 +58,13 @@
         that:
           - not rhel8dnf_out.changed
 
-- name: Check expected service status 
-  ansible.builtin.service_facts:
-
-- name: Assert the state of the services are what we expect
-  ansible.builtin.assert:
-    - ansible_facts["services"][item]["state"] in ["running", "stopped"]
-    - ansible_facts["services"][item]["status"] == "enabled"
+- name: Verify systemd unit states
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: "{{ item }}"
+  register: loop_systemd_out
+  failed_when: loop_systemd_out.changed
   loop:
     - osbuild-composer.socket
     - cockpit.socket
@@ -76,12 +76,13 @@
   register: firewalld_info_out
 
 - name: Set default firewalld zone fact
-  ansible.builtin.set_facts:
+  ansible.builtin.set_fact:
     firewalld_default_zone: "{{ firewalld_info_out['firewalld_info']['default_zone'] }}"
 
 - name: Assert the state of the firewall service entries are what we expect
   ansible.builtin.assert:
-    - item in firewalld_info_out["firewalld_info"]["zones"][default_zone]["services"]
+    that:
+      - item in firewalld_info_out["firewalld_info"]["zones"][firewalld_default_zone]["services"]
   loop:
     - cockpit
     - http

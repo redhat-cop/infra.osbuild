@@ -12,5 +12,4 @@
     name: osbuild.composer.setup_server
 
 - name: validate the role
-  ansible.builtin.include_tasks:
-    file: tests.yml
+  ansible.builtin.include_tasks: tests.yml
