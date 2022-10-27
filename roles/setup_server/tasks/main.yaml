@@ -2,16 +2,16 @@
 - name: Setup Repositories
   community.general.rhsm_repository:
     state: enabled
-    purge: yes
+    purge: true
     name:
-      - "rhel-{{ansible_distribution_major_version}}-for-x86_64-appstream-rpms"
-      - "rhel-{{ansible_distribution_major_version}}-for-x86_64-baseos-rpms"
+      - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-rpms"
+      - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms"
   when:
     - ansible_distribution == 'RedHat'
 
 - name: Install Packages
   ansible.builtin.dnf:
-    state: latest
+    state: present
     name:
       - rsync
       - osbuild-composer
@@ -25,21 +25,21 @@
       - cockpit
 
 - name: RHEL8 specific setup
-  block:
-    - name: install pytoml
-      ansible.builtin.dnf:
-        state: latest
-        name:
-          - python3-pytoml
   when:
     - ansible_distribution in ['RedHat', 'CentOS']
     - ansible_distribution_major_version|int == 8
+  block:
+    - name: Install pytoml
+      ansible.builtin.dnf:
+        state: present
+        name:
+          - python3-pytoml
 
 - name: RHEL9 specific setup
   block:
-    - name: install toml
+    - name: Install toml
       ansible.builtin.dnf:
-        state: latest
+        state: present
         name:
           - python3-toml
   when:
@@ -49,7 +49,7 @@
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
     state: started
-    enabled: yes
+    enabled: true
     name: "{{ item }}"
   loop:
     - osbuild-composer.socket
@@ -59,8 +59,8 @@
 
 - name: Enable Firewall Ports for Cockpit/Composer/Apache
   ansible.posix.firewalld:
-    permanent: yes
-    immediate: yes
+    permanent: true
+    immediate: true 
     service: "{{ item }}"
     state: enabled
   loop:
