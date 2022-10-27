@@ -1,23 +1,43 @@
-# osbuild.composer
+# Osbuild Composer Ansible Collection
+
+[![GitHub Super-Linter](https://github.com/ansible-collections/osbuild.composer/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 [Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html) for management of [osbuild composer](https://www.osbuild.org/documentation/#composer).
-
-## THIS IS A POC/PROTOTYPE
-
-This Collection should really not be used by anyone for any serious purposes as
-its current implementation is subject to change in non-compatible ways as
-different ideas and concepts are iterated upon.
+to build ostree based images for Fedora, Red Hat Enterprise Linux and Centos Stream. This collection has a roles to build a osbuild server, an apache server to host images and roles to build images and updates.
 
 ## Installing
 
-To install this collection, you will need to use the [Ansible](https://github.com/ansible/ansible) `ansible-galaxy` command:
+To install this collection and its dependencies, you will need to use the [Ansible](https://github.com/ansible/ansible) `ansible-galaxy` command:
 
 ```shell
 ansible-galaxy collection install git+https://github.com/ansible-collections/osbuild.composer
+ansible-galaxy collection install community.general
 ```
 
-## Examples
+## How to use
 
-Examples of how to use this collection can be found in the [`playbooks`](https://github.com/maxamillion/osbuild.composer/tree/main/playbooks) directory of this repository.
+You will need a RHEL, Centos Stream or Fedora server that you can connect to remotely via an inventory, or run this ciollection on locally by changing the playbooks to hosts: localhost instead of all.
 
-[![GitHub Super-Linter](https://github.com/ansible-collections/osbuild.composer/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+### Configure Osbuild Composer Server
+
+```shell
+ansible-playbook playbooks/osbuild_setup_server.yml
+```
+
+### Configure Osbuild Image Server
+
+```shell
+ansible-playbook playbooks/osbuild_image_server.yml
+```
+
+### Configure Osbuild Builder
+
+```shell
+ansible-playbook playbooks/osbuild_builder.yml
+```
+
+### Configure testbuild
+
+```shell
+ansible-playbook playbooks/testbuild.yml -e {{ compose_type }}
+```
