@@ -162,6 +162,24 @@ def main():
 
     dupe_compose = []
 
+    # Add check if compose_type is supported
+    supported_compose_type = weldr.api.get_compose_types()
+
+    is_supported = next((item for item in supported_compose_type["types"] if item["name"] == module.params["compose_type"]), None)
+
+    if is_supported is None:
+        module.fail_json(msg="%s is not a valid image type, valid types are: %s" % (
+            module.params["compose_type"],
+            [[v for k, v in t.items() if k == "name"] for t in supported_compose_type["types"]]
+        ))
+    else:
+        if not is_supported["enabled"]:
+
+            module.fail_json(msg="%s is not a supported image type, supported image types are: %s" % (
+                module.params["compose_type"],
+                [[v for k, v in t.items() if k == "enabled" and v is True] for t in supported_compose_type["types"]]
+            ))
+
     if not module.params["allow_duplicate"]:
         # only do all this query and filtering if needed
 

@@ -1,4 +1,4 @@
 ---
 # defaults file for builder
 blueprint_src_path: /tmp/blueprint.toml
-compose_type: edge-simplified-installer
+compose_type: edge-commit
