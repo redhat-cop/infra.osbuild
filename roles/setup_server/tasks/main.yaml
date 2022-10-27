@@ -26,8 +26,9 @@
 
 - name: RHEL8 specific setup
   when:
-    - ansible_distribution in ['RedHat', 'CentOS']
-    - ansible_distribution_major_version|int == 8
+    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
+      ansible_distribution_major_version|int == 8
   block:
     - name: Install pytoml
       ansible.builtin.dnf:
@@ -43,8 +44,9 @@
         name:
           - python3-toml
   when:
-    - ansible_distribution in ['RedHat', 'CentOS']
-    - ansible_distribution_major_version|int == 9
+    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
+      ansible_distribution_major_version|int == 9
 
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
