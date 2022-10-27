@@ -67,10 +67,9 @@ fi
 
 if [ "${SHIPPABLE_BUILD_ID:-}" ]; then
     export ANSIBLE_COLLECTIONS_PATHS="${HOME}/.ansible"
-    SHIPPABLE_RESULT_DIR="$(pwd)/shippable"
     TEST_DIR="${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/osbuild.composer"
     mkdir -p "${TEST_DIR}"
-    cp -aT "${SHIPPABLE_BUILD_DIR}" "${TEST_DIR}"
+    # cp -aT "${SHIPPABLE_BUILD_DIR}" "${TEST_DIR}" # FIXME - this doesn't appear to do anything
     cd "${TEST_DIR}"
 else
     export ANSIBLE_COLLECTIONS_PATHS="${PWD}/../../../"
