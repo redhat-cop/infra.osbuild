@@ -38,6 +38,8 @@ ansible-playbook playbooks/osbuild_builder.yml
 
 ### Configure testbuild
 
+Provide type of image you would like to compose in format of compose_type=typename (for fedora valid types are: [['ami'], ['container'], ['iot-commit'], ['iot-container'], ['iot-installer'], ['iot-raw-image'], ['oci'], ['openstack'], ['qcow2'], ['vhd'], ['vmdk']]") for RHEL/Centos valid types are: valid types are: [['ami'], ['container'], ['edge-commit'], ['edge-container'], ['edge-installer'], ['edge-raw-image'], ['oci'], ['openstack'], ['qcow2'], ['vhd'], ['vmdk']]"
+
 ```shell
-ansible-playbook playbooks/testbuild.yml -e {{ compose_type }}
+ansible-playbook playbooks/testbuild.yml -e compose_type=
 ```
