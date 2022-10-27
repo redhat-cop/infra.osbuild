@@ -83,10 +83,5 @@
   ansible.builtin.assert:
     - item in firewalld_info_out["firewalld_info"]["zones"][default_zone]["services"]
   loop:
-    - osbuild-composer.socket
-    - cockpit.socket
-    - httpd.service
-    - firewalld
-  loop:
     - cockpit
     - http
