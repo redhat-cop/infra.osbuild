@@ -170,11 +170,11 @@ def main():
     if is_supported is None:
         module.fail_json(msg="%s is not a valid image type, valid types are: %s" % (
             module.params["compose_type"],
-            [[v for k ,v in t.items() if k == "name"] for t in supported_compose_type["types"]]
+            [[v for k, v in t.items() if k == "name"] for t in supported_compose_type["types"]]
         ))
     else:
         if not is_supported["enabled"]:
-            
+
             module.fail_json(msg="%s is not a supported image type, supported image types are: %s" % (
                 module.params["compose_type"],
                 [[v for k, v in t.items() if k == "enabled" and v is True] for t in supported_compose_type["types"]]
