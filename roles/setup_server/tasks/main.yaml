@@ -12,9 +12,9 @@
       - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms"
   when:
     - ansible_distribution == 'RedHat'
-    - "rh-amazon-rhui-client" not in ansible_facts["packages"]
-    - "rhui-azure-rhel9" not in ansible_facts["packages"]
-    - "rhui-azure-rhel8" not in ansible_facts["packages"]
+    - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
+    - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
+    - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
 
 - name: Install Packages
   ansible.builtin.dnf:
