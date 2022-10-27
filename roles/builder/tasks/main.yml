@@ -1,4 +1,10 @@
 ---
+- name: Enable Cockpit/Composer/Firewalld/Apache
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: cockpit.socket
+
 - name: Add user to weldr group
   become: true
   ansible.builtin.user:
@@ -16,7 +22,7 @@
       - "git"
     customizations:
       user:
-        name: "admiller"
+        name: "core"
         description: "test user"
         password: "openshift"
         key: "{{ pub_key }}"
