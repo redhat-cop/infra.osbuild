@@ -24,7 +24,7 @@
       - syslinux
       - cockpit
 
-- name: RHEL8 specific setup
+- name: RHEL8, CentOS8 and Fedora32 =< specific setup
   when:
     - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
     - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
@@ -36,7 +36,7 @@
         name:
           - python3-pytoml
 
-- name: RHEL9 specific setup
+- name: RHEL9, CentOS9 and Fedora33 => specific setup
   block:
     - name: Install toml
       ansible.builtin.dnf:
