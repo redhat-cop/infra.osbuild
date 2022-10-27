@@ -1,0 +1,87 @@
+---
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+- name: Check state of the expected package set
+  ansible.builtin.dnf:
+    state: present
+    name:
+      - rsync
+      - osbuild-composer
+      - composer-cli
+      - cockpit-composer
+      - bash-completion
+      - firewalld
+      - genisoimage
+      - httpd
+      - syslinux
+      - cockpit
+  register: dnf_out
+
+- name: Assert expected packages are all present 
+  ansible.builtin.assert:
+    that:
+      - not dnf_out.changed
+
+- name: Check for RHEL8 specific changes
+  when:
+    - ansible_distribution in ['RedHat', 'CentOS']
+    - ansible_distribution_major_version|int == 8
+  block:
+    - name: Install pytoml
+      ansible.builtin.dnf:
+        state: present
+        name:
+          - python3-pytoml
+      register: rhel8dnf_out
+
+    - name: Assert that all RHEL8 packages are installed
+      ansible.builtin.assert:
+        that:
+          - not rhel8dnf_out.changed
+
+
+- name: RHEL9 (or newer) specific setup
+  when:
+    - (ansible_distribution in ['RedHat', 'CentOS'] and ansible_distribution_major_version|int > 8) or (ansible_distribution in ['Fedora'] and ansible_distribution_major_version|int > 35)
+  block:
+    - name: Install toml
+      ansible.builtin.dnf:
+        state: present
+        name:
+          - python3-toml
+      register: rhel9newer_dnf_out
+
+    - name: Assert that all RHEL9+ packages are installed
+      ansible.builtin.assert:
+        that:
+          - not rhel8dnf_out.changed
+
+- name: Check expected service status 
+  ansible.builtin.service_facts:
+
+- name: Assert the state of the services are what we expect
+  ansible.builtin.assert:
+    - ansible_facts["services"][item]["state"] in ["running", "stopped"]
+    - ansible_facts["services"][item]["status"] == "enabled"
+  loop:
+    - osbuild-composer.socket
+    - cockpit.socket
+    - httpd.service
+    - firewalld
+
+- name: Check Firewall Status
+  ansible.posix.firewalld_info:
+  register: firewalld_info_out
+
+- name: Set default firewalld zone fact
+  ansible.builtin.set_facts:
+    firewalld_default_zone: "{{ firewalld_info_out['firewalld_info']['default_zone'] }}"
+
+- name: Assert the state of the firewall service entries are what we expect
+  ansible.builtin.assert:
+    - item in firewalld_info_out["firewalld_info"]["zones"][default_zone]["services"]
+  loop:
+    - cockpit
+    - http
