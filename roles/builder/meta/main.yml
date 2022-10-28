@@ -1,5 +1,7 @@
+---
 galaxy_info:
   standalone: false
   description: >
     setup osbuild image build server
-dependencies: []
+dependencies:
+  - osbuild.composer.setup_server
