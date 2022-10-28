@@ -11,7 +11,6 @@ To install this collection and its dependencies, you will need to use the [Ansib
 
 ```shell
 ansible-galaxy collection install git+https://github.com/ansible-collections/osbuild.composer
-ansible-galaxy collection install community.general
 ```
 
 ## How to use
