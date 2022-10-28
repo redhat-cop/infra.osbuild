@@ -47,13 +47,13 @@ dependencies:
   community.general: "*"
 
 # The URL of the originating SCM repository
-repository: https://github.com/maxamillion/osbuild.composer
+repository: https://github.com/ansible-collections/osbuild.composer
 
 # The URL to any online docs
-documentation: https://github.com/maxamillion/osbuild.composer/blob/main/README.md
+documentation: https://github.com/ansible-collections/osbuild.composer/blob/main/README.md
 
 # The URL to the homepage of the collection/project
-homepage: https://github.com/maxamillion/osbuild.composer
+homepage: https://github.com/ansible-collections/osbuild.composer
 
 # The URL to the collection issue tracker
-issues: https://github.com/maxamillion/osbuild.composer/issues
+issues: https://github.com/ansible-collections/osbuild.composer/issues
