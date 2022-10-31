@@ -1,6 +1,6 @@
 ---
 - name: Set facts
-  ansible.buildin.set_fact:
+  ansible.builtin.set_fact:
     pub_key: "{{ lookup('file', pub_key_path) }}"
 
 - name: Create dir to extract image into
