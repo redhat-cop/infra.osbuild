@@ -2,8 +2,8 @@
 
 [![GitHub Super-Linter](https://github.com/ansible-collections/osbuild.composer/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
-[Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html) for management of [osbuild composer](https://www.osbuild.org/documentation/#composer).
-to build ostree based images for Fedora, Red Hat Enterprise Linux and Centos Stream. This collection has a roles to build a osbuild server, an apache server to host images and roles to build images and updates.
+[Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html) for management of [osbuild composer](https://www.osbuild.org/documentation/#composer) 
+to build ostree based images for Fedora, Red Hat Enterprise Linux and Centos Stream. This collection has roles to build an osbuild server, an apache server to host images and roles to build images and updates.
 
 ## Installing
 
@@ -16,7 +16,7 @@ ansible-galaxy collection install community.general
 
 ## How to use
 
-You will need a RHEL, Centos Stream or Fedora server that you can connect to remotely via an inventory, or run this ciollection on locally by changing the playbooks to hosts: localhost instead of all.
+You will need a RHEL, Centos Stream or Fedora server that you can connect to remotely via an inventory, or run this collection locally by changing the playbooks to hosts: localhost instead of all.
 
 ### Configure Osbuild Composer Server
 
