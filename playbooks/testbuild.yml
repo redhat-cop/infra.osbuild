@@ -8,7 +8,7 @@
     - name: Add user to weldr group
       become: true
       ansible.builtin.user:
-        name: "{{ ansible_user }}"
+        name: "{{ ansible_user_id }}"
         groups: weldr
         append: true
     - name: create a blueprint

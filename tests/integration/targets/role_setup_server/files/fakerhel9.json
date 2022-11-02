@@ -1,0 +1,16 @@
+{
+    "x86_64": [
+        {
+            "name": "baseos",
+            "baseurl": "https://mirrors.kernel.org/almalinux/9.0/BaseOS/x86_64/os/",
+            "rhsm": false,
+            "check_gpg": false
+        },
+        {
+            "name": "appstream",
+            "baseurl": "https://mirrors.kernel.org/almalinux/9.0/AppStream/x86_64/os/",
+            "rhsm": false,
+            "check_gpg": false
+        }
+    ]
+}

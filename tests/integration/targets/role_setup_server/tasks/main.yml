@@ -1,0 +1,45 @@
+####################################################################
+# WARNING: These are designed specifically for Ansible tests       #
+# and should not be used as examples of how to write Ansible roles #
+####################################################################
+
+# Copyright (c) 2022 Red Hat
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+# NOTE: For now we need to inject fake repos for osbuild because osbuild does
+#       not support RHEL RHUI repos and for these test cases the contents of
+#       the repo don't matter since we're testing automating the osbuild
+#       system and not the OS inside the resulting images
+- name: Enable workaround fake RHEL repos
+  block:
+    - name: Setup osbuild overrides directory
+      ansible.builtin.file:
+        path: /etc/osbuild-composer/repositories
+        state: directory
+
+    - name: Setup testing osbuild rhel9 fake repos
+      ansible.builtin.copy:
+        src: files/fakerhel9.json
+        dest: "/etc/osbuild-composer/repositories/{{item}}.json"
+      loop:
+        - rhel-90
+
+    - name: Setup testing osbuild rhel8 fake repos
+      ansible.builtin.copy:
+        src: files/fakerhel8.json
+        dest: "/etc/osbuild-composer/repositories/{{item}}.json"
+      loop:
+        - rhel-8
+        - rhel-87
+        - rhel-86
+        - rhel-85
+        - rhel-84
+
+- name: Run the osbuild.composer.setup_server role
+  ansible.builtin.import_role:
+    name: osbuild.composer.setup_server
+
+- name: validate the role
+  ansible.builtin.include_tasks: tests.yml
