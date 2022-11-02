@@ -38,6 +38,7 @@ options:
             - Long-form description of the blueprint
         type: str
         required: false
+        default: ""
     version:
         description:
             - Semantic Versioned (https://semver.org/) version number

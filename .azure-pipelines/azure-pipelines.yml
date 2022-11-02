@@ -110,8 +110,8 @@ stages:
           targets:
             - name: RHEL 9.0
               test: rhel/9.0
-#           - name: RHEL 8.6
-#             test: rhel/8.6
+            - name: RHEL 8.6
+              test: rhel/8.6
           groups:
             - 1
   - stage: Remote_2_14
@@ -124,8 +124,8 @@ stages:
           targets:
             - name: RHEL 9.0
               test: rhel/9.0
-#           - name: RHEL 8.6
-#             test: rhel/8.6
+            - name: RHEL 8.6
+              test: rhel/8.6
           groups:
             - 1
   - stage: Remote_2_13
@@ -138,22 +138,22 @@ stages:
           targets:
             - name: RHEL 9.0
               test: rhel/9.0
-#           - name: RHEL 8.5
-#             test: rhel/8.5
+            - name: RHEL 8.5
+              test: rhel/8.5
           groups:
             - 1
-# - stage: Remote_2_12
-#   displayName: Remote 2.12
-#   dependsOn: []
-#   jobs:
-#     - template: templates/matrix.yml
-#       parameters:
-#         testFormat: 2.12/{0}
-#         targets:
-#           - name: RHEL 8.4
-#             test: rhel/8.4
-#         groups:
-#           - 1
+  - stage: Remote_2_12
+    displayName: Remote 2.12
+    dependsOn: []
+    jobs:
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 1
 
 
 ## Finally

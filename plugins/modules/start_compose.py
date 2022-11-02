@@ -66,6 +66,9 @@ options:
             - edge-container
             - edge-installer
             - edge-raw-image
+            - rhel-edge-commit
+            - rhel-edge-container
+            - rhel-edge-installer
             - edge-simplified-installer
             - image-installer
             - oci
@@ -142,6 +145,9 @@ def main():
                     "edge-container",
                     "edge-installer",
                     "edge-raw-image",
+                    "rhel-edge-commit",
+                    "rhel-edge-container",
+                    "rhel-edge-installer",
                     "edge-simplified-installer",
                     "image-installer",
                     "oci",
@@ -164,6 +170,8 @@ def main():
         required_together=[["image_name", "profile"]],
         required_if=[
             ["compose_type", "edge-installer", ["ostree_url"]],
+            ["compose_type", "rhel-edge-installer", ["ostree_url"]],
+            ["compose_type", "iot-installer", ["ostree_url"]],
         ],
     )
 
@@ -258,7 +266,7 @@ def main():
         result = weldr.api.post_compose(json.dumps(compose_settings))
 
         compose_output_types = {
-            'tar': ['tar', 'edge-commit', 'iot-commit', 'edge-container', 'iot-container', 'container'],
+            'tar': ['tar', 'edge-commit', 'iot-commit', 'rhel-edge-commit', 'edge-container', 'rhel-edge-container', 'iot-container', 'container'],
             'iso': ['edge-installer', 'edge-simplified-installer', 'iot-installer', 'image-installer'],
             'qcow2': ['qcow2', 'openstack', 'oci'],
             'vmdk': ['vmdk'],

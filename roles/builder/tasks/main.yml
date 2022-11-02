@@ -11,31 +11,23 @@
     name: "{{ ansible_user_id }}"
     groups: weldr
     append: true
+
 - name: Create a blueprint
   osbuild.composer.create_blueprint:
-    dest: "{{ blueprint_src_path }}"
+    dest: "{{ builder_blueprint_src_path }}"
     name: "my-rhel-edge-test"
     version: "0.0.1"
-    packages:
-      - "vim-enhanced"
-      - "ansible-core"
-      - "git"
-    customizations:
-      user:
-        name: "core"
-        description: "test user"
-        password: "openshift"
-        key: "{{ pub_key }}"
-        groups: '["users", "wheel"]'
+    packages: "{{ builder_compose_pkgs }}"
+    customizations: "{{ builder_compose_customizations }}"
 
 - name: Push the blueprint into image builder
   osbuild.composer.push_blueprint:
-    src: "{{ blueprint_src_path }}"
+    src: "{{ builder_blueprint_src_path }}"
 
 - name: Start compose
   osbuild.composer.start_compose:
     blueprint: "my-rhel-edge-test"
-    compose_type: "{{ compose_type }}"
+    compose_type: "{{ builder_compose_type }}"
   register: compose_start_out
 
 - name: Wait for compose to finish
