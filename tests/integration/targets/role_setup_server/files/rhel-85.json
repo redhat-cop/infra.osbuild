@@ -1,0 +1,16 @@
+{
+    "x86_64": [
+        {
+            "name": "baseos",
+            "baseurl": "https://archive.kernel.org/centos-vault/8.5.2111/BaseOS/x86_64/os/",
+            "rhsm": false,
+            "check_gpg": false
+        },
+        {
+            "name": "appstream",
+            "baseurl": "https://archive.kernel.org/centos-vault/8.5.2111/AppStream/x86_64/os/",
+            "rhsm": false,
+            "check_gpg": false
+        }
+    ]
+}

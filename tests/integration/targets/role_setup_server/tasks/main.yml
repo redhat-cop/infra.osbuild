@@ -21,21 +21,15 @@
 
     - name: Setup testing osbuild rhel9 fake repos
       ansible.builtin.copy:
-        src: files/fakerhel9.json
+        src: "files/{{item}}.json"
         dest: "/etc/osbuild-composer/repositories/{{item}}.json"
       loop:
         - rhel-90
-
-    - name: Setup testing osbuild rhel8 fake repos
-      ansible.builtin.copy:
-        src: files/fakerhel8.json
-        dest: "/etc/osbuild-composer/repositories/{{item}}.json"
-      loop:
-        - rhel-8
         - rhel-87
         - rhel-86
         - rhel-85
         - rhel-84
+        - rhel-8
 
 - name: Run the osbuild.composer.setup_server role
   ansible.builtin.import_role:
