@@ -57,8 +57,8 @@ from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weld
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            src=dict(type="str", required=False),
-            blueprint=dict(type="str", required=False),
+            src=dict(type="str", required=False, default=""),
+            blueprint=dict(type="str", required=False, default=""),
         ),
         required_one_of=[["src", "blueprint"]],
     )
