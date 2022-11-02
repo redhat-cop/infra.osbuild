@@ -66,6 +66,9 @@ options:
             - edge-container
             - edge-installer
             - edge-raw-image
+            - rhel-edge-commit
+            - rhel-edge-container
+            - rhel-edge-installer
             - edge-simplified-installer
             - image-installer
             - oci
@@ -79,9 +82,6 @@ options:
             - iot-installer
             - iot-raw-image
             - container
-            - rhel-edge-commit
-            - rhel-edge-container
-            - rhel-edge-installer
     ostree_ref:
         description:
             - ostree ref
@@ -147,7 +147,7 @@ def main():
                     "edge-raw-image",
                     "rhel-edge-commit",
                     "rhel-edge-container",
-                    "rhel-edge-installer"
+                    "rhel-edge-installer",
                     "edge-simplified-installer",
                     "image-installer",
                     "oci",
