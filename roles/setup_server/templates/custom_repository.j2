@@ -1,0 +1,25 @@
+{% set new_repo = ({"name":custom_repo_name,"baseurl":custom_repo_base_url,"check_gpg":custom_repo_check_gpg,"gpgkey":custom_repo_gpgkey if custom_repo_check_gpg else ""}) %}
+{% for dist, repo_value in current_repos.items() %}
+{
+    {% if dist != "x86_64"  %}
+        {{ dist }}: [
+            {{ repo_value }},
+        ],
+    {% else %}
+        "x86_64": [
+            {% for repo in repo_value %}
+            {
+                {% for key, value in repo.items() %}
+                    {{ key }}: {{ value }},
+                {% endfor %}
+            },
+            {% endfor %}
+            {
+                {% for k, v in new_repo.items() %}
+                    {{ k }}: {{ v }},
+                {% endfor %}
+            },
+        ],
+    {% endif %}
+},
+{% endfor %}

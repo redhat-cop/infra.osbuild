@@ -15,11 +15,13 @@
   osbuild.composer.create_blueprint:
     dest: "{{ blueprint_src_path }}"
     name: "my-rhel-edge-test"
-    version: "0.0.1"
+    version: "0.0.3"
     packages:
       - "vim-enhanced"
       - "ansible-core"
       - "git"
+    custom_packages:
+      - "microshift"
     customizations:
       user:
         name: "core"

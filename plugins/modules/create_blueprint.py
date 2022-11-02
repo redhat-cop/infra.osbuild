@@ -51,6 +51,13 @@ options:
         elements: str
         default: []
         required: false
+    custom_packages:
+        description:
+            - List of custom package names to add to the blueprint
+        type: list
+        elements: str
+        default: []
+        required: false
     groups:
         description:
             - List of package groups to add to the blueprint
@@ -105,6 +112,7 @@ def main():
             description=dict(type="str", required=False, default=""),
             version=dict(type="str", required=False, default="0.0.1"),
             packages=dict(type="list", required=False, elements="str", default=[]),
+            custom_packages=dict(type="list", required=False, elements="str", default=[]),
             groups=dict(type="list", required=False, elements="str", default=[]),
             customizations=dict(type="dict", required=False, default={}),
         ),
