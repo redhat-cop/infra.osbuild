@@ -15,6 +15,49 @@
     - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
     - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
     - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
+  
+- name: Setup Custom Repositories
+  when:
+    - custom_repo_name
+  block:
+    - name: Create Override Directory
+      ansible.builtin.file:
+        path: /etc/osbuild-composer/repositories
+        state: directory
+
+    - name: Copy Current Repositories into Override Directory
+      ansible.builtin.slurp:
+        src: /usr/share/osbuild-composer/repositories/{{ "rhel-" if ansible_distribution == "RedHat" }}{{ ansible_distribution_version.split('.') | join('') }}.json
+      register: current_repos_encoded
+  
+    - name: Print returned information
+      ansible.builtin.debug:
+        msg: "{{ current_repos_encoded['content'] | b64decode }}"
+
+    - name: Add new repo
+      ansible.builtin.set_fact:
+        current_repos: "{{ current_repos_encoded['content'] | b64decode }}"
+
+    - name: Print returned information
+      ansible.builtin.debug:
+        msg: "{{ current_repos[custom_repo_arch] }}"
+
+    - name: Create test file
+      ansible.builtin.template:
+        src: templates/custom_repository.j2
+        dest: /tmp/add_custom_package
+      vars: 
+        current_repos: "{{ current_repos_encoded['content'] | b64decode }}"
+
+    - name: Add Distribution Specific json File
+      ansible.builtin.copy:
+        src: /tmp/add_custom_package
+        dest: /etc/osbuild-composer/repositories/{{ "rhel-" if ansible_distribution == "RedHat" }}{{ ansible_distribution_version.split('.') | join('') }}.json
+        remote_src: yes
+    - name: Restart osbuild-composer service
+      ansible.builtin.systemd:
+        state: restarted
+        name: osbuild-composer
 
 - name: Install Packages
   ansible.builtin.dnf:
