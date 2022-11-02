@@ -45,10 +45,4 @@
 - name: Export the compose artifact
   osbuild.composer.export_compose:
     compose_id: "{{ compose_start_out['result']['build_id'] }}"
-    dest: "/tmp/composer-compose.tar"
-
-- name: Download mycompose.tar
-  ansible.posix.synchronize:
-    mode: pull
-    src: "/tmp/composer-compose.tar"
-    dest: "/tmp/compose-{{ compose_start_out['result']['build_id'] }}.tar"
+    dest: "/tmp/composer-compose.{{ compose_start_out['result']['output_type'] }}"
