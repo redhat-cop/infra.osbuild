@@ -22,6 +22,7 @@ description:
     - Start an ostree compose
 author:
     - Adam Miller (@maxamillion)
+    - Chris Santiago (@resoluteCoder)
 options:
     blueprint:
         description:
@@ -73,6 +74,11 @@ options:
             - tar
             - vhd
             - vmdk
+            - iot-commit
+            - iot-container
+            - iot-installer
+            - iot-raw-image
+            - container
     ostree_ref:
         description:
             - ostree ref
@@ -144,6 +150,11 @@ def main():
                     "tar",
                     "vhd",
                     "vmdk",
+                    "iot-commit",
+                    "iot-container",
+                    "iot-installer",
+                    "iot-raw-image",
+                    "container"
                 ],
             ),
             ostree_ref=dict(type="str", required=False, default=""),
@@ -245,6 +256,22 @@ def main():
             }
 
         result = weldr.api.post_compose(json.dumps(compose_settings))
+
+        compose_output_types = {
+            'tar': ['tar', 'edge-commit', 'iot-commit', 'edge-container', 'iot-container', 'container'],
+            'iso': ['edge-installer', 'edge-simplified-installer', 'iot-installer', 'image-installer'],
+            'qcow2': ['qcow2', 'openstack', 'oci'],
+            'vmdk': ['vmdk'],
+            'vhd': ['vhd'],
+            'raw.xz': ['edge-raw-image', 'iot-raw-image'],
+            'ami': ['ami']
+        }
+
+        output_type = ''
+        for compose_type, compose_type_list in compose_output_types.items():
+            if module.params['compose_type'] in compose_type_list:
+                output_type = compose_type
+        result['output_type'] = output_type
 
         module.exit_json(msg="Compose submitted to queue", result=result)
 
