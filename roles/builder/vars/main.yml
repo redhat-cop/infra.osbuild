@@ -13,4 +13,4 @@ builder_compose_customizations:
     key: "{{ builder_pub_key }}"
     groups: '["users", "wheel"]'
 builder_compose_custom_pacakges:
-  - "microshift"
+  - "neovim"
