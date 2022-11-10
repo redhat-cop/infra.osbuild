@@ -16,48 +16,15 @@
     - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
     - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
   
-- name: Setup Custom Repositories
+- name: Add source for custom packages
   when:
     - custom_repo_name
-  block:
-    - name: Create Override Directory
-      ansible.builtin.file:
-        path: /etc/osbuild-composer/repositories
-        state: directory
-
-    - name: Copy Current Repositories into Override Directory
-      ansible.builtin.slurp:
-        src: /usr/share/osbuild-composer/repositories/{{ "rhel-" if ansible_distribution == "RedHat" }}{{ ansible_distribution_version.split('.') | join('') }}.json
-      register: current_repos_encoded
-  
-    - name: Print returned information
-      ansible.builtin.debug:
-        msg: "{{ current_repos_encoded['content'] | b64decode }}"
-
-    - name: Add new repo
-      ansible.builtin.set_fact:
-        current_repos: "{{ current_repos_encoded['content'] | b64decode }}"
-
-    - name: Print returned information
-      ansible.builtin.debug:
-        msg: "{{ current_repos[custom_repo_arch] }}"
-
-    - name: Create test file
-      ansible.builtin.template:
-        src: templates/custom_repository.j2
-        dest: /tmp/add_custom_package
-      vars: 
-        current_repos: "{{ current_repos_encoded['content'] | b64decode }}"
-
-    - name: Add Distribution Specific json File
-      ansible.builtin.copy:
-        src: /tmp/add_custom_package
-        dest: /etc/osbuild-composer/repositories/{{ "rhel-" if ansible_distribution == "RedHat" }}{{ ansible_distribution_version.split('.') | join('') }}.json
-        remote_src: yes
-    - name: Restart osbuild-composer service
-      ansible.builtin.systemd:
-        state: restarted
-        name: osbuild-composer
+  osbuild.composer.add_source:
+    repo_name: "{{ custom_repo_name }}"
+    base_url: "{{ custom_repo_base_url }}"
+    type: "{{ custom_repo_type }}"
+    check_ssl: "{{ custom_repo_check_ssl }}"
+    check_gpg: "{{ custom_repo_check_gpg }}"
 
 - name: Install Packages
   ansible.builtin.dnf:

@@ -6,8 +6,3 @@
     - name: run the role
       ansible.builtin.import_role:
         name: osbuild.composer.setup_server
-      vars:
-        custom_repo_base_url: https://download.copr.fedorainfracloud.org/results/%40redhat-et/microshift/epel-9-x86_64/
-        custom_repo_name: microshift
-        custom_repo_check_gpg: false
-        custom_repo_arch: x86_64
