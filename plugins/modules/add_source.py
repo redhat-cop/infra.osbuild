@@ -35,8 +35,9 @@ options:
         required: true
     type:
         description:
-            - Url type, options are: yum-baseurl, yum-mirrorlist, yum-metalink
+            - Url type
         type: str
+        choices: [yum-baseurl, yum-mirrorlist, yum-metalink]
         required: true
     check_ssl:
         description:
@@ -52,6 +53,7 @@ options:
         description:
             - List of gpg key urls
         type: list
+        elements: str
         required: false
 """
 
@@ -79,10 +81,10 @@ def main():
         argument_spec=dict(
             repo_name=dict(type="str", required=True),
             base_url=dict(type="str", required=True),
-            type=dict(type="str", required=True),
+            type=dict(type="str", required=True, choices=["yum-baseurl", "yum-mirrorlist", "yum-metalink"]),
             check_ssl=dict(type="bool", required=True),
             check_gpg=dict(type="bool", required=True),
-            gpgkey_urls=dict(type="list", required=False),
+            gpgkey_urls=dict(type="list", required=False, elements="str", no_log=True),
         ),
     )
 
