@@ -21,7 +21,7 @@
       - "ansible-core"
       - "git"
     custom_packages:
-      - "microshift"
+      - "neovim"
     customizations:
       user:
         name: "core"

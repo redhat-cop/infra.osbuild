@@ -76,6 +76,22 @@ class WeldrV1(object):
         )
         return results
 
+    def post_projects_source_new(self, source):
+        """
+        post_projects_source_new
+
+        :source:     dict, a dictionary of a source
+        """
+        results = json.load(
+            self.weldr.request.open(
+                "POST",
+                "http://localhost/api/v0/projects/source/new",
+                data=source,
+                headers={"Content-Type": "application/json"},
+            )
+        )
+        return results
+
     def post_blueprint_new(self, blueprint):
         """
         post_blueprint_new
@@ -242,12 +258,6 @@ class WeldrV1(object):
     def get_projects_source_info_sources(self, sources):
         """
         # api.router.GET("/api/v:version/projects/source/info/:sources", api.sourceInfoHandler)
-        """
-        raise NotImplementedError
-
-    def post_projects_source_new(self, source):
-        """
-        # api.router.POST("/api/v:version/projects/source/new", api.sourceNewHandler)
         """
         raise NotImplementedError
 

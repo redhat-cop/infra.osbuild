@@ -1,1 +1,6 @@
 ---
+custom_repo_name: Everything
+custom_repo_base_url: https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/
+custom_repo_type: yum-baseurl
+custom_repo_check_ssl: false
+custom_repo_check_gpg: false
