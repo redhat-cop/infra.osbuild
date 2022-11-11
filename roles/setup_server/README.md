@@ -18,6 +18,22 @@ Dependencies
 
 A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
+Custom Repositories
+-------------------
+
+To add a custom repository you need to specify the following variables per repo. custom_repo_name, custom_repo_base_url, custom_repo_type, custom_repo_check_ssl, custom_repo_check_gpg, custom_repo_state.
+
+Example vars file:
+
+```bash
+custom_repo_name: Everything
+custom_repo_base_url: https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/
+custom_repo_type: yum-baseurl
+custom_repo_check_ssl: false
+custom_repo_check_gpg: false
+custom_repo_state: present
+```
+
 Example Playbook
 ----------------
 
