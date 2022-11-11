@@ -2,7 +2,7 @@
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
     state: started
-    enabled: yes
+    enabled: true
     name: cockpit.socket
 
 - name: Add user to weldr group

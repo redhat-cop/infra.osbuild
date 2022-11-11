@@ -3,12 +3,12 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-- name: stat expected path
+- name: Stat expected path
   ansible.builtin.stat:
     path: "{{ blueprint_path }}"
   register: stat_out
 
-- name: assert expected path is found
-  assert:
+- name: Assert expected path is found
+  ansible.builtin.assert:
     that:
       - 'stat_out.stat.exists'

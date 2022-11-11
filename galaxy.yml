@@ -17,7 +17,7 @@ readme: README.md
 # A list of the collection's content authors. Can be just the name or in the format 'Full Name <email> (url)
 # @nicks:irc/im.site#channel'
 authors:
-- Adam Miller (@maxamillion)
+  - Adam Miller (@maxamillion)
 
 
 ### OPTIONAL but strongly recommended
@@ -27,8 +27,8 @@ description: Collection for management of osbuild composer
 
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'
-#license:
-#- GPL-3.0-or-later
+# license:
+# - GPL-3.0-or-later
 
 # The path to the license file for the collection. This path is relative to the root of the collection. This key is
 # mutually exclusive with 'license'

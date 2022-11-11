@@ -21,8 +21,9 @@
 
     - name: Setup testing osbuild rhel9 fake repos
       ansible.builtin.copy:
-        src: "files/{{item}}.json"
-        dest: "/etc/osbuild-composer/repositories/{{item}}.json"
+        src: "files/{{ item }}.json"
+        mode: 0644
+        dest: "/etc/osbuild-composer/repositories/{{ item }}.json"
       loop:
         - rhel-90
         - rhel-87

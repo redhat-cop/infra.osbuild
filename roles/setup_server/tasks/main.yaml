@@ -15,7 +15,6 @@
     - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
     - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
     - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
-  
 
 - name: Install Packages
   ansible.builtin.dnf:
@@ -45,16 +44,16 @@
           - python3-pytoml
 
 - name: RHEL9, CentOS9 and Fedora33 => specific setup
+  when:
+    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
+      ansible_distribution_major_version|int == 9
   block:
     - name: Install toml
       ansible.builtin.dnf:
         state: present
         name:
           - python3-toml
-  when:
-    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
-      ansible_distribution_major_version|int == 9
 
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
@@ -70,7 +69,7 @@
 - name: Enable Firewall Ports for Cockpit/Composer/Apache
   ansible.posix.firewalld:
     permanent: true
-    immediate: true 
+    immediate: true
     service: "{{ item }}"
     state: enabled
   loop:
