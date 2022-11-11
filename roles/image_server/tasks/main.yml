@@ -62,6 +62,8 @@
       ansible.builtin.copy:
         src: /mnt/image_{{ image_uuid['id'] }}
         dest: /var/www/html/rhel{{ ansible_distribution_major_version }}/images/{{ image_uuid['id'] }}/
+        mode: 0644
+        directory_mode: 0755
         remote_src: true
 
 - name: Create kickstart file

@@ -19,7 +19,7 @@
       - cockpit
   register: dnf_out
 
-- name: Assert expected packages are all present 
+- name: Assert expected packages are all present
   ansible.builtin.assert:
     that:
       - not dnf_out.changed
@@ -44,7 +44,9 @@
 
 - name: RHEL9 (or newer) specific setup
   when:
-    - ((ansible_distribution in ['RedHat', 'CentOS']) and ansible_distribution_major_version|int > 8) or ((ansible_distribution in ['Fedora']) and ansible_distribution_major_version|int > 35)
+    - >-
+      ((ansible_distribution in ['RedHat', 'CentOS']) and ansible_distribution_major_version|int > 8)
+      or ((ansible_distribution in ['Fedora']) and ansible_distribution_major_version|int > 35)
   block:
     - name: Install toml
       ansible.builtin.dnf:
@@ -88,8 +90,9 @@
     - http
 
 - name: Get repository sources
-  ansible.builtin.shell:
-    cmd: composer-cli sources list
+  ansible.builtin.command:
+    cmd: /usr/bin/composer-cli sources list
+  changed_when: false
   register: sources_list
 
 - name: Check new source was added

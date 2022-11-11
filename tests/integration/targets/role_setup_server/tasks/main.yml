@@ -17,6 +17,7 @@
     - name: Setup osbuild overrides directory
       ansible.builtin.file:
         path: /etc/osbuild-composer/repositories
+        mode: 0755
         state: directory
 
     - name: Setup testing osbuild rhel9 fake repos
@@ -36,5 +37,5 @@
   ansible.builtin.import_role:
     name: osbuild.composer.setup_server
 
-- name: validate the role
+- name: Validate the role
   ansible.builtin.include_tasks: tests.yml
