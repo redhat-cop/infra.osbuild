@@ -32,29 +32,35 @@ options:
         description:
             - Base url of the source
         type: str
-        required: true
+        required: false
     type:
         description:
             - Url type
         type: str
         choices: [yum-baseurl, yum-mirrorlist, yum-metalink]
-        required: true
+        required: false
     check_ssl:
         description:
             - Check if the https certificates are valid
         type: bool
-        required: true
+        required: false
     check_gpg:
         description:
             - Check that the gpg keys match
         type: bool
-        required: true
+        required: false
     gpgkey_urls:
         description:
             - List of gpg key urls
         type: list
         elements: str
         required: false
+    state:
+        description:
+            - Whether to install (present) or remove (absent)
+        type: str
+        choices: [present, absent]
+        required: true
 """
 
 EXAMPLES = """
@@ -65,6 +71,7 @@ EXAMPLES = """
     type: yum-baseurl
     check_ssl: false
     check_gpg: false
+    state: present
 """
 
 import re
@@ -80,32 +87,55 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             repo_name=dict(type="str", required=True),
-            base_url=dict(type="str", required=True),
-            type=dict(type="str", required=True, choices=["yum-baseurl", "yum-mirrorlist", "yum-metalink"]),
-            check_ssl=dict(type="bool", required=True),
-            check_gpg=dict(type="bool", required=True),
+            base_url=dict(type="str", required=False),
+            type=dict(type="str", required=False, choices=["yum-baseurl", "yum-mirrorlist", "yum-metalink"]),
+            check_ssl=dict(type="bool", required=False),
+            check_gpg=dict(type="bool", required=False),
             gpgkey_urls=dict(type="list", required=False, elements="str", no_log=True),
+            state=dict(type="str", required=True, choices=["present", "absent"])
         ),
+        required_if=[('state', "present", ('base_url', 'type', 'check_ssl', 'check_gpg'))]
     )
 
     weldr = Weldr(module)
 
-    new_source = {}
-    new_source["name"] = module.params["repo_name"]
-    new_source["url"] = module.params["base_url"]
-    new_source["type"] = module.params["type"]
-    new_source["check_ssl"] = bool(module.params["check_ssl"])
-    new_source["check_gpg"] = bool(module.params["check_gpg"])
+    results = {}
+    has_changed = False
 
-    if module.params["gpgkey_urls"]:
-        gpgkeys = []
-        for url in module.params["gpgkey_urls"]:
-            gpgkeys.append(url)
-        new_source["gpgkey_urls"] = gpgkeys
+    repo_exists = weldr.api.get_projects_source_info_sources(module.params["repo_name"])
 
-    results = weldr.api.post_projects_source_new(json.dumps(new_source))
+    if module.params["state"] == "present":
 
-    module.exit_json(results=results, msg="New source add to osbuild composer")
+        if len(repo_exists["errors"]) == 0:
+            msg = "Source repository, %s, is already present on osbuild composer" % module.params["repo_name"]
+        else:
+            new_source = {}
+            new_source["name"] = module.params["repo_name"]
+            new_source["url"] = module.params["base_url"]
+            new_source["type"] = module.params["type"]
+            new_source["check_ssl"] = bool(module.params["check_ssl"])
+            new_source["check_gpg"] = bool(module.params["check_gpg"])
+
+            if module.params["gpgkey_urls"]:
+                gpgkeys = []
+                for url in module.params["gpgkey_urls"]:
+                    gpgkeys.append(url)
+                new_source["gpgkey_urls"] = gpgkeys
+
+            results = weldr.api.post_projects_source_new(json.dumps(new_source))
+            has_changed = True
+            msg = "New source repository, %s, was added to osbuild composer" % module.params["repo_name"]
+
+    elif module.params["state"] == "absent":
+
+        if len(repo_exists["errors"]) != 0:
+            msg = repo_exists
+        else:
+            results = weldr.api.delete_projects_source(module.params["repo_name"])
+            msg = "Source repository, %s, was deleted from osbuild composer" % module.params["repo_name"]
+            has_changed = True
+
+    module.exit_json(ansible_module_results=results, changed=has_changed, msg=msg)
 
 
 if __name__ == "__main__":

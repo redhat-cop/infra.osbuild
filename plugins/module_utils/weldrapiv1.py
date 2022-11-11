@@ -92,6 +92,36 @@ class WeldrV1(object):
         )
         return results
 
+    def get_projects_source_info_sources(self, source):
+        """
+        get_projects_source_info_sources
+
+        :sources:     str, a source name
+        """
+        results = json.load(
+            self.weldr.request.open(
+                "GET",
+                "http://localhost/api/v0/projects/source/info/%s" % source,
+                headers={"Content-Type": "application/json"},
+            )
+        )
+        return results
+
+    def delete_projects_source(self, source):
+        """
+        delete_projects_source
+
+        :source:     dict, a dictionary of a source
+        """
+        results = json.load(
+            self.weldr.request.open(
+                "DELETE",
+                "http://localhost/api/v0/projects/source/delete/%s" % source,
+                headers={"Content-Type": "application/json"},
+            )
+        )
+        return results
+
     def post_blueprint_new(self, blueprint):
         """
         post_blueprint_new
@@ -252,18 +282,6 @@ class WeldrV1(object):
         """
         # api.router.GET("/api/v:version/compose/logs/:uuid", api.composeLogsHandler)
         # api.router.GET("/api/v:version/compose/log/:uuid", api.composeLogHandler)
-        """
-        raise NotImplementedError
-
-    def get_projects_source_info_sources(self, sources):
-        """
-        # api.router.GET("/api/v:version/projects/source/info/:sources", api.sourceInfoHandler)
-        """
-        raise NotImplementedError
-
-    def delete_projects_source(self, source):
-        """
-        # api.router.DELETE("/api/v:version/projects/source/delete/*source", api.sourceDeleteHandler)
         """
         raise NotImplementedError
 
