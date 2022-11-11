@@ -19,6 +19,7 @@
     version: "0.0.1"
     packages: "{{ builder_compose_pkgs }}"
     customizations: "{{ builder_compose_customizations }}"
+    custom_packages: "{{ builder_compose_custom_pacakges }}"
 
 - name: Push the blueprint into image builder
   osbuild.composer.push_blueprint:

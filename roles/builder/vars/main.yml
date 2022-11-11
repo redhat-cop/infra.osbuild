@@ -12,3 +12,5 @@ builder_compose_customizations:
     password: "openshift"
     key: "{{ builder_pub_key }}"
     groups: '["users", "wheel"]'
+builder_compose_custom_pacakges:
+  - "neovim"
