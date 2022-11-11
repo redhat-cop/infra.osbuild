@@ -16,10 +16,10 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-module: add_source
-short_description: Add source to add custom packages
+module: repository
+short_description: Add source repository to add custom packages
 description:
-    - Add source to add custom packages to image
+    - Add source repository to add custom packages to image
 author:
     - Matthew Sandoval (@matoval)
 options:
@@ -59,7 +59,7 @@ options:
 
 EXAMPLES = """
 - name: Add source for custom packages
-  osbuild.composer.add_source:
+  osbuild.composer.repository:
     repo_name: Everything
     base_url: https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/
     type: yum-baseurl
