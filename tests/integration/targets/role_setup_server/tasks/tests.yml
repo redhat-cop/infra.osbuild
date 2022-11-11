@@ -86,3 +86,13 @@
   loop:
     - cockpit
     - http
+
+- name: Get repository sources
+  ansible.builtin.shell:
+    cmd: composer-cli sources list
+  register: sources_list
+
+- name: Check new source was added
+  ansible.builtin.assert:
+    that:
+      - custom_repo_name in sources_list
