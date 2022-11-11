@@ -37,5 +37,3 @@
 
 - name: validate the role
   ansible.builtin.include_tasks: tests.yml
-  vars:
-    custom_repo_name: "{{ custom_repo_name }}"
