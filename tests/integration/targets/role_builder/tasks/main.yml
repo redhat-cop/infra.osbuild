@@ -11,13 +11,6 @@
   ansible.builtin.include_vars:
     file: ../vars/main.yml
 
-- name: handle rhel <8.5 compose type
-  set_fact:
-    compose_type: "rhel-edge-commit"
-  when:
-    - 'ansible_facts["distribution"] == "RedHat"'
-    - 'ansible_facts["distribution_version"]|float < 8.5'
-
 - name: Run the osbuild.composer.build role
   ansible.builtin.import_role:
     name: osbuild.composer.builder
