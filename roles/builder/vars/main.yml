@@ -5,6 +5,7 @@ builder_pub_key: "~/.ssh/id_rsa.pub"
 builder_compose_pkgs:
   - "vim-enhanced"
   - "git"
+  - "neovim"
 builder_compose_customizations:
   user:
     name: "core"
@@ -12,5 +13,3 @@ builder_compose_customizations:
     password: "openshift"
     key: "{{ builder_pub_key }}"
     groups: '["users", "wheel"]'
-builder_compose_custom_pacakges:
-  - "neovim"
