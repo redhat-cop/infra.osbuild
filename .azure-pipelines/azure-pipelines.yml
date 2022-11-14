@@ -55,6 +55,8 @@ stages:
               test: sanity
             - name: Units
               test: units
+            - name: Lint
+              test: lint
   - stage: Sanity_2_14
     displayName: Ansible 2.14 sanity
     dependsOn: []
