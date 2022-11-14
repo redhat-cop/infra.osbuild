@@ -2,6 +2,6 @@
 - name: Run osbuild_builder role
   hosts: all
   tasks:
-    - name: run the role
+    - name: Run the role
       ansible.builtin.import_role:
         name: osbuild.composer.builder
