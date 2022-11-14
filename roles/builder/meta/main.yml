@@ -1,22 +1,22 @@
 ---
 galaxy_info:
-  role_name: osbuild.composer.builder
+  role_name: "builder"
   standalone: false
-  description: >
-    Build an operating system image using osbuild composer
+  company: "Red Hat"
+  description: "Build an operating system image using osbuild composer"
   author: Ansible Edge Working Group
   license: "GPL-3.0-or-later"
-  min_ansible_version: 2.12
+  min_ansible_version: "2.12"
   platforms:
-    - name: EL
+    - name: "EL"
       versions:
         - 8
         - 9
-    - name: Fedora
+    - name: "Fedora"
       versions:
-        - all
+        - "all"
   galaxy_tags:
-    - image
-    - build
-    - os
+    - "image"
+    - "build"
+    - "os"
 dependencies: []

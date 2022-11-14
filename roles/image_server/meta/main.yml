@@ -1,12 +1,13 @@
 ---
 galaxy_info:
-  role_name: osbuild.composer.image_server
+  role_name: "image_server"
   standalone: false
+  company: "Red Hat"
   description: >
     Manage ostree image repositories.
   author: Ansible Edge Working Group
   license: "GPL-3.0-or-later"
-  min_ansible_version: 2.12
+  min_ansible_version: "2.12"
   platforms:
     - name: EL
       versions:
