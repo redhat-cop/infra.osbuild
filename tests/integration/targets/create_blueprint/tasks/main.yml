@@ -7,13 +7,13 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-- name: include relevant variables
+- name: Include relevant variables
   ansible.builtin.include_vars:
     file: ../vars/main.yml
 
-- name: create a blueprint block
+- name: Create a blueprint block
   block:
-    - name: create a blueprint
+    - name: Create a blueprint
       osbuild.composer.create_blueprint:
         dest: "{{ blueprint_path }}"
         name: "{{ blueprint_name }}"
@@ -32,12 +32,13 @@
             key: "PUBLIC-SSH-KEY"
             home: "/home/bob/"
             shell: "/usr/bin/bash"
-            groups: '["users", "wheel"]' 
+            groups: '["users", "wheel"]'
 
-    - ansible.builtin.include_tasks: tests.yml
+    - name: Include test tasks
+      ansible.builtin.include_tasks: tests.yml
 
   always:
-    - name: cleanup after ourselves
+    - name: Cleanup after ourselves
       ansible.builtin.file:
         path: "/tmp/blueprint.toml"
         state: absent

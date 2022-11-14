@@ -19,9 +19,9 @@
         state: directory
         mode: '0755'
 
-    - name: run the role for each finished image
+    - name: Run the role for each finished image
       with_items: "{{ all_images['result']['finished'] }}"
       ansible.builtin.include_role:
         name: osbuild.composer.image_server
       vars:
-        image_uuid: "{{ item  }}"
+        image_uuid: "{{ item }}"

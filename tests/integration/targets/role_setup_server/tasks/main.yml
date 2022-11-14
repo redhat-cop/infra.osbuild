@@ -17,12 +17,14 @@
     - name: Setup osbuild overrides directory
       ansible.builtin.file:
         path: /etc/osbuild-composer/repositories
+        mode: 0755
         state: directory
 
     - name: Setup testing osbuild rhel9 fake repos
       ansible.builtin.copy:
-        src: "files/{{item}}.json"
-        dest: "/etc/osbuild-composer/repositories/{{item}}.json"
+        src: "files/{{ item }}.json"
+        mode: 0644
+        dest: "/etc/osbuild-composer/repositories/{{ item }}.json"
       loop:
         - rhel-90
         - rhel-87
@@ -35,5 +37,5 @@
   ansible.builtin.import_role:
     name: osbuild.composer.setup_server
 
-- name: validate the role
+- name: Validate the role
   ansible.builtin.include_tasks: tests.yml
