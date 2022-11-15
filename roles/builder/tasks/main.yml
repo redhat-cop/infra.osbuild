@@ -15,18 +15,35 @@
 - name: Create a blueprint
   osbuild.composer.create_blueprint:
     dest: "{{ builder_blueprint_src_path }}"
-    name: "my-rhel-edge-test"
-    version: "0.0.1"
+    name: "{{ builder_blueprint_name }}"
     packages: "{{ builder_compose_pkgs }}"
     customizations: "{{ builder_compose_customizations }}"
+  register: blueprint_output
 
 - name: Push the blueprint into image builder
   osbuild.composer.push_blueprint:
     src: "{{ builder_blueprint_src_path }}"
 
+- name: Check if blueprint directory exists
+  ansible.builtin.stat:
+    path: "/var/www/html/{{ builder_blueprint_name }}"
+  register: stat_output
+
+- name: Initialize rpm-ostree repo for blueprint
+  when: not stat_output.stat.exists
+  block:
+    - name: Create blueprint directory
+      ansible.builtin.file:
+        path: "/var/www/html/{{ builder_blueprint_name }}"
+        state: directory
+    - name: Initialize repository
+      ansible.builtin.shell:
+        chdir: "/var/www/html/{{ builder_blueprint_name }}"
+        cmd: 'ostree --repo=repo init --mode=archive'
+
 - name: Start compose
   osbuild.composer.start_compose:
-    blueprint: "my-rhel-edge-test"
+    blueprint: "{{ builder_blueprint_name }}"
     compose_type: "{{ builder_compose_type }}"
   register: compose_start_out
 
@@ -34,7 +51,34 @@
   osbuild.composer.wait_compose:
     compose_id: "{{ compose_start_out['result']['build_id'] }}"
 
+- name: Create tmp directory for blueprint
+  ansible.builtin.file:
+    path: "/tmp/{{ builder_blueprint_name }}"
+    state: directory
+
 - name: Export the compose artifact
   osbuild.composer.export_compose:
     compose_id: "{{ compose_start_out['result']['build_id'] }}"
-    dest: "/tmp/composer-compose.{{ compose_start_out['result']['output_type'] }}"
+    dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"
+
+- name: Update ostree repository
+  when: compose_start_out['result']['output_type'] == 'tar'
+  block:
+    - name: Untar artifact
+      ansible.builtin.unarchive:
+        src: /tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.tar
+        dest: /tmp/{{ builder_blueprint_name }}
+        remote_src: True
+
+    - name: Get checksum from artifact
+      ansible.builtin.shell:
+        cmd: "ostree --repo=/tmp/{{ builder_blueprint_name }}/repo rev-parse {{ builder_blueprint_ref }}"
+      register: checksum_output
+
+    - name: Pull commit from artifact
+      ansible.builtin.shell:
+        cmd: "ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo pull-local /tmp/{{ builder_blueprint_name }}/repo {{ checksum_output['stdout'] }}"
+
+    - name: Commit changes to repository
+      ansible.builtin.shell:
+        cmd: "ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}"

@@ -1,5 +1,7 @@
 ---
+builder_blueprint_name: test_blueprint
 builder_blueprint_src_path: /tmp/blueprint.toml
+builder_blueprint_ref: rhel/9/x86_64/edge
 builder_compose_type: edge-commit
 builder_pub_key: "~/.ssh/id_rsa.pub"
 builder_compose_pkgs:
