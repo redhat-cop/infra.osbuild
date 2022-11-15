@@ -39,12 +39,12 @@ options:
         type: str
         required: false
         default: ""
-    version:
+    version_type:
         description:
-            - Semantic Versioned (https://semver.org/) version number
+            - Semantic Versioned (https://semver.org/) version type
         type: str
         required: false
-        default: "0.0.1"
+        default: "patch"
     packages:
         description:
             - List of package names to add to the blueprint
@@ -73,7 +73,6 @@ EXAMPLES = """
   osbuild.composer.create_blueprint:
     dest: "/tmp/blueprint.toml"
     name: "my-rhel-edge-blueprint"
-    version: "0.0.5"
     packages:
       - "vim-enhanced"
       - "ansible-core"
@@ -98,6 +97,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
 from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
 
+
 def increment_version(version: str, version_type: str) -> str:
     major, minor, patch = version.split('.')
     if version_type == 'major':
@@ -105,6 +105,7 @@ def increment_version(version: str, version_type: str) -> str:
     if version_type == 'minor':
         return f'{major}.{int(minor) + 1}.{patch}'
     return f'{major}.{minor}.{int(patch) + 1}'
+
 
 def main():
     module = AnsibleModule(
