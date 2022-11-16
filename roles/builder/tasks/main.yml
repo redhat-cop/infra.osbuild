@@ -88,6 +88,5 @@
 
     - name: Commit changes to repository
       ansible.builtin.command:
-        cmd: >-
-          "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}"
+        cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}"
       changed_when: true
