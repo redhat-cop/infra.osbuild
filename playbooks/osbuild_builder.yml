@@ -1,6 +1,6 @@
 ---
 - name: Run osbuild_builder role
-  become: True
+  become: true
   hosts: all
   tasks:
     - name: Run the role
