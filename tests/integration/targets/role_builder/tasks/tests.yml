@@ -8,7 +8,7 @@
 #       within these test cases (yet?).
 - name: Stat the resulting image
   ansible.builtin.stat:
-    path: "/tmp/composer-compose.{{ compose_start_out['result']['output_type'] }}"
+    path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"
   register: stat_out
 
 - name: Assert that a build was completed and exists on the filesystem
