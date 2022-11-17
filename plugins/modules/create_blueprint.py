@@ -22,6 +22,7 @@ description:
     - Create a new blueprint file
 author:
 - Adam Miller (@maxamillion)
+- Chris Santiago (@resoluteCoder)
 options:
     dest:
         description:
@@ -41,9 +42,14 @@ options:
         default: ""
     version_type:
         description:
-            - Semantic Versioned (https://semver.org/) version type
+            - Specify which version segment will be incremented.
+            - Major will increment the first segment 1.0.0
+            - Minor will increment the second segment 0.1.0
+            - Patch will increment the last segment 0.0.1
+            - For more information please visit https://semver.org/
         type: str
         required: false
+        choices: ['major', 'minor', 'patch']
         default: "patch"
     packages:
         description:
@@ -113,7 +119,7 @@ def main():
             dest=dict(type="str", required=True),
             name=dict(type="str", required=True),
             description=dict(type="str", required=False, default=""),
-            version_type=dict(type="str", required=False, default="patch"),
+            version_type=dict(type="str", required=False, default="patch", choices=['major', 'minor', 'patch']),
             packages=dict(type="list", required=False, elements="str", default=[]),
             groups=dict(type="list", required=False, elements="str", default=[]),
             customizations=dict(type="dict", required=False, default={}),
@@ -131,18 +137,21 @@ def main():
         f'description = "{description}"\n'
     )
 
-    blueprint_version = '0.0.1'
-    blueprint_exists = True
-    results = weldr.api.get_blueprints_info(module.params['name'])
-    for error in results['errors']:
-        if error['id'] == 'UnknownBlueprint':
-            blueprint_exists = False
+    try:
+        blueprint_version = '0.0.1'
+        blueprint_exists = True
+        results = weldr.api.get_blueprints_info(module.params['name'])
+        for error in results['errors']:
+            if error['id'] == 'UnknownBlueprint':
+                blueprint_exists = False
 
-    if blueprint_exists:
-        current_version = results['blueprints'][0]['version']
-        blueprint_version = increment_version(current_version, module.params['version_type'])
+        if blueprint_exists:
+            current_version = results['blueprints'][0]['version']
+            blueprint_version = increment_version(current_version, module.params['version_type'])
 
-    toml_file += f'version = "{blueprint_version}"\n\n'
+        toml_file += f'version = "{blueprint_version}"\n\n'
+    except Exception as e:
+        module.fail_json(msg=f'Error: {e}. OSbuild composer service is unavailable')
 
     for package in module.params["packages"]:
         toml_file += f"[[packages]]\n" f'name = "{package}"\n' f'version = "*"\n' f"\n"

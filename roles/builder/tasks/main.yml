@@ -90,3 +90,8 @@
       ansible.builtin.command:
         cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}"
       changed_when: true
+
+    - name: Remove tar file
+      ansible.builtin.file:
+        path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"
+        state: absent
