@@ -6,12 +6,13 @@
 # NOTE: the compose_start_out variable comes into scope via the
 #       execution of the osbuild.composer.builder role and is not defined
 #       within these test cases (yet?).
-- name: Stat the resulting image
-  ansible.builtin.stat:
-    path: "/tmp/composer-compose.{{ compose_start_out['result']['output_type'] }}"
-  register: stat_out
+- name: Get latest checksum from repo.
+  ansible.builtin.command:
+    cmd: "/usr/bin/ostree rev-parse {{ builder_blueprint_ref }} --repo=/var/www/html/{{ builder_blueprint_name }}/repo" # noqa yaml[line-length]
+  register: checksum_output
+  changed_when: false
 
-- name: Assert that a build was completed and exists on the filesystem
+- name: Assert that the commit was successful and that there is a checksum available.
   ansible.builtin.assert:
     that:
-      - stat_out.stat.exists
+      - checksum_output.stdout

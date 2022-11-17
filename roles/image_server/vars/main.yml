@@ -1,3 +1,0 @@
----
-pub_key_path: "~/.ssh/id_rsa.pub"
-kickstart_username: "core"

@@ -22,6 +22,7 @@ description:
     - Create a new blueprint file
 author:
 - Adam Miller (@maxamillion)
+- Chris Santiago (@resoluteCoder)
 options:
     dest:
         description:
@@ -39,12 +40,17 @@ options:
         type: str
         required: false
         default: ""
-    version:
+    version_type:
         description:
-            - Semantic Versioned (https://semver.org/) version number
+            - Specify which version segment will be incremented.
+            - Major will increment the first segment 1.0.0
+            - Minor will increment the second segment 0.1.0
+            - Patch will increment the last segment 0.0.1
+            - For more information please visit https://semver.org/
         type: str
         required: false
-        default: "0.0.1"
+        choices: ['major', 'minor', 'patch']
+        default: "patch"
     packages:
         description:
             - List of package names to add to the blueprint
@@ -73,7 +79,6 @@ EXAMPLES = """
   osbuild.composer.create_blueprint:
     dest: "/tmp/blueprint.toml"
     name: "my-rhel-edge-blueprint"
-    version: "0.0.5"
     packages:
       - "vim-enhanced"
       - "ansible-core"
@@ -96,6 +101,16 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
+from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
+
+
+def increment_version(version: str, version_type: str) -> str:
+    major, minor, patch = version.split('.')
+    if version_type == 'major':
+        return f'{int(major) + 1}.{minor}.{patch}'
+    if version_type == 'minor':
+        return f'{major}.{int(minor) + 1}.{patch}'
+    return f'{major}.{minor}.{int(patch) + 1}'
 
 
 def main():
@@ -104,12 +119,13 @@ def main():
             dest=dict(type="str", required=True),
             name=dict(type="str", required=True),
             description=dict(type="str", required=False, default=""),
-            version=dict(type="str", required=False, default="0.0.1"),
+            version_type=dict(type="str", required=False, default="patch", choices=['major', 'minor', 'patch']),
             packages=dict(type="list", required=False, elements="str", default=[]),
             groups=dict(type="list", required=False, elements="str", default=[]),
             customizations=dict(type="dict", required=False, default={}),
         ),
     )
+    weldr = Weldr(module)
 
     if not module.params["description"]:
         description = module.params["name"]
@@ -119,9 +135,23 @@ def main():
     toml_file = (
         f'name = "{module.params["name"]}"\n'
         f'description = "{description}"\n'
-        f'version = "{module.params["version"]}"\n'
-        f"\n"
     )
+
+    try:
+        blueprint_version = '0.0.1'
+        blueprint_exists = True
+        results = weldr.api.get_blueprints_info(module.params['name'])
+        for error in results['errors']:
+            if error['id'] == 'UnknownBlueprint':
+                blueprint_exists = False
+
+        if blueprint_exists:
+            current_version = results['blueprints'][0]['version']
+            blueprint_version = increment_version(current_version, module.params['version_type'])
+
+        toml_file += f'version = "{blueprint_version}"\n\n'
+    except Exception as e:
+        module.fail_json(msg=f'Error: {e}. OSbuild composer service is unavailable')
 
     for package in module.params["packages"]:
         toml_file += f"[[packages]]\n" f'name = "{package}"\n' f'version = "*"\n' f"\n"
@@ -149,7 +179,8 @@ def main():
 
     module.exit_json(
         msg=f'Blueprint file written to location: {module.params["dest"]}',
-        changed=True
+        changed=True,
+        current_version=blueprint_version
     )
 
 
