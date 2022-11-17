@@ -26,7 +26,7 @@ author:
 
 EXAMPLES = """
 - name: Get list of blueprints
-  osbuild.composer.list_blueprints:
+  infra.osbuild.list_blueprints:
   register: list_blueprints_out
 
 - debug: var=list_blueprints
@@ -37,7 +37,7 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
 def main():

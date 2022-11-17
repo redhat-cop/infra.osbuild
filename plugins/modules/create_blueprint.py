@@ -76,7 +76,7 @@ options:
 
 EXAMPLES = """
 - name: create blueprint on  host
-  osbuild.composer.create_blueprint:
+  infra.osbuild.create_blueprint:
     dest: "/tmp/blueprint.toml"
     name: "my-rhel-edge-blueprint"
     packages:
@@ -101,7 +101,7 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
 def increment_version(version: str, version_type: str) -> str:

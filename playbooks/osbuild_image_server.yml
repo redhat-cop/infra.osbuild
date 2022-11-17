@@ -4,7 +4,7 @@
   become: true
   tasks:
     - name: Get list of all created images
-      osbuild.composer.get_all_finished_images:
+      infra.osbuild.get_all_finished_images:
       register: all_images
 
     - name: Create directory to hold all rhel version directories
@@ -22,6 +22,6 @@
     - name: Run the role for each finished image
       with_items: "{{ all_images['result']['finished'] }}"
       ansible.builtin.include_role:
-        name: osbuild.composer.image_server
+        name: infra.osbuild.image_server
       vars:
         image_uuid: "{{ item }}"

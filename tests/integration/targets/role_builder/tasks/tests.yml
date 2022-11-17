@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # NOTE: the compose_start_out variable comes into scope via the
-#       execution of the osbuild.composer.builder role and is not defined
+#       execution of the infra.osbuild.builder role and is not defined
 #       within these test cases (yet?).
 - name: Get latest checksum from repo.
   ansible.builtin.command:

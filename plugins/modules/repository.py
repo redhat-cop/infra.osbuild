@@ -65,7 +65,7 @@ options:
 
 EXAMPLES = """
 - name: Add source for custom packages
-  osbuild.composer.repository:
+  infra.osbuild.repository:
     repo_name: Everything
     base_url: https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/
     type: yum-baseurl
@@ -80,7 +80,7 @@ import json
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text, to_bytes
-from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
 def main():

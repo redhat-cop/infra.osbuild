@@ -5,4 +5,4 @@
   tasks:
     - name: Run the role
       ansible.builtin.import_role:
-        name: osbuild.composer.builder
+        name: infra.osbuild.builder

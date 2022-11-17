@@ -33,9 +33,9 @@
         - rhel-84
         - rhel-8
 
-- name: Run the osbuild.composer.setup_server role
+- name: Run the infra.osbuild.setup_server role
   ansible.builtin.import_role:
-    name: osbuild.composer.setup_server
+    name: infra.osbuild.setup_server
 
 - name: Validate the role
   ansible.builtin.include_tasks: tests.yml

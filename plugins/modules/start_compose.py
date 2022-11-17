@@ -105,13 +105,13 @@ notes:
 
 EXAMPLES = """
 - name: Start ostree compose size 4096
-  osbuild.composer.start_ostree:
+  infra.osbuild.start_ostree:
     blueprint: rhel-for-edge-demo
     image_name: testimage
     size: 4096
 
 - name: Start ostree compose with idempotent transaction
-  osbuild.composer.start_ostree:
+  infra.osbuild.start_ostree:
     blueprint: rhel-for-edge-demo
     allow_duplicate: false
 """
@@ -121,7 +121,7 @@ import json
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
 def main():

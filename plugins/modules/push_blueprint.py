@@ -41,7 +41,7 @@ notes:
 
 EXAMPLES = """
 - name: Push a blueprint
-  osbuild.composer.push_blueprint:
+  infra.osbuild.push_blueprint:
     src: /tmp/blueprint.toml
 """
 
@@ -51,7 +51,7 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
 def main():

@@ -37,7 +37,7 @@ options:
 
 EXAMPLES = """
 - name: Export RHEL for Edge compose
-  osbuild.composer.wait_compose:
+  infra.osbuild.wait_compose:
     compose_id: "1bb4cc77-828e-42a2-a3de-9517e99ea4e4"
     dest: "/tmp/mycompose_artifact.tar"
 
@@ -53,7 +53,7 @@ import time
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-from ansible_collections.osbuild.composer.plugins.module_utils.weldr import Weldr
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
 def main():
