@@ -17,7 +17,7 @@
         src: "{{ pubkey_file }}"
       register: slurp_out
     - name: Create a blueprint
-      osbuild.composer.create_blueprint:
+      infra.osbuild.create_blueprint:
         dest: "{{ blueprint_src_path }}"
         name: "my-rhel-edge-test"
         version: "0.0.1"
@@ -34,11 +34,11 @@
             groups: '["users", "wheel"]'
 
     - name: Push the blueprint into image builder
-      osbuild.composer.push_blueprint:
+      infra.osbuild.push_blueprint:
         src: "{{ blueprint_src_path }}"
 
     - name: Start compose
-      osbuild.composer.start_compose:
+      infra.osbuild.start_compose:
         blueprint: "my-rhel-edge-test"
         compose_type: "{{ compose_type }}"
       register: compose_start_out
@@ -48,11 +48,11 @@
         var: compose_start_out
 
     - name: Wait for compose to finish
-      osbuild.composer.wait_compose:
+      infra.osbuild.wait_compose:
         compose_id: "{{ compose_start_out['result']['build_id'] }}"
 
     - name: Export the compose artifact
-      osbuild.composer.export_compose:
+      infra.osbuild.export_compose:
         compose_id: "{{ compose_start_out['result']['build_id'] }}"
         dest: "/tmp/composer-compose.tar"
 

@@ -65,7 +65,7 @@ requirements:
 
 EXAMPLES = """
 - name: inject kickstart into ISO
-  osbuild.composer.inject_ks:
+  infra.osbuild.inject_ks:
     kickstart: "/tmp/mykickstart.ks"
     src_iso: "/tmp/previously_composed.iso"
     dest_iso: "/tmp/with_my_kickstart.iso"
