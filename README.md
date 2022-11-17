@@ -23,13 +23,7 @@ You will need a RHEL, Centos Stream or Fedora server that you can connect to rem
 ansible-playbook playbooks/osbuild_setup_server.yml
 ```
 
-### Configure Osbuild Image Server
-
-```shell
-ansible-playbook playbooks/osbuild_image_server.yml
-```
-
-### Configure Osbuild Builder
+### Configure Osbuild Builder (this will also host the images)
 
 ```shell
 ansible-playbook playbooks/osbuild_builder.yml
