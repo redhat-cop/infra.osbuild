@@ -6,10 +6,11 @@
 # NOTE: the compose_start_out variable comes into scope via the
 #       execution of the osbuild.composer.builder role and is not defined
 #       within these test cases (yet?).
-- name: Get latest checksum from {{ builder_blueprint_name }} repo.
+- name: Get latest checksum from repo.
   ansible.builtin.command:
     cmd: "/usr/bin/ostree rev-parse {{ builder_blueprint_ref }} --repo=/var/www/html/{{ builder_blueprint_name }}/repo" # noqa yaml[line-length]
   register: checksum_output
+  changed_when: false
 
 - name: Assert that the commit was successful and that there is a checksum available.
   ansible.builtin.assert:
