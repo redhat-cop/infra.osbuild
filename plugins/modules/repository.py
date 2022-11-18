@@ -55,6 +55,11 @@ options:
         type: list
         elements: str
         required: false
+    rhsm:
+        description:
+            - Set true if the repository source requires a subscription
+        type: bool
+        required: false
     state:
         description:
             - Whether to install (present) or remove (absent)
@@ -92,6 +97,7 @@ def main():
             check_ssl=dict(type="bool", required=False),
             check_gpg=dict(type="bool", required=False),
             gpgkey_urls=dict(type="list", required=False, elements="str", no_log=True),
+            rhsm=dict(type="bool", required=False),
             state=dict(type="str", required=True, choices=["present", "absent"])
         ),
         required_if=[('state', "present", ('base_url', 'type', 'check_ssl', 'check_gpg'))]
@@ -106,22 +112,33 @@ def main():
 
     if module.params["state"] == "present":
 
+        new_source = {}
+        new_source["name"] = module.params["repo_name"]
+        new_source["url"] = module.params["base_url"]
+        new_source["type"] = module.params["type"]
+        new_source["check_ssl"] = bool(module.params["check_ssl"])
+        new_source["check_gpg"] = bool(module.params["check_gpg"])
+
+        if module.params["rhsm"]:
+            new_source["rhsm"] = module.params["rhsm"]
+
+        if module.params["gpgkey_urls"]:
+            gpgkeys = []
+            for url in module.params["gpgkey_urls"]:
+                gpgkeys.append(url)
+            new_source["gpgkey_urls"] = gpgkeys
+
         if len(repo_exists["errors"]) == 0:
-            msg = "Source repository, %s, is already present on osbuild composer" % module.params["repo_name"]
+            #weldr has not update endpoint for sources
+            isDeleted = weldr.api.delete_projects_source(module.params["repo_name"])
+            if not isDeleted["status"]:
+                msg = isDeleted["errors"]
+            else:
+                results = weldr.api.post_projects_source_new(json.dumps(new_source))
+                has_changed = True
+                msg = "Source repository, %s, was updated." % module.params["repo_name"]
+
         else:
-            new_source = {}
-            new_source["name"] = module.params["repo_name"]
-            new_source["url"] = module.params["base_url"]
-            new_source["type"] = module.params["type"]
-            new_source["check_ssl"] = bool(module.params["check_ssl"])
-            new_source["check_gpg"] = bool(module.params["check_gpg"])
-
-            if module.params["gpgkey_urls"]:
-                gpgkeys = []
-                for url in module.params["gpgkey_urls"]:
-                    gpgkeys.append(url)
-                new_source["gpgkey_urls"] = gpgkeys
-
             results = weldr.api.post_projects_source_new(json.dumps(new_source))
             has_changed = True
             msg = "New source repository, %s, was added to osbuild composer" % module.params["repo_name"]
