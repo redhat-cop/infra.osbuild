@@ -1,6 +1,6 @@
 # Osbuild Composer Ansible Collection
 
-[![GitHub Super-Linter](https://github.com/ansible-collections/infra.osbuild/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![GitHub Super-Linter](https://github.com/redhat-cop/infra.osbuild/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 [Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html) for management of [osbuild composer](https://www.osbuild.org/documentation/#composer) 
 to build ostree based images for Fedora, Red Hat Enterprise Linux and Centos Stream. This collection has roles to build an osbuild server, an apache server to host images and roles to build images and updates.
@@ -10,7 +10,7 @@ to build ostree based images for Fedora, Red Hat Enterprise Linux and Centos Str
 To install this collection and its dependencies, you will need to use the [Ansible](https://github.com/ansible/ansible) `ansible-galaxy` command:
 
 ```shell
-ansible-galaxy collection install git+https://github.com/ansible-collections/infra.osbuild
+ansible-galaxy collection install git+https://github.com/redhat-cop/infra.osbuild
 ```
 
 ## How to use
