@@ -6,7 +6,7 @@
 namespace: infra
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: osbuild 
+name: osbuild
 
 # The version of the collection. Must be compatible with semantic versioning
 version: 1.0.0
