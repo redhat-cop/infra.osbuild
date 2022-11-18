@@ -85,5 +85,6 @@
     type: "{{ custom_repo_type | default(omit) }}"
     check_ssl: "{{ custom_repo_check_ssl | default(omit) }}"
     check_gpg: "{{ custom_repo_check_gpg | default(omit) }}"
-    gpgkey_urls: "{{ gpgkey_urls | default(omit) }}"
+    gpgkey_urls: "{{ custom_repo_gpgkey_urls | default(omit) }}"
+    rhsm: "{{ custom_repo_rhsm | default(omit) }}"
     state: "{{ custom_repo_state }}"
