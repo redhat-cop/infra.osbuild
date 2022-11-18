@@ -129,7 +129,7 @@ def main():
             new_source["gpgkey_urls"] = gpgkeys
 
         if len(repo_exists["errors"]) == 0:
-            #weldr has not update endpoint for sources
+            # weldr has not update endpoint for sources
             isDeleted = weldr.api.delete_projects_source(module.params["repo_name"])
             if not isDeleted["status"]:
                 msg = isDeleted["errors"]
