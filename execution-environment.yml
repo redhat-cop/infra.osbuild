@@ -6,4 +6,3 @@ build_arg_defaults:
 
 dependencies:
   galaxy: ee-requirements.yml
-
