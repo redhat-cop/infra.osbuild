@@ -1,11 +1,6 @@
 ---
 
-- name: cleanup edge-container
-  containers.podman.podman_container:
-    name: "{{ builder_blueprint_name }}-container"
-    state: absent
-
-- name: cleanup edge-container iamge
-  containers.podman.podman_image:
-    name: "localhost/{{ builder_blueprint_name }}-container:{{ blueprint_output['current_version'] }}"
+- name: cleanup /tmp
+  ansible.builtin.file:
+    path: "/tmp/{{ builder_blueprint_name }}-installer"
     state: absent

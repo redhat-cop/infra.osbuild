@@ -1,6 +1,6 @@
 ---
 
-- name: ensure podman is present
-  ansible.builtin.dnf:
-    name:
-      - podman
+- name: create a dir for isos
+  ansible.builtin.file:
+    path: /var/www/html/iso
+    state: directory
