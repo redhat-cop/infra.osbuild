@@ -5,4 +5,4 @@
 azp/posix/1
 needs/root
 destructive
-setup/always/role_build_edge_installer
+setup/always/role_setup_server
