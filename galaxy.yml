@@ -20,6 +20,7 @@ authors:
   - Adam Miller (@maxamillion)
   - Chris Santiago (@resoluteCoder)
   - Matthew Sandoval (@matoval)
+  - Josh Swanson (@jjaswanson4)
 
 ### OPTIONAL but strongly recommended
 
@@ -46,6 +47,7 @@ tags: []
 dependencies:
   "community.general": ">1.0.0"
   "ansible.posix": ">1.0.0"
+  "containers.podman": "*"
 
 # The URL of the originating SCM repository
 repository: https://github.com/redhat-cop/infra.osbuild
