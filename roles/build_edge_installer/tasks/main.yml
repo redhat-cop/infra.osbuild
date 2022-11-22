@@ -1,5 +1,8 @@
 ---
 
+- name: import pre-flight tasks
+  ansible.builtin.import_tasks: pre-flight.yml
+
 - name: import tasks to build edge-container
   ansible.builtin.import_tasks: build-edge-container.yml
 
@@ -8,3 +11,6 @@
 
 - name: import tasks to build edge-installer
   ansible.builtin.import_tasks: build-edge-installer.yml
+
+- name: import post-flight tasks
+  ansible.builtin.import_tasks: post-flight.yml

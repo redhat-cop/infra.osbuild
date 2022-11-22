@@ -1,0 +1,6 @@
+---
+
+- name: ensure podman is present
+  ansible.builtin.dnf:
+    name:
+      - podman
