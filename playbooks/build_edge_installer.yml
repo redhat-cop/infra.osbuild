@@ -6,3 +6,4 @@
     - all
   roles:
     - infra.osbuild.build_edge_installer
+  

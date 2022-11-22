@@ -30,10 +30,10 @@
 - name: Export the compose artifact
   infra.osbuild.export_compose:
     compose_id: "{{ compose_start_out['result']['build_id'] }}"
-    dest: "/tmp/{{ builder_blueprint_name }}-installer/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" 
+    dest: "/tmp/{{ builder_blueprint_name }}-installer/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
 
-- name: copy iso to web dir
+- name: Copy iso to web dir
   ansible.builtin.copy:
-    src: "/tmp/{{ builder_blueprint_name }}-installer/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"
+    src: "/tmp/{{ builder_blueprint_name }}-installer/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
     dest: /var/www/html/iso
     remote_src: true
