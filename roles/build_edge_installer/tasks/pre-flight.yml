@@ -4,3 +4,4 @@
   ansible.builtin.file:
     path: /var/www/html/iso
     state: directory
+    mode: '0644'
