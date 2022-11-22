@@ -8,7 +8,7 @@
 
 - name: load in container image
   ansible.builtin.shell:
-    cmd: cat /tmp/device-edge-manager/device-edge-manager-0.0.4.tar | podman load
+    cmd: cat "{{ loaded_image.stdout_lines[0].split(' ')[2] }}" | podman load
   register: loaded_image
   changed_when: false
 
