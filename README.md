@@ -28,6 +28,32 @@ ansible-playbook playbooks/osbuild_setup_server.yml
 ```shell
 ansible-playbook playbooks/osbuild_builder.yml
 ```
+You can specify what kind of build you prefer with the variable buidler_compose_type. The options for this are:
+
+- ami
+- edge-commit
+- edge-container
+- edge-installer
+- edge-raw-image
+- edge-simplified-installer
+- image-installer
+- oci
+- openstack
+- qcow2
+- tar
+- vhd
+- vmdk
+- iot-commit (fedora only)
+- iot-container (fedora only)
+- iot-installer (fedora only)
+- iot-raw-image (fedora only)
+- container
+
+Example:
+
+```shell
+ansible-playbook playbooks/osbuild_builder.yml -e builder_compose_type=qcow2
+```
 
 ### Configure testbuild
 
@@ -39,5 +65,5 @@ For Fedora valid types are: ami, container, iot-commit, iot-container, iot-insta
 
 Example:
 ```shell
-ansible-playbook playbooks/testbuild.yml -e compose_type=edge-installer
+ansible-playbook playbooks/testbuild.yml -e builder_compose_type=edge-installer
 ```
