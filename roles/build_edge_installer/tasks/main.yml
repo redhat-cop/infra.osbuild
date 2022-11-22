@@ -1,0 +1,10 @@
+---
+
+- name: import tasks to build edge-container
+  ansible.builtin.import_tasks: build-edge-container.yml
+
+- name: import tasks to run edge-container
+  ansible.builtin.import_tasks: run-edge-container.yml
+
+- name: import tasks to build edge-installer
+  ansible.builtin.import_tasks: build-edge-installer.yml
