@@ -6,4 +6,3 @@ azp/posix/1
 needs/root
 destructive
 setup/always/role_setup_server
-setup/always/role_builder
