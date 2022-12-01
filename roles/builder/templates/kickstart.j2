@@ -1,0 +1,36 @@
+lang en_US.UTF-8
+keyboard us
+timezone Etc/UTC --isUtc
+text
+zerombr
+clearpart --all --initlabel
+autopart
+reboot
+user --name={{ builder_compose_customizations['user']['name'] }} --group=wheel,user
+sshkey --username={{ builder_compose_customizations['user']['name'] }} {{ builder_pub_key }}
+
+ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_host }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}
+
+%post
+# Create ansible playbook to register device to Ansible automation platform
+cat > /tmp/add_to_aap.yml <<EOF
+---
+- hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Update Ansible Tower inventory
+      uri:
+       url: "{{ builder_aap_url }}"
+       user: "{{ builder_aap_ks_user }}"
+       password: "{{ builder_aap_ks_password }}"
+       method: POST
+       body: 
+         name: "{{ builder_set_hostname }}"
+         variables: "{{ builder_set_variables }}"
+       force_basic_auth: yes
+       status_code: 201
+       body_format: json
+       validate_certs: no
+EOF
+ansible-playbook /tmp/add_to_aap.yml
+%end
