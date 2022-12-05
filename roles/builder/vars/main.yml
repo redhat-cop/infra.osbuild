@@ -4,7 +4,7 @@ builder_blueprint_src_path: /tmp/blueprint.toml
 builder_blueprint_distro_lower: "{{ 'rhel' if ansible_distribution == 'RedHat' else ansible_distribution | lower }}"
 builder_blueprint_ref: "{{ builder_blueprint_distro_lower }}/{{ hostvars[inventory_hostname].ansible_distribution_major_version }}/x86_64/edge"
 builder_compose_type: edge-commit
-builder_pub_key: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"
+builder_pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 builder_compose_pkgs:
   - "vim-enhanced"
   - "git"
@@ -22,4 +22,3 @@ builder_set_hostname: "{% raw %}{{ ansible_default_ipv4.macaddress | replace(':'
 builder_aap_ks_user: 'user1'
 builder_aap_ks_password: 'pass1'
 builder_set_variables: "{% raw %}{ipaddress: {{ ansible_all_ipv4_addresses }}, macaddress: '{{ ansible_default_ipv4.macaddress }}' }{% endraw %}"
-
