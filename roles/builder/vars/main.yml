@@ -8,8 +8,7 @@ builder_pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 builder_compose_pkgs:
   - "vim-enhanced"
   - "git"
-  - "neovim"
-  - "ansible"
+  - "ansible-core"
 builder_compose_customizations:
   user:
     name: "core"
