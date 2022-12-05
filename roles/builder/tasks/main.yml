@@ -100,3 +100,6 @@
   ansible.builtin.template:
     src: 'templates/kickstart.j2'
     dest: "/var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
+
+- name: Restore context on blueprint directory
+  ansible.builtin.command: "restorecon -R /var/www/html/{{ builder_blueprint_name }}"
