@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 blueprint_src_path: "/tmp/blueprint.toml"
+builder_blueprint_distro: "centos-9"
+builder_blueprint_ref: "centos/9/x86_64/edge"
 pubkey: "ssh-rsa FAKEPUBKEY"
 
 compose_type: "edge-commit"
