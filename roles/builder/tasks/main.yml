@@ -16,6 +16,7 @@
   infra.osbuild.create_blueprint:
     dest: "{{ builder_blueprint_src_path }}"
     name: "{{ builder_blueprint_name }}"
+    distro: "{{ builder_blueprint_distro }}"
     packages: "{{ builder_compose_pkgs }}"
     customizations: "{{ builder_compose_customizations }}"
   register: blueprint_output
