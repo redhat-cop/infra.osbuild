@@ -3,39 +3,48 @@
 - name: Get Package Facts
   ansible.builtin.package_facts:
 
-- name: Setup Repositories
-  community.general.rhsm_repository:
-    state: enabled
-    purge: true
-    name:
-      - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-rpms"
-      - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms"
-  when:
-    - ansible_distribution == 'RedHat'
-    - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
-    - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
-    - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
+- name: Test for ostree-based OS
+  ansible.builtin.shell:
+    cmd: "rpm-ostree status | grep Deployments"
+  register: ostree_check
+  failed_when: false
+  changed_when: false
+  check_mode: false
 
-- name: Install Packages
-  ansible.builtin.dnf:
-    state: present
-    name:
-      - rsync
-      - osbuild-composer
-      - composer-cli
-      - cockpit-composer
-      - bash-completion
-      - firewalld
-      - genisoimage
-      - httpd
-      - syslinux
-      - cockpit
+- name: set ostree-based OS fact
+  ansible.builtin.set_fact:
+    ostree_os: true
+  when:
+    - ostree_check.rc | int == 0
+
+- name: Non ostree-based OS specific setup
+  when:
+    - not ostree_os
+  block:
+    - name: Setup Repositories
+      community.general.rhsm_repository:
+        state: enabled
+        purge: true
+        name:
+          - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-rpms"
+          - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms"
+      when:
+        - ansible_distribution == 'RedHat'
+        - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
+        - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
+        - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
+
+    - name: Install Packages
+      ansible.builtin.dnf:
+        state: present
+        name: "{{ base_packages }}"
 
 - name: RHEL8, CentOS8 and Fedora32 =< specific setup
   when:
     - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
     - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
       ansible_distribution_major_version|int == 8
+    - not ostree_os
   block:
     - name: Install pytoml
       ansible.builtin.dnf:
@@ -48,12 +57,54 @@
     - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
     - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
       ansible_distribution_major_version|int == 9
+    - not ostree_os
   block:
     - name: Install toml
       ansible.builtin.dnf:
         state: present
         name:
           - python3-toml
+
+- name: Ostree-based OS checks
+  when:
+    - ostree_os
+  block:
+    - name: ensure packages are present
+      ansible.builtin.assert:
+        that:
+          - '"rsync" in ansible_facts["packages"]'
+          - '"osbuild-composer" in ansible_facts["packages"]'
+          - '"weldr-client" in ansible_facts["packages"]'
+          - '"cockpit-composer" in ansible_facts["packages"]'
+          - '"bash-completion" in ansible_facts["packages"]'
+          - '"firewalld" in ansible_facts["packages"]'
+          - '"genisoimage" in ansible_facts["packages"]'
+          - '"httpd" in ansible_facts["packages"]'
+          - '"syslinux" in ansible_facts["packages"]'
+          - '"cockpit" in ansible_facts["packages"]'
+        fail_msg: "Cannot continue, ensure the following packages are present: {{ base_packages | flatten }}"
+
+    - name: Ensure EL9/Fedora33 => packages are present
+      ansible.builtin.assert:
+        that:
+          - '"python3-toml" in ansible_facts["packages"]'
+        fail_msg: "Ensure python3-toml is present on EL9/Fedora33+ systems"
+
+      when:
+        - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+        - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
+          ansible_distribution_major_version|int == 9
+
+    - name: Ensure EL8/Fedora32 =< packages are present
+      ansible.builtin.assert:
+        that:
+          - '"python3-pytoml" in ansible_facts["packages"]'
+        fail_msg: "Ensure python3-pytoml is present on EL8/Fedora32- systems"
+      when:
+        - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+        - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
+          ansible_distribution_major_version|int == 8
+
 
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
