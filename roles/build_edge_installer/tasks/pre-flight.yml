@@ -4,4 +4,6 @@
   ansible.builtin.file:
     path: /var/www/html/iso
     state: directory
-    mode: '0644'
+    mode: '0755'
+    owner: apache
+    group: apache
