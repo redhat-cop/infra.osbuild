@@ -38,3 +38,5 @@
     dest: /var/www/html/iso
     remote_src: true
     mode: '0644'
+    owner: apache
+    group: apache
