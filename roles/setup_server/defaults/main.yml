@@ -5,3 +5,15 @@ custom_repo_type: yum-baseurl
 custom_repo_check_ssl: false
 custom_repo_check_gpg: false
 custom_repo_state: present
+ostree_os: false
+base_packages:
+  - rsync
+  - osbuild-composer
+  - composer-cli
+  - cockpit-composer
+  - bash-completion
+  - firewalld
+  - genisoimage
+  - httpd
+  - syslinux
+  - cockpit
