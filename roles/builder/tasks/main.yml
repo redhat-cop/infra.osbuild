@@ -16,7 +16,7 @@
   infra.osbuild.create_blueprint:
     dest: "{{ builder_blueprint_src_path }}"
     name: "{{ builder_blueprint_name }}"
-    distro: "{{ builder_blueprint_distro | default(omit)}}"
+    distro: "{{ builder_blueprint_distro | default(omit) }}"
     packages: "{{ builder_compose_pkgs }}"
     customizations: "{{ builder_compose_customizations }}"
   register: blueprint_output
@@ -102,6 +102,7 @@
     src: 'templates/kickstart.j2'
     dest: "/var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
     mode: 0755
+  when: builder_aap_url is defined
 
 - name: Restore context on blueprint directory
   ansible.builtin.command: "restorecon -R /var/www/html/{{ builder_blueprint_name }}"

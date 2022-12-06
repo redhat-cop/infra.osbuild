@@ -11,9 +11,9 @@
   ansible.builtin.include_vars:
     file: ../vars/main.yml
 
-- name: Run the infra.osbuild.build role
+- name: Run the infra.osbuild.build_edge_installer role
   ansible.builtin.import_role:
-    name: infra.osbuild.builder
+    name: infra.osbuild.build_edge_installer
   vars:
     builder_pub_key: "{{ pubkey }}"
     builder_blueprint_src_path: "{{ blueprint_src_path }}"

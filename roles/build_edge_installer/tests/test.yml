@@ -1,0 +1,7 @@
+---
+
+- name: Test build_edge_installer role
+  hosts: localhost
+  remote_user: root
+  roles:
+    - build_edge_installer
