@@ -34,6 +34,13 @@ options:
             - Name of blueprint, must not contain spaces
         type: str
         required: true
+    distro:
+        description:
+            - Name of distribution, if left blank the distro is inferred from the build server
+        type: str
+        required: false
+        choices: ["", "rhel-8", "rhel-9", "centos-8", "centos-9", "fedora-36", "fedora-37"]
+        default: ""
     description:
         description:
             - Long-form description of the blueprint
@@ -72,6 +79,11 @@ options:
         type: dict
         default: {}
         required: false
+notes:
+    - The C(distro) field will default to the distro of the builder server
+      the build is executed on. If any other distro is defined than the same
+      one that the builder server is running then that configuration must
+      be provided in C(/etc/osbuild-composer/repositories/).
 """
 
 EXAMPLES = """
@@ -96,9 +108,6 @@ EXAMPLES = """
         groups: '["users", "wheel"]'
 """
 
-import os
-import traceback
-
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
@@ -113,41 +122,44 @@ def increment_version(version: str, version_type: str) -> str:
     return f'{major}.{minor}.{int(patch) + 1}'
 
 
-def main():
-    module = AnsibleModule(
+def main() -> None:
+    module: AnsibleModule = AnsibleModule(
         argument_spec=dict(
             dest=dict(type="str", required=True),
             name=dict(type="str", required=True),
             description=dict(type="str", required=False, default=""),
+            distro=dict(type="str", required=False, default="", choices=['', 'rhel-8', 'rhel-9', 'centos-8', 'centos-9', 'fedora-36', 'fedora-37']),
             version_type=dict(type="str", required=False, default="patch", choices=['major', 'minor', 'patch']),
             packages=dict(type="list", required=False, elements="str", default=[]),
             groups=dict(type="list", required=False, elements="str", default=[]),
             customizations=dict(type="dict", required=False, default={}),
         ),
     )
-    weldr = Weldr(module)
+    weldr: Weldr = Weldr(module)
 
     if not module.params["description"]:
-        description = module.params["name"]
+        description: str = module.params["name"]
     else:
-        description = module.params["description"]
+        description: str = module.params["description"]
 
-    toml_file = (
+    toml_file: str = (
         f'name = "{module.params["name"]}"\n'
         f'description = "{description}"\n'
     )
+    if module.params["distro"]:
+        toml_file += f'distro = "{module.params["distro"]}"\n'
 
     try:
-        blueprint_version = '0.0.1'
-        blueprint_exists = True
-        results = weldr.api.get_blueprints_info(module.params['name'])
+        blueprint_version: str = '0.0.1'
+        blueprint_exists: bool = True
+        results: dict = weldr.api.get_blueprints_info(module.params['name'])
         for error in results['errors']:
             if error['id'] == 'UnknownBlueprint':
-                blueprint_exists = False
+                blueprint_exists: bool = False
 
         if blueprint_exists:
-            current_version = results['blueprints'][0]['version']
-            blueprint_version = increment_version(current_version, module.params['version_type'])
+            current_version: str = results['blueprints'][0]['version']
+            blueprint_version: str = increment_version(current_version, module.params['version_type'])
 
         toml_file += f'version = "{blueprint_version}"\n\n'
     except Exception as e:

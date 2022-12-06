@@ -26,12 +26,8 @@
         mode: 0644
         dest: "/etc/osbuild-composer/repositories/{{ item }}.json"
       loop:
-        - rhel-90
-        - rhel-87
-        - rhel-86
-        - rhel-85
-        - rhel-84
-        - rhel-8
+        - centos-9
+        - centos-8
 
 - name: Run the infra.osbuild.setup_server role
   ansible.builtin.import_role:
