@@ -1,8 +1,0 @@
----
-
-- name: Run osbuild_builder role
-  become: true
-  hosts:
-    - all
-  roles:
-    - infra.osbuild.build_edge_installer

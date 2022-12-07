@@ -1,9 +1,0 @@
----
-
-- name: Create a dir for isos
-  ansible.builtin.file:
-    path: /var/www/html/iso
-    state: directory
-    mode: '0755'
-    owner: apache
-    group: apache
