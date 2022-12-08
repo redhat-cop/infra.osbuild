@@ -5,7 +5,7 @@ custom_repo_type: yum-baseurl
 custom_repo_check_ssl: false
 custom_repo_check_gpg: false
 custom_repo_state: present
-_infra_osbuild_ostree_check: false
+_infra_osbuild_ostree_os: false
 base_packages:
   - rsync
   - osbuild-composer
