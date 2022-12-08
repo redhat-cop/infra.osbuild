@@ -11,7 +11,7 @@
   changed_when: false
   check_mode: false
 
-- name: set ostree-based OS fact
+- name: Set ostree-based OS fact
   ansible.builtin.set_fact:
     _infra_osbuild_ostree_os: true
   when:
@@ -69,7 +69,7 @@
   when:
     - _infra_osbuild_ostree_os
   block:
-    - name: ensure packages are present
+    - name: Ensure packages are present
       ansible.builtin.assert:
         that:
           - '{{ package }} in ansible_facts["packages"]'

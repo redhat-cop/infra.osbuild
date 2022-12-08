@@ -1,4 +1,10 @@
 ---
+- name: Set fact
+  when: "'-' in builder_compose_type"
+  ansible.builtin.set_fact:
+    _builder_compose_type: "{{ builder_compose_type }}"
+    builder_compose_type: "{{ builder_compose_type.split('-')[0] + '-commit' if builder_compose_type.split('-')[1] == 'installer' else builder_compose_type }}"
+
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
     state: started
@@ -107,3 +113,37 @@
 - name: Restore context on blueprint directory
   ansible.builtin.command: "restorecon -R /var/www/html/{{ builder_blueprint_name }}"
   changed_when: true
+
+- name: Create installer
+  when: '"installer" in _builder_compose_type'
+  block:
+    - name: Start compose
+      infra.osbuild.start_compose:
+        blueprint: "{{ builder_blueprint_name }}"
+        compose_type: "{{ _builder_compose_type }}"
+        ostree_url: "http://{{ ansible_default_ipv4.address }}/{{ builder_blueprint_name }}/repo"
+      register: compose_start_out
+
+    - name: Wait for compose to finish
+      infra.osbuild.wait_compose:
+        compose_id: "{{ compose_start_out['result']['build_id'] }}"
+
+    - name: Create tmp directory for blueprint
+      ansible.builtin.file:
+        path: "/tmp/{{ builder_blueprint_name }}"
+        mode: 0755
+        state: directory
+
+    - name: Export the compose artifact
+      infra.osbuild.export_compose:
+        compose_id: "{{ compose_start_out['result']['build_id'] }}"
+        dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+
+    - name: Copy iso to web dir
+      ansible.builtin.copy:
+        src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+        dest: "/var/www/html/{{ builder_blueprint_name }}.iso"
+        remote_src: true
+        mode: 0644
+        owner: apache
+        group: apache
