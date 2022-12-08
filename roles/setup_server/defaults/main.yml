@@ -17,3 +17,4 @@ base_packages:
   - httpd
   - syslinux
   - cockpit
+  - weldr-client
