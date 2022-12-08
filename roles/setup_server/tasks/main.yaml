@@ -72,17 +72,12 @@
     - name: ensure packages are present
       ansible.builtin.assert:
         that:
-          - '"rsync" in ansible_facts["packages"]'
-          - '"osbuild-composer" in ansible_facts["packages"]'
-          - '"weldr-client" in ansible_facts["packages"]'
-          - '"cockpit-composer" in ansible_facts["packages"]'
-          - '"bash-completion" in ansible_facts["packages"]'
-          - '"firewalld" in ansible_facts["packages"]'
-          - '"genisoimage" in ansible_facts["packages"]'
-          - '"httpd" in ansible_facts["packages"]'
-          - '"syslinux" in ansible_facts["packages"]'
-          - '"cockpit" in ansible_facts["packages"]'
-        fail_msg: "Cannot continue, ensure the following packages are present: {{ base_packages | flatten }}"
+          - '{{ package }} in ansible_facts["packages"]'
+        fail_msg: "Cannot continue, ensure that {{ package }} is present"
+      loop_control:
+        loop_var: package
+      loop:
+        - "{{ base_packages }}"
 
     - name: Ensure EL9/Fedora33 => packages are present
       ansible.builtin.assert:
