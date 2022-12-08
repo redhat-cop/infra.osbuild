@@ -2,7 +2,7 @@
 - name: Set fact
   when: "'-' in builder_compose_type"
   ansible.builtin.set_fact:
-    a: "{{ builder_compose_type }}"
+    _builder_compose_type: "{{ builder_compose_type }}"
     builder_compose_type: "{{ builder_compose_type.split('-')[0] + '-commit' if builder_compose_type.split('-')[1] == 'installer' else builder_compose_type }}"
 
 - name: Enable Cockpit/Composer/Firewalld/Apache
@@ -115,12 +115,12 @@
   changed_when: true
 
 - name: Create installer
-  when: '"installer" in a'
+  when: '"installer" in _builder_compose_type'
   block:
     - name: Start compose
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}"
-        compose_type: "{{ a }}"
+        compose_type: "{{ _builder_compose_type }}"
         ostree_url: "http://{{ ansible_default_ipv4.address }}/{{ builder_blueprint_name }}/repo"
       register: compose_start_out
 
