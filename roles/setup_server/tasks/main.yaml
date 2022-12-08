@@ -19,7 +19,7 @@
 
 - name: Non ostree-based OS specific setup
   when:
-    - not ostree_os
+    - not _infra_osbuild_ostree_os
   block:
     - name: Setup Repositories
       community.general.rhsm_repository:
@@ -44,7 +44,7 @@
     - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
     - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
       ansible_distribution_major_version|int == 8
-    - not ostree_os
+    - not _infra_osbuild_ostree_os
   block:
     - name: Install pytoml
       ansible.builtin.dnf:
@@ -57,7 +57,7 @@
     - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
     - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
       ansible_distribution_major_version|int == 9
-    - not ostree_os
+    - not _infra_osbuild_ostree_os
   block:
     - name: Install toml
       ansible.builtin.dnf:
@@ -67,7 +67,7 @@
 
 - name: Ostree-based OS checks
   when:
-    - ostree_os
+    - _infra_osbuild_ostree_os
   block:
     - name: ensure packages are present
       ansible.builtin.assert:
