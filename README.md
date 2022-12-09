@@ -2,8 +2,11 @@
 
 [![GitHub Super-Linter](https://github.com/redhat-cop/infra.osbuild/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
-[Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html) for management of [osbuild composer](https://www.osbuild.org/documentation/#composer) 
-to build ostree based images for Fedora, Red Hat Enterprise Linux and Centos Stream. This collection has roles to build an osbuild server, an apache server to host images and roles to build images and updates.
+[Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html)
+for management of [osbuild composer](https://www.osbuild.org/documentation/#composer) 
+to build [rpm-ostree](https://rpm-ostree.readthedocs.io/en/latest/) based images for Fedora,
+Red Hat Enterprise Linux, and Centos Stream. This collection has roles to build an osbuild server,
+an apache httpd server to host images, and a role to build installer images and rpm-ostree updates.
 
 ## Installing
 
@@ -15,55 +18,44 @@ ansible-galaxy collection install git+https://github.com/redhat-cop/infra.osbuil
 
 ## How to use
 
-You will need a RHEL, Centos Stream or Fedora server that you can connect to remotely via an inventory, or run this collection locally by changing the playbooks to hosts: localhost instead of all.
+You will need a RHEL, Centos Stream, or Fedora system that you can connect to
+remotely via `ssh`, and a playbook to call the desired roles to result in the
+desired functionality. Each role has it's own documentation specific to its
+provided automation.
 
-### Configure Osbuild Composer Server
+To use the example playbooks provided in this repository, please create an
+inventory file that only has the osbuild build server(s) listed in them as these
+example playbooks use the `all` Ansible [group](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups)
+as the [host patten](https://docs.ansible.com/ansible/latest/inventory_guide/intro_patterns.html).
+
+### Configure Osbuild Builder (this will also host the images)
 
 ```shell
 ansible-playbook playbooks/osbuild_setup_server.yml
 ```
 
-### Configure Osbuild Builder (this will also host the images)
+### Build an Image
 
 ```shell
 ansible-playbook playbooks/osbuild_builder.yml
 ```
-You can specify what kind of build you prefer with the variable buidler_compose_type. The options for this are:
+You can specify what kind of build you prefer with the variable buidler_compose_type.
 
-- ami
+Current supported and tested build types are:
+
 - edge-commit
 - edge-container
 - edge-installer
 - edge-raw-image
 - edge-simplified-installer
-- image-installer
-- oci
-- openstack
-- qcow2
-- tar
-- vhd
-- vmdk
 - iot-commit (fedora only)
 - iot-container (fedora only)
 - iot-installer (fedora only)
 - iot-raw-image (fedora only)
-- container
 
 Example:
 
 ```shell
-ansible-playbook playbooks/osbuild_builder.yml -e builder_compose_type=qcow2
+ansible-playbook playbooks/osbuild_builder.yml -e builder_compose_type=edge-installer
 ```
 
-### Configure testbuild
-
-Provide type of image you would like to compose in format of compose_type=typename
-
-For RHEL/Centos valid types are: valid types are: ami, container, edge-commit, edge-container, edge-installer, edge-raw-image, oci, openstack, qcow2, vhd, vmdk
-
-For Fedora valid types are: ami, container, iot-commit, iot-container, iot-installer, iot-raw-image, oci, openstack, qcow2, vhd, vmdk
-
-Example:
-```shell
-ansible-playbook playbooks/testbuild.yml -e builder_compose_type=edge-installer
-```
