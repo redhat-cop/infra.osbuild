@@ -1,9 +1,9 @@
 ---
 - name: Set fact
-  when: "'-' in builder_compose_type"
+  when: builder_compose_type == 'edge-installer' or builder_compose_type == 'iot-installer'
   ansible.builtin.set_fact:
     _builder_compose_type: "{{ builder_compose_type }}"
-    builder_compose_type: "{{ builder_compose_type.split('-')[0] + '-commit' if builder_compose_type.split('-')[1] == 'installer' else builder_compose_type }}"
+    builder_compose_type: "{{ builder_compose_type.split('-')[0] + '-commit' }}"
 
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
@@ -74,7 +74,7 @@
     dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
 
 - name: Update ostree repository
-  when: compose_start_out['result']['output_type'] == 'tar'
+  when: builder_compose_type == 'edge-commit' or builder_compose_type == 'iot-commit'
   block:
     - name: Untar artifact
       ansible.builtin.unarchive:
@@ -103,6 +103,23 @@
         path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"
         state: absent
 
+- name: Serve all other compose types on the http server
+  when: builder_compose_type != 'edge-commit' and builder_compose_type != 'iot-commit'
+  block:
+    - name: Create images directory
+      ansible.builtin.file:
+        path: "/var/www/html/{{ builder_blueprint_name }}/images"
+        mode: 0755
+        state: directory
+    - name: Copy image to web dir
+      ansible.builtin.copy:
+        src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}.{{ compose_start_out['result']['output_type'] }}"
+        remote_src: true
+        mode: 0644
+        owner: apache
+        group: apache
+
 - name: Create kickstart file
   ansible.builtin.template:
     src: 'templates/kickstart.j2'
@@ -115,7 +132,9 @@
   changed_when: true
 
 - name: Create installer
-  when: '"installer" in _builder_compose_type'
+  when: 
+  - _builder_compose_type is defined
+  - '"installer" in _builder_compose_type'
   block:
     - name: Start compose
       infra.osbuild.start_compose:
@@ -139,10 +158,16 @@
         compose_id: "{{ compose_start_out['result']['build_id'] }}"
         dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
 
+    - name: Create images directory
+      ansible.builtin.file:
+        path: "/var/www/html/{{ builder_blueprint_name }}/images"
+        mode: 0755
+        state: directory
+
     - name: Copy iso to web dir
       ansible.builtin.copy:
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
-        dest: "/var/www/html/{{ builder_blueprint_name }}.iso"
+        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}.iso"
         remote_src: true
         mode: 0644
         owner: apache
