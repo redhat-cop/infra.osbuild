@@ -123,7 +123,8 @@
     - http
 
 - name: Add source for custom packages
-  when: custom_repo_name
+  when:
+    - custom_repo_name
   infra.osbuild.repository:
     repo_name: "{{ custom_repo_name }}"
     base_url: "{{ custom_repo_base_url | default(omit) }}"
