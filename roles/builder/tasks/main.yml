@@ -132,9 +132,9 @@
   changed_when: true
 
 - name: Create installer
-  when: 
-  - _builder_compose_type is defined
-  - '"installer" in _builder_compose_type'
+  when:
+    - _builder_compose_type is defined
+    - '"installer" in _builder_compose_type'
   block:
     - name: Start compose
       infra.osbuild.start_compose:
