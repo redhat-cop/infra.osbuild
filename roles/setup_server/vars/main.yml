@@ -1,0 +1,16 @@
+---
+# NOTE: variables with an underscore (_) prefix are considered "private" data
+#       to the Role and are not meant for users to alter these values.
+_setup_server_base_packages:
+  - rsync
+  - osbuild-composer
+  - composer-cli
+  - cockpit-composer
+  - bash-completion
+  - firewalld
+  - genisoimage
+  - httpd
+  - syslinux
+  - cockpit
+  - weldr-client
+_setup_server_infra_osbuild_ostree_os: false

@@ -1,54 +1,86 @@
-Role Name
-=========
+# infra.osbuild.setup_server
 
-A brief description of the role goes here.
+This role automates the setup of a server capable of performing [osbuild](https://www.osbuild.org/)
+[compose builds](https://www.osbuild.org/guides/user-guide/user-guide.html)
+using the osbuild backend [Weldr](https://weldr.io/) API.
 
-Requirements
-------------
+## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None
 
-Role Variables
---------------
+## Role Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+### setup_server_custom_repos
 
-Dependencies
-------------
+Type: complex
+Required: false
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Custom list of RPM repositories to make available to the 
+[osbuild](https://www.osbuild.org/) [compose builds](https://www.osbuild.org/guides/user-guide/user-guide.html).
 
-Custom Repositories
--------------------
+Each list entry is a [YAML dictionary](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
+type and has the following attributes:
 
-To add a custom repository you need to specify the following variables per repo. custom_repo_name, custom_repo_base_url, custom_repo_type, custom_repo_check_ssl, custom_repo_check_gpg, custom_repo_state.
+| Variable Name | Type                              | Required  | Default Value |
+|---------------|-----------------------------------|-----------|---------------|
+| repo_name     | string                            | **Yes**   | n/a           |
+| base_url      | string                            | **Yes**   | n/a           |
+| type          | string                            | No        | "yum-baseurl" |
+| check_ssl     | bool                              | No        | true          |
+| check_gpg     | bool                              | No        | true          |
+| gpgkey_urls   | list of strings                   | No        | omit          |
+| rhsm          | bool                              | No        | false         |
+| state         | string ("present" or "absent" )   | No  | "present"     | 
 
-Example vars file:
+Example:
 
-```bash
-custom_repo_name: Everything
-custom_repo_base_url: https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/
-custom_repo_type: yum-baseurl
-custom_repo_check_ssl: false
-custom_repo_check_gpg: false
-custom_repo_state: present
+```yaml
+setup_server_custom_repos:
+  - name: EPEL Everything
+    base_url: "https://dl.fedoraproject.org/pub/epel/{{ hostvars[inventory_hostname].ansible_distribution_major_version }}/Everything/x86_64/"
+    type: yum-baseurl
+    check_ssl: true
+    check_gpg: true
+    state: present
+  - name: My company custom repo
+    base_url: "https://repo.example.com/company_repo/x86_64/"
 ```
 
-Example Playbook
-----------------
+## Variables Exported by the Role
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+None.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+## Dependencies
 
-License
--------
+None.
 
-GPLv3+
+## Example Playbook
 
-Author Information
-------------------
+```yaml
+---
+- name: Run osbuild_builder role to setup obuild compose build server
+  become: true
+  hosts: all
+  vars:
+    setup_server_custom_repos:
+      - name: EPEL Everything
+        base_url: "https://dl.fedoraproject.org/pub/epel/{{ hostvars[inventory_hostname].ansible_distribution_major_version }}/Everything/x86_64/"
+        type: yum-baseurl
+        check_ssl: true
+        check_gpg: true
+        state: present
+      - name: My company custom repo
+        base_url: "https://repo.example.com/company_repo/x86_64/"
+        type: yum-baseurl
+  tasks:
+    - name: Run the role
+      ansible.builtin.import_role:
+        name: infra.osbuild.setup_server
+```
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+## License
+
+GPLv3
+
+

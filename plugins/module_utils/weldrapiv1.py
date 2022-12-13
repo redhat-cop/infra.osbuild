@@ -5,6 +5,7 @@
 
 from ansible.module_utils._text import to_bytes, to_native, to_text
 import ansible.module_utils.six.moves.urllib.error as urllib_error
+from ansible.module_utils.six.moves.urllib.parse import quote
 import json
 import os
 import shutil
@@ -63,15 +64,16 @@ class WeldrV1(object):
         )
         return results
 
-    def get_projects_source_info(self, source):
+    def get_projects_source_info(self, repo_name):
         """
         get detailed information about a particular source
 
+        :repo_name:     str, a string of a repository name
         :return:        dict
         """
         results = json.load(
             self.weldr.request.open(
-                "GET", "http://localhost/api/v1/projects/source/info/%s" % source
+                "GET", "http://localhost/api/v1/projects/source/info/%s" % quote(repo_name)
             )
         )
         return results
@@ -81,7 +83,10 @@ class WeldrV1(object):
         post_projects_source_new
 
         :source:     dict, a dictionary of a source
+        :return:        dict
         """
+        if type(source) != bytes:
+            source = to_bytes(source)
         results = json.load(
             self.weldr.request.open(
                 "POST",
@@ -92,31 +97,33 @@ class WeldrV1(object):
         )
         return results
 
-    def get_projects_source_info_sources(self, source):
+    def get_projects_source_info_sources(self, repo_name):
         """
         get_projects_source_info_sources
 
-        :sources:     str, a source name
+        :repo_name:     str, a source name
+        :return:        dict
         """
         results = json.load(
             self.weldr.request.open(
                 "GET",
-                "http://localhost/api/v0/projects/source/info/%s" % source,
+                "http://localhost/api/v0/projects/source/info/%s" % quote(repo_name),
                 headers={"Content-Type": "application/json"},
             )
         )
         return results
 
-    def delete_projects_source(self, source):
+    def delete_projects_source(self, repo_name):
         """
         delete_projects_source
 
+        :repo_name:     str, a source name
         :source:     dict, a dictionary of a source
         """
         results = json.load(
             self.weldr.request.open(
                 "DELETE",
-                "http://localhost/api/v0/projects/source/delete/%s" % source,
+                "http://localhost/api/v0/projects/source/delete/%s" % quote(repo_name),
                 headers={"Content-Type": "application/json"},
             )
         )

@@ -98,4 +98,5 @@
 - name: Check new source was added
   ansible.builtin.assert:
     that:
-      - custom_repo_name in sources_list["stdout_lines"]
+      - item['name'] in sources_list['stdout_lines']
+  loop: "{{ setup_server_custom_repos }}"
