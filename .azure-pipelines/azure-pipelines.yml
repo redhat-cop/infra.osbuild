@@ -572,38 +572,6 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: Fedora 35 iot-commit
-              test: fedora/35
-          groups:
-            - 10
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: Fedora 35 iot-container
-              test: fedora/35
-          groups:
-            - 11
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: Fedora 35 iot-installer
-              test: fedora/35
-          groups:
-            - 12
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: Fedora 35 iot-raw-image
-              test: fedora/35
-          groups:
-            - 13
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
             - name: RHEL 9.0 oci
               test: rhel/9.0
             - name: RHEL 8.5 oci
