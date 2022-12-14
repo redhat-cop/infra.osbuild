@@ -8,7 +8,7 @@
 #       within these test cases (yet?).
 - name: Check if image was built and served
   ansible.builtin.stat:
-    path: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+    path: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ builder_compose_type }}.tar" # noqa yaml[line-length]
   register: tar_stat_result
 
 - name: Assert that the image was successful and that it is available on the server.
