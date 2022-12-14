@@ -120,9 +120,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 ami
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 ami
               test: rhel/8.6
           groups:
             - 2
@@ -130,9 +130,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 container
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 container
               test: rhel/8.6
           groups:
             - 3
@@ -140,9 +140,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-commit
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-commit
               test: rhel/8.6
           groups:
             - 4
@@ -150,9 +150,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-container
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-container
               test: rhel/8.6
           groups:
             - 5
@@ -160,9 +160,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-installer
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-installer
               test: rhel/8.6
           groups:
             - 6
@@ -170,9 +170,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-raw-image
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-raw-image
               test: rhel/8.6
           groups:
             - 7
@@ -180,9 +180,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-simplified-installer
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-simplified-installer
               test: rhel/8.6
           groups:
             - 8
@@ -190,9 +190,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 image-installer
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 image-installer
               test: rhel/8.6
           groups:
             - 9
@@ -200,7 +200,7 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 36
+            - name: Fedora 36 iot-commit
               test: fedora/36
           groups:
             - 10
@@ -208,7 +208,7 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 36
+            - name: Fedora 36 iot-container
               test: fedora/36
           groups:
             - 11
@@ -216,7 +216,7 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 36
+            - name: Fedora 36 iot-installer
               test: fedora/36
           groups:
             - 12
@@ -224,7 +224,7 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 36
+            - name: Fedora 36 iot-raw-image
               test: fedora/36
           groups:
             - 13
@@ -232,9 +232,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 oci
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 oci
               test: rhel/8.6
           groups:
             - 14
@@ -242,9 +242,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 openstack
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 openstack
               test: rhel/8.6
           groups:
             - 15
@@ -252,9 +252,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 qcow2
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 qcow2
               test: rhel/8.6
           groups:
             - 16
@@ -262,9 +262,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 tar
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 tar
               test: rhel/8.6
           groups:
             - 17
@@ -272,9 +272,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 vhd
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 vhd
               test: rhel/8.6
           groups:
             - 18
@@ -282,9 +282,9 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 vmdk
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 vmdk
               test: rhel/8.6
           groups:
             - 19
@@ -306,9 +306,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 ami
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 ami
               test: rhel/8.6
           groups:
             - 2
@@ -316,9 +316,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 container
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 container
               test: rhel/8.6
           groups:
             - 3
@@ -326,9 +326,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-commit
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-commit
               test: rhel/8.6
           groups:
             - 4
@@ -336,9 +336,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-container
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-container
               test: rhel/8.6
           groups:
             - 5
@@ -346,9 +346,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-installer
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-installer
               test: rhel/8.6
           groups:
             - 6
@@ -356,9 +356,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-raw-image
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-raw-image
               test: rhel/8.6
           groups:
             - 7
@@ -366,9 +366,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-simplified-installer
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 edge-simplified-installer
               test: rhel/8.6
           groups:
             - 8
@@ -376,9 +376,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 image-installer
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 image-installer
               test: rhel/8.6
           groups:
             - 9
@@ -386,7 +386,7 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: Fedora 36
+            - name: Fedora 36 iot-commit
               test: fedora/36
           groups:
             - 10
@@ -394,7 +394,7 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: Fedora 36
+            - name: Fedora 36 iot-container
               test: fedora/36
           groups:
             - 11
@@ -402,7 +402,7 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: Fedora 36
+            - name: Fedora 36 iot-installer
               test: fedora/36
           groups:
             - 12
@@ -410,7 +410,7 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: Fedora 36
+            - name: Fedora 36 iot-raw-image
               test: fedora/36
           groups:
             - 13
@@ -418,9 +418,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 oci
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 oci
               test: rhel/8.6
           groups:
             - 14
@@ -428,9 +428,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 openstack
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 openstack
               test: rhel/8.6
           groups:
             - 15
@@ -438,9 +438,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 qcow2
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 qcow2
               test: rhel/8.6
           groups:
             - 16
@@ -448,9 +448,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 tar
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 tar
               test: rhel/8.6
           groups:
             - 17
@@ -458,9 +458,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 vhd
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 vhd
               test: rhel/8.6
           groups:
             - 18
@@ -468,9 +468,9 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 vmdk
               test: rhel/9.0
-            - name: RHEL 8.6
+            - name: RHEL 8.6 vmdk
               test: rhel/8.6
           groups:
             - 19
@@ -492,9 +492,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 ami
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 ami
               test: rhel/8.5
           groups:
             - 2
@@ -502,9 +502,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 container
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 container
               test: rhel/8.5
           groups:
             - 3
@@ -512,9 +512,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-commit
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 edge-commit
               test: rhel/8.5
           groups:
             - 4
@@ -522,9 +522,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-container
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 edge-container
               test: rhel/8.5
           groups:
             - 5
@@ -532,9 +532,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-installer
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 edge-installer
               test: rhel/8.5
           groups:
             - 6
@@ -542,9 +542,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-raw-image
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 edge-raw-image
               test: rhel/8.5
           groups:
             - 7
@@ -552,9 +552,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 edge-simplified-installer
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 edge-simplified-installer
               test: rhel/8.5
           groups:
             - 8
@@ -562,9 +562,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 image-installer
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 image-installer
               test: rhel/8.5
           groups:
             - 9
@@ -572,49 +572,41 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: Fedora 35
+            - name: Fedora 35 iot-commit
               test: fedora/35
-            - name: Fedora 34
-              test: fedora/34
           groups:
             - 10
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: Fedora 35
+            - name: Fedora 35 iot-container
               test: fedora/35
-            - name: Fedora 34
-              test: fedora/34
           groups:
             - 11
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: Fedora 35
+            - name: Fedora 35 iot-installer
               test: fedora/35
-            - name: Fedora 34
-              test: fedora/34
           groups:
             - 12
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: Fedora 35
+            - name: Fedora 35 iot-raw-image
               test: fedora/35
-            - name: Fedora 34
-              test: fedora/34
           groups:
             - 13
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 oci
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 oci
               test: rhel/8.5
           groups:
             - 14
@@ -622,9 +614,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 openstack
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 openstack
               test: rhel/8.5
           groups:
             - 15
@@ -632,9 +624,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 qcow2
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 qcow2
               test: rhel/8.5
           groups:
             - 16
@@ -642,9 +634,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 tar
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 tar
               test: rhel/8.5
           groups:
             - 17
@@ -652,9 +644,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 vhd
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 vhd
               test: rhel/8.5
           groups:
             - 18
@@ -662,9 +654,9 @@ stages:
         parameters:
           testFormat: 2.13/{0}
           targets:
-            - name: RHEL 9.0
+            - name: RHEL 9.0 vmdk
               test: rhel/9.0
-            - name: RHEL 8.5
+            - name: RHEL 8.5 vmdk
               test: rhel/8.5
           groups:
             - 19
@@ -748,9 +740,9 @@ stages:
         parameters:
           testFormat: 2.12/{0}
           targets:
-            - name: Fedora 34
+            - name: Fedora 34 iot commit
               test: fedora/34
-            - name: Fedora 33
+            - name: Fedora 33 iot commit
               test: fedora/33
           groups:
             - 10
@@ -758,9 +750,9 @@ stages:
         parameters:
           testFormat: 2.12/{0}
           targets:
-            - name: Fedora 34
+            - name: Fedora 34 iot container
               test: fedora/34
-            - name: Fedora 33
+            - name: Fedora 33 iot container
               test: fedora/33
           groups:
             - 11
