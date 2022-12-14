@@ -116,6 +116,178 @@ stages:
               test: rhel/8.6
           groups:
             - 1
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 2
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 3
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 4
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 5
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 7
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 8
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: Fedora 36
+              test: fedora/36
+          groups:
+            - 10
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: Fedora 36
+              test: fedora/36
+          groups:
+            - 11
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: Fedora 36
+              test: fedora/36
+          groups:
+            - 12
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: Fedora 36
+              test: fedora/36
+          groups:
+            - 13
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 14
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 15
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 16
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 17
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 18
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 19
   - stage: Remote_2_14
     displayName: Remote 2.14
     dependsOn: []
@@ -130,6 +302,178 @@ stages:
               test: rhel/8.6
           groups:
             - 1
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 2
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 3
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 4
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 5
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 7
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 8
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: Fedora 36
+              test: fedora/36
+          groups:
+            - 10
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: Fedora 36
+              test: fedora/36
+          groups:
+            - 11
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: Fedora 36
+              test: fedora/36
+          groups:
+            - 12
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: Fedora 36
+              test: fedora/36
+          groups:
+            - 13
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 14
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 15
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 16
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 17
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 18
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.6
+              test: rhel/8.6
+          groups:
+            - 19
   - stage: Remote_2_13
     displayName: Remote 2.13
     dependsOn: []
@@ -144,6 +488,186 @@ stages:
               test: rhel/8.5
           groups:
             - 1
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 2
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 3
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 4
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 5
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 7
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 8
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: Fedora 35
+              test: fedora/35
+            - name: Fedora 34
+              test: fedora/34
+          groups:
+            - 10
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: Fedora 35
+              test: fedora/35
+            - name: Fedora 34
+              test: fedora/34
+          groups:
+            - 11
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: Fedora 35
+              test: fedora/35
+            - name: Fedora 34
+              test: fedora/34
+          groups:
+            - 12
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: Fedora 35
+              test: fedora/35
+            - name: Fedora 34
+              test: fedora/34
+          groups:
+            - 13
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 14
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 15
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 16
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 17
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 18
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0
+              test: rhel/9.0
+            - name: RHEL 8.5
+              test: rhel/8.5
+          groups:
+            - 19
   - stage: Remote_2_12
     displayName: Remote 2.12
     dependsOn: []
@@ -156,6 +680,158 @@ stages:
               test: rhel/8.4
           groups:
             - 1
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 2
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 3
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 4
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 5
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 7
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 8
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: Fedora 34
+              test: fedora/34
+            - name: Fedora 33
+              test: fedora/33
+          groups:
+            - 10
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: Fedora 34
+              test: fedora/34
+            - name: Fedora 33
+              test: fedora/33
+          groups:
+            - 11
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: Fedora 34
+              test: fedora/34
+            - name: Fedora 33
+              test: fedora/33
+          groups:
+            - 12
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: Fedora 34
+              test: fedora/34
+            - name: Fedora 33
+              test: fedora/33
+          groups:
+            - 13
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 14
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 15
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 16
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 17
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 18
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4
+              test: rhel/8.4
+          groups:
+            - 19
 
 
 ## Finally
