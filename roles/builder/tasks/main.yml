@@ -134,7 +134,7 @@
 - name: Create installer
   when:
     - _builder_compose_type is defined
-    - '"installer" in _builder_compose_type'
+    - "'installer' in builder_compose_type or 'raw' in builder_compose_type"
   block:
     - name: Start compose
       infra.osbuild.start_compose:
