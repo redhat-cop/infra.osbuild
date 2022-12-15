@@ -3,7 +3,7 @@
   when: "'installer' in builder_compose_type"
   ansible.builtin.set_fact:
     _builder_compose_type: "{{ builder_compose_type }}"
-    builder_compose_type: "{{ builder_compose_type.split('-')[0] + '-commit' }}"
+    builder_compose_type: "{{ 'iot-commit' if ansible_distribution == 'Fedora' else 'edge-commit' }}"
 
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
