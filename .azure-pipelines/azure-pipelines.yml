@@ -130,10 +130,8 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0 container
-              test: rhel/9.0
-            - name: RHEL 8.6 container
-              test: rhel/8.6
+            - name: Fedora 36 iot-commit
+              test: fedora/36
           groups:
             - 3
       - template: templates/matrix.yml
@@ -316,10 +314,8 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: RHEL 9.0 container
-              test: rhel/9.0
-            - name: RHEL 8.6 container
-              test: rhel/8.6
+            - name: Fedora 36 iot-commit
+              test: fedora/36
           groups:
             - 3
       - template: templates/matrix.yml
@@ -498,16 +494,6 @@ stages:
               test: rhel/8.5
           groups:
             - 2
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 container
-              test: rhel/9.0
-            - name: RHEL 8.5 container
-              test: rhel/8.5
-          groups:
-            - 3
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}

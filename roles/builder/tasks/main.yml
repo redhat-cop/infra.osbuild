@@ -1,6 +1,6 @@
 ---
 - name: Set fact
-  when: builder_compose_type == 'edge-installer' or builder_compose_type == 'iot-installer'
+  when: "'installer' in builder_compose_type"
   ansible.builtin.set_fact:
     _builder_compose_type: "{{ builder_compose_type }}"
     builder_compose_type: "{{ builder_compose_type.split('-')[0] + '-commit' }}"
