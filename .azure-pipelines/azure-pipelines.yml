@@ -130,7 +130,7 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 36 iot-commit
+            - name: Fedora 36 container
               test: fedora/36
           groups:
             - 3
@@ -314,7 +314,7 @@ stages:
         parameters:
           testFormat: 2.14/{0}
           targets:
-            - name: Fedora 36 iot-commit
+            - name: Fedora 36 container
               test: fedora/36
           groups:
             - 3
