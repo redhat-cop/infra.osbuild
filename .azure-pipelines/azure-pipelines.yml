@@ -530,8 +530,6 @@ stages:
           targets:
             - name: RHEL 9.0 edge-raw-image
               test: rhel/9.0
-            - name: RHEL 8.5 edge-raw-image
-              test: rhel/8.5
           groups:
             - 7
       - template: templates/matrix.yml
@@ -638,14 +636,6 @@ stages:
         parameters:
           testFormat: 2.12/{0}
           targets:
-            - name: RHEL 8.4 container
-              test: rhel/8.4
-          groups:
-            - 3
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
             - name: RHEL 8.4 edge-commit
               test: rhel/8.4
           groups:
@@ -666,14 +656,6 @@ stages:
               test: rhel/8.4
           groups:
             - 6
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.4 edge-raw-image
-              test: rhel/8.4
-          groups:
-            - 7
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.12/{0}
