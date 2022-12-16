@@ -104,7 +104,7 @@
         state: absent
 
 - name: Serve all other compose types on the http server
-  when: _builder_compose_type != 'edge-commit' and _builder_compose_type != 'iot-commit'
+  when: builder_compose_type != 'edge-commit' and builder_compose_type != 'iot-commit'
   block:
     - name: Create images directory
       ansible.builtin.file:
