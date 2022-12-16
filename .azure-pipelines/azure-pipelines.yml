@@ -174,16 +174,17 @@ stages:
               test: rhel/8.6
           groups:
             - 7
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: devel/{0}
-          targets:
-            - name: RHEL 9.0 edge-simplified-installer
-              test: rhel/9.0
-            - name: RHEL 8.6 edge-simplified-installer
-              test: rhel/8.6
-          groups:
-            - 8
+      # comment out because edge-simplified-installer requireds an installation device
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: devel/{0}
+      #     targets:
+      #       - name: RHEL 9.0 edge-simplified-installer
+      #         test: rhel/9.0
+      #       - name: RHEL 8.6 edge-simplified-installer
+      #         test: rhel/8.6
+      #     groups:
+      #       - 8
       - template: templates/matrix.yml
         parameters:
           testFormat: devel/{0}
@@ -358,16 +359,17 @@ stages:
               test: rhel/8.6
           groups:
             - 7
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.14/{0}
-          targets:
-            - name: RHEL 9.0 edge-simplified-installer
-              test: rhel/9.0
-            - name: RHEL 8.6 edge-simplified-installer
-              test: rhel/8.6
-          groups:
-            - 8
+      # comment out because edge-simplified-installer requireds an installation device
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.14/{0}
+      #     targets:
+      #       - name: RHEL 9.0 edge-simplified-installer
+      #         test: rhel/9.0
+      #       - name: RHEL 8.6 edge-simplified-installer
+      #         test: rhel/8.6
+      #     groups:
+      #       - 8
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.14/{0}
@@ -532,14 +534,15 @@ stages:
               test: rhel/9.0
           groups:
             - 7
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 edge-simplified-installer
-              test: rhel/9.0
-          groups:
-            - 8
+      # comment out because edge-simplified-installer requireds an installation device
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.13/{0}
+      #     targets:
+      #       - name: RHEL 9.0 edge-simplified-installer
+      #         test: rhel/9.0
+      #     groups:
+      #       - 8
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}
