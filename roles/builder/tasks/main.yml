@@ -140,7 +140,8 @@
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}"
         compose_type: "{{ _builder_compose_type }}"
-        ostree_url: "http://{{ ansible_default_ipv4.address }}/{{ builder_blueprint_name }}/repo"
+        ostree_url: "http://{{ ansible_default_ipv4.address }}/{{ builder_blueprint_name }}/repo/"
+        ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
       register: compose_start_out
 
     - name: Wait for compose to finish
