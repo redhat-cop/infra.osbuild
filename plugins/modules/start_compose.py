@@ -249,7 +249,7 @@ def main():
             "size": module.params["size"],
         }
 
-        if "edge" in module.params["compose_type"]:
+        if 'installer' in module.params["compose_type"] or 'raw' in module.params["compose_type"]:
             compose_settings["ostree"] = {
                 "ref": module.params["ostree_ref"],
                 "parent": module.params["ostree_parent"],
