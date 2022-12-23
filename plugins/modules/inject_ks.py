@@ -90,7 +90,7 @@ def run_cmd(module, cmd_list):
     lang_env = dict(LANG=locale, LC_ALL=locale, LC_MESSAGES=locale)
 
     rc, out, err = module.run_command(cmd_list, environ_update=lang_env)
-    if (rc != 0) or err:
+    if (rc != 0) :
         module.fail_json(
             "ERROR: Command '%s' failed with return code: %s and error message, '%s'"
             % (" ".join(cmd_list), rc, err)
