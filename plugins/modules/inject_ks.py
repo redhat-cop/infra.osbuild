@@ -129,7 +129,7 @@ def main():
 
     # get binary paths
     ksvalidator = module.get_bin_path("ksvalidator")
-    isoinfo = module.get_bin_path("isoinfo")
+    blkid = module.get_bin_path("blkid")
     xorriso = module.get_bin_path("xorriso")
     mtype = module.get_bin_path("mtype")
     mcopy = module.get_bin_path("mcopy")
@@ -149,13 +149,13 @@ def main():
     ksvalidator_out = run_cmd(module, ksvalidator_cmd)
 
     # get ISO volume id
-    isovolid_cmd = [isoinfo, "-d", "-i", module.params["src_iso"]]
+    isovolid_cmd = [blkid, module.params["src_iso"]]
     isovolid_out = run_cmd(module, isovolid_cmd)
     try:
+
         isovolid = (
-            [line for line in isovolid_out.split("\n") if "Volume id:" in line][0]
-            .split(":")[-1]
-            .strip()
+          isovolid_out.split("=")[2].strip()
+          .split('"')[1]
         )
     except IndexError as e:
         module.fail_json(
