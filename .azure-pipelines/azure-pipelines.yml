@@ -164,18 +164,16 @@ stages:
               test: rhel/8.6
           groups:
             - 6
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: devel/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-raw-image
-      #         test: rhel/9.0
-      #       - name: RHEL 8.6 edge-raw-image
-      #         test: rhel/8.6
-      #     groups:
-      #       - 7
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0 edge-raw-image
+              test: rhel/9.0
+            - name: RHEL 8.6 edge-raw-image
+              test: rhel/8.6
+          groups:
+            - 7
 
       # comment out because edge-simplified-installer requireds an installation device
       # - template: templates/matrix.yml
@@ -188,18 +186,16 @@ stages:
       #         test: rhel/8.6
       #     groups:
       #       - 8
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: devel/{0}
-      #     targets:
-      #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.6 image-installer
-      #         test: rhel/8.6
-      #     groups:
-      #       - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0 image-installer
+              test: rhel/9.0
+            - name: RHEL 8.6 image-installer
+              test: rhel/8.6
+          groups:
+            - 9
       - template: templates/matrix.yml
         parameters:
           testFormat: devel/{0}
@@ -216,26 +212,22 @@ stages:
               test: fedora/36
           groups:
             - 11
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: devel/{0}
-      #     targets:
-      #       - name: Fedora 36 iot-installer
-      #         test: fedora/36
-      #     groups:
-      #       - 12
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: devel/{0}
-      #     targets:
-      #       - name: Fedora 36 iot-raw-image
-      #         test: fedora/36
-      #     groups:
-      #       - 13
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: Fedora 36 iot-installer
+              test: fedora/36
+          groups:
+            - 12
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: Fedora 36 iot-raw-image
+              test: fedora/36
+          groups:
+            - 13
       - template: templates/matrix.yml
         parameters:
           testFormat: devel/{0}
@@ -358,18 +350,16 @@ stages:
               test: rhel/8.6
           groups:
             - 6
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.14/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-raw-image
-      #         test: rhel/9.0
-      #       - name: RHEL 8.6 edge-raw-image
-      #         test: rhel/8.6
-      #     groups:
-      #       - 7
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0 edge-raw-image
+              test: rhel/9.0
+            - name: RHEL 8.6 edge-raw-image
+              test: rhel/8.6
+          groups:
+            - 7
 
       # comment out because edge-simplified-installer requireds an installation device
       # - template: templates/matrix.yml
@@ -382,18 +372,16 @@ stages:
       #         test: rhel/8.6
       #     groups:
       #       - 8
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.14/{0}
-      #     targets:
-      #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.6 image-installer
-      #         test: rhel/8.6
-      #     groups:
-      #       - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0 image-installer
+              test: rhel/9.0
+            - name: RHEL 8.6 image-installer
+              test: rhel/8.6
+          groups:
+            - 9
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.14/{0}
@@ -410,26 +398,22 @@ stages:
               test: fedora/36
           groups:
             - 11
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.14/{0}
-      #     targets:
-      #       - name: Fedora 36 iot-installer
-      #         test: fedora/36
-      #     groups:
-      #       - 12
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.14/{0}
-      #     targets:
-      #       - name: Fedora 36 iot-raw-image
-      #         test: fedora/36
-      #     groups:
-      #       - 13
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: Fedora 36 iot-installer
+              test: fedora/36
+          groups:
+            - 12
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: Fedora 36 iot-raw-image
+              test: fedora/36
+          groups:
+            - 13
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.14/{0}
@@ -544,16 +528,14 @@ stages:
               test: rhel/8.5
           groups:
             - 6
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-raw-image
-      #         test: rhel/9.0
-      #     groups:
-      #       - 7
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0 edge-raw-image
+              test: rhel/9.0
+          groups:
+            - 7
 
       # comment out because edge-simplified-installer requireds an installation device
       # - template: templates/matrix.yml
@@ -564,18 +546,16 @@ stages:
       #         test: rhel/9.0
       #     groups:
       #       - 8
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.5 image-installer
-      #         test: rhel/8.5
-      #     groups:
-      #       - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0 image-installer
+              test: rhel/9.0
+            - name: RHEL 8.5 image-installer
+              test: rhel/8.5
+          groups:
+            - 9
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}
@@ -680,16 +660,14 @@ stages:
               test: rhel/8.4
           groups:
             - 6
-
-      # Currently failing build: FIXME
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.12/{0}
-      #     targets:
-      #       - name: RHEL 8.4 image-installer
-      #         test: rhel/8.4
-      #     groups:
-      #       - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4 image-installer
+              test: rhel/8.4
+          groups:
+            - 9
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.12/{0}
