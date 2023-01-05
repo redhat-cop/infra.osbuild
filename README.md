@@ -47,13 +47,9 @@ Current supported and tested build types are:
 - edge-container
 - edge-installer
 - edge-simplified-installer
+- edge-raw-image
 - iot-commit (fedora only)
 - iot-container (fedora only)
-
-Current unsupported build types are:
-
-- edge-raw-image
-- image-installer
 - iot-installer (fedora only)
 - iot-raw-image (fedora only)
 
