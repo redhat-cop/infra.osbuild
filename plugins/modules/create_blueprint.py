@@ -149,6 +149,7 @@ def main() -> None:
     if module.params["distro"]:
         toml_file += f'distro = "{module.params["distro"]}"\n'
 
+    blueprint_version = ""
     try:
         blueprint_version: str = '0.0.1'
         blueprint_exists: bool = True
@@ -172,7 +173,11 @@ def main() -> None:
         toml_file += f"[[groups]]\n" f'name = "{group}"\n' f"\n"
 
     for key, customization in module.params["customizations"].items():
-        toml_file += f"[[customizations.{key}]]\n"
+        double_square_brackets= ["user", "filesystem", "sshkey"]
+        if key in double_square_brackets:
+            toml_file += f"[[customizations.{key}]]\n"
+        else:
+            toml_file += f"[customizations.{key}]\n"
         for k, v in customization.items():
             if isinstance(v, list) or v.startswith("["):
                 toml_file += f"{k} = {v}\n"
