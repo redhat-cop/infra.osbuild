@@ -166,7 +166,7 @@ stages:
       #         test: rhel/8.6
       #     groups:
       #       - 6
-      
+
       # Fixme
       # - template: templates/matrix.yml
       #   parameters:
