@@ -1,0 +1,18 @@
+---
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# NOTE: the compose_start_out variable comes into scope via the
+#       execution of the infra.osbuild.builder role and is not defined
+#       within these test cases (yet?).
+- name: Get latest checksum from repo.
+  ansible.builtin.command:
+    cmd: "/usr/bin/ostree rev-parse {{ builder_blueprint_ref }} --repo=/var/www/html/{{ builder_blueprint_name }}/repo" # noqa yaml[line-length]
+  register: checksum_output
+  changed_when: false
+
+- name: Assert that the commit was successful and that there is a checksum available.
+  ansible.builtin.assert:
+    that:
+      - checksum_output.stdout

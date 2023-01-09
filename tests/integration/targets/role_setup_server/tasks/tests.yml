@@ -96,6 +96,8 @@
   register: sources_list
 
 - name: Check new source was added
+  when:
+    - setup_server_custom_repos is defined
   ansible.builtin.assert:
     that:
       - item['name'] in sources_list['stdout_lines']

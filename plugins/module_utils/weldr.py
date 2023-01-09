@@ -31,7 +31,7 @@ class Weldr(object):
 
         self.module = module
         self.unix_socket = unix_socket
-        self.request = Request(unix_socket=self.unix_socket, timeout=30)
+        self.request = Request(unix_socket=self.unix_socket, timeout=120)
         try:
             status = json.load(self.request.open("GET", "http://localhost/api/status"))
             if status["api"] == "1":
