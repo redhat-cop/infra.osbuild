@@ -173,7 +173,7 @@ def main() -> None:
         toml_file += f"[[groups]]\n" f'name = "{group}"\n' f"\n"
 
     for key, customization in module.params["customizations"].items():
-        double_square_brackets= ["user", "filesystem", "sshkey"]
+        double_square_brackets = ["user", "filesystem", "sshkey"]
         if key in double_square_brackets:
             toml_file += f"[[customizations.{key}]]\n"
         else:
