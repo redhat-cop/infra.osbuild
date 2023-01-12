@@ -116,16 +116,16 @@ EXAMPLES = """
     allow_duplicate: false
 """
 
-import re
 import json
+import socket
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
-def main():
-    module = AnsibleModule(
+def main() -> None:
+    module: AnsibleModule = AnsibleModule(
         argument_spec=dict(
             blueprint=dict(type="str", required=True),
             size=dict(type="int", required=False, default=8192),
@@ -168,18 +168,18 @@ def main():
         ],
     )
 
-    changed = False
+    changed: bool = False
 
-    weldr = Weldr(module)
+    weldr: Weldr = Weldr(module)
 
-    dupe_compose = []
+    dupe_compose: list = []
 
     # Add check if compose_type is supported
-    supported_compose_type = weldr.api.get_compose_types()
+    supported_compose_type: dict = weldr.api.get_compose_types()
 
-    is_supported = next((item for item in supported_compose_type["types"] if item["name"] == module.params["compose_type"]), None)
+    is_supported: dict = next((item for item in supported_compose_type["types"] if item["name"] == module.params["compose_type"]), {})
 
-    if is_supported is None:
+    if not is_supported:
         module.fail_json(msg="%s is not a valid image type, valid types are: %s" % (
             module.params["compose_type"],
             [[v for k, v in t.items() if k == "name"] for t in supported_compose_type["types"]]
@@ -195,54 +195,54 @@ def main():
     if not module.params["allow_duplicate"]:
         # only do all this query and filtering if needed
 
-        blueprint_info = weldr.api.get_blueprints_info(module.params["blueprint"])
-        blueprint_version = blueprint_info["blueprints"][0]["version"]
+        blueprint_info: dict = weldr.api.get_blueprints_info(module.params["blueprint"])
+        blueprint_version: int = blueprint_info["blueprints"][0]["version"]
 
-        compose_queue = weldr.api.get_compose_queue()
+        compose_queue: dict = weldr.api.get_compose_queue()
         # {"new":[],"run":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":0,"queue_status":"RUNNING","job_created":1654620015.4107578,"job_started":1654620015.415151}]}
 
-        compose_queue_run_dupe = [
+        compose_queue_run_dupe: list = [
             compose
             for compose in compose_queue["run"]
             if (compose["blueprint"] == module.params["blueprint"])
             and (compose["version"] == blueprint_version)
         ]
-        compose_queue_new_dupe = [
+        compose_queue_new_dupe: list = [
             compose
             for compose in compose_queue["new"]
             if (compose["blueprint"] == module.params["blueprint"])
             and (compose["version"] == blueprint_version)
         ]
 
-        compose_finished = weldr.api.get_compose_finished()
+        compose_finished: dict = weldr.api.get_compose_finished()
         # {"finished":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":8192,"queue_status":"FINISHED","job_created":1654620015.4107578,"job_started":1654620015.415151,"job_finished":1654620302.9069786}]}
-        compose_finished_dupe = [
+        compose_finished_dupe: list = [
             compose
             for compose in compose_finished["finished"]
             if (compose["blueprint"] == module.params["blueprint"])
             and (compose["version"] == blueprint_version)
         ]
 
-        compose_failed = weldr.api.get_compose_failed()
+        compose_failed: dict = weldr.api.get_compose_failed()
         # {"failed":[]}
-        compose_failed_dupe = [
+        compose_failed_dupe: list = [
             compose
             for compose in compose_failed["failed"]
             if (compose["blueprint"] == module.params["blueprint"])
             and (compose["version"] == blueprint_version)
         ]
 
-        dupe_compose = (
+        dupe_compose: list = [
             compose_queue_run_dupe
             + compose_queue_new_dupe
             + compose_failed_dupe
             + compose_finished_dupe
-        )
+        ]
 
     if module.params["allow_duplicate"] or (len(dupe_compose) == 0):
 
         # FIXME - build to POST payload and POST that ish
-        compose_settings = {
+        compose_settings: dict[str, str] = {
             "blueprint_name": module.params["blueprint"],
             "compose_type": module.params["compose_type"],
             "branch": "master",
@@ -256,9 +256,59 @@ def main():
                 "url": module.params["ostree_url"],
             }
 
-        result = weldr.api.post_compose(json.dumps(compose_settings))
+        try:
+            result: dict = weldr.api.post_compose(json.dumps(compose_settings))
+        except socket.timeout:
 
-        compose_output_types = {
+            # it's possible we don't get a response back from weldr because on the
+            # very first run including a new content source composer will build a repo cache
+            # and when that happens we get an empty JSON response
+
+            compose_queue: dict = weldr.api.get_compose_queue()
+            # {"new":[],"run":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":0,"queue_status":"RUNNING","job_created":1654620015.4107578,"job_started":1654620015.415151}]}
+
+            submitted_compose_uuid: str = ""
+
+            submitted_compose_found_run: list[dict[str, str]] = [
+                compose
+                for compose in compose_queue["run"]
+                if (compose["blueprint"] == module.params["blueprint"])
+                and (compose["version"] == blueprint_version)
+            ]
+            if submitted_compose_found_run:
+                # we expect it to be RUNNING, so check that first
+                submitted_compose_uuid: str = submitted_compose_found_run[0]['id']
+            else:
+                # didn't find it running, check for NEW queue status
+                submitted_compose_found_new: list = [
+                    compose
+                    for compose in compose_queue["new"]
+                    if (compose["blueprint"] == module.params["blueprint"])
+                    and (compose["version"] == blueprint_version)
+                ]
+
+                if submitted_compose_found_new:
+                    submitted_compose_uuid: str = submitted_compose_found_new[0]['id']
+
+                else:
+                    # it's not RUNNING and not NEW, so check for FAILURE state
+                    compose_failed: dict = weldr.api.get_compose_failed()
+                    # {"failed":[]}
+                    submitted_compose_found_failed: list = [
+                        compose
+                        for compose in compose_failed["failed"]
+                        if (compose["blueprint"] == module.params["blueprint"])
+                        and (compose["version"] == blueprint_version)
+                    ]
+                    if submitted_compose_found_failed:
+                        submitted_compose_uuid: str = submitted_compose_found_failed[0]['id']
+                    else:
+                        module.fail_json(msg="Unable to detemine state of build, check osbuild-composer system logs")
+
+            if submitted_compose_uuid:
+                result: dict = weldr.api.get_compose_status(submitted_compose_uuid)
+
+        compose_output_types: dict[str, list[str]] = {
             'tar': ['tar', 'edge-commit', 'iot-commit', 'edge-container', 'iot-container', 'container'],
             'iso': ['edge-installer', 'edge-simplified-installer', 'iot-installer', 'image-installer'],
             'qcow2': ['qcow2', 'openstack', 'oci'],
@@ -268,16 +318,16 @@ def main():
             'ami': ['ami']
         }
 
-        output_type = ''
+        output_type: str = ''
         for compose_type, compose_type_list in compose_output_types.items():
             if module.params['compose_type'] in compose_type_list:
-                output_type = compose_type
+                output_type: str = compose_type
         result['output_type'] = output_type
 
         module.exit_json(msg="Compose submitted to queue", result=result)
 
     else:
-        changed = False
+        changed: bool = False
         module.exit_json(
             msg="Not queuing a duplicate versioned compose without allow_duplicate set to true",
             changed=changed,
