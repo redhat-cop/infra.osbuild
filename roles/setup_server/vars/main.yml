@@ -13,5 +13,5 @@ _setup_server_base_packages:
   - syslinux
   - cockpit
   - weldr-client
-  - python
+  - python3
 _setup_server_infra_osbuild_ostree_os: false
