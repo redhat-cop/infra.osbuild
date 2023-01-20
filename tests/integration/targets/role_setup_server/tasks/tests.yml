@@ -88,17 +88,3 @@
   loop:
     - cockpit
     - http
-
-- name: Get repository sources
-  ansible.builtin.command:
-    cmd: /usr/bin/composer-cli sources list
-  changed_when: false
-  register: sources_list
-
-- name: Check new source was added
-  when:
-    - setup_server_custom_repos is defined
-  ansible.builtin.assert:
-    that:
-      - item['name'] in sources_list['stdout_lines']
-  loop: "{{ setup_server_custom_repos }}"

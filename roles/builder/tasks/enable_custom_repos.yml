@@ -1,0 +1,23 @@
+- name: Add source for custom packages
+  when:
+    - builder_custom_repos is defined
+  block:
+    - name: Loop through the repos to debug them
+      ansible.builtin.debug:
+        var: __builder_repo
+      loop: "{{ builder_custom_repos }}"
+      loop_control:
+        loop_var: __builder_repo
+    - name: Loop through the repos and configure them
+      infra.osbuild.repository:
+        repo_name: "{{ __builder_repo['name'] }}"
+        base_url: "{{ __builder_repo['base_url'] }}"
+        type: "{{ __builder_repo['type'] | default('yum-baseurl') }}"
+        check_ssl: "{{ __builder_repo['check_ssl'] | default(true) }}"
+        check_gpg: "{{ __builder_repo['check_gpg'] | default(true) }}"
+        gpgkey_urls: "{{ __builder_repo['gpgkey_urls'] | default(omit) }}"
+        rhsm: "{{ __builder_repo['rhsm'] | default(false) }}"
+        state: "{{ __builder_repo['state'] | default('present') }}"
+      loop: "{{ builder_custom_repos }}"
+      loop_control:
+        loop_var: __builder_repo
