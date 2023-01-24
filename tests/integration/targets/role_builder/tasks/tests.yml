@@ -16,3 +16,17 @@
   ansible.builtin.assert:
     that:
       - checksum_output.stdout
+
+- name: Get repository sources
+  ansible.builtin.command:
+    cmd: /usr/bin/composer-cli sources list
+  changed_when: false
+  register: sources_list
+
+- name: Check new source was added
+  when:
+    - builder_custom_repos is defined
+  ansible.builtin.assert:
+    that:
+      - item['name'] in sources_list['stdout_lines']
+  loop: "{{ builder_custom_repos }}"

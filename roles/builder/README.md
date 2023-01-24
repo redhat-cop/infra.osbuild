@@ -6,9 +6,67 @@ using the osbuild backend [Weldr](https://weldr.io/) API.
 ## Requirements
 
 The role requires a system to be running the `osbuild-composer` service which
-the `infra.osbuild.setup_server` role will automate the deployment of.
+the `infra.osbuild.builder` role will automate the deployment of.
 
 ## Role Variables
+
+### builder_custom_repos
+
+Type: complex
+Required: false
+
+Custom list of RPM repositories to make available to the 
+[osbuild](https://www.osbuild.org/) [compose builds](https://www.osbuild.org/guides/user-guide/user-guide.html).
+
+Each list entry is a [YAML dictionary](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
+type and has the following attributes:
+
+| Variable Name | Type                              | Required  | Default Value |
+|---------------|-----------------------------------|-----------|---------------|
+| repo_name     | string                            | **Yes**   | n/a           |
+| base_url      | string                            | **Yes**   | n/a           |
+| type          | string                            | No        | "yum-baseurl" |
+| check_ssl     | bool                              | No        | true          |
+| check_gpg     | bool                              | No        | true          |
+| gpgkey_urls   | list of strings                   | No        | omit          |
+| rhsm          | bool                              | No        | false         |
+| state         | string ("present" or "absent" )   | No  | "present"     | 
+
+Example:
+
+```yaml
+builder_custom_repos:
+  - name: EPEL Everything
+    base_url: "https://dl.fedoraproject.org/pub/epel/{{ hostvars[inventory_hostname].ansible_distribution_major_version }}/Everything/x86_64/"
+    type: yum-baseurl
+    check_ssl: true
+    check_gpg: true
+    state: present
+  - name: My company custom repo
+    base_url: "https://repo.example.com/company_repo/x86_64/"
+```
+
+#### NOTES:
+
+osbuild performs builds in [multiple stages](https://www.osbuild.org/guides/developer-guide/osbuild.html?highlight=stage#osbuild)
+and if an `*-installer` compose type is defined for `builder_compose_type`, as
+defined below, then the build pipeline will include a stage that will create an
+ISO Image that can be installed from. The ISO Installer stage has a different
+set of package requirements and can sometimes cause package conflicts with the
+contents of custom repositories. Therefore, **the repositories defined in this
+variable are enabled only for the installable payload the installer will put on
+disk, not the bootable ISO itself** and these repositories will be disabled
+after the payload build is completed or has failed. In the event content from the
+custom repos is required for an `*-installer` compose type (such as customer
+drivers are needed), please set the `builder_custom_repos_persist` value to `true`.
+
+### builder_custom_repos_persist
+
+Type: bool
+Required: false
+
+This variable will cause custom repositories provided in the `builder_custom_repos`
+variable to persist for all osbuild stages.
 
 ### builder_blueprint_name
 

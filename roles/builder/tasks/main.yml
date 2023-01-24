@@ -18,6 +18,10 @@
     groups: weldr
     append: true
 
+- name: Include enable_custom_repos.yml
+  ansible.builtin.include_tasks:
+    file: enable_custom_repos.yml
+
 - name: Create a blueprint
   infra.osbuild.create_blueprint:
     dest: "{{ builder_blueprint_src_path }}"
@@ -50,7 +54,6 @@
         cmd: '/usr/bin/ostree --repo=repo init --mode=archive'
       args:
         creates: "/var/www/html/{{ builder_blueprint_name }}/repo"
-
 
 - name: Start compose
   infra.osbuild.start_compose:
@@ -136,13 +139,43 @@
     - _builder_compose_type is defined
     - "'installer' in _builder_compose_type or 'raw' in _builder_compose_type"
   block:
-    - name: Start compose
+    - name: Include disable_custom_repos.yml
+      ansible.builtin.include_tasks:
+        file: disable_custom_repos.yml
+
+    - name: Create blank blueprint
+      infra.osbuild.create_blueprint:
+        dest: "{{ builder_blueprint_src_path }}"
+        name: "{{ builder_blueprint_name }}-empty"
+      register: blueprint_output
+      when:
+        - "'edge' in _builder_compose_type or 'iot' in _builder_compose_type"
+
+    - name: Push the blueprint into image builder
+      infra.osbuild.push_blueprint:
+        src: "{{ builder_blueprint_src_path }}"
+      when:
+        - "'edge' in _builder_compose_type or 'iot' in _builder_compose_type"
+
+    - name: Start installer compose
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}"
         compose_type: "{{ _builder_compose_type }}"
         ostree_url: "http://{{ ansible_default_ipv4.address }}/{{ builder_blueprint_name }}/repo/"
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
       register: compose_start_out
+      when:
+        - "'edge' not in _builder_compose_type and 'iot' not in _builder_compose_type"
+
+    - name: Start ostree installer compose
+      infra.osbuild.start_compose:
+        blueprint: "{{ builder_blueprint_name }}-empty"
+        compose_type: "{{ _builder_compose_type }}"
+        ostree_url: "http://{{ ansible_default_ipv4.address }}/{{ builder_blueprint_name }}/repo/"
+        ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
+      register: compose_start_out
+      when:
+        - "'edge' in _builder_compose_type or 'iot' in _builder_compose_type"
 
     - name: Wait for compose to finish
       infra.osbuild.wait_compose:

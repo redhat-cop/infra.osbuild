@@ -100,7 +100,6 @@
         - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
           ansible_distribution_major_version|int == 8
 
-
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
     state: started
@@ -121,27 +120,3 @@
   loop:
     - cockpit
     - http
-
-- name: Add source for custom packages
-  when:
-    - setup_server_custom_repos is defined
-  block:
-    - name: Loop through the repos to debug them
-      ansible.builtin.debug:
-        var: __setup_server_repo
-      loop: "{{ setup_server_custom_repos }}"
-      loop_control:
-        loop_var: __setup_server_repo
-    - name: Loop through the repos and configure them
-      infra.osbuild.repository:
-        repo_name: "{{ __setup_server_repo['name'] }}"
-        base_url: "{{ __setup_server_repo['base_url'] }}"
-        type: "{{ __setup_server_repo['type'] | default('yum-baseurl') }}"
-        check_ssl: "{{ __setup_server_repo['check_ssl'] | default(true) }}"
-        check_gpg: "{{ __setup_server_repo['check_gpg'] | default(true) }}"
-        gpgkey_urls: "{{ __setup_server_repo['gpgkey_urls'] | default(omit) }}"
-        rhsm: "{{ __setup_server_repo['rhsm'] | default(false) }}"
-        state: "{{ __setup_server_repo['state'] | default('present') }}"
-      loop: "{{ setup_server_custom_repos }}"
-      loop_control:
-        loop_var: __setup_server_repo
