@@ -100,7 +100,6 @@
         - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
           ansible_distribution_major_version|int == 8
 
-
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
     state: started
@@ -121,4 +120,3 @@
   loop:
     - cockpit
     - http
-
