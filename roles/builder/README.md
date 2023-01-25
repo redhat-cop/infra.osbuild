@@ -170,6 +170,19 @@ builder_compose_customizations:
     
 ```
 
+## Kickstart AAP Variables
+
+Define these variables to auto register the system with AAP
+
+Example: 
+```yaml
+builder_aap_url: 'https://<IP_ADDRESS>/api/v2/inventories/<INVENTORY_NUMBER>/hosts/'
+builder_set_hostname: "{% raw %}{{ ansible_default_ipv4.macaddress | replace(':','') }}{% endraw %}"
+builder_aap_ks_user: 'user1'
+builder_aap_ks_password: 'pass1'
+builder_set_variables: "{% raw %}{ipaddress: {{ ansible_all_ipv4_addresses }}, macaddress: '{{ ansible_default_ipv4.macaddress }}' }{% endraw %}"
+```
+
 ### builder_aap_url
 
 Type: string

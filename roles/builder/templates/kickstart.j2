@@ -11,6 +11,7 @@ sshkey --username={{ builder_compose_customizations['user']['name'] }} {{ builde
 
 ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_host }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}
 
+{% if builder_aap_url is defined %}
 %post
 # Create ansible playbook to register device to Ansible automation platform
 cat > /var/tmp/register_with_aap.yml <<EOF
@@ -54,3 +55,4 @@ EOF
 
 systemctl enable aap-auto-register-firstboot.service
 %end
+{% endif %}
