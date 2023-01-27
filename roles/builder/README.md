@@ -115,6 +115,15 @@ For CentOS Stream and Fedora, you will need to reference the output of the
 `composer-cli compose types` command on the osbuild server (this can also be 
 done on RHEL if preferred).
 
+### builder_password
+
+Type: string
+Required: false
+
+Password for the user that is created by the kickstart file
+
+builder_password or builder_pub_key need to be defined when using the kickstart file
+
 ### builder_pub_key
 
 Type: string
@@ -123,6 +132,9 @@ Required: false
 Path to location of ssh public key to inject into the resulting image to allow
 key-based ssh functionality without extra configuration for systems installed
 with the resulting build media.
+
+builder_password or builder_pub_key need to be defined when using the kickstart file
+
 
 Example:
 ```yaml

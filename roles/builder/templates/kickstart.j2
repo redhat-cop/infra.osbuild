@@ -6,8 +6,11 @@ zerombr
 clearpart --all --initlabel
 autopart
 reboot
-user --name={{ builder_compose_customizations['user']['name'] }} --group=wheel,user
+user --name={{ builder_compose_customizations['user']['name'] }} {{ "--password" if builder_password is defined  }} {{ builder_password if builder_password is defined }} --group=wheel,user
+
+{% if builder_pub_key | length > 0  %}
 sshkey --username={{ builder_compose_customizations['user']['name'] }} {{ builder_pub_key }}
+{% endif %}
 
 ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_host }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}
 
