@@ -1,4 +1,9 @@
 ---
+- name: Check if ssh key is defined
+  ansible.builtin.debug:
+    msg: "SSH Key nor password was defined, log in requires either an SSH key or password"
+  when: builder_pub_key | length == 0 and builder_password is not defined
+
 - name: Set fact
   when: "'installer' in builder_compose_type or 'raw' in builder_compose_type"
   ansible.builtin.set_fact:
