@@ -1,2 +1,13 @@
 ---
 # vars file for builder
+builder_kickstart_options:
+  - lang en_US.UTF-8
+  - keyboard us
+  - timezone Etc/UTC --isUtc
+  - text
+  - zerombr
+  - clearpart --all --initlabel
+  - autopart
+  - reboot
+  - user --name={{ builder_compose_customizations['user']['name'] }} {{ "--password" if builder_password is defined  }} {{ builder_password if builder_password is defined }} --group=wheel,user  # noqa yaml[line-length]
+  - ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_host }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}

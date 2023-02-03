@@ -182,6 +182,45 @@ builder_compose_customizations:
     
 ```
 
+## Kickstart Variables
+
+Varibles used to create a kickstart file
+
+### builder_kickstart_options
+
+Type: list
+Required: false
+
+List of kickstart options to add to the kickstart file
+
+Example:
+```yaml
+builder_kickstart_options:
+  - lang en_US.UTF-8
+  - keyboard us
+  - timezone Etc/UTC --isUtc
+  - text
+  - zerombr
+  - clearpart --all --initlabel
+  - autopart
+  - reboot
+  - user --name={{ builder_compose_customizations['user']['name'] }} {{ "--password" if builder_password is defined  }} {{ builder_password if builder_password is defined }} --group=wheel,user
+  - ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_host }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}
+```
+
+### builder_kickstart_post
+
+Type: list
+Required: false
+
+List of kickstart post options to add to the kickstart file
+
+Example:
+```yaml
+builder_kickstart_post: 
+  - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') }}"
+```
+
 ## Kickstart AAP Variables
 
 Define these variables to auto register the system with AAP
