@@ -130,7 +130,8 @@
 
 - name: Create kickstart file
   ansible.builtin.template:
-    src: 'templates/kickstart.j2'
+    force: true
+    src: "{{ builder_kickstart | default('templates/kickstart.j2') }}"
     dest: "/var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
     mode: 0755
 
