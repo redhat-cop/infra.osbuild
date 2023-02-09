@@ -80,7 +80,12 @@ def main():
 
     # Inject kickstart file to iso
     try:
-        mkksiso_cmd = subprocess.run(["mkksiso", module.params["kickstart"], module.params["src_iso"], module.params["dest_iso"]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        mkksiso_cmd = subprocess.run(
+            ["mkksiso", module.params["kickstart"], module.params["src_iso"], module.params["dest_iso"]],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True
+        )
     except subprocess.CalledProcessError as e:
         module.fail_json("mkksiso command failed: %s, %s" % (e.returncode, e.stderr.decode("utf-8")))
 
