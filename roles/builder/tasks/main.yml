@@ -82,7 +82,7 @@
     dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
 
 - name: Update ostree repository
-  when: builder_compose_type == 'edge-commit' or builder_compose_type == 'iot-commit'
+  when: (builder_compose_type == 'edge-commit' or builder_compose_type == 'iot-commit') and (builder_skip_repo is undefined or not builder_skip_repo)
   block:
     - name: Untar artifact
       ansible.builtin.unarchive:
