@@ -78,18 +78,20 @@ def main():
             if not os.path.exists(module.params[key]):
                 module.fail_json("No such file found: %s" % module.params[key])
 
-    # Inject kickstart file to iso
-    try:
-        mkksiso_cmd = subprocess.run(
-            ["mkksiso", module.params["kickstart"], module.params["src_iso"], module.params["dest_iso"]],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            check=True
-        )
-    except subprocess.CalledProcessError as e:
-        module.fail_json("mkksiso command failed: %s, %s" % (e.returncode, e.stderr.decode("utf-8")))
+    # get local for shelling out
+    locale = get_best_parsable_locale(module)
+    lang_env = dict(LANG=locale, LC_ALL=locale, LC_MESSAGES=locale)
 
-    module.exit_json(msg="New ISO can be found at: %s" % mkksiso_cmd.stdout.decode("utf-8"))
+    # # Inject kickstart file to iso
+    cmd_list = ["mkksiso", module.params["kickstart"], module.params["src_iso"], module.params["dest_iso"]]
+    rc, out, err = module.run_command(cmd_list, environ_update=lang_env)
+    if (rc != 0):
+        module.fail_json(
+            "ERROR: Command '%s' failed with return code: %s and error message, '%s'"
+            % (" ".join(cmd_list), rc, err)
+        )
+
+    module.exit_json(changed=True, msg="Kickstart added to ISO: %s" % module.params["dest_iso"])
 
 
 if __name__ == "__main__":
