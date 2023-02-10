@@ -82,9 +82,9 @@ def main():
     locale = get_best_parsable_locale(module)
     lang_env = dict(LANG=locale, LC_ALL=locale, LC_MESSAGES=locale)
 
-    # # Inject kickstart file to iso
+    # Inject kickstart file to iso
     cmd_list = ["mkksiso", module.params["kickstart"], module.params["src_iso"], module.params["dest_iso"]]
-    rc, out, err = module.run_command(cmd_list, environ_update=lang_env)
+    rc, _, err = module.run_command(cmd_list, environ_update=lang_env)
     if (rc != 0):
         module.fail_json(
             "ERROR: Command '%s' failed with return code: %s and error message, '%s'"
