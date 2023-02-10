@@ -84,7 +84,7 @@ def main():
 
     # Inject kickstart file to iso
     cmd_list = ["mkksiso", module.params["kickstart"], module.params["src_iso"], module.params["dest_iso"]]
-    rc, _, err = module.run_command(cmd_list, environ_update=lang_env)
+    rc, out, err = module.run_command(cmd_list, environ_update=lang_env)
     if (rc != 0):
         module.fail_json(
             "ERROR: Command '%s' failed with return code: %s and error message, '%s'"
