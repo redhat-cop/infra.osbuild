@@ -202,6 +202,12 @@
         mode: 0755
         state: directory
 
+    - name: Inject kickstart into iso
+      infra.osbuild.inject_ks:
+        kickstart: "/var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
+        src_iso: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+        dest_iso: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+
     - name: Copy installer to web dir
       ansible.builtin.copy:
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
