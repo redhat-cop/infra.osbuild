@@ -24,18 +24,24 @@
 
 - name: Add RHSM repos for additional Red Hat packages
   when:
-    - builder_rhsm_repos is defined
+    - builder_rhsm_repos_info is defined
   block:
     - name: Loop through the RHSM repos to debug them
       ansible.builtin.debug:
         var: __builder_rhsm_repo
-      loop: "{{ builder_rhsm_repos }}"
+      loop: "{{ builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
     - name: Loop through the repos and configure them
-      community.general.rhsm_repository:
-        name: "{{ __builder_rhsm_repo['name'] }}"
+      infra.osbuild.repository:
+        repo_name: "{{ __builder_rhsm_repo['name'] }}"
+        base_url: "{{ __builder_rhsm_repo['base_url'] }}"
+        type: "{{ __builder_rhsm_repo['type'] | default('yum-baseurl') }}"
+        check_ssl: "{{ __builder_rhsm_repo['check_ssl'] | default(true) }}"
+        check_gpg: "{{ __builder_rhsm_repo['check_gpg'] | default(true) }}"
+        gpgkey_urls: "{{ __builder_rhsm_repo['gpgkey_urls'] | default(omit) }}"
+        rhsm: true
         state: "{{ __builder_rhsm_repo['state'] | default('present') }}"
-      loop: "{{ builder_rhsm_repos }}"
+      loop: "{{ builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo

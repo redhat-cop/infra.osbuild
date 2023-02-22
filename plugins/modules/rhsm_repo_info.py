@@ -39,10 +39,8 @@ EXAMPLES = """
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_native, to_text, to_bytes
-from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
-import shutil
+import os
 import configparser
 
 def main() -> None:
@@ -52,9 +50,28 @@ def main() -> None:
         ),
     )
 
-
-    results: dict = {}
+    rhsm_info = []
     has_changed: bool = False
+    for file in os.listdir("/etc/yum.repos.d/"):
+        confp = configparser.ConfigParser()
+        confp.read_file(open("/etc/yum.repos.d/%s" % file))
+        for name in module.params["name"]:
+            try:
+                items = dict(confp.items(name["name"]))
+                rhsm_info.append({
+                    "name": name["name"],
+                    "base_url": items["baseurl"],
+                    "type": "yum-baseurl",
+                    "check_ssl": True if items['sslverify'] == '1' else False,
+                    "check_gpg": True if items['gpgcheck'] == '1' else False,
+                    "gpgkey_urls": items['gpgkey'],
+                    "state": 'present',
+                })
+                has_changed = True
+            except:
+                module.fail_json("Could not find %s in file, /etc/yum.repos.d/redhat.repo" % name["name"])
 
+    module.exit_json(changed=has_changed, rhsm_info=rhsm_info)
 
-
+if __name__ == "__main__":
+    main()

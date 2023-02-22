@@ -1,9 +1,9 @@
 ---
 - name: Build Microshift Image
-  hosts: rhel8builder
+  hosts: all
   gather_facts: true
   vars:
-    builder_blueprint_name: microshift
+    builder_blueprint_name: microshift-rhsm
     builder_blueprint_src_path: "/tmp/microshift.toml"
     compose_type: edge-commit
     pubkey_file: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"
@@ -27,6 +27,10 @@
     - name: Run the setup server role
       ansible.builtin.import_role:
         name: infra.osbuild.setup_server
+    - name: Get rhsm repos properties
+      infra.osbuild.rhsm_repo_info:
+        name: "{{ builder_rhsm_repos }}"
+      register: builder_rhsm_repos_info
     - name: Run the builder role
       ansible.builtin.import_role:
         name: infra.osbuild.builder
