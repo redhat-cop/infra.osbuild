@@ -51,7 +51,7 @@
     - name: Create blueprint directory
       ansible.builtin.file:
         path: "/var/www/html/{{ builder_blueprint_name }}"
-        mode: 0755
+        mode: '0755'
         state: directory
     - name: Initialize repository
       ansible.builtin.command:
@@ -73,7 +73,7 @@
 - name: Create tmp directory for blueprint
   ansible.builtin.file:
     path: "/tmp/{{ builder_blueprint_name }}"
-    mode: 0755
+    mode: '0755'
     state: directory
 
 - name: Export the compose artifact
@@ -117,14 +117,14 @@
     - name: Create images directory
       ansible.builtin.file:
         path: "/var/www/html/{{ builder_blueprint_name }}/images"
-        mode: 0755
+        mode: '0755'
         state: directory
     - name: Copy image to web dir
       ansible.builtin.copy:
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
         dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"
         remote_src: true
-        mode: 0644
+        mode: '0644'
         owner: apache
         group: apache
 
@@ -132,7 +132,7 @@
   ansible.builtin.template:
     src: "{{ builder_kickstart | default('templates/kickstart.j2') }}"
     dest: "/var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
-    mode: 0755
+    mode: '0755'
 
 - name: Restore context on blueprint directory
   ansible.builtin.command: "restorecon -R /var/www/html/{{ builder_blueprint_name }}"
@@ -188,7 +188,7 @@
     - name: Create tmp directory for blueprint
       ansible.builtin.file:
         path: "/tmp/{{ builder_blueprint_name }}"
-        mode: 0755
+        mode: '0755'
         state: directory
 
     - name: Export the compose artifact
@@ -199,7 +199,7 @@
     - name: Create images directory
       ansible.builtin.file:
         path: "/var/www/html/{{ builder_blueprint_name }}/images"
-        mode: 0755
+        mode: '0755'
         state: directory
 
     - name: Inject kickstart into iso
@@ -213,6 +213,6 @@
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
         dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"
         remote_src: true
-        mode: 0644
+        mode: '0644'
         owner: apache
         group: apache

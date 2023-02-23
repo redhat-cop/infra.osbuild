@@ -54,7 +54,7 @@
         - name: Create blueprint directory
           ansible.builtin.file:
             path: "/var/www/html/{{ blueprint_name }}"
-            mode: 0755
+            mode: '0755'
             state: directory
         - name: Initialize repository
           ansible.builtin.command:
@@ -80,7 +80,7 @@
     - name: Create tmp directory for blueprint
       ansible.builtin.file:
         path: "/tmp/{{ blueprint_name }}"
-        mode: 0755
+        mode: '0755'
         state: directory
 
     - name: Export the compose artifact
