@@ -24,6 +24,12 @@ author:
     - Adam Miller (@maxamillion)
     - Matthew Sandoval (@matoval)
 options:
+    repos:
+        description:
+            - Name of rhsm repository
+        type: list
+        elements: str
+        required: true
 """
 
 EXAMPLES = """
@@ -43,11 +49,13 @@ from ansible.module_utils.basic import AnsibleModule
 import os
 import configparser
 
+
 def main() -> None:
     module = AnsibleModule(
         argument_spec=dict(
-            name=dict(type="list", required=True),
+            repos=dict(type="list", required=True, elements="str", no_log=True),
         ),
+        supports_check_mode=True
     )
 
     rhsm_info = []
@@ -55,11 +63,11 @@ def main() -> None:
     for file in os.listdir("/etc/yum.repos.d/"):
         confp = configparser.ConfigParser()
         confp.read_file(open("/etc/yum.repos.d/%s" % file))
-        for name in module.params["name"]:
+        for repo in module.params["repos"]:
             try:
-                items = dict(confp.items(name["name"]))
+                items = dict(confp.items(repo))
                 rhsm_info.append({
-                    "name": name["name"],
+                    "name": repo,
                     "base_url": items["baseurl"],
                     "type": "yum-baseurl",
                     "check_ssl": True if items['sslverify'] == '1' else False,
@@ -68,10 +76,11 @@ def main() -> None:
                     "state": 'present',
                 })
                 has_changed = True
-            except:
-                module.fail_json("Could not find %s in file, /etc/yum.repos.d/redhat.repo" % name["name"])
+            except Exception:
+                module.fail_json("Could not find %s in file, /etc/yum.repos.d/redhat.repo. Error: %s" % (repo, Exception))
 
     module.exit_json(changed=has_changed, rhsm_info=rhsm_info)
+
 
 if __name__ == "__main__":
     main()

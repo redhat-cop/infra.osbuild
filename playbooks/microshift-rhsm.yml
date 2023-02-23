@@ -8,8 +8,8 @@
     compose_type: edge-commit
     pubkey_file: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"
     builder_rhsm_repos:
-      - name: "rhocp-4.12-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
-      - name: "fast-datapath-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+      - "rhocp-4.12-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+      - "fast-datapath-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
     builder_compose_pkgs:
       - vim-enhanced
       - git
@@ -29,7 +29,7 @@
         name: infra.osbuild.setup_server
     - name: Get rhsm repos properties
       infra.osbuild.rhsm_repo_info:
-        name: "{{ builder_rhsm_repos }}"
+        repos: "{{ builder_rhsm_repos }}"
       register: builder_rhsm_repos_info
     - name: Run the builder role
       ansible.builtin.import_role:

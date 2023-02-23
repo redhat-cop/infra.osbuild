@@ -45,12 +45,8 @@ EXAMPLES = """
     src: /tmp/blueprint.toml
 """
 
-
-import os
-import traceback
-
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_native, to_text
+from ansible.module_utils._text import to_text
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 

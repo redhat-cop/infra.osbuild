@@ -57,7 +57,6 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.common.locale import get_best_parsable_locale
 
 import os
-import subprocess
 
 
 def main():
