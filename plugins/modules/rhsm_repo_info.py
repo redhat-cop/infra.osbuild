@@ -64,7 +64,7 @@ def main() -> None:
                     "type": "yum-baseurl",
                     "check_ssl": True if items['sslverify'] == '1' else False,
                     "check_gpg": True if items['gpgcheck'] == '1' else False,
-                    "gpgkey_urls": items['gpgkey'],
+                    "gpgkey_paths": items['gpgkey'],
                     "state": 'present',
                 })
                 has_changed = True

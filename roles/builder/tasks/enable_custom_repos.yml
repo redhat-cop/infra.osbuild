@@ -39,7 +39,7 @@
         type: "{{ __builder_rhsm_repo['type'] | default('yum-baseurl') }}"
         check_ssl: "{{ __builder_rhsm_repo['check_ssl'] | default(true) }}"
         check_gpg: "{{ __builder_rhsm_repo['check_gpg'] | default(true) }}"
-        gpgkey_urls: "{{ __builder_rhsm_repo['gpgkey_urls'] | default(omit) }}"
+        gpgkey_paths: "{{ __builder_rhsm_repo['gpgkey_paths'] | default(omit) }}"
         rhsm: true
         state: "{{ __builder_rhsm_repo['state'] | default('present') }}"
       loop: "{{ builder_rhsm_repos_info['rhsm_info'] }}"

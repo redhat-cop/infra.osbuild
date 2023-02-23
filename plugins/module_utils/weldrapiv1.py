@@ -90,7 +90,7 @@ class WeldrV1(object):
         results = json.load(
             self.weldr.request.open(
                 "POST",
-                "http://localhost/api/v0/projects/source/new",
+                "http://localhost/api/v1/projects/source/new",
                 data=source,
                 headers={"Content-Type": "application/json"},
             )
@@ -107,7 +107,7 @@ class WeldrV1(object):
         results = json.load(
             self.weldr.request.open(
                 "GET",
-                "http://localhost/api/v0/projects/source/info/%s" % quote(repo_name),
+                "http://localhost/api/v1/projects/source/info/%s" % quote(repo_name),
                 headers={"Content-Type": "application/json"},
             )
         )
@@ -123,7 +123,7 @@ class WeldrV1(object):
         results = json.load(
             self.weldr.request.open(
                 "DELETE",
-                "http://localhost/api/v0/projects/source/delete/%s" % quote(repo_name),
+                "http://localhost/api/v1/projects/source/delete/%s" % quote(repo_name),
                 headers={"Content-Type": "application/json"},
             )
         )
