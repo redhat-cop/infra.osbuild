@@ -48,26 +48,18 @@ builder_custom_repos:
 
 ### builder_rhsm_repos
 
-Type: complex
+Type: list
 Required: false
 
-Custom list of RPM repositories to make available to the 
+List of RHSM repositories to make available to the 
 [osbuild](https://www.osbuild.org/) [compose builds](https://www.osbuild.org/guides/user-guide/user-guide.html).
-
-Each list entry is a [YAML dictionary](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
-type and has the following attributes:
-
-| Variable Name | Type                              | Required  | Default Value |
-|---------------|-----------------------------------|-----------|---------------|
-| name          | string                            | **Yes**   | n/a           |
-| state         | string ("present" or "absent" )   | No        | "present"     | 
 
 Example:
 
 ```yaml
 builder_rhsm_repos:
-  - name: "rhocp-4.12-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
-  - name: "fast-datapath-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+  - "rhocp-4.12-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+  - "fast-datapath-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
 ```
 
 #### NOTES:
