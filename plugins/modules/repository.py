@@ -99,8 +99,8 @@ def main():
             type=dict(type="str", required=False, choices=["yum-baseurl", "yum-mirrorlist", "yum-metalink"]),
             check_ssl=dict(type="bool", required=False),
             check_gpg=dict(type="bool", required=False),
-            gpgkey_urls=dict(type="list", required=False, elements="str"),
-            gpgkey_paths=dict(type="list", required=False, elements="str"),
+            gpgkey_urls=dict(type="list", required=False, elements="str", no_log=False),
+            gpgkey_paths=dict(type="list", required=False, elements="str", no_log=False),
             rhsm=dict(type="bool", required=False),
             state=dict(type="str", required=True, choices=["present", "absent"])
         ),
