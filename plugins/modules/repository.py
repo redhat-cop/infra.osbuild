@@ -55,6 +55,12 @@ options:
         type: list
         elements: str
         required: false
+    gpgkey_paths:
+        description:
+            - List of gpg key paths to pull gpg keys from
+        type: list
+        elements: str
+        required: false
     rhsm:
         description:
             - Set true if the repository source requires a subscription
@@ -79,12 +85,9 @@ EXAMPLES = """
     state: present
 """
 
-import re
-import time
 import json
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_native, to_text, to_bytes
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
@@ -97,6 +100,7 @@ def main():
             check_ssl=dict(type="bool", required=False),
             check_gpg=dict(type="bool", required=False),
             gpgkey_urls=dict(type="list", required=False, elements="str", no_log=True),
+            gpgkey_paths=dict(type="list", required=False, elements="str", no_log=True),
             rhsm=dict(type="bool", required=False),
             state=dict(type="str", required=True, choices=["present", "absent"])
         ),
@@ -114,22 +118,30 @@ def main():
 
         new_source = {}
         new_source["name"] = module.params["repo_name"]
+        new_source["id"] = module.params["repo_name"]
         new_source["url"] = module.params["base_url"]
         new_source["type"] = module.params["type"]
         new_source["check_ssl"] = bool(module.params["check_ssl"])
         new_source["check_gpg"] = bool(module.params["check_gpg"])
 
         if module.params["rhsm"]:
-            new_source["rhsm"] = module.params["rhsm"]
+            new_source["rhsm"] = bool(module.params["rhsm"])
 
-        if module.params["gpgkey_urls"]:
+        if module.params["gpgkey_urls"] or module.params["gpgkey_paths"]:
             gpgkeys = []
-            for url in module.params["gpgkey_urls"]:
-                gpgkeys.append(url)
-            new_source["gpgkey_urls"] = gpgkeys
+            if module.params["gpgkey_urls"]:
+                for url in module.params["gpgkey_urls"]:
+                    gpgkeys.append(url)
+            if module.params["gpgkey_paths"]:
+                for path in module.params["gpgkey_paths"]:
+                    clean_path = path.split('file://')[1]
+                    gpg_key = open(clean_path, 'r').read()
+                    gpgkeys.append(gpg_key)
+
+            new_source["gpgkeys"] = gpgkeys
 
         if len(repo_exists["errors"]) == 0:
-            # weldr has not update endpoint for sources
+            # weldr does not have an update endpoint for sources
             isDeleted = weldr.api.delete_projects_source(module.params["repo_name"])
             if not isDeleted["status"]:
                 msg = isDeleted["errors"]

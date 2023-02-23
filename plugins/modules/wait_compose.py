@@ -51,11 +51,9 @@ EXAMPLES = """
     timeout: 3600
 """
 
-import re
 import time
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_native, to_text
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 

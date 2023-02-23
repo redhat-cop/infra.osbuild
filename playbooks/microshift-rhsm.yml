@@ -1,0 +1,36 @@
+---
+- name: Build Microshift Image
+  hosts: all
+  gather_facts: true
+  vars:
+    builder_blueprint_name: microshift-rhsm
+    builder_blueprint_src_path: "/tmp/microshift.toml"
+    compose_type: edge-commit
+    pubkey_file: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"
+    builder_rhsm_repos:
+      - "rhocp-4.12-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+      - "fast-datapath-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+    builder_compose_pkgs:
+      - vim-enhanced
+      - git
+      - nano
+      - microshift
+      - NetworkManager-wifi
+    builder_compose_customizations:
+      user:
+        name: "edge"
+        description: "test user"
+        password: "openshift"
+        key: "{{ pubkey_file }}"
+        groups: '["users", "wheel"]'
+  tasks:
+    - name: Run the setup server role
+      ansible.builtin.import_role:
+        name: infra.osbuild.setup_server
+    - name: Get rhsm repos properties
+      infra.osbuild.rhsm_repo_info:
+        repos: "{{ builder_rhsm_repos }}"
+      register: builder_rhsm_repos_info
+    - name: Run the builder role
+      ansible.builtin.import_role:
+        name: infra.osbuild.builder

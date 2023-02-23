@@ -46,6 +46,22 @@ builder_custom_repos:
     base_url: "https://repo.example.com/company_repo/x86_64/"
 ```
 
+### builder_rhsm_repos
+
+Type: list
+Required: false
+
+List of RHSM repositories to make available to the 
+[osbuild](https://www.osbuild.org/) [compose builds](https://www.osbuild.org/guides/user-guide/user-guide.html).
+
+Example:
+
+```yaml
+builder_rhsm_repos:
+  - "rhocp-4.12-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+  - "fast-datapath-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+```
+
 #### NOTES:
 
 osbuild performs builds in [multiple stages](https://www.osbuild.org/guides/developer-guide/osbuild.html?highlight=stage#osbuild)
