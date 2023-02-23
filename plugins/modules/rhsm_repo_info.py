@@ -53,7 +53,7 @@ import configparser
 def main() -> None:
     module = AnsibleModule(
         argument_spec=dict(
-            repos=dict(type="list", required=True, elements="str", no_log=True),
+            repos=dict(type="list", required=True, elements="str"),
         ),
         supports_check_mode=True
     )
