@@ -108,6 +108,7 @@ EXAMPLES = """
         groups: '["users", "wheel"]'
 """
 
+from ansible.module_utils._text import to_native, to_text
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
@@ -122,6 +123,27 @@ def increment_version(version: str, version_type: str) -> str:
 
 
 def main() -> None:
+    try:
+        try:
+            import toml
+
+            HAS_TOML = True
+        except ImportError:
+            HAS_TOML = False
+
+        if not HAS_TOML:
+            try:
+                import pytoml as toml
+
+                HAS_TOML = True
+                self.toml = toml
+            except ImportError:
+                HAS_TOML = False
+    except Exception as e:
+        self.module.fail_json(
+            msg="Exception encountered during execution: %s" % to_text(e)
+        )
+
     module: AnsibleModule = AnsibleModule(
         argument_spec=dict(
             dest=dict(type="str", required=True),
@@ -141,12 +163,12 @@ def main() -> None:
     else:
         description: str = module.params["description"]
 
-    toml_file: str = (
-        f'name = "{module.params["name"]}"\n'
-        f'description = "{description}"\n'
-    )
+    toml_data: dict = {
+        "name": f"{module.params['name']}",
+        "description": f"{description}"
+    }
     if module.params["distro"]:
-        toml_file += f'distro = "{module.params["distro"]}"\n'
+        toml_data["distro"]: str = f"{module.params['distro']}"
 
     blueprint_version = ""
     try:
@@ -161,33 +183,39 @@ def main() -> None:
             current_version: str = results['blueprints'][0]['version']
             blueprint_version: str = increment_version(current_version, module.params['version_type'])
 
-        toml_file += f'version = "{blueprint_version}"\n\n'
+        toml_data["version"]: str = f"{blueprint_version}"
     except Exception as e:
         module.fail_json(msg=f'Error: {e}. OSbuild composer service is unavailable')
 
-    for package in module.params["packages"]:
-        toml_file += f"[[packages]]\n" f'name = "{package}"\n' f'version = "*"\n' f"\n"
+    if module.params["packages"]:
+        toml_data["packages"]: list = []
+        for package in module.params["packages"]:
+            toml_data["packages"].append({"name": f"{package}", "version": "*"})
 
-    for group in module.params["groups"]:
-        toml_file += f"[[groups]]\n" f'name = "{group}"\n' f"\n"
+    if module.params["groups"]:
+        toml_data["groups"]: list = []
+        for group in module.params["groups"]:
+            toml_data["groups"].append({"name": f"{group}"})
 
+    toml_data["customizations"]: dict = {}
     for key, customization in module.params["customizations"].items():
-        double_square_brackets = ["user", "filesystem", "sshkey"]
-        if key in double_square_brackets:
-            toml_file += f"[[customizations.{key}]]\n"
-        else:
-            toml_file += f"[customizations.{key}]\n"
-        for k, v in customization.items():
-            if isinstance(v, list) or v.startswith("["):
-                toml_file += f"{k} = {v}\n"
-            else:
-                toml_file += f'{k} = "{v}"\n'
 
-        toml_file += "\n"
+        if isinstance(customization, str):
+            toml_data["customizations"][key]: str = customization
+            continue
+
+        # TODO since the module dict can only contain one of each key,
+        # multiple users, filesystem definitions, etc. can't be done yet
+        double_square_brackets: list = ["user", "filesystem", "sshkey"]
+        if key in double_square_brackets:
+            toml_data["customizations"][key]: list = []
+            toml_data["customizations"][key].append(customization)
+        else:
+            toml_data["customizations"][key]: dict = customization
 
     try:
         with open(module.params["dest"], "w") as fd:
-            fd.write(toml_file)
+            toml.dump(toml_data, fd)
     except Exception as e:
         module.fail_json(
             msg=f'Failed to write to file: {module.params["dest"]}', error=e
