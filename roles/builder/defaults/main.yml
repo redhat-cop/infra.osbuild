@@ -15,6 +15,6 @@ builder_compose_customizations:
     description: "test user"
     password: "openshift"
     key: "{{ builder_pub_key }}"
-    groups: 
+    groups:
       - "users"
       - "wheel"
