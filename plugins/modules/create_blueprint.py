@@ -123,27 +123,6 @@ def increment_version(version: str, version_type: str) -> str:
 
 
 def main() -> None:
-    try:
-        try:
-            import toml
-
-            HAS_TOML = True
-        except ImportError:
-            HAS_TOML = False
-
-        if not HAS_TOML:
-            try:
-                import pytoml as toml
-
-                HAS_TOML = True
-                self.toml = toml
-            except ImportError:
-                HAS_TOML = False
-    except Exception as e:
-        self.module.fail_json(
-            msg="Exception encountered during execution: %s" % to_text(e)
-        )
-
     module: AnsibleModule = AnsibleModule(
         argument_spec=dict(
             dest=dict(type="str", required=True),
@@ -215,7 +194,7 @@ def main() -> None:
 
     try:
         with open(module.params["dest"], "w") as fd:
-            toml.dump(toml_data, fd)
+            weldr.toml.dump(toml_data, fd)
     except Exception as e:
         module.fail_json(
             msg=f'Failed to write to file: {module.params["dest"]}', error=e
