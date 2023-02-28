@@ -23,52 +23,58 @@
     groups: weldr
     append: true
 
-- name: Include enable_custom_repos.yml
-  ansible.builtin.include_tasks:
-    file: enable_custom_repos.yml
-
-- name: Create a blueprint
-  infra.osbuild.create_blueprint:
-    dest: "{{ builder_blueprint_src_path }}"
-    name: "{{ builder_blueprint_name }}"
-    distro: "{{ builder_blueprint_distro | default(omit) }}"
-    packages: "{{ builder_compose_pkgs }}"
-    customizations: "{{ builder_compose_customizations }}"
-  register: blueprint_output
-
-- name: Push the blueprint into image builder
-  infra.osbuild.push_blueprint:
-    src: "{{ builder_blueprint_src_path }}"
-
-- name: Check if blueprint directory exists
-  ansible.builtin.stat:
-    path: "/var/www/html/{{ builder_blueprint_name }}"
-  register: stat_output
-
-- name: Initialize rpm-ostree repo for blueprint
-  when: not stat_output.stat.exists
+- name: Image build process
   block:
-    - name: Create blueprint directory
-      ansible.builtin.file:
-        path: "/var/www/html/{{ builder_blueprint_name }}"
-        mode: '0755'
-        state: directory
-    - name: Initialize repository
-      ansible.builtin.command:
-        chdir: "/var/www/html/{{ builder_blueprint_name }}"
-        cmd: '/usr/bin/ostree --repo=repo init --mode=archive'
-      args:
-        creates: "/var/www/html/{{ builder_blueprint_name }}/repo"
+  - name: Include enable_custom_repos.yml
+    ansible.builtin.include_tasks:
+      file: enable_custom_repos.yml
 
-- name: Start compose
-  infra.osbuild.start_compose:
-    blueprint: "{{ builder_blueprint_name }}"
-    compose_type: "{{ builder_compose_type }}"
-  register: compose_start_out
+  - name: Create a blueprint
+    infra.osbuild.create_blueprint:
+      dest: "{{ builder_blueprint_src_path }}"
+      name: "{{ builder_blueprint_name }}"
+      distro: "{{ builder_blueprint_distro | default(omit) }}"
+      packages: "{{ builder_compose_pkgs }}"
+      customizations: "{{ builder_compose_customizations }}"
+    register: blueprint_output
 
-- name: Wait for compose to finish
-  infra.osbuild.wait_compose:
-    compose_id: "{{ compose_start_out['result']['build_id'] }}"
+  - name: Push the blueprint into image builder
+    infra.osbuild.push_blueprint:
+      src: "{{ builder_blueprint_src_path }}"
+
+  - name: Check if blueprint directory exists
+    ansible.builtin.stat:
+      path: "/var/www/html/{{ builder_blueprint_name }}"
+    register: stat_output
+
+  - name: Initialize rpm-ostree repo for blueprint
+    when: not stat_output.stat.exists
+    block:
+      - name: Create blueprint directory
+        ansible.builtin.file:
+          path: "/var/www/html/{{ builder_blueprint_name }}"
+          mode: '0755'
+          state: directory
+      - name: Initialize repository
+        ansible.builtin.command:
+          chdir: "/var/www/html/{{ builder_blueprint_name }}"
+          cmd: '/usr/bin/ostree --repo=repo init --mode=archive'
+        args:
+          creates: "/var/www/html/{{ builder_blueprint_name }}/repo"
+
+  - name: Start compose
+    infra.osbuild.start_compose:
+      blueprint: "{{ builder_blueprint_name }}"
+      compose_type: "{{ builder_compose_type }}"
+    register: compose_start_out
+
+  - name: Wait for compose to finish
+    infra.osbuild.wait_compose:
+      compose_id: "{{ compose_start_out['result']['build_id'] }}"
+  always:
+    - name: Include disable_custom_repos.yml
+      ansible.builtin.include_tasks:
+        file: disable_custom_repos.yml
 
 - name: Create tmp directory for blueprint
   ansible.builtin.file:
@@ -143,10 +149,6 @@
     - _builder_compose_type is defined
     - "'installer' in _builder_compose_type or 'raw' in _builder_compose_type"
   block:
-    - name: Include disable_custom_repos.yml
-      ansible.builtin.include_tasks:
-        file: disable_custom_repos.yml
-
     - name: Create blank blueprint
       infra.osbuild.create_blueprint:
         dest: "{{ builder_blueprint_src_path }}"
