@@ -229,12 +229,13 @@ builder_kickstart_options:
 Type: list
 Required: false
 
-List of kickstart post options to add to the kickstart file
+List of kickstart post options to add to the kickstart file. Use default(None) when conditionally setting a variable in the builder_kickstart_post list.
 
 Example:
 ```yaml
 builder_kickstart_post: 
   - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') }}"
+  - "{{ microshift_image_ovn_options_template | default(None) }}"
 ```
 
 ## Kickstart AAP Variables
