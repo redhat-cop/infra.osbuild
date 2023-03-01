@@ -10,8 +10,10 @@ sshkey --username={{ builder_compose_customizations['user']['name'] }} {{ builde
 
 {% if builder_kickstart_post is defined and builder_kickstart_post | length > 0 %}
 {% for post in builder_kickstart_post %}
+{% if post != "" %}
 %post
 {{ post }}
 %end
+{% endif %}
 {% endfor %}
 {% endif %}
