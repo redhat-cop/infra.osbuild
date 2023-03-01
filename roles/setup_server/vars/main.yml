@@ -15,4 +15,5 @@ _setup_server_base_packages:
   - weldr-client
   - python3
   - lorax
+  - pykickstart
 _setup_server_infra_osbuild_ostree_os: false
