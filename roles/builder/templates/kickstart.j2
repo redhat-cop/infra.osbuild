@@ -5,7 +5,7 @@
 {% endif %}
 
 {% if builder_pub_key is defined and builder_pub_key | length > 0  %}
-sshkey --username={{ builder_compose_customizations['user']['name'] }} {{ builder_pub_key }}
+sshkey --username={{ builder_compose_customizations['user']['name'] }} "{{ builder_pub_key }}"
 {% endif %}
 
 {% if builder_kickstart_post is defined and builder_kickstart_post | length > 0 %}
