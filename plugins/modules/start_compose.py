@@ -33,7 +33,7 @@ options:
         description:
             - Image size expressed in MiB
         type: int
-        default: 8192
+        default: 0
         required: false
     profile:
         description:
