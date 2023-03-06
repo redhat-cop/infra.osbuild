@@ -25,18 +25,18 @@
 
 - name: Remove source for additional RHSM packages
   when:
-    - builder_rhsm_repos is defined
+    - builder_rhsm_repos_info['rhsm_info'] is defined
   block:
     - name: Loop through the repos to debug them
       ansible.builtin.debug:
         var: __builder_rhsm_repo
-      loop: "{{ builder_rhsm_repos }}"
+      loop: "{{ builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
     - name: Loop through the repos and configure them
       community.general.rhsm_repository:
-        name: "{{ __builder_rhsm_repo }}"
+        name: "{{ __builder_rhsm_repo['name'] }}"
         state: "absent"
-      loop: "{{ builder_rhsm_repos }}"
+      loop: "{{ builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo

@@ -24,7 +24,7 @@
 
 - name: Add RHSM repos for additional Red Hat packages
   when:
-    - builder_rhsm_repos_info is defined
+    - builder_rhsm_repos_info['rhsm_info'] is defined
   block:
     - name: Loop through the RHSM repos to debug them
       ansible.builtin.debug:
