@@ -27,7 +27,7 @@ options:
        description:
            - Get status of specific compose types
        type: list
-       elements: sttr
+       elements: str
        required: false
        choices: ["all", "waiting", "running", "finished", "failed"]
        default: ["all"]
