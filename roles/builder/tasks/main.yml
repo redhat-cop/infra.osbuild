@@ -127,17 +127,20 @@
 
     - name: Pull commit from artifact
       ansible.builtin.command:
-        cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo pull-local /tmp/{{ builder_blueprint_name }}/repo {{ checksum_output['stdout'] }}"
+        cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo pull-local /tmp/{{ builder_blueprint_name }}/repo {{ checksum_output['stdout'] }}" # noqa yaml[line-length]
+
       changed_when: true
 
     - name: Commit changes to repository
       ansible.builtin.command:
-        cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}"
+        cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}" # noqa yaml[line-length]
+
       changed_when: true
 
     - name: Remove tar file
       ansible.builtin.file:
-        path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"
+        path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+
         state: absent
 
 - name: Serve all other compose types on the http server
@@ -151,7 +154,8 @@
     - name: Copy image to web dir
       ansible.builtin.copy:
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
-        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"
+        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+
         remote_src: true
         mode: '0644'
         owner: apache
@@ -240,7 +244,8 @@
     - name: Copy installer to web dir
       ansible.builtin.copy:
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
-        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"
+        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+
         remote_src: true
         mode: '0644'
         owner: apache
