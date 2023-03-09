@@ -101,8 +101,8 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             compose_types=dict(type="list", elements="str",
-                required=False, default="all",
-                choices=["all", "waiting", "running", "finished", "failed"]),
+                               required=False, default="all",
+                               choices=["all", "waiting", "running", "finished", "failed"]),
         ),
     )
 
@@ -138,7 +138,7 @@ def main():
             del queued_composes["waiting"]
         else:
             num_composes += len(queued_composes["waiting"] +
-                              queued_composes["running"])
+                                queued_composes["running"])
 
         all_composes.update(queued_composes)
 
