@@ -1,4 +1,27 @@
 ---
+- name: Remove all images from storage
+  when: builder_image_storage_cleared
+  block:
+    - name: Get all images for removal
+      ansible.builtin.command: /usr/bin/composer-cli compose list
+      register: output
+      changed_when: false
+
+    - name: Remove each image by UUID
+      ansible.builtin.command: "/usr/bin/composer-cli compose delete {{ (item | split)[0] }}"
+      loop: "{{ output.stdout_lines }}"
+      changed_when: true
+
+- name: Get current image storage size
+  ansible.builtin.shell: "set -eo pipefail df -h /var/lib/osbuild-composer/artifacts | tail -n 1 | awk '{ print $5; }' | rev | cut -c2- | rev"
+  register: current_image_storage_size
+  changed_when: false
+
+- name: Failed when image storage is full
+  when: 100 - (current_image_storage_size.stdout | int) <= builder_image_storage_threshold
+  ansible.builtin.fail:
+    msg: "Available storage: {{ 100 - (current_image_storage_size.stdout | int) }}, storage threshold: {{ builder_image_storage_threshold }}, clear previous images to make space" # noqa yaml[line-length]
+
 - name: Check if ssh key is defined
   ansible.builtin.debug:
     msg: "SSH Key nor password was defined, log in requires either an SSH key or password"

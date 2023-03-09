@@ -18,3 +18,5 @@ builder_compose_customizations:
     groups:
       - "users"
       - "wheel"
+builder_image_storage_threshold: 3 # percentage
+builder_image_storage_cleared: false
