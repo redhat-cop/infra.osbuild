@@ -105,13 +105,13 @@ notes:
 
 EXAMPLES = """
 - name: Start ostree compose size 4096
-  infra.osbuild.start_ostree:
+  infra.osbuild.start_compose:
     blueprint: rhel-for-edge-demo
     image_name: testimage
     size: 4096
 
 - name: Start ostree compose with idempotent transaction
-  infra.osbuild.start_ostree:
+  infra.osbuild.start_compose:
     blueprint: rhel-for-edge-demo
     allow_duplicate: false
 """
