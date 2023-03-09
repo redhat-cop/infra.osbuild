@@ -23,13 +23,14 @@ description:
 author:
     - Chris Edillon (@jce-redhat)
 options:
-    compose_type:
+    compose_types:
        description:
-           - Get status of a specific compose type
-       type: str
+           - Get status of specific compose types
+       type: list
+       elements: sttr
        required: false
        choices: ["all", "waiting", "running", "finished", "failed"]
-       default: "all"
+       default: ["all"]
 """
 
 EXAMPLES = """
@@ -37,10 +38,12 @@ EXAMPLES = """
   infra.osbuild.compose_status:
   register: all_composes
 
-- name: Get list of failed composes
+- name: Get list of failed or finished composes
   infra.osbuild.compose_status:
-    compose_type: failed
-  register: failed_composes
+    compose_types:
+      - failed
+      - finished
+  register: composes_to_delete
 """
 
 RETURN = """
@@ -97,8 +100,9 @@ from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            compose_type=dict(type="str", required=False, default="all",
-                      choices = ["all", "waiting", "running", "finished", "failed"]),
+            compose_types=dict(type="list", elements="str",
+                required=False, default="all",
+                choices=["all", "waiting", "running", "finished", "failed"]),
         ),
     )
 
@@ -107,25 +111,29 @@ def main():
     all_composes: dict = {}
     num_composes: int = 0
 
-    if module.params["compose_type"] in ("all", "finished"):
+    if ("all" in module.params["compose_types"] or
+            "finished" in module.params["compose_types"]):
         finished_composes: dict = weldr.api.get_compose_finished()
         all_composes.update(finished_composes)
         num_composes += len(finished_composes["finished"])
 
-    if module.params["compose_type"] in ("all", "failed"):
+    if ("all" in module.params["compose_types"] or
+            "failed" in module.params["compose_types"]):
         failed_composes: dict = weldr.api.get_compose_failed()
         all_composes.update(failed_composes)
         num_composes += len(failed_composes["failed"])
 
-    if module.params["compose_type"] in ("all", "waiting", "running"):
+    if ("all" in module.params["compose_types"] or
+            "waiting" in module.params["compose_types"] or
+            "running" in module.params["compose_types"]):
         queued_composes: dict = weldr.api.get_compose_queue()
         queued_composes["waiting"] = queued_composes.pop("new")
         queued_composes["running"] = queued_composes.pop("run")
 
-        if module.params["compose_type"] == "waiting":
+        if "waiting" in module.params["compose_types"]:
             num_composes += len(queued_composes["waiting"])
             del queued_composes["running"]
-        elif module.params["compose_type"] == "running":
+        elif "running" in module.params["compose_types"]:
             num_composes += len(queued_composes["running"])
             del queued_composes["waiting"]
         else:
