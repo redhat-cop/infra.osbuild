@@ -204,7 +204,7 @@ class WeldrV1(object):
         )
         return results
 
-    def get_compuse_status(self, compose_uuids):
+    def get_compose_status(self, compose_uuids):
         """
         # api.router.GET("/api/v:version/compose/status/:uuids", api.composeStatusHandler)
         query current status of existing compose
