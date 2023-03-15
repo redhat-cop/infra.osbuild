@@ -158,10 +158,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0 edge-installer
-              test: rhel/9.0
-            - name: RHEL 8.6 edge-installer
-              test: rhel/8.6
+            - name: RHEL 9.1 edge-installer
+              test: rhel/9.1
+            - name: RHEL 8.7 edge-installer
+              test: rhel/8.7
           groups:
             - 6
 
@@ -193,10 +193,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.0 image-installer
-              test: rhel/9.0
-            - name: RHEL 8.6 image-installer
-              test: rhel/8.6
+            - name: RHEL 9.1 image-installer
+              test: rhel/9.1
+            - name: RHEL 8.7 image-installer
+              test: rhel/8.7
           groups:
             - 9
       - template: templates/matrix.yml
@@ -219,8 +219,8 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 36 iot-installer
-              test: fedora/36
+            - name: Fedora 37 iot-installer
+              test: fedora/37
           groups:
             - 12
 
