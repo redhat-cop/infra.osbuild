@@ -154,18 +154,16 @@ stages:
               test: rhel/8.7
           groups:
             - 5
-
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: devel/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.6 edge-installer
-      #         test: rhel/8.6
-      #     groups:
-      #       - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0 edge-installer
+              test: rhel/9.0
+            - name: RHEL 8.6 edge-installer
+              test: rhel/8.6
+          groups:
+            - 6
 
       # Fixme
       # - template: templates/matrix.yml
@@ -191,17 +189,16 @@ stages:
       #     groups:
       #       - 8
 
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: devel/{0}
-      #     targets:
-      #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.6 image-installer
-      #         test: rhel/8.6
-      #     groups:
-      #       - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.0 image-installer
+              test: rhel/9.0
+            - name: RHEL 8.6 image-installer
+              test: rhel/8.6
+          groups:
+            - 9
       - template: templates/matrix.yml
         parameters:
           testFormat: devel/{0}
@@ -218,15 +215,14 @@ stages:
               test: fedora/37
           groups:
             - 11
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: devel/{0}
-      #     targets:
-      #       - name: Fedora 36 iot-installer
-      #         test: fedora/36
-      #     groups:
-      #       - 12
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: Fedora 36 iot-installer
+              test: fedora/36
+          groups:
+            - 12
 
       # Fixme
       # - template: templates/matrix.yml
@@ -349,18 +345,16 @@ stages:
               test: rhel/8.6
           groups:
             - 5
-
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.14/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.6 edge-installer
-      #         test: rhel/8.6
-      #     groups:
-      #       - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0 edge-installer
+              test: rhel/9.0
+            - name: RHEL 8.6 edge-installer
+              test: rhel/8.6
+          groups:
+            - 6
 
       # Fixme
       # - template: templates/matrix.yml
@@ -386,17 +380,16 @@ stages:
       #     groups:
       #       - 8
 
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.14/{0}
-      #     targets:
-      #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.6 image-installer
-      #         test: rhel/8.6
-      #     groups:
-      #       - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0 image-installer
+              test: rhel/9.0
+            - name: RHEL 8.6 image-installer
+              test: rhel/8.6
+          groups:
+            - 9
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.14/{0}
@@ -413,16 +406,14 @@ stages:
               test: fedora/36
           groups:
             - 11
-
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.14/{0}
-      #     targets:
-      #       - name: Fedora 36 iot-installer
-      #         test: fedora/36
-      #     groups:
-      #       - 12
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: Fedora 36 iot-installer
+              test: fedora/36
+          groups:
+            - 12
 
       # Fixme
       # - template: templates/matrix.yml
@@ -537,18 +528,16 @@ stages:
               test: rhel/8.5
           groups:
             - 5
-
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.5 edge-installer
-      #         test: rhel/8.5
-      #     groups:
-      #       - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0 edge-installer
+              test: rhel/9.0
+            - name: RHEL 8.5 edge-installer
+              test: rhel/8.5
+          groups:
+            - 6
 
       # Fixme
       # - template: templates/matrix.yml
@@ -570,17 +559,16 @@ stages:
       #     groups:
       #       - 8
 
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0
-      #       - name: RHEL 8.5 image-installer
-      #         test: rhel/8.5
-      #     groups:
-      #       - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.13/{0}
+          targets:
+            - name: RHEL 9.0 image-installer
+              test: rhel/9.0
+            - name: RHEL 8.5 image-installer
+              test: rhel/8.5
+          groups:
+            - 9
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}
@@ -677,26 +665,22 @@ stages:
               test: rhel/8.4
           groups:
             - 5
-
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.12/{0}
-      #     targets:
-      #       - name: RHEL 8.4 edge-installer
-      #         test: rhel/8.4
-      #     groups:
-      #       - 6
-
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.12/{0}
-      #     targets:
-      #       - name: RHEL 8.4 image-installer
-      #         test: rhel/8.4
-      #     groups:
-      #       - 9
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4 edge-installer
+              test: rhel/8.4
+          groups:
+            - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.12/{0}
+          targets:
+            - name: RHEL 8.4 image-installer
+              test: rhel/8.4
+          groups:
+            - 9
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.12/{0}

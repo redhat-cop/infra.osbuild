@@ -105,6 +105,18 @@ This is the path to a location on the osbuild server that the generated
 blueprint should be stored at and used as the source content for the osbuild
 compose build.
 
+### builder_ostree_url
+
+Type: string
+Required: false
+
+This variable is used to pass the ostree repo url of a perviously built commit to build an installer from. When this variable is not defined a new commit will be built for the installer.
+
+Example:
+```yaml
+builder_ostree_url: "http://0.0.0.0/test_blueprint_aap/repo/"
+```
+
 ### builder_blueprint_ref
 
 Type: string
