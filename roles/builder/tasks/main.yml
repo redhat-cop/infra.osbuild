@@ -183,8 +183,8 @@
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}-empty"
         compose_type: "{{ _builder_compose_type }}"
-        ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}"
-        ostree_ref: "{{ builder_blueprint_ref | default(omit) }}" # noqa yaml[line-length]
+        ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}" # noqa yaml[line-length]
+        ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
       register: compose_start_out
       when:
         - "'edge' in _builder_compose_type or 'iot' in _builder_compose_type"
