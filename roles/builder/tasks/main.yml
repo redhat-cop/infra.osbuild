@@ -24,8 +24,7 @@
     append: true
 
 - name: Process when existing commit isn't defined in builder_ostree_url variable
-  # when: builder_ostree_url is not defined
-  when: false
+  when: builder_ostree_url is not defined
   block:
     - name: Image build process
       block:
