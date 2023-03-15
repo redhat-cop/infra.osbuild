@@ -23,6 +23,20 @@
     groups: weldr
     append: true
 
+- name: Check if image directory exists
+  ansible.builtin.stat:
+    path: "/var/www/html/{{ builder_blueprint_name }}"
+  register: stat_output
+
+- name: Create image directory is it doesn't exist
+  when: not stat_output.stat.exists
+  block:
+    - name: Create blueprint directory
+      ansible.builtin.file:
+        path: "/var/www/html/{{ builder_blueprint_name }}"
+        mode: '0755'
+        state: directory
+
 - name: Process when existing commit isn't defined in builder_ostree_url variable
   when: builder_ostree_url is not defined
   block:
@@ -45,19 +59,9 @@
           infra.osbuild.push_blueprint:
             src: "{{ builder_blueprint_src_path }}"
 
-        - name: Check if blueprint directory exists
-          ansible.builtin.stat:
-            path: "/var/www/html/{{ builder_blueprint_name }}"
-          register: stat_output
-
         - name: Initialize rpm-ostree repo for blueprint
           when: not stat_output.stat.exists
           block:
-            - name: Create blueprint directory
-              ansible.builtin.file:
-                path: "/var/www/html/{{ builder_blueprint_name }}"
-                mode: '0755'
-                state: directory
             - name: Initialize repository
               ansible.builtin.command:
                 chdir: "/var/www/html/{{ builder_blueprint_name }}"
