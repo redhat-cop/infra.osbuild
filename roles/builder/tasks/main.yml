@@ -16,6 +16,8 @@
   ansible.builtin.shell: "set -eo pipefail df -h /var/lib/osbuild-composer/artifacts | tail -n 1 | awk '{ print $5; }' | rev | cut -c2- | rev"
   register: current_image_storage_size
   changed_when: false
+  failed_when:
+    - (current_image_storage_size | int) == 0 or ((current_image_storage_size | int) | type_debug) != 'int'
 
 - name: Failed when image storage is full
   when: 100 - (current_image_storage_size.stdout | int) <= builder_image_storage_threshold
