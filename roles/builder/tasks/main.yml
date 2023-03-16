@@ -54,7 +54,7 @@
 
 - name: Check if image directory exists
   ansible.builtin.stat:
-    path: "/var/www/html/{{ builder_blueprint_name }}"
+    path: "/var/www/html/{{ builder_blueprint_name }}/repo"
   register: stat_output
 
 - name: Create image directory is it doesn't exist
