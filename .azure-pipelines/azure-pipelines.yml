@@ -540,7 +540,7 @@ stages:
               test: rhel/8.5
           groups:
             - 5
-      
+
       # Fixme
       # - template: templates/matrix.yml
       #   parameters:
@@ -700,7 +700,7 @@ stages:
       #         test: rhel/8.4
       #     groups:
       #       - 9
-      
+
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.12/{0}
