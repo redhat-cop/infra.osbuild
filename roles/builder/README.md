@@ -210,6 +210,29 @@ builder_compose_customizations:
     
 ```
 
+### builder_image_storage_threshold
+Type: int
+Required: false
+
+The minimum amount of space left for the image storage expressed as a percentage.
+For example defining 3 (default) means there needs to be at least 3% left of storage for images to be built successfully.
+
+Example:
+```yaml
+builder_image_storage_threshold: 3
+```
+
+### builder_image_storage_cleared
+Type: bool
+Required: false
+
+This variable will cause all images to be removed
+
+Example:
+```yaml
+builder_image_storage_cleared: true
+```
+
 ## Kickstart Variables
 
 Varibles used to create a kickstart file

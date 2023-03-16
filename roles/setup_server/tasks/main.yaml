@@ -5,7 +5,7 @@
 
 - name: Test for ostree-based OS
   ansible.builtin.shell:
-    cmd: "rpm-ostree status | grep Deployments"
+    cmd: "set -eo pipefail rpm-ostree status | grep Deployments"
   register: _setup_server_infra_osbuild_ostree_check
   failed_when: false
   changed_when: false

@@ -1,4 +1,33 @@
 ---
+- name: Remove all images from storage
+  when: builder_image_storage_cleared
+  block:
+    - name: Get all images for removal
+      ansible.builtin.command: /usr/bin/composer-cli compose list
+      register: output
+      changed_when: false
+
+    - name: Remove each image by UUID
+      ansible.builtin.command: "/usr/bin/composer-cli compose delete {{ (item | split)[0] }}"
+      loop: "{{ output.stdout_lines }}"
+      changed_when: true
+
+- name: Get current image storage size
+  block:
+    - name: Verify if osbuild-composer artifacts dir exists
+      ansible.builtin.stat:
+        path: /var/lib/osbuild-composer/artifacts
+      register: artifacts_directory
+
+    - name: Query artifacts directory for storage size
+      when: artifacts_directory.stat.exists
+      ansible.builtin.shell: "set -eo pipefail df -h /var/lib/osbuild-composer/artifacts | tail -n 1 | awk '{ print $5; }' | rev | cut -c2- | rev"
+      register: current_image_storage_size
+      changed_when: false
+      failed_when:
+        - (current_image_storage_size | int) == 0 or ((current_image_storage_size | int) | type_debug) != 'int'
+        - 100 - (current_image_storage_size.stdout | int) <= builder_image_storage_threshold
+
 - name: Check if ssh key is defined
   ansible.builtin.debug:
     msg: "SSH Key nor password was defined, log in requires either an SSH key or password"
@@ -111,17 +140,17 @@
 
         - name: Pull commit from artifact
           ansible.builtin.command:
-            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo pull-local /tmp/{{ builder_blueprint_name }}/repo {{ checksum_output['stdout'] }}"
+            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo pull-local /tmp/{{ builder_blueprint_name }}/repo {{ checksum_output['stdout'] }}" # noqa yaml[line-length]
           changed_when: true
 
         - name: Commit changes to repository
           ansible.builtin.command:
-            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}"
+            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}" # noqa yaml[line-length]
           changed_when: true
 
         - name: Remove tar file
           ansible.builtin.file:
-            path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"
+            path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
             state: absent
 
     - name: Serve all other compose types on the http server
@@ -135,7 +164,7 @@
         - name: Copy image to web dir
           ansible.builtin.copy:
             src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
-            dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"
+            dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
             remote_src: true
             mode: '0644'
             owner: apache
@@ -223,7 +252,8 @@
     - name: Copy installer to web dir
       ansible.builtin.copy:
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
-        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"
+        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}" # noqa yaml[line-length]
+
         remote_src: true
         mode: '0644'
         owner: apache
