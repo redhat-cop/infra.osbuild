@@ -112,7 +112,8 @@
 
         - name: Commit changes to repository
           ansible.builtin.command:
-            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ blueprint_name }}/repo commit -b {{ blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}"
+            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ blueprint_name }}/repo commit -b {{ blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}" # noqa yaml[line-length]
+
           changed_when: true
 
         - name: Remove tar file
