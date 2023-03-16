@@ -13,16 +13,20 @@
       changed_when: true
 
 - name: Get current image storage size
-  ansible.builtin.shell: "set -eo pipefail df -h /var/lib/osbuild-composer/artifacts | tail -n 1 | awk '{ print $5; }' | rev | cut -c2- | rev"
-  register: current_image_storage_size
-  changed_when: false
-  failed_when:
-    - (current_image_storage_size | int) == 0 or ((current_image_storage_size | int) | type_debug) != 'int'
+  block:
+    - name: Verify if osbuild-composer artifacts dir exists
+      ansible.builtin.stat:
+        path: /var/lib/osbuild-composer/artifacts
+      register: artifacts_directory
 
-- name: Failed when image storage is full
-  when: 100 - (current_image_storage_size.stdout | int) <= builder_image_storage_threshold
-  ansible.builtin.fail:
-    msg: "Available storage: {{ 100 - (current_image_storage_size.stdout | int) }}, storage threshold: {{ builder_image_storage_threshold }}, clear previous images to make space" # noqa yaml[line-length]
+    - name: Query artifacts directory for storage size
+      when: artifacts_directory.stat.exists
+      ansible.builtin.shell: "set -eo pipefail df -h /var/lib/osbuild-composer/artifacts | tail -n 1 | awk '{ print $5; }' | rev | cut -c2- | rev"
+      register: current_image_storage_size
+      changed_when: false
+      failed_when:
+        - (current_image_storage_size | int) == 0 or ((current_image_storage_size | int) | type_debug) != 'int'
+        - 100 - (current_image_storage_size.stdout | int) <= builder_image_storage_threshold
 
 - name: Check if ssh key is defined
   ansible.builtin.debug:
