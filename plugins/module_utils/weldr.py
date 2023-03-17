@@ -149,7 +149,7 @@ class Weldr(object):
         except Exception as e:
             module.fail_json(msg="Failure downloading %s, %s" % (url, to_native(e)))
         return fetch_temp_file.name
-    
+
     def get_job_id(self, compose_id) -> str:
         """
         Get the job id of an image using compose id
