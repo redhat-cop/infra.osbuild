@@ -149,3 +149,17 @@ class Weldr(object):
         except Exception as e:
             module.fail_json(msg="Failure downloading %s, %s" % (url, to_native(e)))
         return fetch_temp_file.name
+
+    def get_job_id(self, compose_id) -> str:
+        """
+        Get the job id of an image using compose id
+        """
+        try:
+            state_file_json = open("/var/lib/osbuild-composer/state.json", "r")
+        except Exception as e:
+            raise e
+        state_file = json.load(state_file_json)
+        compose_build_info = state_file["composes"].get(compose_id)
+        image_job_id = compose_build_info["image_builds"][0]["jobid"]
+
+        return image_job_id
