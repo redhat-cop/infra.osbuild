@@ -136,3 +136,6 @@ context/
 # inventory/vars for testing
 testing.inventory.yml
 testing.extra-vars.yml
+
+# IDEs
+.idea
