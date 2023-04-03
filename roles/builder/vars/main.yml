@@ -13,3 +13,6 @@ builder_kickstart_options:
   - user --name={{ builder_compose_customizations['user']['name'] }} {{ "--password" if builder_password is defined  }} {{ builder_password if builder_password is defined }} --group=wheel,user  # noqa yaml[line-length]
   - services --enabled=ostree-remount
   - ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_facts["default_ipv4"]["address"] }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }} # noqa yaml[line-length]
+_builder_kickstart_post: 
+  - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') if builder_aap_url is defined | default(None) }}"
+builder_kickstart_post: "{{ _builder_kickstart_post + additional_kickstart_post if additional_kickstart_post is defined else _builder_kickstart_post }}"
