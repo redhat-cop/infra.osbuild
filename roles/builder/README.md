@@ -259,7 +259,7 @@ builder_kickstart_options:
   - ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_host }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}
 ```
 
-### builder_kickstart_post
+### additional_kickstart_post
 
 Type: list
 Required: false
@@ -268,8 +268,7 @@ List of kickstart post options to add to the kickstart file. Use default(None) w
 
 Example:
 ```yaml
-builder_kickstart_post: 
-  - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') }}"
+additional_kickstart_post: 
   - "{{ microshift_image_ovn_options_template | default(None) }}"
 ```
 
