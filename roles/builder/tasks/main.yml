@@ -192,6 +192,7 @@
       infra.osbuild.create_blueprint:
         dest: "{{ builder_blueprint_src_path }}"
         name: "{{ builder_blueprint_name }}-empty"
+        distro: "{{ builder_blueprint_distro | default(omit) }}"
       register: blueprint_output
       when:
         - "'edge' in _builder_compose_type or 'iot' in _builder_compose_type"
