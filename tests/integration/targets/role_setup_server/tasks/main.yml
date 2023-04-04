@@ -12,7 +12,7 @@
 #       not support RHEL RHUI repos and for these test cases the contents of
 #       the repo don't matter since we're testing automating the osbuild
 #       system and not the OS inside the resulting images
-    
+
 - name: Run the infra.osbuild.setup_server role
   ansible.builtin.import_role:
     name: infra.osbuild.setup_server
@@ -24,6 +24,7 @@
       ansible.builtin.template:
         src: template/repository.j2
         dest: /usr/share/osbuild-composer/repositories/centos-{{ ansible_distribution_major_version | replace(".", "") }}.json
+        mode: '0644'
 
 - name: Validate the role
   ansible.builtin.include_tasks: tests.yml
