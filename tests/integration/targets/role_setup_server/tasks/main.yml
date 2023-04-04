@@ -34,5 +34,10 @@
   ansible.builtin.import_role:
     name: infra.osbuild.setup_server
 
+- name: Replace Appstream and BaseOS with Centos repos
+  ansible.builtin.template:
+    src: template/repository.j2
+    dest: /usr/share/osbuild-composer/repositories/rhel-{{ ansible_distribution_version | replace(".", "") }}.json
+
 - name: Validate the role
   ansible.builtin.include_tasks: tests.yml
