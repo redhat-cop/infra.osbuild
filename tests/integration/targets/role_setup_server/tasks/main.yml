@@ -12,27 +12,18 @@
 #       not support RHEL RHUI repos and for these test cases the contents of
 #       the repo don't matter since we're testing automating the osbuild
 #       system and not the OS inside the resulting images
-- name: Enable workaround fake RHEL repos
-  when: ansible_distribution != 'Fedora'
-  block:
-    - name: Setup osbuild overrides directory
-      ansible.builtin.file:
-        path: /etc/osbuild-composer/repositories
-        mode: '0755'
-        state: directory
-
-    - name: Setup testing osbuild rhel9 fake repos
-      ansible.builtin.copy:
-        src: "files/{{ item }}.json"
-        mode: '0644'
-        dest: "/etc/osbuild-composer/repositories/{{ item }}.json"
-      loop:
-        - centos-9
-        - centos-8
-
+    
 - name: Run the infra.osbuild.setup_server role
   ansible.builtin.import_role:
     name: infra.osbuild.setup_server
+
+- name: Enable workaround fake RHEL repos
+  when: ansible_distribution != 'Fedora'
+  block:
+    - name: Replace Appstream and BaseOS with Centos repos
+      ansible.builtin.template:
+        src: template/repository.j2
+        dest: /usr/share/osbuild-composer/repositories/centos-{{ ansible_distribution_major_version | replace(".", "") }}.json
 
 - name: Validate the role
   ansible.builtin.include_tasks: tests.yml
