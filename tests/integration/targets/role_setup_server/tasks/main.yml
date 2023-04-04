@@ -16,11 +16,11 @@
 - name: Enable workaround fake RHEL repos
   when: ansible_distribution != 'Fedora'
   block:
-  - name: Replace Appstream and BaseOS with Centos repos
-    ansible.builtin.template:
-      src: template/repository.j2
-      dest: /usr/share/osbuild-composer/repositories/rhel-{{ ansible_distribution_version | replace(".", "") }}.json
-      mode: '0644'
+    - name: Replace Appstream and BaseOS with Centos repos
+      ansible.builtin.template:
+        src: template/repository.j2
+        dest: /usr/share/osbuild-composer/repositories/rhel-{{ ansible_distribution_version | replace(".", "") }}.json
+        mode: '0644'
 
 - name: Run the infra.osbuild.setup_server role
   ansible.builtin.import_role:
