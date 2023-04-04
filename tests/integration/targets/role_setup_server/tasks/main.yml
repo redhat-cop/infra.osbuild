@@ -13,10 +13,6 @@
 #       the repo don't matter since we're testing automating the osbuild
 #       system and not the OS inside the resulting images
 
-- name: Run the infra.osbuild.setup_server role
-  ansible.builtin.import_role:
-    name: infra.osbuild.setup_server
-
 - name: Enable workaround fake RHEL repos
   when: ansible_distribution != 'Fedora'
   block:
@@ -25,6 +21,10 @@
       src: template/repository.j2
       dest: /usr/share/osbuild-composer/repositories/rhel-{{ ansible_distribution_version | replace(".", "") }}.json
       mode: '0644'
+
+- name: Run the infra.osbuild.setup_server role
+  ansible.builtin.import_role:
+    name: infra.osbuild.setup_server
 
 - name: Validate the role
   ansible.builtin.include_tasks: tests.yml
