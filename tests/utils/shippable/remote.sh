@@ -11,14 +11,14 @@ IFS='/:' read -ra args <<< "$1"
 platform="${args[0]}"
 version="${args[1]}"
 
-if [ "${#args[@]}" -gt 2 ]; then
-    target="azp/posix/${args[2]}/"
+if [ "${#args[@]}" -gt 3 ]; then
+    target="azp/posix/${args[3]}/"
 else
     target="azp/posix/"
 fi
 
 stage="${S:-prod}"
-provider="${args[3]:-default}"
+provider="${args[2]:-default}"
 
 if [ "${platform}" == "rhel" ] && [[ "${version}" =~ ^8 ]]; then
     echo "pynacl >= 1.4.0, < 1.5.0; python_version == '3.6'" >> tests/utils/constraints.txt
