@@ -18,7 +18,7 @@ else
 fi
 
 stage="${S:-prod}"
-provider="${P:-default}"
+provider="${args[3]:-default}"
 
 if [ "${platform}" == "rhel" ] && [[ "${version}" =~ ^8 ]]; then
     echo "pynacl >= 1.4.0, < 1.5.0; python_version == '3.6'" >> tests/utils/constraints.txt
