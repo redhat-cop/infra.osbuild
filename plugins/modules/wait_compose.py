@@ -61,7 +61,7 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             compose_id=dict(type="str", required=True),
-            timeout=dict(type="int", required=False, default=1800),
+            timeout=dict(type="int", required=False, default=2400),
             query_frequency=dict(type="int", required=False, default=20),
         ),
     )
@@ -92,7 +92,7 @@ def main():
         time.sleep(module.params["query_frequency"])
 
     # FIXME - should this be a failure case?
-    module.exit_json(msg="TIMEOUT REACHED", result={})
+    module.fail_json(msg="TIMEOUT REACHED", result={})
 
 
 if __name__ == "__main__":
