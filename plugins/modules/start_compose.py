@@ -33,7 +33,7 @@ options:
         description:
             - Image size expressed in MiB
         type: int
-        default: 8192
+        default: 0
         required: false
     profile:
         description:
@@ -127,7 +127,7 @@ def main() -> None:
     module: AnsibleModule = AnsibleModule(
         argument_spec=dict(
             blueprint=dict(type="str", required=True),
-            size=dict(type="int", required=False, default=8192),
+            size=dict(type="int", required=False, default=0),
             profile=dict(type="str", required=False, default=""),
             image_name=dict(type="str", required=False, default=""),
             allow_duplicate=dict(type="bool", required=False, default=True),
