@@ -111,9 +111,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 1
       - template: templates/matrix.yml
@@ -121,9 +121,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 ami
-              test: rhel/9.1
+              test: rhel/9.1/azure
             - name: RHEL 8.7 ami
-              test: rhel/8.7
+              test: rhel/8.7/azure
           groups:
             - 2
       - template: templates/matrix.yml
@@ -131,7 +131,7 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: Fedora 37 container
-              test: fedora/37
+              test: fedora/37/
           groups:
             - 3
       - template: templates/matrix.yml
@@ -139,9 +139,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 edge-commit
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7 edge-commit
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 4
       - template: templates/matrix.yml
@@ -149,9 +149,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 edge-container
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7 edge-container
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 5
 
@@ -161,9 +161,9 @@ stages:
       #     testFormat: devel/{0}
       #     targets:
       #       - name: RHEL 9.1 edge-installer
-      #         test: rhel/9.1
+      #         test: rhel/9.1/
       #       - name: RHEL 8.7 edge-installer
-      #         test: rhel/8.7
+      #         test: rhel/8.7/
       #     groups:
       #       - 6
 
@@ -173,9 +173,9 @@ stages:
       #     testFormat: devel/{0}
       #     targets:
       #       - name: RHEL 9.0 edge-raw-image
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #       - name: RHEL 8.6 edge-raw-image
-      #         test: rhel/8.6
+      #         test: rhel/8.6/
       #     groups:
       #       - 7
 
@@ -185,9 +185,9 @@ stages:
       #     testFormat: devel/{0}
       #     targets:
       #       - name: RHEL 9.0 edge-simplified-installer
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #       - name: RHEL 8.6 edge-simplified-installer
-      #         test: rhel/8.6
+      #         test: rhel/8.6/
       #     groups:
       #       - 8
 
@@ -197,9 +197,9 @@ stages:
       #     testFormat: devel/{0}
       #     targets:
       #       - name: RHEL 9.1 image-installer
-      #         test: rhel/9.1
+      #         test: rhel/9.1/
       #       - name: RHEL 8.7 image-installer
-      #         test: rhel/8.7
+      #         test: rhel/8.7/
       #     groups:
       #       - 9
 
@@ -208,7 +208,7 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: Fedora 37 iot-commit
-              test: fedora/37
+              test: fedora/37/
           groups:
             - 10
       - template: templates/matrix.yml
@@ -216,7 +216,7 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: Fedora 37 iot-container
-              test: fedora/37
+              test: fedora/37/
           groups:
             - 11
 
@@ -226,7 +226,7 @@ stages:
       #     testFormat: devel/{0}
       #     targets:
       #       - name: Fedora 37 iot-installer
-      #         test: fedora/37
+      #         test: fedora/37/
       #     groups:
       #       - 12
 
@@ -236,7 +236,7 @@ stages:
       #     testFormat: devel/{0}
       #     targets:
       #       - name: Fedora 36 iot-raw-image
-      #         test: fedora/36
+      #         test: fedora/36/
       #     groups:
       #       - 13
       - template: templates/matrix.yml
@@ -244,9 +244,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 oci
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7 oci
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 14
       - template: templates/matrix.yml
@@ -254,9 +254,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 openstack
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7 openstack
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 15
       - template: templates/matrix.yml
@@ -264,9 +264,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 qcow2
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7 qcow2
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 16
       - template: templates/matrix.yml
@@ -274,9 +274,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 tar
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7 tar
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 17
       - template: templates/matrix.yml
@@ -284,9 +284,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 vhd
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7 vhd
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 18
       - template: templates/matrix.yml
@@ -294,9 +294,9 @@ stages:
           testFormat: devel/{0}
           targets:
             - name: RHEL 9.1 vmdk
-              test: rhel/9.1
+              test: rhel/9.1/
             - name: RHEL 8.7 vmdk
-              test: rhel/8.7
+              test: rhel/8.7/
           groups:
             - 19
   - stage: Remote_2_14
@@ -308,9 +308,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 1
       - template: templates/matrix.yml
@@ -318,9 +318,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 ami
-              test: rhel/9.0
+              test: rhel/9.0/azure
             - name: RHEL 8.6 ami
-              test: rhel/8.6
+              test: rhel/8.6/azure
           groups:
             - 2
       - template: templates/matrix.yml
@@ -328,7 +328,7 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: Fedora 36 container
-              test: fedora/36
+              test: fedora/36/
           groups:
             - 3
       - template: templates/matrix.yml
@@ -336,9 +336,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 edge-commit
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6 edge-commit
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 4
       - template: templates/matrix.yml
@@ -346,9 +346,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 edge-container
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6 edge-container
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 5
 
@@ -358,9 +358,9 @@ stages:
       #     testFormat: 2.14/{0}
       #     targets:
       #       - name: RHEL 9.0 edge-installer
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #       - name: RHEL 8.6 edge-installer
-      #         test: rhel/8.6
+      #         test: rhel/8.6/
       #     groups:
       #       - 6
 
@@ -370,9 +370,9 @@ stages:
       #     testFormat: 2.14/{0}
       #     targets:
       #       - name: RHEL 9.0 edge-raw-image
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #       - name: RHEL 8.6 edge-raw-image
-      #         test: rhel/8.6
+      #         test: rhel/8.6/
       #     groups:
       #       - 7
 
@@ -382,9 +382,9 @@ stages:
       #     testFormat: 2.14/{0}
       #     targets:
       #       - name: RHEL 9.0 edge-simplified-installer
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #       - name: RHEL 8.6 edge-simplified-installer
-      #         test: rhel/8.6
+      #         test: rhel/8.6/
       #     groups:
       #       - 8
 
@@ -394,9 +394,9 @@ stages:
       #     testFormat: 2.14/{0}
       #     targets:
       #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #       - name: RHEL 8.6 image-installer
-      #         test: rhel/8.6
+      #         test: rhel/8.6/
       #     groups:
       #       - 9
 
@@ -405,7 +405,7 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: Fedora 36 iot-commit
-              test: fedora/36
+              test: fedora/36/
           groups:
             - 10
       - template: templates/matrix.yml
@@ -413,7 +413,7 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: Fedora 36 iot-container
-              test: fedora/36
+              test: fedora/36/
           groups:
             - 11
 
@@ -423,7 +423,7 @@ stages:
       #     testFormat: 2.14/{0}
       #     targets:
       #       - name: Fedora 36 iot-installer
-      #         test: fedora/36
+      #         test: fedora/36/
       #     groups:
       #       - 12
 
@@ -433,7 +433,7 @@ stages:
       #     testFormat: 2.14/{0}
       #     targets:
       #       - name: Fedora 36 iot-raw-image
-      #         test: fedora/36
+      #         test: fedora/36/
       #     groups:
       #       - 13
       - template: templates/matrix.yml
@@ -441,9 +441,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 oci
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6 oci
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 14
       - template: templates/matrix.yml
@@ -451,9 +451,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 openstack
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6 openstack
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 15
       - template: templates/matrix.yml
@@ -461,9 +461,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 qcow2
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6 qcow2
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 16
       - template: templates/matrix.yml
@@ -471,9 +471,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 tar
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6 tar
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 17
       - template: templates/matrix.yml
@@ -481,9 +481,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 vhd
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6 vhd
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 18
       - template: templates/matrix.yml
@@ -491,9 +491,9 @@ stages:
           testFormat: 2.14/{0}
           targets:
             - name: RHEL 9.0 vmdk
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.6 vmdk
-              test: rhel/8.6
+              test: rhel/8.6/
           groups:
             - 19
   - stage: Remote_2_13
@@ -505,9 +505,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 1
       - template: templates/matrix.yml
@@ -515,9 +515,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 ami
-              test: rhel/9.0
+              test: rhel/9.0/azure
             - name: RHEL 8.5 ami
-              test: rhel/8.5
+              test: rhel/8.5/azure
           groups:
             - 2
       - template: templates/matrix.yml
@@ -525,9 +525,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 edge-commit
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5 edge-commit
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 4
       - template: templates/matrix.yml
@@ -535,9 +535,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 edge-container
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5 edge-container
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 5
 
@@ -547,9 +547,9 @@ stages:
       #     testFormat: 2.13/{0}
       #     targets:
       #       - name: RHEL 9.0 edge-installer
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #       - name: RHEL 8.5 edge-installer
-      #         test: rhel/8.5
+      #         test: rhel/8.5/
       #     groups:
       #       - 6
 
@@ -559,7 +559,7 @@ stages:
       #     testFormat: 2.13/{0}
       #     targets:
       #       - name: RHEL 9.0 edge-raw-image
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #     groups:
       #       - 7
 
@@ -569,7 +569,7 @@ stages:
       #     testFormat: 2.13/{0}
       #     targets:
       #       - name: RHEL 9.0 edge-simplified-installer
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #     groups:
       #       - 8
 
@@ -579,9 +579,9 @@ stages:
       #     testFormat: 2.13/{0}
       #     targets:
       #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0
+      #         test: rhel/9.0/
       #       - name: RHEL 8.5 image-installer
-      #         test: rhel/8.5
+      #         test: rhel/8.5/
       #     groups:
       #       - 9
 
@@ -590,9 +590,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 oci
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5 oci
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 14
       - template: templates/matrix.yml
@@ -600,9 +600,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 openstack
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5 openstack
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 15
       - template: templates/matrix.yml
@@ -610,9 +610,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 qcow2
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5 qcow2
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 16
       - template: templates/matrix.yml
@@ -620,9 +620,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 tar
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5 tar
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 17
       - template: templates/matrix.yml
@@ -630,9 +630,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 vhd
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5 vhd
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 18
       - template: templates/matrix.yml
@@ -640,9 +640,9 @@ stages:
           testFormat: 2.13/{0}
           targets:
             - name: RHEL 9.0 vmdk
-              test: rhel/9.0
+              test: rhel/9.0/
             - name: RHEL 8.5 vmdk
-              test: rhel/8.5
+              test: rhel/8.5/
           groups:
             - 19
   - stage: Remote_2_12
@@ -654,7 +654,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 1
       - template: templates/matrix.yml
@@ -662,7 +662,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 ami
-              test: rhel/8.4
+              test: rhel/8.4/azure
           groups:
             - 2
       - template: templates/matrix.yml
@@ -670,7 +670,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 edge-commit
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 4
       - template: templates/matrix.yml
@@ -678,7 +678,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 edge-container
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 5
       # Fixme
@@ -687,7 +687,7 @@ stages:
       #     testFormat: 2.12/{0}
       #     targets:
       #       - name: RHEL 8.4 edge-installer
-      #         test: rhel/8.4
+      #         test: rhel/8.4/
       #     groups:
       #       - 6
 
@@ -697,7 +697,7 @@ stages:
       #     testFormat: 2.12/{0}
       #     targets:
       #       - name: RHEL 8.4 image-installer
-      #         test: rhel/8.4
+      #         test: rhel/8.4/
       #     groups:
       #       - 9
 
@@ -706,7 +706,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 oci
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 14
       - template: templates/matrix.yml
@@ -714,7 +714,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 openstack
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 15
       - template: templates/matrix.yml
@@ -722,7 +722,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 qcow2
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 16
       - template: templates/matrix.yml
@@ -730,7 +730,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 tar
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 17
       - template: templates/matrix.yml
@@ -738,7 +738,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 vhd
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 18
       - template: templates/matrix.yml
@@ -746,7 +746,7 @@ stages:
           testFormat: 2.12/{0}
           targets:
             - name: RHEL 8.4 vmdk
-              test: rhel/8.4
+              test: rhel/8.4/
           groups:
             - 19
 
