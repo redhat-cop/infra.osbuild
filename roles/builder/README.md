@@ -143,16 +143,28 @@ For CentOS Stream and Fedora, you will need to reference the output of the
 `composer-cli compose types` command on the osbuild server (this can also be 
 done on RHEL if preferred).
 
+### builder_enforce_auth
+
+Type: bool
+Required: true
+
+Enforces system authentication using ssh keys or user password
+
+Example:
+```yaml
+builder_enforce_auth: true
+```
+
 ### builder_password
 
 Type: string
 Required: false
 
-Password for the user that is created by the kickstart file
+Password for the user that is created from the blueprint
 
-builder_password or builder_pub_key needs to be defined when using the kickstart file
+`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs to be defined for system authentication.
 
-### builder_pub_key
+### builder_pub_key_path
 
 Type: string
 Required: false
@@ -161,12 +173,26 @@ Path to location of ssh public key to inject into the resulting image to allow
 key-based ssh functionality without extra configuration for systems installed
 with the resulting build media.
 
-builder_password or builder_pub_key needs to be defined when using the kickstart file
-
+`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs to be defined for system authentication.
 
 Example:
 ```yaml
-builder_pub_key: ~/.ssh/id_rsa.pub
+builder_pub_key_path: ~/.ssh/id_rsa.pub
+```
+
+### builder_pub_key
+Type: string
+Required: false
+
+SSH public key to inject into the resulting image to allow
+key-based ssh functionality without extra configuration for systems installed
+with the resulting build media.
+
+`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs to be defined for system authentication.
+
+Example:
+```yaml
+builder_pub_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDA8mSWJrMW9PSy3gXpqTu/QQPB/gfahwLIvt007poNHRartDaLQPNOwfGzBRXXaaP5RVAHqwmxStP3eVkIdm1UhzJ1X50KCWz5Oq0PW2UGjxCxdgutNbBEtGqewR9N7jOulcEjV+JQG1//vSuLlPWm/5W3nAE6objc+YQ1RyBSqgN58pvvqfhh2kjBKxAS1urDSc0CUlhefWnV60dYY7dApHemEC/+XZbYP68bVznZVPf4k0s+0Tx1GAxDMxUWUj4owldO6XVwxYkEgTBaMllSYyT95Mq6wqFQZ/k3IKikczwKnqsjFTl3/AFMaWgGlyGurCrKZtPEpZVsZYLlgWUtoZWlbUJHiKgyn4V8ErHVZBzauOkyydTaBp0O2ZxOTvIWlCkzR9129hxK4C2u0eewAfw0m1x8C2sB9OboteWpVFSIKXUb9he72lDguR8rfoTrvMwYKQ27z4FQbLQeAt4I1hPY/7bL4UYnKMszpmV7GuAPfzwtz0tBt2C4uX4b7OE= resolutecoder@fedora
 ```
 
 ### builder_compose_pkgs
@@ -255,7 +281,6 @@ builder_kickstart_options:
   - clearpart --all --initlabel
   - autopart
   - reboot
-  - user --name={{ builder_compose_customizations['user']['name'] }} {{ "--password" if builder_password is defined  }} {{ builder_password if builder_password is defined }} --group=wheel,user
   - ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_host }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}
 ```
 
