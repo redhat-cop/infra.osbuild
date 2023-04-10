@@ -143,6 +143,18 @@ For CentOS Stream and Fedora, you will need to reference the output of the
 `composer-cli compose types` command on the osbuild server (this can also be 
 done on RHEL if preferred).
 
+### builder_wait_compose_timeout
+
+Type: int
+Required: false
+
+The amount of time in seconds that the wait_compose module will wait for a build to complete before failing. By default wait_compose waits for 1800 seconds unless this variable is set.
+
+Example:
+```yaml
+builder_wait_compose_timeout: 2400
+```
+
 ### builder_password
 
 Type: string
