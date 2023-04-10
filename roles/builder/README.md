@@ -148,7 +148,7 @@ done on RHEL if preferred).
 Type: bool
 Required: true
 
-Enforces system authentication using ssh keys or user password
+Enforces system authentication using public ssh keys or user password
 
 Example:
 ```yaml
