@@ -96,7 +96,7 @@
             - name: Initialize repository
               ansible.builtin.command:
                 chdir: "/var/www/html/{{ builder_blueprint_name }}"
-                cmd: '/usr/bin/ostree --repo=repo init --mode=archive'
+                cmd: "/usr/bin/ostree --repo=repo init --mode=archive"
               args:
                 creates: "/var/www/html/{{ builder_blueprint_name }}/repo"
 
@@ -109,6 +109,7 @@
         - name: Wait for compose to finish
           infra.osbuild.wait_compose:
             compose_id: "{{ compose_start_out['result']['build_id'] }}"
+            timeout: "{{ builder_wait_compose_timeout | default(omit) }}"
       always:
         - name: Include disable_custom_repos.yml
           ansible.builtin.include_tasks:
@@ -209,7 +210,7 @@
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}"
         compose_type: "{{ _builder_compose_type }}"
-        ostree_url: "http://{{ ansible_default_ipv4.address }}/{{ builder_blueprint_name }}/repo/"
+        ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
       register: compose_start_out
       when:
@@ -228,6 +229,7 @@
     - name: Wait for compose to finish
       infra.osbuild.wait_compose:
         compose_id: "{{ compose_start_out['result']['build_id'] }}"
+        timeout: "{{ builder_wait_compose_timeout | default(omit) }}"
 
     - name: Create tmp directory for blueprint
       ansible.builtin.file:
@@ -242,7 +244,7 @@
 
     - name: Create images directory
       ansible.builtin.file:
-        path: "/var/www/html/{{ builder_blueprint_name }}/images"
+        path: "/var/www/html/{{ builder_blueprint_name }}/images/{{ blueprint_output['current_version'] }}"
         mode: '0755'
         state: directory
 
@@ -255,7 +257,7 @@
     - name: Copy installer to web dir
       ansible.builtin.copy:
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}_ks.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
-        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ blueprint_output['current_version'] }}/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
         remote_src: true
         mode: '0644'
