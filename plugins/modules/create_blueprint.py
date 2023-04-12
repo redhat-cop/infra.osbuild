@@ -112,7 +112,20 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
+argument_spec=dict(
+    dest=dict(type="str", required=True),
+    name=dict(type="str", required=True),
+    description=dict(type="str", required=False, default=""),
+    distro=dict(type="str", required=False, default="", choices=['', 'rhel-8', 'rhel-9', 'centos-8', 'centos-9', 'fedora-36', 'fedora-37']),
+    version_type=dict(type="str", required=False, default="patch", choices=['major', 'minor', 'patch']),
+    packages=dict(type="list", required=False, elements="str", default=[]),
+    groups=dict(type="list", required=False, elements="str", default=[]),
+    customizations=dict(type="dict", required=False, default={}),
+)
+
 def increment_version(version: str, version_type: str) -> str:
+    if not version.replace('.', '').isdigit():
+        raise ValueError('Version contains non integer values')
     major, minor, patch = version.split('.')
     if version_type == 'major':
         return f'{int(major) + 1}.{minor}.{patch}'
@@ -120,22 +133,7 @@ def increment_version(version: str, version_type: str) -> str:
         return f'{major}.{int(minor) + 1}.{patch}'
     return f'{major}.{minor}.{int(patch) + 1}'
 
-
-def main() -> None:
-    module: AnsibleModule = AnsibleModule(
-        argument_spec=dict(
-            dest=dict(type="str", required=True),
-            name=dict(type="str", required=True),
-            description=dict(type="str", required=False, default=""),
-            distro=dict(type="str", required=False, default="", choices=['', 'rhel-8', 'rhel-9', 'centos-8', 'centos-9', 'fedora-36', 'fedora-37']),
-            version_type=dict(type="str", required=False, default="patch", choices=['major', 'minor', 'patch']),
-            packages=dict(type="list", required=False, elements="str", default=[]),
-            groups=dict(type="list", required=False, elements="str", default=[]),
-            customizations=dict(type="dict", required=False, default={}),
-        ),
-    )
-    weldr: Weldr = Weldr(module)
-
+def create_blueprint(module, weldr):
     if not module.params["description"]:
         description: str = module.params["name"]
     else:
@@ -205,6 +203,11 @@ def main() -> None:
         current_version=blueprint_version
     )
 
+def main() -> None:
+    module: AnsibleModule = AnsibleModule(argument_spec=argument_spec)
+    weldr: Weldr = Weldr(module)
+
+    create_blueprint(module=module, weldr=weldr)
 
 if __name__ == "__main__":
     main()
