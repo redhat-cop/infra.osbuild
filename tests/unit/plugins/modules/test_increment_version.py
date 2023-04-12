@@ -8,7 +8,7 @@ __metaclass = type
 
 import pytest
 
-from ansible_collections.infra.osbuild.plugins.modules.create_blueprint import increment_version
+from .....plugins.modules.create_blueprint import increment_version
 
 
 @pytest.mark.parametrize('version,version_type,expected', [

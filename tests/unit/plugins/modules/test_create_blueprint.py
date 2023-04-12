@@ -8,7 +8,7 @@ __metaclass = type
 
 from unittest.mock import MagicMock, Mock
 
-from ansible_collections.infra.osbuild.plugins.modules.create_blueprint import create_blueprint
+from .....plugins.modules.create_blueprint import create_blueprint
 import toml
 
 args = {
