@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright: Red Hat Inc.
@@ -9,7 +8,7 @@ __metaclass = type
 
 from unittest.mock import MagicMock, Mock
 
-from ansible_collections.infra.osbuild.plugins.modules.create_blueprint import create_blueprint
+from plugins.modules.create_blueprint import create_blueprint
 import toml
 
 args = {
@@ -22,21 +21,22 @@ args = {
     "groups": [],
     "customizations": {"user": "bob"}
 }
-    
+
 module = MagicMock()
 weldr = Mock(return_value={"api: {}"})
 
 get_blueprint_info_mock = {
-            "errors": [],
-            "blueprints": [{
-            "version": "0.0.1"
-            }]
-    }
+    "errors": [],
+    "blueprints": [{
+        "version": "0.0.1"
+    }]
+}
 
 module.params = args
 
 weldr.api.get_blueprints_info = Mock(return_value=get_blueprint_info_mock)
 weldr.toml = toml
+
 
 def test_create_blueprint():
     create_blueprint(module, weldr)

@@ -23,6 +23,7 @@ description:
 author:
 - Adam Miller (@maxamillion)
 - Chris Santiago (@resoluteCoder)
+- Matthew Sandoval (@matoval)
 options:
     dest:
         description:
@@ -112,7 +113,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
-argument_spec=dict(
+argument_spec = dict(
     dest=dict(type="str", required=True),
     name=dict(type="str", required=True),
     description=dict(type="str", required=False, default=""),
@@ -123,6 +124,7 @@ argument_spec=dict(
     customizations=dict(type="dict", required=False, default={}),
 )
 
+
 def increment_version(version: str, version_type: str) -> str:
     if not version.replace('.', '').isdigit():
         raise ValueError('Version contains non integer values')
@@ -132,6 +134,7 @@ def increment_version(version: str, version_type: str) -> str:
     if version_type == 'minor':
         return f'{major}.{int(minor) + 1}.{patch}'
     return f'{major}.{minor}.{int(patch) + 1}'
+
 
 def create_blueprint(module, weldr):
     if not module.params["description"]:
@@ -203,11 +206,13 @@ def create_blueprint(module, weldr):
         current_version=blueprint_version
     )
 
+
 def main() -> None:
     module: AnsibleModule = AnsibleModule(argument_spec=argument_spec)
     weldr: Weldr = Weldr(module)
 
     create_blueprint(module=module, weldr=weldr)
+
 
 if __name__ == "__main__":
     main()
