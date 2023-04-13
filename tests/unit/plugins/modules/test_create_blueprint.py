@@ -6,10 +6,10 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass = type
 
-from unittest.mock import MagicMock, Mock
+from unittest.mock import MagicMock
 
 from .....plugins.modules.create_blueprint import create_blueprint
-import toml
+from .utils import mock_weldr
 
 args = {
     "dest": "/tmp/blueprint.toml",
@@ -23,22 +23,10 @@ args = {
 }
 
 module = MagicMock()
-weldr = Mock(return_value={"api: {}"})
-
-get_blueprint_info_mock = {
-    "errors": [],
-    "blueprints": [{
-        "version": "0.0.1"
-    }]
-}
-
 module.params = args
 
-weldr.api.get_blueprints_info = Mock(return_value=get_blueprint_info_mock)
-weldr.toml = toml
 
-
-def test_create_blueprint():
-    create_blueprint(module, weldr)
+def test_create_blueprint(mock_weldr):
+    create_blueprint(module, weldr=mock_weldr)
     file = open(args["dest"], "r")
     assert file.read() == 'name = "test_blueprint"\ndescription = "test_blueprint"\nversion = "0.0.2"\n\n[customizations]\nuser = "bob"\n'
