@@ -38,8 +38,8 @@
 - name: Set fact
   when: "'installer' in builder_compose_type or 'raw' in builder_compose_type"
   ansible.builtin.set_fact:
-    _builder_compose_type: "{{ builder_compose_type }}"
-    builder_compose_type: "{{ 'iot-commit' if ansible_distribution == 'Fedora' else 'edge-commit' }}"
+    builder_compose_type: "{{ builder_compose_type }}"
+    _builder_compose_type: "{{ 'iot-commit' if ansible_distribution == 'Fedora' else 'edge-commit' }}"
 
 - name: Enable Cockpit/Composer/Firewalld/Apache
   ansible.builtin.systemd:
@@ -103,7 +103,7 @@
         - name: Start compose
           infra.osbuild.start_compose:
             blueprint: "{{ builder_blueprint_name }}"
-            compose_type: "{{ builder_compose_type }}"
+            compose_type: "{{ _builder_compose_type }}"
           register: compose_start_out
 
         - name: Wait for compose to finish
@@ -127,7 +127,7 @@
         dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
     - name: Update ostree repository
-      when: (builder_compose_type == 'edge-commit' or builder_compose_type == 'iot-commit') and (builder_skip_repo is undefined or not builder_skip_repo)
+      when: (_builder_compose_type == 'edge-commit' or _builder_compose_type == 'iot-commit') and (builder_skip_repo is undefined or not builder_skip_repo)
       block:
         - name: Untar artifact
           ansible.builtin.unarchive:
@@ -157,7 +157,7 @@
             state: absent
 
     - name: Serve all other compose types on the http server
-      when: builder_compose_type != 'edge-commit' and builder_compose_type != 'iot-commit'
+      when: _builder_compose_type != 'edge-commit' and _builder_compose_type != 'iot-commit'
       block:
         - name: Create images directory
           ansible.builtin.file:
@@ -167,7 +167,7 @@
         - name: Copy image to web dir
           ansible.builtin.copy:
             src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
-            dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+            dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
             remote_src: true
             mode: '0644'
             owner: apache
@@ -188,8 +188,8 @@
 
 - name: Create installer
   when:
-    - _builder_compose_type is defined
-    - "'installer' in _builder_compose_type or 'raw' in _builder_compose_type"
+    - builder_compose_type is defined
+    - "'installer' in builder_compose_type or 'raw' in builder_compose_type"
   block:
     - name: Create blank blueprint
       infra.osbuild.create_blueprint:
@@ -198,33 +198,33 @@
         distro: "{{ builder_blueprint_distro | default(omit) }}"
       register: blueprint_output
       when:
-        - "'edge' in _builder_compose_type or 'iot' in _builder_compose_type"
+        - "'edge' in builder_compose_type or 'iot' in builder_compose_type"
 
     - name: Push the blueprint into image builder
       infra.osbuild.push_blueprint:
         src: "{{ builder_blueprint_src_path }}"
       when:
-        - "'edge' in _builder_compose_type or 'iot' in _builder_compose_type"
+        - "'edge' in builder_compose_type or 'iot' in builder_compose_type"
 
     - name: Start installer compose
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}"
-        compose_type: "{{ _builder_compose_type }}"
+        compose_type: "{{ builder_compose_type }}"
         ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
       register: compose_start_out
       when:
-        - "'edge' not in _builder_compose_type and 'iot' not in _builder_compose_type"
+        - "'edge' not in builder_compose_type and 'iot' not in builder_compose_type"
 
     - name: Start ostree installer compose
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}-empty"
-        compose_type: "{{ _builder_compose_type }}"
+        compose_type: "{{ builder_compose_type }}"
         ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
       register: compose_start_out
       when:
-        - "'edge' in _builder_compose_type or 'iot' in _builder_compose_type"
+        - "'edge' in builder_compose_type or 'iot' in builder_compose_type"
 
     - name: Wait for compose to finish
       infra.osbuild.wait_compose:
@@ -257,7 +257,7 @@
     - name: Copy installer to web dir
       ansible.builtin.copy:
         src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}_ks.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
-        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ blueprint_output['current_version'] }}/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ blueprint_output['current_version'] }}/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
         remote_src: true
         mode: '0644'
