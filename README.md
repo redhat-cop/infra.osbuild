@@ -28,7 +28,7 @@ inventory file that only has the osbuild build server(s) listed in them as these
 example playbooks use the `all` Ansible [group](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups)
 as the [host patten](https://docs.ansible.com/ansible/latest/inventory_guide/intro_patterns.html).
 
-### Configure Osbuild Builder (this will also host the images)
+### Configure Osbuild Builder
 
 ```shell
 ansible-playbook playbooks/osbuild_setup_server.yml
@@ -59,3 +59,11 @@ Example:
 ansible-playbook playbooks/osbuild_builder.yml -e builder_compose_type=edge-installer
 ```
 
+### Image Hosting
+
+Images are hosted via apache http server that is setup using the setup_server playbook. The images are located at this path on the osbuild server: `/var/www/html/<blueprint_name>/images`. Inside the image directory will be version subdirectories for each iso built.
+
+
+### Kickstart Hosting
+
+Image kickstart files are also hosted that can be used as a boot option via http on the osbuild server. The path is `http://<ip_addr>/<blueprint_name>/kickstart.ks`
