@@ -9,7 +9,7 @@ __metaclass = type
 from unittest.mock import MagicMock
 
 from .....plugins.modules.create_blueprint import create_blueprint
-from .conftest import mock_weldr
+from .conftest import mock_weldr  # noqa
 
 args = {
     "dest": "/tmp/blueprint.toml",
