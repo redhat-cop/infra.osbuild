@@ -71,8 +71,6 @@ if [ "${test}" == "sanity/extra" ]; then
     retry pip install junit-xml --disable-pip-version-check
 fi
 
-retry pip install 'ansible-lint==6.14.4' --force-reinstall
-
 # START: HACK install dependencies
 if [ "${script}" != "sanity" ] || [ "${test}" == "sanity/extra" ]; then
     # Nothing further should be added to this list.
