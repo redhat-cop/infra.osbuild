@@ -21,5 +21,5 @@
   changed_when: true
 
 - name: Copy image
-  ansible.builtin.command: mv /var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_name }}_image-installer.iso /root/ansible_collections/infra/osbuild/tests/output/bot/ # noqa yaml[line-length]
+  ansible.builtin.command: mv /var/www/html/{{ builder_blueprint_name }}/images/0.0.1/{{ builder_blueprint_name }}_image-installer.iso /root/ansible_collections/infra/osbuild/tests/output/bot/ # noqa yaml[line-length]
   changed_when: true
