@@ -116,16 +116,17 @@ stages:
               test: rhel/8.7/
           groups:
             - 1
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: devel/{0}
-          targets:
-            - name: RHEL 9.1 ami
-              test: rhel/9.1/azure
-            - name: RHEL 8.7 ami
-              test: rhel/8.7/azure
-          groups:
-            - 2
+      # FIXME - ami is currently broken in CI
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: devel/{0}
+      #     targets:
+      #       - name: RHEL 9.1 ami
+      #         test: rhel/9.1/azure
+      #       - name: RHEL 8.7 ami
+      #         test: rhel/8.7/azure
+      #     groups:
+      #       - 2
       - template: templates/matrix.yml
         parameters:
           testFormat: devel/{0}
@@ -313,16 +314,17 @@ stages:
               test: rhel/8.6/
           groups:
             - 1
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.14/{0}
-          targets:
-            - name: RHEL 9.0 ami
-              test: rhel/9.0/azure
-            - name: RHEL 8.6 ami
-              test: rhel/8.6/azure
-          groups:
-            - 2
+      # FIXME - ami is currently broken in CI
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.14/{0}
+      #     targets:
+      #       - name: RHEL 9.0 ami
+      #         test: rhel/9.0/azure
+      #       - name: RHEL 8.6 ami
+      #         test: rhel/8.6/azure
+      #     groups:
+      #       - 2
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.14/{0}
@@ -510,16 +512,17 @@ stages:
               test: rhel/8.5/
           groups:
             - 1
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 ami
-              test: rhel/9.0/azure
-            - name: RHEL 8.5 ami
-              test: rhel/8.5/azure
-          groups:
-            - 2
+      # FIXME - ami is currently broken in CI
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.13/{0}
+      #     targets:
+      #       - name: RHEL 9.0 ami
+      #         test: rhel/9.0/azure
+      #       - name: RHEL 8.5 ami
+      #         test: rhel/8.5/azure
+      #     groups:
+      #       - 2
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.13/{0}
@@ -657,14 +660,15 @@ stages:
               test: rhel/8.4/
           groups:
             - 1
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.4 ami
-              test: rhel/8.4/azure
-          groups:
-            - 2
+      # FIXME - ami is currently broken in CI
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.12/{0}
+      #     targets:
+      #       - name: RHEL 8.4 ami
+      #         test: rhel/8.4/azure
+      #     groups:
+      #       - 2
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.12/{0}
