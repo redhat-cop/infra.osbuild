@@ -7,7 +7,6 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass = type
 
 from unittest.mock import Mock, MagicMock
-import pytest
 import toml
 
 blueprint_sanity_check_mock = {"errors": []}
