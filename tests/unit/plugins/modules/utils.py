@@ -6,7 +6,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass = type
 
-from unittest.mock import Mock
+from unittest.mock import Mock, MagicMock
 import pytest
 import toml
 
@@ -106,7 +106,36 @@ get_compose_status_mock = {
 post_compose_mock = {"errors": []}
 
 
-@pytest.fixture(autouse=True, scope='session')
+class AnsibleFailJson(Exception):
+    """Exception class to be raised by module.fail_json and caught by the test case"""
+    pass
+
+
+class AnsibleExitJson(Exception):
+    """Exception class to be raised by module.exit_json and caught by the test case"""
+    pass
+
+
+def fail_json_mock(*args, **kwargs):
+    kwargs['failed'] = True
+    raise AnsibleFailJson(kwargs)
+
+
+def exit_json_mock(*args, **kwargs):
+    if 'changed' not in kwargs:
+        kwargs['changed'] = False
+    raise AnsibleExitJson(kwargs)
+
+
+def mock_module(args):
+    module = MagicMock()
+    module.fail_json = fail_json_mock
+    module.exit_json = exit_json_mock
+    module.params = args
+
+    return module
+
+
 def mock_weldr():
     weldr = Mock(return_value={"api: {}"})
 
