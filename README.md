@@ -67,3 +67,15 @@ Images are hosted via apache http server that is setup using the setup_server pl
 ### Kickstart Hosting
 
 Image kickstart files are also hosted that can be used as a boot option via http on the osbuild server. The path is `http://<ip_addr>/<blueprint_name>/kickstart.ks`
+
+### Auditing versions
+
+You can run `rpm-ostree status` to see what specific version the system is using.
+
+Here is a sample output:
+```
+Deployments:
+* edge:rhel/8/x86_64/edge
+    Version: 0.0.1 (2023-04-07T19:40:08Z)
+    Commit: 7d3461f2fce7572fcdc9b3e8f75677bcdf96afed1ff5a3953f81852aad51f78d
+```
