@@ -92,7 +92,7 @@ def main():
         time.sleep(module.params["query_frequency"])
 
     # FIXME - should this be a failure case?
-    module.exit_json(msg="TIMEOUT REACHED", result={})
+    module.fail_json(msg="TIMEOUT REACHED", result={})
 
 
 if __name__ == "__main__":
