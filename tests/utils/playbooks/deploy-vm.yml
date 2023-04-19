@@ -1,0 +1,86 @@
+- name: Deploy VM
+  hosts: testvm
+  gather_facts: true
+  become: true
+  vars:
+    libvirt_directory: "/home/libvirt"
+    libvirt_image_directory: "{{ libvirt_directory }}/images"
+    download_directory: "/tmp/"
+
+    base_image_name: rhel-8.7-x86_64-dvd.iso
+    base_image_url: https://access.cdn.redhat.com/rhel-8.7-x86_64-dvd.iso
+
+    vm_name: rhel87-osbuild-server
+    vm_vcpus: 8
+    vm_ram_mb: 16384
+    vm_disk: 400
+    vm_net: default
+    vm_root_pass: secrettest123
+    cleanup_tmp: false
+    ssh_key: /root/.ssh/id_rsa.pub
+
+  tasks:
+    - name: Ensure requirements in place
+      ansible.builtin.package:
+        name:
+          - libguestfs-tools
+          - python3-libvirt
+        state: present
+      become: true
+
+    - name: Get VMs list
+      community.libvirt.virt:
+        command: list_vms
+      register: existing_vms
+      changed_when: false
+
+    - name: Create VM if not exists
+      when: "vm_name not in existing_vms.list_vms"
+      block:
+        - name: Download base image
+          ansible.builtin.get_url:
+            url: "{{ base_image_url }}"
+            dest: "{{ download_directory }}{{ base_image_name }}"
+            mode: "0660"
+
+        - name: Copy base image to libvirt directory
+          ansible.builtin.copy:
+            dest: "{{ libvirt_image_directory }}/{{ base_image_name }}"
+            src: "{{ download_directory }}{{ base_image_name }}"
+            force: false
+            remote_src: true
+            mode: "0660"
+          register: copy_results
+
+        - name: "Create VM Disk"
+          ansible.builtin.command:
+            cmd: "qemu-img create
+                  -f qcow2
+                  {{ libvirt_image_directory }}/{{ vm_name }}.qcow2 {{ vm_disk }}G"
+            creates: "{{ libvirt_image_directory }}/{{ vm_name }}.qcow2"
+          become: true
+
+        - name: Define vm
+          community.libvirt.virt:
+            command: define
+            xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
+            uri: "qemu:///system"
+          become: true
+
+        - name: "Start & Autostart VM"
+          community.libvirt.virt:
+            name: "{{ vm_name }}"
+            state: "running"
+            autostart: "true"
+            uri: "qemu:///system"
+          register: vm_start_results
+          until: "vm_start_results is success"
+          retries: 15
+          delay: 2
+          become: true
+
+        - name: Ensure temporary file is deleted
+          ansible.builtin.file:
+            path: "{{ download_directory }}{{ base_image_name }}"
+            state: absent
+          when: cleanup_tmp | bool
