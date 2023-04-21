@@ -49,15 +49,12 @@ from ansible.module_utils.basic import AnsibleModule
 import os
 import configparser
 
+argument_spec = dict(
+    repos=dict(type="list", required=True, elements="str", no_log=False),
+)
 
-def main() -> None:
-    module = AnsibleModule(
-        argument_spec=dict(
-            repos=dict(type="list", required=True, elements="str", no_log=False),
-        ),
-        supports_check_mode=True
-    )
 
+def rhsm_repo_info(module):
     rhsm_info = []
     has_changed: bool = False
     for file in os.listdir("/etc/yum.repos.d/"):
@@ -77,9 +74,14 @@ def main() -> None:
                 })
                 has_changed = True
             except Exception:
-                module.fail_json("Could not find %s in file, /etc/yum.repos.d/redhat.repo. Error: %s" % (repo, Exception))
+                module.fail_json(msg="Could not find %s in file, /etc/yum.repos.d/redhat.repo. Error: %s" % (repo, Exception))
 
     module.exit_json(changed=has_changed, rhsm_info=rhsm_info)
+
+
+def main() -> None:
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    rhsm_repo_info(module=module)
 
 
 if __name__ == "__main__":
