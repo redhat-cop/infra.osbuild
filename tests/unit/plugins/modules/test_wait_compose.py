@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass = type
 
 import pytest
-from plugins.modules.wait_compose import wait_compose
+from .....plugins.modules.wait_compose import wait_compose
 
 from .utils import mock_weldr, get_blueprint_info_mock, mock_module, AnsibleFailJson, AnsibleExitJson  # pylint: disable=unused-import
 
