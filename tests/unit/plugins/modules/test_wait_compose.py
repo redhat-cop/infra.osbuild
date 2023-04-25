@@ -19,12 +19,14 @@ args = {
     "query_frequency": 1,
 }
 
+
 def test_wait_compose_finished():
     module = mock_module(args)
     weldr = mock_weldr()
     with pytest.raises(AnsibleExitJson) as exit_json_obj:
         wait_compose(module, weldr=weldr)
     assert 'Compose FINISHED' in str(exit_json_obj)
+
 
 def test_wait_compose_failed():
     args['compose_id'] = '030a1584-8737-4b61-ba77-582780f0ff2e'
@@ -33,6 +35,7 @@ def test_wait_compose_failed():
     with pytest.raises(AnsibleFailJson) as exit_json_obj:
         wait_compose(module, weldr=weldr)
     assert 'Compose FAILED' in str(exit_json_obj)
+
 
 def test_wait_compose_timeout():
     args['compose_id'] = '0000'

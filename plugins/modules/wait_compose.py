@@ -56,11 +56,12 @@ import time
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
-argument_spec= dict(
+argument_spec = dict(
     compose_id=dict(type="str", required=True),
     timeout=dict(type="int", required=False, default=1800),
     query_frequency=dict(type="int", required=False, default=20),
 )
+
 
 def wait_compose(module, weldr):
     timeout_time = time.time() + module.params["timeout"]
@@ -95,6 +96,7 @@ def main():
     weldr = Weldr(module)
 
     wait_compose(module, weldr)
+
 
 if __name__ == "__main__":
     main()
