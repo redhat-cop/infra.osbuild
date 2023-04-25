@@ -7,7 +7,6 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass = type
 
-from unittest.mock import Mock
 import pytest
 from plugins.modules.wait_compose import wait_compose
 
