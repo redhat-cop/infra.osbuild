@@ -86,12 +86,19 @@ if [ "${script}" != "sanity" ] && [ "${script}" != "units" ] && [ "${test}" != "
         CRYPTO_BRANCH=stable-1
     fi
     # To prevent Python dependencies on other collections only install other collections for integration tests
-    retry git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.posix.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/ansible/posix"
-    retry git clone --depth=1 --branch "${CRYPTO_BRANCH}" --single-branch https://github.com/ansible-collections/community.crypto.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/crypto"
-    retry git clone --depth=1 --single-branch --single-branch https://github.com/ansible-collections/community.general.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/general"
     # NOTE: we're installing with git to work around Galaxy being a huge PITA (https://github.com/ansible/galaxy/issues/2429)
+
     # retry ansible-galaxy -vvv collection install ansible.posix
+    retry git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.posix.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/ansible/posix"
+
     # retry ansible-galaxy -vvv collection install community.crypto
+    retry git clone --depth=1 --branch "${CRYPTO_BRANCH}" --single-branch https://github.com/ansible-collections/community.crypto.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/crypto"
+
+    # retry ansible-galaxy -vvv collection install community.general
+    retry git clone --depth=1 --single-branch --single-branch https://github.com/ansible-collections/community.general.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/general"
+
+    # retry ansible-galaxy -vvv collection install community.libvirt
+    retry git clone --depth=1 --single-branch --single-branch https://github.com/ansible-collections/community.libvirt.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/libvirt"
 fi
 
 # END: HACK

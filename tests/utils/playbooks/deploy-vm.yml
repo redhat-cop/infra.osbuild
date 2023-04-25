@@ -1,3 +1,4 @@
+---
 - name: Deploy VM
   hosts: testvm
   gather_facts: true
@@ -55,8 +56,8 @@
         - name: "Create VM Disk"
           ansible.builtin.command:
             cmd: "qemu-img create
-                  -f qcow2
-                  {{ libvirt_image_directory }}/{{ vm_name }}.qcow2 {{ vm_disk }}G"
+              -f qcow2
+              {{ libvirt_image_directory }}/{{ vm_name }}.qcow2 {{ vm_disk }}G"
             creates: "{{ libvirt_image_directory }}/{{ vm_name }}.qcow2"
           become: true
 
