@@ -2,10 +2,10 @@
 
 set -o pipefail -eux
 
-echo "${PATH}"
+echo "${PATH/\~/${HOME}}"
 echo "${HOME}"
 command -v ansible
 
 pip install ansible-lint --disable-pip-version-check
 
-PATH="${PATH}:${HOME}/.local/bin" ansible-lint --profile=production
+PATH="${PATH/\~/${HOME}}" ansible-lint --profile=production
