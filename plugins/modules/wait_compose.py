@@ -56,18 +56,14 @@ import time
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
+argument_spec = dict(
+    compose_id=dict(type="str", required=True),
+    timeout=dict(type="int", required=False, default=1800),
+    query_frequency=dict(type="int", required=False, default=20),
+)
 
-def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            compose_id=dict(type="str", required=True),
-            timeout=dict(type="int", required=False, default=1800),
-            query_frequency=dict(type="int", required=False, default=20),
-        ),
-    )
 
-    weldr = Weldr(module)
-
+def wait_compose(module, weldr):
     timeout_time = time.time() + module.params["timeout"]
     while time.time() < timeout_time:
 
@@ -93,6 +89,13 @@ def main():
 
     # FIXME - should this be a failure case?
     module.fail_json(msg="TIMEOUT REACHED", result={})
+
+
+def main():
+    module = AnsibleModule(argument_spec=argument_spec)
+    weldr = Weldr(module)
+
+    wait_compose(module, weldr)
 
 
 if __name__ == "__main__":

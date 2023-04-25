@@ -86,7 +86,21 @@ get_compose_finished_mock = {
     }]
 }
 
-get_compose_failed_mock = {"errors": [], "failed": []}
+get_compose_failed_mock = {
+    "errors": [],
+    "new": [],
+    "failed": [{
+        "id": "030a1584-8737-4b61-ba77-582780f0ff2e",
+        "blueprint": "base-image-with-tmux",
+        "version": "0.0.5",
+        "compose_type": "edge-commit",
+        "image_size": 8192,
+        "queue_status": "FAILED",
+        "job_created": 1654620015.4107578,
+        "job_started": 1654620015.415151,
+        "job_finished": 1654620302.9069786
+    }]
+}
 
 get_compose_status_mock = {
     "errors": [],
