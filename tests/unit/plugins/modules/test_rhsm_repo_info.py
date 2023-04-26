@@ -83,4 +83,4 @@ def test_rhsm_repo_info_exception():
             with patch("builtins.open", mock_open(read_data="{}")):
                 with pytest.raises(AnsibleFailJson) as fail_json_obj:
                     rhsm_repo_info(module_exception)
-    assert 'Could not find not-a-repo in file, /etc/yum.repos.d/redhat.repo.' in str(fail_json_obj)
+    assert 'Could not find not-a-repo in the files inside /etc/yum.repos.d/ directory.' in str(fail_json_obj)
