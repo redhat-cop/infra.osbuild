@@ -74,7 +74,7 @@ def rhsm_repo_info(module):
                     "state": 'present',
                 })
         if not items:
-            module.fail_json(msg="Could not find %s in file, /etc/yum.repos.d/redhat.repo. Error: %s" % (repo, Exception))
+            module.fail_json(msg="Could not find %s in the files inside /etc/yum.repos.d/ directory. Error: %s" % (repo, Exception))
 
     module.exit_json(changed=has_changed, rhsm_info=rhsm_info)
 
