@@ -57,11 +57,12 @@ argument_spec = dict(
 def rhsm_repo_info(module):
     rhsm_info = []
     has_changed: bool = False
-    for file in os.listdir("/etc/yum.repos.d/"):
-        confp = configparser.ConfigParser()
-        confp.read_file(open("/etc/yum.repos.d/%s" % file))
-        for repo in module.params["repos"]:
-            try:
+    for repo in module.params["repos"]:
+        items = {}
+        for file in os.listdir("/etc/yum.repos.d/"):
+            confp = configparser.ConfigParser()
+            confp.read_file(open("/etc/yum.repos.d/%s" % file))
+            if confp.has_section(repo):
                 items = dict(confp.items(repo))
                 rhsm_info.append({
                     "name": repo,
@@ -72,9 +73,8 @@ def rhsm_repo_info(module):
                     "gpgkey_paths": items['gpgkey'],
                     "state": 'present',
                 })
-                has_changed = True
-            except Exception:
-                module.fail_json(msg="Could not find %s in file, /etc/yum.repos.d/redhat.repo. Error: %s" % (repo, Exception))
+        if not items:
+            module.fail_json(msg="Could not find %s in file, /etc/yum.repos.d/redhat.repo. Error: %s" % (repo, Exception))
 
     module.exit_json(changed=has_changed, rhsm_info=rhsm_info)
 
