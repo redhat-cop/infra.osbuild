@@ -90,25 +90,20 @@ import json
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
+argument_spec = dict(
+    repo_name=dict(type="str", required=True),
+    base_url=dict(type="str", required=False),
+    type=dict(type="str", required=False, choices=["yum-baseurl", "yum-mirrorlist", "yum-metalink"]),
+    check_ssl=dict(type="bool", required=False),
+    check_gpg=dict(type="bool", required=False),
+    gpgkey_urls=dict(type="list", required=False, elements="str", no_log=False),
+    gpgkey_paths=dict(type="list", required=False, elements="str", no_log=False),
+    rhsm=dict(type="bool", required=False),
+    state=dict(type="str", required=True, choices=["present", "absent"])
+)
 
-def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            repo_name=dict(type="str", required=True),
-            base_url=dict(type="str", required=False),
-            type=dict(type="str", required=False, choices=["yum-baseurl", "yum-mirrorlist", "yum-metalink"]),
-            check_ssl=dict(type="bool", required=False),
-            check_gpg=dict(type="bool", required=False),
-            gpgkey_urls=dict(type="list", required=False, elements="str", no_log=False),
-            gpgkey_paths=dict(type="list", required=False, elements="str", no_log=False),
-            rhsm=dict(type="bool", required=False),
-            state=dict(type="str", required=True, choices=["present", "absent"])
-        ),
-        required_if=[('state', "present", ('base_url', 'type', 'check_ssl', 'check_gpg'))]
-    )
 
-    weldr = Weldr(module)
-
+def repository(module, weldr):
     results = {}
     has_changed = False
 
@@ -139,7 +134,6 @@ def main():
                     gpgkeys.append(gpg_key)
 
             new_source["gpgkeys"] = gpgkeys
-
         if len(repo_exists["errors"]) == 0:
             # weldr does not have an update endpoint for sources
             isDeleted = weldr.api.delete_projects_source(module.params["repo_name"])
@@ -165,6 +159,16 @@ def main():
             has_changed = True
 
     module.exit_json(ansible_module_results=results, changed=has_changed, msg=msg)
+
+
+def main() -> None:
+    module: AnsibleModule = AnsibleModule(
+        argument_spec=argument_spec,
+        required_if=[('state', "present", ('base_url', 'type', 'check_ssl', 'check_gpg'))]
+    )
+    weldr: Weldr = Weldr(module)
+
+    repository(module=module, weldr=weldr)
 
 
 if __name__ == "__main__":
