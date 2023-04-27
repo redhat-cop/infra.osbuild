@@ -90,7 +90,7 @@ import json
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
-argument_spec=dict(
+argument_spec = dict(
     repo_name=dict(type="str", required=True),
     base_url=dict(type="str", required=False),
     type=dict(type="str", required=False, choices=["yum-baseurl", "yum-mirrorlist", "yum-metalink"]),
@@ -100,7 +100,7 @@ argument_spec=dict(
     gpgkey_paths=dict(type="list", required=False, elements="str", no_log=False),
     rhsm=dict(type="bool", required=False),
     state=dict(type="str", required=True, choices=["present", "absent"])
-),
+)
 
 
 def repository(module, weldr):

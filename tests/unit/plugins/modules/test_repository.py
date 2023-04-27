@@ -15,9 +15,9 @@ from .utils import mock_weldr, get_blueprint_info_mock, mock_module, AnsibleFail
 args = {
     "repo_name": "test_repo",
     "base_url": "test.com",
-    "type":"yum-baseurl",
+    "type": "yum-baseurl",
     "check_ssl": False,
-    "check_gpg":False,
+    "check_gpg": False,
     "gpgkey_urls": "",
     "gpgkey_paths": "",
     "rhsm": False,
