@@ -34,24 +34,14 @@ post_projects_source_new_mock = {"errors": []}
 get_compose_types_mock = {
     "errors": [],
     "types": [
-        "ami",
-        "edge-commit",
-        "edge-container",
-        "edge-installer",
-        "edge-raw-image",
-        "edge-simplified-installer",
-        "image-installer",
-        "oci",
-        "openstack",
-        "qcow2",
-        "tar",
-        "vhd",
-        "vmdk",
-        "iot-commit",
-        "iot-container",
-        "iot-installer",
-        "iot-raw-image",
-        "container"
+        {
+            'name': 'edge-commit',
+            'enabled': True
+        },
+        {
+            'name': 'edge-installer',
+            'enabled': False
+        }
     ]
 }
 
@@ -116,7 +106,9 @@ get_compose_status_mock = {
     }]
 }
 
-post_compose_mock = {"errors": []}
+post_compose_mock = {"errors": [{
+    'error': 'all your base are belong to us'
+}]}
 
 
 class AnsibleFailJson(Exception):
