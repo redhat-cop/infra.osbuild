@@ -31,15 +31,15 @@ def test_wait_compose_failed():
     args['compose_id'] = '030a1584-8737-4b61-ba77-582780f0ff2e'
     module = mock_module(args)
     weldr = mock_weldr()
-    with pytest.raises(AnsibleFailJson) as exit_json_obj:
+    with pytest.raises(AnsibleFailJson) as fail_json_obj:
         wait_compose(module, weldr=weldr)
-    assert 'Compose FAILED' in str(exit_json_obj)
+    assert 'Compose FAILED' in str(fail_json_obj)
 
 
 def test_wait_compose_timeout():
     args['compose_id'] = '0000'
     module = mock_module(args)
     weldr = mock_weldr()
-    with pytest.raises(AnsibleFailJson) as exit_json_obj:
+    with pytest.raises(AnsibleFailJson) as fail_json_obj:
         wait_compose(module, weldr=weldr)
-    assert 'TIMEOUT REACHED' in str(exit_json_obj)
+    assert 'TIMEOUT REACHED' in str(fail_json_obj)

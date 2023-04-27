@@ -123,54 +123,45 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
-def main() -> None:
-    module: AnsibleModule = AnsibleModule(
-        argument_spec=dict(
-            blueprint=dict(type="str", required=True),
-            size=dict(type="int", required=False, default=0),
-            profile=dict(type="str", required=False, default=""),
-            image_name=dict(type="str", required=False, default=""),
-            allow_duplicate=dict(type="bool", required=False, default=True),
-            compose_type=dict(
-                type="str",
-                required=False,
-                default="edge-commit",
-                choices=[
-                    "ami",
-                    "edge-commit",
-                    "edge-container",
-                    "edge-installer",
-                    "edge-raw-image",
-                    "edge-simplified-installer",
-                    "image-installer",
-                    "oci",
-                    "openstack",
-                    "qcow2",
-                    "tar",
-                    "vhd",
-                    "vmdk",
-                    "iot-commit",
-                    "iot-container",
-                    "iot-installer",
-                    "iot-raw-image",
-                    "container"
-                ],
-            ),
-            ostree_ref=dict(type="str", required=False, default=""),
-            ostree_parent=dict(type="str", required=False, default=""),
-            ostree_url=dict(type="str", required=False, default=""),
-        ),
-        required_together=[["image_name", "profile"]],
-        required_if=[
-            ["compose_type", "edge-installer", ["ostree_url"]],
-            ["compose_type", "iot-installer", ["ostree_url"]],
+argument_spec = dict(
+    blueprint=dict(type="str", required=True),
+    size=dict(type="int", required=False, default=0),
+    profile=dict(type="str", required=False, default=""),
+    image_name=dict(type="str", required=False, default=""),
+    allow_duplicate=dict(type="bool", required=False, default=True),
+    compose_type=dict(
+        type="str",
+        required=False,
+        default="edge-commit",
+        choices=[
+            "ami",
+            "edge-commit",
+            "edge-container",
+            "edge-installer",
+            "edge-raw-image",
+            "edge-simplified-installer",
+            "image-installer",
+            "oci",
+            "openstack",
+            "qcow2",
+            "tar",
+            "vhd",
+            "vmdk",
+            "iot-commit",
+            "iot-container",
+            "iot-installer",
+            "iot-raw-image",
+            "container"
         ],
-    )
+    ),
+    ostree_ref=dict(type="str", required=False, default=""),
+    ostree_parent=dict(type="str", required=False, default=""),
+    ostree_url=dict(type="str", required=False, default=""),
+)
 
+
+def start_compose(module, weldr):
     changed: bool = False
-
-    weldr: Weldr = Weldr(module)
-
     dupe_compose: list = []
 
     # Add check if compose_type is supported
@@ -331,6 +322,19 @@ def main() -> None:
             msg="Not queuing a duplicate versioned compose without allow_duplicate set to true",
             changed=changed,
         )
+
+
+def main() -> None:
+    module: AnsibleModule = AnsibleModule(
+        argument_spec=argument_spec,
+        required_together=[["image_name", "profile"]],
+        required_if=[
+            ["compose_type", "edge-installer", ["ostree_url"]],
+            ["compose_type", "iot-installer", ["ostree_url"]],
+        ],
+    )
+    weldr: Weldr = Weldr(module)
+    start_compose(module, weldr)
 
 
 if __name__ == "__main__":
