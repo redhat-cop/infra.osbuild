@@ -106,6 +106,7 @@ argument_spec = dict(
 def repository(module, weldr):
     results = {}
     has_changed = False
+    msg = ""
 
     repo_exists = weldr.api.get_projects_source_info_sources(module.params["repo_name"])
 

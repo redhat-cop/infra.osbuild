@@ -58,24 +58,19 @@ from ansible.module_utils.common.locale import get_best_parsable_locale
 
 import os
 
+argument_spec = dict(
+    kickstart=dict(type="str", required=True),
+    src_iso=dict(type="str", required=True),
+    dest_iso=dict(type="str", required=True),
+)
 
-def main():
 
-    arg_spec = dict(
-        kickstart=dict(type="str", required=True),
-        src_iso=dict(type="str", required=True),
-        dest_iso=dict(type="str", required=True),
-    )
-
-    module = AnsibleModule(
-        argument_spec=arg_spec,
-    )
-
+def inject_ks(module):
     # Sanity checking the paths exist
-    for key in arg_spec:
-        if key in ["kickstart", "src_iso", "workdir"]:
+    for key in module.params:
+        if key in ["kickstart", "src_iso"]:
             if not os.path.exists(module.params[key]):
-                module.fail_json("No such file found: %s" % module.params[key])
+                module.fail_json(msg="No such file found: %s" % module.params[key])
 
     # get local for shelling out
     locale = get_best_parsable_locale(module)
@@ -86,11 +81,22 @@ def main():
     rc, out, err = module.run_command(cmd_list, environ_update=lang_env)
     if (rc != 0):
         module.fail_json(
-            "ERROR: Command '%s' failed with return code: %s and error message, '%s'"
+            msg="ERROR: Command '%s' failed with return code: %s and error message, '%s'"
             % (" ".join(cmd_list), rc, err)
         )
 
     module.exit_json(changed=True, msg="Kickstart added to ISO: %s" % module.params["dest_iso"])
+
+
+def main():
+
+    arg_spec = argument_spec
+
+    module = AnsibleModule(
+        argument_spec=arg_spec,
+    )
+
+    inject_ks(module=module)
 
 
 if __name__ == "__main__":
