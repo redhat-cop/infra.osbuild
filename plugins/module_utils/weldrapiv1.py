@@ -5,9 +5,7 @@ import json
 import os
 import shutil
 
-import ansible.module_utils.six.moves.urllib.error as urllib_error
 from ansible.module_utils._text import to_bytes
-from ansible.module_utils._text import to_native
 from ansible.module_utils.six.moves.urllib.parse import quote
 
 
@@ -45,11 +43,7 @@ class WeldrV1:
 
         :return:        dict
         """
-        results = json.load(
-            self.weldr.request.open(
-                "GET", "http://localhost/api/v1/projects/source/list"
-            )  # noqa: E501
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/projects/source/list"))  # noqa: E501
         return results
 
     def get_projects_source_info(self, repo_name):
@@ -112,8 +106,7 @@ class WeldrV1:
         results = json.load(
             self.weldr.request.open(
                 "DELETE",
-                "http://localhost/api/v1/projects/source/delete/%s"
-                % quote(repo_name),  # noqa: E501
+                "http://localhost/api/v1/projects/source/delete/%s" % quote(repo_name),  # noqa: E501
                 headers={"Content-Type": "application/json"},
             )
         )
@@ -139,9 +132,7 @@ class WeldrV1:
 
         :return:        list, list of modules dicts
         """
-        results = json.load(
-            self.weldr.request.open("GET", "http://localhost/api/v1/modules/list")  # noqa: E501
-        )  # noqa: E501
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/modules/list"))  # noqa: E501  # noqa: E501
         return results
 
     def get_modules_list_modules(self, modules):
@@ -195,9 +186,7 @@ class WeldrV1:
 
         :return:    dict
         """
-        results = json.load(
-            self.weldr.request.open("GET", "http://localhost/api/v1/blueprints/list")  # noqa: E501
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/blueprints/list"))  # noqa: E501
         return results
 
     def get_blueprints_info(self, blueprint):
@@ -206,11 +195,7 @@ class WeldrV1:
 
         :return:    dict
         """
-        results = json.load(
-            self.weldr.request.open(
-                "GET", "http://localhost/api/v1/blueprints/info/%s" % blueprint
-            )  # noqa: E501
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/blueprints/info/%s" % blueprint))  # noqa: E501
         return results
 
     def get_blueprints_depsolve(self, blueprints):
@@ -298,23 +283,19 @@ class WeldrV1:
 
         :return:    dict
         """
-        results = "FOOBAR"
-        try:
-            if type(compose_settings) != bytes:
-                compose_settings = to_bytes(compose_settings)
-            results = json.load(
-                self.weldr.request.open(
-                    "POST",
-                    "http://localhost/api/v1/compose",
-                    data=compose_settings,
-                    headers={"Content-Type": "application/json"},
-                )
+        results = dict()
+        if type(compose_settings) != bytes:
+            compose_settings = to_bytes(compose_settings)
+        results = json.load(
+            self.weldr.request.fetch_url(
+                self.weldr.module,
+                "http://localhost/api/v1/compose",
+                method="POST",
+                data=compose_settings,
+                headers={"Content-Type": "application/json"},
             )
-            return results
-        except urllib_error.HTTPError as e:
-            self.weldr.module.fail_json(
-                msg="OSBUILD COMPOSER ERROR: %s" % to_native(e.reason)
-            )  # noqa: E501
+        )
+        return results
 
     def delete_compose(self, compose):
         """
@@ -328,9 +309,7 @@ class WeldrV1:
 
         :return:        dict
         """
-        results = json.load(
-            self.weldr.request.open("GET", "http://localhost/api/v1/compose/types")  # noqa: E501
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/compose/types"))  # noqa: E501
         return results
 
     def get_compose_queue(self):
@@ -339,9 +318,7 @@ class WeldrV1:
 
         :return:        dict
         """
-        results = json.load(
-            self.weldr.request.open("GET", "http://localhost/api/v1/compose/queue")  # noqa: E501
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/compose/queue"))  # noqa: E501
         return results
 
     def get_compose_status(self, compose_uuids):
@@ -351,11 +328,7 @@ class WeldrV1:
 
         :return:        dict
         """
-        results = json.load(
-            self.weldr.request.open(
-                "GET", "http://localhost/api/v1/compose/status/%s" % compose_uuids  # noqa: E501
-            )
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/compose/status/%s" % compose_uuids))  # noqa: E501
         return results
 
     def get_compose_info(self, compose_uuid):
@@ -365,11 +338,7 @@ class WeldrV1:
 
         :return:        dict
         """
-        results = json.load(
-            self.weldr.request.open(
-                "GET", "http://localhost/api/v1/compose/info/%s" % compose_uuid
-            )  # noqa: E501
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/compose/info/%s" % compose_uuid))  # noqa: E501
         return results
 
     def get_compose_finished(self):
@@ -379,9 +348,7 @@ class WeldrV1:
 
         :return:        dict
         """
-        results = json.load(
-            self.weldr.request.open("GET", "http://localhost/api/v1/compose/finished")  # noqa: E501
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/compose/finished"))  # noqa: E501
         return results
 
     def get_compose_failed(self):
@@ -391,9 +358,7 @@ class WeldrV1:
 
         :return:        dict
         """
-        results = json.load(
-            self.weldr.request.open("GET", "http://localhost/api/v1/compose/failed")  # noqa: E501
-        )
+        results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/compose/failed"))  # noqa: E501
         return results
 
     def get_compose_image(self, compose_uuid, dest):
