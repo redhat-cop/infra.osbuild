@@ -7,6 +7,7 @@ import shutil
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.six.moves.urllib.parse import quote
+from ansible.module_utils.urls import fetch_url
 
 
 class WeldrV1:
@@ -279,22 +280,21 @@ class WeldrV1:
     # Composes
     def post_compose(self, compose_settings):
         """
-        iniiate a compose
+        initiate a compose
 
         :return:    dict
         """
-        results = dict()
         if type(compose_settings) != bytes:
             compose_settings = to_bytes(compose_settings)
-        results = json.load(
-            self.weldr.request.fetch_url(
-                self.weldr.module,
-                "http://localhost/api/v1/compose",
-                method="POST",
-                data=compose_settings,
-                headers={"Content-Type": "application/json"},
-            )
+        response, info = fetch_url(
+            module=self.weldr.module,
+            url="http://localhost/api/v1/compose",
+            method="POST",
+            data=compose_settings,
+            headers={"Content-Type": "application/json"},
+            unix_socket=self.weldr.unix_socket,
         )
+        results = json.loads(response.read().decode("utf-8"))
         return results
 
     def delete_compose(self, compose):
