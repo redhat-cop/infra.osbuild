@@ -1,0 +1,43 @@
+---
+populate_aap_controller_hostname: http://0.0.0.0:443
+populate_aap_controller_username: admin
+populate_aap_controller_password: test
+populate_aap_admin_password: test
+populate_aap_controller_validate_certs: false
+populate_aap_controller_configuration_async_retries: 20
+populate_aap_execution_environments:
+  - name: osbuild_ee
+    image: quay.io/repository/org/image
+    pull: always
+populate_aap_organizations: 
+  - name: Osbuild_test
+populate_aap_inventories:
+  - name: osbuild_inventory
+    organization: Osbuild_test
+populate_aap_hosts:
+  - name: osbuild_remote_system
+    inventory: osbuild_inventory
+    variables:
+      ansible_host: 0.0.0.0
+      ansible_user: user
+populate_aap_projects:
+  - name: osbuild_project
+    organization: Osbuild_test
+    default_environment: osbuild_ee
+    scm_type: git
+    scm_url: https://github.com/redhat-cop/infra.osbuild
+populate_aap_credentials:
+  - name: osbuild_credential
+    organization: Osbuild_test
+    credentail_type: Machine
+    inputs:
+      username: user
+      ssh_key_data: "{{ lookup('file', '~/.ssh/id_rsa_aap', errors='warn') }}"
+populate_aap_job_templates:
+  - name: osbuild_setup_server
+    job_type: run
+    inventory: osbuild_inventory
+    project: osbuild_project
+    playbook: playbooks/osbuild_setup_server.yml
+    credentials:
+      - osbuild_credential

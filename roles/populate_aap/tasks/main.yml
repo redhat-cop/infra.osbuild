@@ -1,0 +1,99 @@
+---
+- name: Debug
+  ansible.builtin.debug:
+    msg: "{{ item.name }}"
+  loop: "{{ populate_aap_execution_environments }}"
+
+- name: Set controller execution environments facts
+  ansible.builtin.set_fact:
+    controller_execution_environments:
+      - name: "{{ item.name }}"
+        image: "{{ item.image }}"
+        pull: "{{ item.pull }}"
+  loop: "{{ populate_aap_execution_environments }}"
+
+- name: Set controller organizations facts
+  ansible.builtin.set_fact:
+    controller_organizations:
+      - name: "{{ item.name }}"
+  loop: "{{ populate_aap_organizations }}"
+
+- name: Set controller inventories facts
+  ansible.builtin.set_fact:
+    controller_inventories:
+      - name: "{{ item.name }}"
+        organization: "{{ item.organization }}"
+  loop: "{{ populate_aap_inventories }}"
+
+- name: Set controller hosts facts
+  ansible.builtin.set_fact:
+    controller_hosts:
+      - name: "{{ item.name }}"
+        inventory: "{{ item.inventory }}"
+        variables: "{{ item.variables }}"
+  loop: "{{ populate_aap_hosts }}"
+
+- name: Set controller projests facts
+  ansible.builtin.set_fact:
+    controller_projects:
+      - name: "{{ item.name }}"
+        organization: "{{ item.organization }}"
+        default_environment: "{{ item.default_environment }}"
+        scm_type: "{{ item.scm_type }}"
+        scm_url: "{{ item.scm_url }}"
+  loop: "{{ populate_aap_projects }}"
+
+- name: Set controller credentials facts
+  ansible.builtin.set_fact:
+    controller_credentials:
+      - name: "{{ item.name }}"
+        organization: "{{ item.organization }}"
+        credential_type: "{{ item.credentail_type }}"
+        inputs: "{{ item.inputs }}"
+  loop: "{{ populate_aap_credentials }}"
+
+- name: Set controller job templates facts
+  ansible.builtin.set_fact:
+    controller_templates:
+      - name: "{{ item.name }}"
+        job_type: "{{ item.job_type }}"
+        inventory: "{{ item.inventory }}"
+        project: "{{ item.project }}"
+        playbook: "{{ item.playbook }}"
+        credentials: "{{ item.credentials }}"
+  loop: "{{ populate_aap_job_templates }}"
+
+- name: Configure execution enviornment for AAP
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.execution_environments
+  when: controller_execution_environments is defined
+
+- name: Configure Organizations
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.organizations
+  when: controller_organizations is defined
+
+- name: Configure inventory
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.inventories
+  when: controller_inventories is defined
+
+- name: Configure hosts
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.hosts
+  when: controller_hosts is defined
+
+- name: Configure Projects
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.projects
+  when: controller_projects is defined
+
+- name: Configure Looped Credentials
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.credentials
+  when: controller_credentials is defined
+
+- name: Configure Job Templates
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.job_templates
+  when: controller_templates is defined

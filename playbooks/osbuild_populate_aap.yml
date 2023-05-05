@@ -1,0 +1,9 @@
+---
+- name: Run populate_aap role to populate AAP with infra.osbuild content
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Run the role
+      ansible.builtin.import_role:
+        name: infra.osbuild.populate_aap
