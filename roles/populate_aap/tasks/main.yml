@@ -8,30 +8,66 @@
   ansible.builtin.set_fact:
     controller_execution_environments:
       - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(None) }}"
+        description: "{{ item.description | default(None) }}"
         image: "{{ item.image }}"
-        pull: "{{ item.pull }}"
+        organization: "{{ item.organization | default(None) }}"
+        credential: "{{ item.credentail | default(None) }}"
+        pull: "{{ item.pull | default(None)}}"
+        state: "{{ item.state | default(None) }}"
   loop: "{{ populate_aap_execution_environments }}"
+  when: populate_aap_execution_environments is defined
 
 - name: Set controller organizations facts
   ansible.builtin.set_fact:
     controller_organizations:
       - name: "{{ item.name }}"
+        description: "{{ item.description | default(None) }}"
+        custom_virtualenv: "{{ item.custom_virtualenv | default(None) }}"
+        max_hosts: "{{ item.max_hosts | default(None) }}"
+        instance_groups: "{{ item.instance_groups | default(None) }}"
+        galaxy_credentials: "{{ item.galaxy_credentials default(None) }}"
+        default_environment: "{{ item.default_environment | default(None) }}"
+        notification_templates_started: "{{ item.notification_templates_started | default(None) }}"
+        notification_templates_success: "{{ item.notification_templates_success | default(None) }}"
+        notification_templates_error: "{{ item.notification_templates_error | default(None) }}"
+        notification_templates_approvals: "{{ item.notification_templates_approvals | default(None) }}"
+        state: "{{ item.state | default(None) }}"
+        assign_galaxy_credentials_to_org: "{{ item.assign_galaxy_credentials_to_org | default(None) }}"
+        assign_default_ee_to_org: "{{ item.assign_default_ee_to_org | default(None) }}"
   loop: "{{ populate_aap_organizations }}"
+  when: populate_aap_organizations is defined
 
 - name: Set controller inventories facts
   ansible.builtin.set_fact:
     controller_inventories:
       - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(None) }}"
+        copy_from: "{{ item.copy_from | default(None) }}"
+        description: "{{ item.description | default(None) }}"
         organization: "{{ item.organization }}"
+        instance_groups: "{{ item.instance_groups | default(None) }}"
+        input_inventories: "{{ item.input_inventories | default(None) }}"
+        variables: "{{ item.variables | default(None) }}"
+        kind: "{{ item.kind | default(None) }}"
+        host_filter: "{{ item.host_filter | default(None) }}"
+        prevent_instance_group_fallback: "{{ item.prevent_instance_group_fallback | default(None) }}"
+        state: "{{ item.state | default(None) }}"
   loop: "{{ populate_aap_inventories }}"
+  when: populate_aap_inventories is defined
 
 - name: Set controller hosts facts
   ansible.builtin.set_fact:
     controller_hosts:
       - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(None) }}"
+        description: "{{ item.description | default(None) }}"
         inventory: "{{ item.inventory }}"
+        enabled: "{{ item.enabled | default(None) }}"
         variables: "{{ item.variables }}"
+        state: "{{ item.state | default(None) }}"
   loop: "{{ populate_aap_hosts }}"
+  when: populate_aap_hosts is defined
 
 - name: Set controller projests facts
   ansible.builtin.set_fact:
@@ -42,6 +78,7 @@
         scm_type: "{{ item.scm_type }}"
         scm_url: "{{ item.scm_url }}"
   loop: "{{ populate_aap_projects }}"
+  when: populate_aap_projects is defined
 
 - name: Set controller credentials facts
   ansible.builtin.set_fact:
@@ -51,6 +88,7 @@
         credential_type: "{{ item.credentail_type }}"
         inputs: "{{ item.inputs }}"
   loop: "{{ populate_aap_credentials }}"
+  when: populate_aap_credentials is defined
 
 - name: Set controller job templates facts
   ansible.builtin.set_fact:
@@ -62,6 +100,7 @@
         playbook: "{{ item.playbook }}"
         credentials: "{{ item.credentials }}"
   loop: "{{ populate_aap_job_templates }}"
+  when: populate_aap_job_templates is defined
 
 - name: Configure execution enviornment for AAP
   ansible.builtin.include_role:

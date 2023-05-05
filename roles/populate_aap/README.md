@@ -80,6 +80,7 @@ Type: list
 Required: false
 
 Use to populate AAP with execution environments
+More information can be found in [Configuration Collection execution environments role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/execution_environments)
 
 Example:
 ```yaml
@@ -94,6 +95,7 @@ Type: list
 Required: false
 
 Use to populate AAP with organizations
+More information can be found in [Configuration Collection organizations role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/organizations)
 
 Example:
 ```yaml
@@ -106,6 +108,7 @@ Type: list
 Required: false
 
 Use to populate AAP with inventories
+More information can be found in [Configuration Collection inventories role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/inventories)
 
 Example:
 ```yaml
@@ -119,6 +122,7 @@ Type: list
 Required: false
 
 Use to populate AAP with hosts
+More information can be found in [Configuration Collection hosts role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/hosts)
 
 Example:
 ```yaml
@@ -135,6 +139,7 @@ Type: list
 Required: false
 
 Use to populate AAP with projects
+More information can be found in [Configuration Collection projects role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/projects)
 
 Example:
 ```yaml
@@ -151,6 +156,7 @@ Type: list
 Required: false
 
 Use to populate AAP with credentials
+More information can be found in [Configuration Collection credentials role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/credentials)
 
 Example:
 ```yaml
@@ -168,6 +174,7 @@ Type: list
 Required: false
 
 Use to populate AAP with job templates
+More information can be found in [Configuration Collection job templates role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/job_templates)
 
 Example:
 ```yaml

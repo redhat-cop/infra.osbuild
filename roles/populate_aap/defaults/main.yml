@@ -9,7 +9,7 @@ populate_aap_execution_environments:
   - name: osbuild_ee
     image: quay.io/repository/org/image
     pull: always
-populate_aap_organizations: 
+populate_aap_organizations:
   - name: Osbuild_test
 populate_aap_inventories:
   - name: osbuild_inventory
