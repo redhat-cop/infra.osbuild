@@ -1,0 +1,2 @@
+minor_changes:
+  - weldr - added get_job_id using image compose_id to allow us to identify images inside osbuild artifacts
