@@ -65,6 +65,12 @@
 - name: Process when existing commit isn't defined in builder_ostree_url variable
   when: builder_ostree_url is not defined
   block:
+    - name: Get rhsm repos properties
+      when: builder_rhsm_repos is defined
+      infra.osbuild.rhsm_repo_info:
+        repos: "{{ builder_rhsm_repos }}"
+      register: __builder_rhsm_repos_info
+
     - name: Image build process
       block:
         - name: Include enable_custom_repos.yml

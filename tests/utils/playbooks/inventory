@@ -1,0 +1,2 @@
+[morstanlocal]
+  morstan-local ansible_host=localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python ansible_user=testuser ansible_become=yes
