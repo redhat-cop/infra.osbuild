@@ -1,2 +1,2 @@
-minor-changes:
+minor_changes:
   - builder - allowed for passing aap vars to the role will generate the corresponding template instead of doing this manually.
