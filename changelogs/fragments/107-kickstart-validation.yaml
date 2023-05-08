@@ -1,0 +1,2 @@
+minor_changes:
+  - added ability to validate kickstart after creation of file

@@ -1,0 +1,2 @@
+bugfixes:
+  - builder - Fixes kickstart when passing none as an option to skip all omitted values
