@@ -294,8 +294,14 @@ class WeldrV1:
             headers={"Content-Type": "application/json"},
             unix_socket=self.weldr.unix_socket,
         )
-        results = json.loads(response.read().decode("utf-8"))
-        return results
+        result = dict()
+        result["status_code"] = info["status"]
+        if info["status_code"] < 400:
+            result["body"] = json.loads(response.read().decode("utf-8"))
+        else:
+            result["body"] = info["body"]
+            result["error_msg"] = info["msg"]
+        return result
 
     def delete_compose(self, compose):
         """
