@@ -271,8 +271,11 @@ def start_compose(module, weldr):
             if submitted_compose_uuid:
                 result: dict = weldr.api.get_compose_status(submitted_compose_uuid)
 
-        if result["status_code"] >= 400:
-            module.fail_json(msg="Compose returned body: {0}, msg {1}, and status_code {2}".format(result["body"], result["error_msg"], result["status_code"]))
+        if "status_code" in result.keys:
+            if result["status_code"] >= 400:
+                module.fail_json(
+                    msg="Compose returned body: {0}, msg {1}, and status_code {2}".format(result["body"], result["error_msg"], result["status_code"])
+                )
 
         compose_output_types: dict[str, list[str]] = {
             "tar": ["tar", "edge-commit", "iot-commit", "edge-container", "iot-container", "container"],
