@@ -1,11 +1,6 @@
 #!/usr/bin/python
 # Copyright: Red Hat Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-import json
-import socket
-
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 ANSIBLE_METADATA = {
     "metadata_version": "1.1",
@@ -114,6 +109,11 @@ EXAMPLES = """
     blueprint: rhel-for-edge-demo
     allow_duplicate: false
 """
+import json  # noqa E402
+import socket  # noqa E402
+
+from ansible.module_utils.basic import AnsibleModule  # noqa E402
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr  # noqa E402
 
 argument_spec = dict(
     blueprint=dict(type="str", required=True),
@@ -272,7 +272,7 @@ def start_compose(module, weldr):
                 result: dict = weldr.api.get_compose_status(submitted_compose_uuid)
 
         if result["status_code"] >= 400:
-            module.fail_json(msg="Compose returned body: {}, msg {}, and status_code {}".format(result["body"], result["error_msg"], result["status_code"]))
+            module.fail_json(msg="Compose returned body: {0}, msg {1}, and status_code {2}".format(result["body"], result["error_msg"], result["status_code"]))
 
         compose_output_types: dict[str, list[str]] = {
             "tar": ["tar", "edge-commit", "iot-commit", "edge-container", "iot-container", "container"],
