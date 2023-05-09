@@ -1,9 +1,4 @@
 ---
-- name: Debug
-  ansible.builtin.debug:
-    msg: "{{ item.name }}"
-  loop: "{{ populate_aap_execution_environments }}"
-
 - name: Set controller execution environments facts
   ansible.builtin.set_fact:
     controller_execution_environments:
