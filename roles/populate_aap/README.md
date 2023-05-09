@@ -9,7 +9,7 @@ This role uses the [controller_configuration](https://github.com/redhat-cop/cont
 None
 
 ## Role Variables
-### populate_aap_controller_hostname
+### controller_hostname
 Type: string
 Required: true
 
@@ -17,10 +17,10 @@ Hostname for the AAP controller instance to connect to
 
 Example:
 ```yaml
-populate_aap_controller_hostname: http://0.0.0.0:443
+controller_hostname: http://0.0.0.0:443
 ```
 
-### populate_aap_controller_username
+### controller_username
 Type: string
 Required: true
 
@@ -28,10 +28,10 @@ Username for the AAP controller instance to connect to
 
 Example:
 ```yaml
-populate_aap_controller_username: admin
+controller_username: admin
 ```
 
-### populate_aap_controller_password
+### controller_password
 Type: string
 Required: true
 
@@ -39,21 +39,10 @@ Password for the AAP controller instance to connect to
 
 Example:
 ```yaml
-populate_aap_controller_password: test
+controller_password: test
 ```
 
-### populate_aap_admin_password
-Type: string
-Required: true
-
-Admin password for the AAP controller instance to connect to
-
-Example:
-```yaml
-populate_aap_admin_password: test
-```
-
-### populate_aap_controller_validate_certs
+### controller_validate_certs
 Type: bool
 Required: true
 
@@ -61,10 +50,10 @@ Set in order to validate or not validate certs
 
 Example:
 ```yaml
-populate_aap_controller_validate_certs: false
+controller_validate_certs: false
 ```
 
-### populate_aap_controller_configuration_async_retries
+### controller_configuration_async_retries
 Type: int
 Required: false
 
@@ -72,7 +61,7 @@ Set the amount of time to retry a task
 
 Example:
 ```yaml
-populate_aap_controller_configuration_async_retries: 20
+controller_configuration_async_retries: 20
 ```
 
 ### populate_aap_execution_environments
