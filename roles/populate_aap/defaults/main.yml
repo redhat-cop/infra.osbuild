@@ -1,10 +1,9 @@
 ---
-populate_aap_controller_hostname: http://0.0.0.0:443
-populate_aap_controller_username: admin
-populate_aap_controller_password: test
-populate_aap_admin_password: test
-populate_aap_controller_validate_certs: false
-populate_aap_controller_configuration_async_retries: 20
+controller_hostname: http://0.0.0.0:443
+controller_username: admin
+controller_password: test
+controller_validate_certs: false
+controller_configuration_async_retries: 20
 populate_aap_execution_environments:
   - name: osbuild_ee
     image: quay.io/repository/org/image
