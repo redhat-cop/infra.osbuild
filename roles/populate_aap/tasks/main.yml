@@ -14,7 +14,7 @@
         organization: "{{ item.organization | default(None) }}"
         credential: "{{ item.credential | default(None) }}"
         pull: "{{ item.pull | default(None) }}"
-        state: "{{ item.state | default(None) }}"
+        state: "{{ item.state | default('present') }}"
   loop: "{{ populate_aap_execution_environments }}"
   when: populate_aap_execution_environments is defined
 
