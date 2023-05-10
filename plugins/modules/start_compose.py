@@ -111,7 +111,6 @@ EXAMPLES = """
 """
 import json  # noqa E402
 import socket
-import time
 from typing import Any  # noqa E402
 
 from ansible.module_utils.basic import AnsibleModule  # noqa E402
