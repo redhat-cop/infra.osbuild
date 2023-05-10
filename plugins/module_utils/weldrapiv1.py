@@ -296,10 +296,11 @@ class WeldrV1:
         )
         result = dict()
         result["status_code"] = info["status"]
-        if result["status_code"] < 400:
-            result["body"] = json.loads(response.read().decode("utf-8"))
+        if 200 < result["status_code"] < 400:
+            result.update(json.loads(response.read().decode("utf-8")))
         else:
-            result["body"] = info["body"]
+            if "body" in result.keys():
+                result["body"] = info["body"]
             result["error_msg"] = info["msg"]
         return result
 

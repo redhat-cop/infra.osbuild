@@ -172,12 +172,11 @@ def start_compose(module, weldr):
                 msg="%s is not a supported image type, supported image types are: %s"
                 % (module.params["compose_type"], [[v for k, v in t.items() if k == "enabled" and v is True] for t in supported_compose_type["types"]])
             )
+    blueprint_info: dict = weldr.api.get_blueprints_info(module.params["blueprint"])
+    blueprint_version: int = blueprint_info["blueprints"][0]["version"]
 
     if not module.params["allow_duplicate"]:
         # only do all this query and filtering if needed
-
-        blueprint_info: dict = weldr.api.get_blueprints_info(module.params["blueprint"])
-        blueprint_version: int = blueprint_info["blueprints"][0]["version"]
 
         compose_queue: dict = weldr.api.get_compose_queue()
         # {"new":[],"run":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":0,"queue_status":"RUNNING","job_created":1654620015.4107578,"job_started":1654620015.415151}]}
@@ -223,9 +222,11 @@ def start_compose(module, weldr):
                 "url": module.params["ostree_url"],
             }
 
-        try:
-            result: dict = weldr.api.post_compose(json.dumps(compose_settings))
-        except socket.timeout:
+        result: dict = weldr.api.post_compose(json.dumps(compose_settings))
+        # import sys
+        # print(f"Resp: '{result}'\n", file=sys.stderr)
+
+        if (result["error_msg"] == "Connection failure: timed out" and result["status_code"] == -1) or "build_id" not in result.keys():
             # it's possible we don't get a response back from weldr because on the
             # very first run including a new content source composer will build a repo cache
             # and when that happens we get an empty JSON response
@@ -266,7 +267,7 @@ def start_compose(module, weldr):
                     if submitted_compose_found_failed:
                         submitted_compose_uuid: str = submitted_compose_found_failed[0]["id"]
                     else:
-                        module.fail_json(msg="Unable to determine state of build, check osbuild-composer system logs")
+                        module.fail_json(msg="Unable to determine state of build, check osbuild-composer system logs", result=result)
 
             if submitted_compose_uuid:
                 result: dict = weldr.api.get_compose_status(submitted_compose_uuid)
@@ -276,6 +277,9 @@ def start_compose(module, weldr):
                 module.fail_json(
                     msg="Compose returned body: {0}, msg {1}, and status_code {2}".format(result["body"], result["error_msg"], result["status_code"])
                 )
+                
+        if "uuids" in result.keys():
+            result["build_id"] = result["uuids"][0]["id"]
 
         compose_output_types: dict[str, list[str]] = {
             "tar": ["tar", "edge-commit", "iot-commit", "edge-container", "iot-container", "container"],
