@@ -108,7 +108,7 @@
 
         - name: Wait for compose to finish
           infra.osbuild.wait_compose:
-            compose_id: "{{ compose_start_out['result']['build_id'] }}"
+            compose_id: "{{ compose_start_out['result']['body']['build_id'] }}"
             timeout: "{{ builder_wait_compose_timeout | default(omit) }}"
       always:
         - name: Include disable_custom_repos.yml
@@ -123,7 +123,7 @@
 
     - name: Export the compose artifact
       infra.osbuild.export_compose:
-        compose_id: "{{ compose_start_out['result']['build_id'] }}"
+        compose_id: "{{ compose_start_out['result']['body']['build_id'] }}"
         dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
     - name: Update ostree repository
@@ -228,7 +228,7 @@
 
     - name: Wait for compose to finish
       infra.osbuild.wait_compose:
-        compose_id: "{{ compose_start_out['result']['build_id'] }}"
+        compose_id: "{{ compose_start_out['result']['body']['build_id'] }}"
         timeout: "{{ builder_wait_compose_timeout | default(omit) }}"
 
     - name: Create tmp directory for blueprint
@@ -239,7 +239,7 @@
 
     - name: Export the compose artifact
       infra.osbuild.export_compose:
-        compose_id: "{{ compose_start_out['result']['build_id'] }}"
+        compose_id: "{{ compose_start_out['result']['body']['build_id'] }}"
         dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
     - name: Create images directory
