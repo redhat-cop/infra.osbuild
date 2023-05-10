@@ -110,7 +110,9 @@ EXAMPLES = """
     allow_duplicate: false
 """
 import json  # noqa E402
-import socket  # noqa E402
+import socket
+import time
+from typing import Any  # noqa E402
 
 from ansible.module_utils.basic import AnsibleModule  # noqa E402
 from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr  # noqa E402
@@ -208,7 +210,7 @@ def start_compose(module, weldr):
 
     if module.params["allow_duplicate"] or (len(dupe_compose) == 0):
         # FIXME - build to POST payload and POST that ish
-        compose_settings: dict[str, str] = {
+        compose_settings: dict[str, Any] = {
             "blueprint_name": module.params["blueprint"],
             "compose_type": module.params["compose_type"],
             "branch": "master",
@@ -229,6 +231,7 @@ def start_compose(module, weldr):
             # very first run including a new content source composer will build a repo cache
             # and when that happens we get an empty JSON response
 
+            time.sleep(1)
             compose_queue: dict = weldr.api.get_compose_queue()
             # {"new":[],"run":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":0,"queue_status":"RUNNING","job_created":1654620015.4107578,"job_started":1654620015.415151}]}
 
@@ -269,6 +272,7 @@ def start_compose(module, weldr):
 
             if submitted_compose_uuid:
                 result: dict = weldr.api.get_compose_status(submitted_compose_uuid)
+                result['body'] = { 'build_id': submitted_compose_uuid }
 
         if "status_code" in result.keys():
             if result["status_code"] >= 400:
