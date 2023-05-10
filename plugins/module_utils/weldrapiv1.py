@@ -294,6 +294,7 @@ class WeldrV1:
             data=compose_settings,
             headers={"Content-Type": "application/json"},
             unix_socket=self.weldr.unix_socket,
+            timeout=120
         )
         result = dict()
         result["status_code"] = info["status"]
