@@ -4,6 +4,7 @@
 import json
 import os
 import shutil
+import socket  # noqa E402
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.six.moves.urllib.parse import quote
@@ -293,14 +294,14 @@ class WeldrV1:
             data=compose_settings,
             headers={"Content-Type": "application/json"},
             unix_socket=self.weldr.unix_socket,
+            timeout=120
         )
         result = dict()
         result["status_code"] = info["status"]
-        if result["status_code"] < 400:
+        if result["status_code"] == 200:
             result["body"] = json.loads(response.read().decode("utf-8"))
         else:
-            result["body"] = info["body"]
-            result["error_msg"] = info["msg"]
+            raise socket.timeout
         return result
 
     def delete_compose(self, compose):
