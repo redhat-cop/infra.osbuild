@@ -155,6 +155,8 @@ argument_spec = dict(
 def start_compose(module, weldr):
     changed: bool = False
     dupe_compose: list = []
+    blueprint_info: dict = weldr.api.get_blueprints_info(module.params["blueprint"])
+    blueprint_version: int = blueprint_info["blueprints"][0]["version"]
 
     # Add check if compose_type is supported
     supported_compose_type: dict = weldr.api.get_compose_types()
@@ -175,9 +177,6 @@ def start_compose(module, weldr):
 
     if not module.params["allow_duplicate"]:
         # only do all this query and filtering if needed
-
-        blueprint_info: dict = weldr.api.get_blueprints_info(module.params["blueprint"])
-        blueprint_version: int = blueprint_info["blueprints"][0]["version"]
 
         compose_queue: dict = weldr.api.get_compose_queue()
         # {"new":[],"run":[{"id":"930a1584-8737-4b61-ba77-582780f0ff2d","blueprint":"base-image-with-tmux","version":"0.0.5","compose_type":"edge-commit","image_size":0,"queue_status":"RUNNING","job_created":1654620015.4107578,"job_started":1654620015.415151}]}
