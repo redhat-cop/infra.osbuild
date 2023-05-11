@@ -9,7 +9,7 @@ argument_specs:
         description: "Custom list of RPM repositories to make available to the osbuild compose builds."
         elements: "dict"
         options:
-          repo_name:
+          name:
             type: "str"
             required: true
           base_url:
