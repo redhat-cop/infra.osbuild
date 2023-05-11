@@ -7,10 +7,10 @@ from unittest.mock import patch
 
 import pytest
 
+from .....plugins.module_utils.weldrapiv1 import WeldrV1
 from ..modules.utils import AnsibleExitJson
 from ..modules.utils import mock_module
 from ..modules.utils import mock_weldr
-from plugins.module_utils.weldrapiv1 import WeldrV1
 
 # from ..modules.utils import AnsibleFailJson
 
@@ -25,8 +25,8 @@ def test_get_status(mocker):
 # Projects source
 @pytest.mark.skip(reason="Test not implemented yet")
 def test_get_projects_source_list(mocker):
-    weldr = mock_weldr()
-    weldrv1 = WeldrV1(weldr)  # noqa F841
+    # weldr = mock_weldr()
+    # weldrv1 = WeldrV1(weldr)
 
     args = {}
     module = mock_module(args)
@@ -229,7 +229,7 @@ def test_post_compose(mocker):
     FETCH_URL_RESPONSE.read.return_value = json.dumps(FETCH_URL_INFO, ensure_ascii=False).encode("utf-8")
     FETCH_URL_RETURN_VALUE = (FETCH_URL_RESPONSE, FETCH_URL_INFO)
     compose_settings: dict[str, str] = {"blueprint_name": "test_blueprint_aap", "compose_type": "edge_installer", "branch": "master", "size": 42}
-    with patch(target="plugins.module_utils.weldrapiv1.fetch_url", return_value=FETCH_URL_RETURN_VALUE):
+    with patch(target="ansible_collections.infra.osbuild.plugins.module_utils.weldrapiv1.fetch_url", return_value=FETCH_URL_RETURN_VALUE):
         actual_returned_value = weldrv1.post_compose(compose_settings)
         assert actual_returned_value == EXPECTED_RETURNED_VALUE, f"Expected '{EXPECTED_RETURNED_VALUE}',\nactual = '{actual_returned_value}'"
 
