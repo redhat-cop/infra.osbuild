@@ -7,11 +7,41 @@ argument_specs:
         type: "list"
         required: false
         description: "Custom list of RPM repositories to make available to the osbuild compose builds."
+        elements: "dict"
+        options:
+          repo_name:
+            type: "str"
+            required: true
+          base_url:
+            type: "str"
+            required: true
+          type:
+            type: "str"
+            required: false
+            default: "yum-baseurl"
+          check_ssl:
+            type: "bool"
+            required: false
+          check_gpg:
+            type: "bool"
+            required: false
+          gpgkey_urls:
+            type: "list"
+            elements: "str"
+            required: false
+          rhsm:
+            type: "bool"
+            required: false
+          state:
+            type: "str"
+            required: false
+            default: "present"
 
       builder_rhsm_repos:
         type: "list"
         required: false
         description: "List of RHSM repositories to make available to the osbuild compose builds."
+        elements: "str"
 
       builder_custom_repos_persist:
         type: "bool"
@@ -72,6 +102,7 @@ argument_specs:
         type: "list"
         required: false
         description: "List of RPMs to include in the image."
+        elements: "str"
 
       builder_compose_customizations:
         type: "dict"
@@ -92,11 +123,13 @@ argument_specs:
         type: "list"
         required: false
         description: "List of kickstart options to add to the kickstart file."
+        elements: "str"
 
       additional_kickstart_post:
         type: "list"
         required: false
         description: "List of kickstart post options to add to the kickstart file."
+        elements: "str"
 
       builder_aap_url:
         type: "str"
