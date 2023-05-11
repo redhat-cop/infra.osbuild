@@ -9,174 +9,20 @@ This role uses the [controller_configuration](https://github.com/redhat-cop/cont
 None
 
 ## Role Variables
-### controller_hostname
-Type: string
-Required: true
-
-Hostname for the AAP controller instance to connect to
-
-Example:
-```yaml
-controller_hostname: http://0.0.0.0:443
-```
-
-### controller_username
-Type: string
-Required: true
-
-Username for the AAP controller instance to connect to
-
-Example:
-```yaml
-controller_username: admin
-```
-
-### controller_password
-Type: string
-Required: true
-
-Password for the AAP controller instance to connect to
-
-Example:
-```yaml
-controller_password: test
-```
-
-### controller_validate_certs
-Type: bool
-Required: true
-
-Set in order to validate or not validate certs
-
-Example:
-```yaml
-controller_validate_certs: false
-```
-
-### controller_configuration_async_retries
-Type: int
-Required: false
-
-Set the amount of time to retry a task
-
-Example:
-```yaml
-controller_configuration_async_retries: 20
-```
-
-### populate_aap_execution_environments
-Type: list
-Required: false
-
-Use to populate AAP with execution environments
-More information can be found in [Configuration Collection execution environments role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/execution_environments)
-
-Example:
-```yaml
-populate_aap_execution_environments:
-  - name: osbuild_ee
-    image: quay.io/repository/org/image
-    pull: always
-```
-
-### populate_aap_organizations
-Type: list
-Required: false
-
-Use to populate AAP with organizations
-More information can be found in [Configuration Collection organizations role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/organizations)
-
-Example:
-```yaml
-populate_aap_organizations: 
-  - name: Osbuild_test
-```
-
-### populate_aap_inventories
-Type: list
-Required: false
-
-Use to populate AAP with inventories
-More information can be found in [Configuration Collection inventories role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/inventories)
-
-Example:
-```yaml
-populate_aap_inventories:
-  - name: osbuild_inventory
-    organization: Osbuild_test
-```
-
-### populate_aap_hosts
-Type: list
-Required: false
-
-Use to populate AAP with hosts
-More information can be found in [Configuration Collection hosts role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/hosts)
-
-Example:
-```yaml
-populate_aap_hosts:
-  - name: osbuild_remote_system
-    inventory: osbuild_inventory
-    variables:
-      ansible_host: 0.0.0.0
-      ansible_user: user
-```
-
-### populate_aap_projects
-Type: list
-Required: false
-
-Use to populate AAP with projects
-More information can be found in [Configuration Collection projects role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/projects)
-
-Example:
-```yaml
-populate_aap_projects:
-  - name: osbuild_project
-    organization: Osbuild_test
-    default_environment: osbuild_ee
-    scm_type: git
-    scm_url: https://github.com/redhat-cop/infra.osbuild
-```
-
-### populate_aap_credentials
-Type: list
-Required: false
-
-Use to populate AAP with credentials
-More information can be found in [Configuration Collection credentials role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/credentials)
-
-Example:
-```yaml
-populate_aap_credentials:
-  - name: osbuild_credential
-    organization: Osbuild_test
-    credentail_type: Machine
-    inputs:
-      username: user
-      ssh_key_data: "{{ lookup('file', '~/.ssh/id_rsa_aap', errors='warn') }}"
-```
-
-### populate_aap_job_templates
-Type: list
-Required: false
-
-Use to populate AAP with job templates
-More information can be found in [Configuration Collection job templates role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/job_templates)
-
-Example:
-```yaml
-populate_aap_job_templates:
-  - name: osbuild_setup_server
-    job_type: run
-    inventory: osbuild_inventory
-    project: osbuild_project
-    playbook: playbooks/osbuild_setup_server.yml
-    credentials:
-      - osbuild_credential
-```
-
+|Variable Name|Default Value|Required|Type|Description|Example|
+|:---:|:---:|:---:|:---:|:---:|:---|
+|`controller_hostname`|""|yes|str|URL to the Ansible Controller Server.|<pre>controller_hostname: http://0.0.0.0:443</pre>|
+|`controller_username`|""|yes|str|Admin User on the Ansible Controller Server. Either username / password or oauthtoken need to be specified.|<pre>controller_username: admin</pre>|
+|`controller_password`|""|yes|str|Controller Admin User's password on the Ansible Controller Server. This should be stored in an Ansible Vault at vars/controller-secrets.yml or elsewhere and called from a parent playbook. Either username / password or oauthtoken need to be specified.|<pre>controller_password: test</pre>|
+|`controller_validate_certs`|True|yes|bool|Whether or not to validate the Ansible Controller Server's SSL certificate.|<pre>controller_validate_certs: false</pre>|
+|`controller_configuration_async_retries`|30|yes|int|This variable sets the number of retries to attempt for the role globally.|<pre>controller_configuration_async_retries: 20</pre>|
+|`populate_aap_execution_environments`|None|no|list|Use to populate AAP with execution environments More information can be found in [Configuration Collection execution environments role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/execution_environments)|<pre lang="yaml">populate_aap_execution_environments:<br>  - name: osbuild_ee<br>    image: quay.io/repository/org/image<br>    pull: always</pre>|
+|`populate_aap_organizations`|None|no|list|Use to populate AAP with organizations. More information can be found in [Configuration Collection organizations role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/organizations)|<pre lang="yaml">populate_aap_organizations:<br>  - name: Osbuild_test</pre>|
+|`populate_aap_inventories`|None|no|list|Use to populate AAP with inventories. More information can be found in [Configuration Collection inventories role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/inventories)|<pre lang="yaml">populate_aap_inventories:<br>  - name: osbuild_inventory<br>    organization: Osbuild_test</pre>|
+|`populate_aap_hosts`|None|no|list|Use to populate AAP with hosts. More information can be found in [Configuration Collection hosts role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/hosts)|<pre lang="yaml">populate_aap_hosts:<br>  - name: osbuild_remote_system<br>    inventory: osbuild_inventory<br>    variables:<br>      ansible_host: 0.0.0.0<br>      ansible_user: user</pre>|
+|`populate_aap_projects`|None|no|list|Use to populate AAP with projects. More information can be found in [Configuration Collection projects role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/projects)|<pre lang="yaml">populate_aap_projects:<br>  - name: osbuild_project<br>    organization: Osbuild_test<br>    default_environment: osbuild_ee<br>    scm_type: git<br>    scm_url: https://github.com/redhat-cop/infra.osbuild</pre>|
+|`populate_aap_credentials`|None|no|list|Use to populate AAP with credentials. More information can be found in [Configuration Collection credentials role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/credentials)|<pre lang="yaml">populate_aap_credentials:<br>  - name: osbuild_credential<br>    organization: Osbuild_test<br>    credentail_type: Machine<br>    inputs:<br>      username: user<br>      ssh_key_data: "{{ lookup('file', '~/.ssh/id_rsa_aap', errors='warn') }}" </pre>|
+|`populate_aap_job_templates`|None|no|list|Use to populate AAP with job templates. More information can be found in [Configuration Collection job templates role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/job_templates)|<pre lang="yaml">populate_aap_job_templates:<br>  - name: osbuild_setup_server<br>      job_type: run<br>      inventory: osbuild_inventory<br>      project: osbuild_project<br>      playbook: playbooks/<br>      osbuild_setup_server.yml<br>      credentials:<br>        - osbuild_credential</pre>|
 
 ## Variables Exported by the Role
 
