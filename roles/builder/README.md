@@ -23,7 +23,7 @@ type and has the following attributes:
 
 | Variable Name | Type                              | Required  | Default Value |
 |---------------|-----------------------------------|-----------|---------------|
-| repo_name     | string                            | **Yes**   | n/a           |
+| name          | string                            | **Yes**   | n/a           |
 | base_url      | string                            | **Yes**   | n/a           |
 | type          | string                            | No        | "yum-baseurl" |
 | check_ssl     | bool                              | No        | true          |
