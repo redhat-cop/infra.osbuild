@@ -17,6 +17,7 @@
         builder_blueprint_src_path: "/tmp/blueprint_{{ image_name }}.toml"
         builder_blueprint_ref: "rhel/8/x86_64/edge"
         builder_blueprint_distro_lower: "rhel"
+        builder_image_storage_cleared: true
 
         libvirt_image_directory: "{{ libvirt_directory }}/images"
         download_directory: "/tmp/"
