@@ -245,7 +245,9 @@ def test_post_compose_negative(mocker):
     FETCH_URL_RETURN_VALUE = (FETCH_URL_RESPONSE, FETCH_URL_INFO)
     compose_settings: dict[str, str] = {"blueprint_name": "test_blueprint_aap", "compose_type": "edge_installer", "branch": "master", "size": 42}
     with patch(target="ansible_collections.infra.osbuild.plugins.module_utils.weldrapiv1.fetch_url", return_value=FETCH_URL_RETURN_VALUE):
-        with pytest.raises(TimeoutError):
+        import socket
+
+        with pytest.raises(socket.timeout):
             actual_returned_value = weldrv1.post_compose(compose_settings)
             assert actual_returned_value == EXPECTED_RETURNED_VALUE, f"Expected '{EXPECTED_RETURNED_VALUE}',\nactual = '{actual_returned_value}'"
 
