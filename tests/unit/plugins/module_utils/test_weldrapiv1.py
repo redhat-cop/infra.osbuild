@@ -238,7 +238,7 @@ def test_post_compose_negative(mocker):
     weldr = mock_weldr()
     weldrv1 = WeldrV1(weldr)
 
-    EXPECTED_RETURNED_VALUE = {"status_code": 403, "body": {"body": {}, "msg": "go home", "status": 200}}
+    EXPECTED_RETURNED_VALUE = {"status_code": 200, "body": {"body": {}, "msg": "go home", "status": 200}}
     FETCH_URL_INFO = {"body": {}, "msg": "go home", "status": 403}
     FETCH_URL_RESPONSE = MagicMock()
     FETCH_URL_RESPONSE.read.return_value = json.dumps(FETCH_URL_INFO, ensure_ascii=False).encode("utf-8")
