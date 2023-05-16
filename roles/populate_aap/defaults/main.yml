@@ -28,7 +28,7 @@ populate_aap_projects:
 populate_aap_credentials:
   - name: osbuild_credential
     organization: Osbuild_test
-    credentail_type: Machine
+    credential_type: Machine
     inputs:
       username: user
       ssh_key_data: "{{ lookup('file', '~/.ssh/id_rsa_aap', errors='warn') }}"
