@@ -20,7 +20,7 @@ else
     COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
 fi
 
-COMPLETE=
+COMPLETE=yes
 COVERAGE=
 
 if [ "${BUILD_REASON}" = "Schedule" ]; then

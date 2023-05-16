@@ -1,0 +1,6 @@
+major_changes:
+  - builder - added new versions image directory structure. From /blueprint_name/images to /blueprint_name/images/version
+minor_changes:
+  - builder - added builder_wait_compose_timeout to control how long the timeout is set to.
+bugfixes:
+  - compose_wait - fixes timeout to fail if timeout is reached.

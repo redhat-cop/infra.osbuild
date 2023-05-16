@@ -1,0 +1,149 @@
+---
+argument_specs:
+  main:
+    short_description: The main entry point for the builder role.
+    options:
+      builder_custom_repos:
+        type: "list"
+        required: false
+        description: "Custom list of RPM repositories to make available to the osbuild compose builds."
+        elements: "dict"
+        options:
+          name:
+            type: "str"
+            required: true
+          base_url:
+            type: "str"
+            required: true
+          type:
+            type: "str"
+            required: false
+            default: "yum-baseurl"
+          check_ssl:
+            type: "bool"
+            required: false
+          check_gpg:
+            type: "bool"
+            required: false
+          gpgkey_urls:
+            type: "list"
+            elements: "str"
+            required: false
+          rhsm:
+            type: "bool"
+            required: false
+          state:
+            type: "str"
+            required: false
+            default: "present"
+
+      builder_rhsm_repos:
+        type: "list"
+        required: false
+        description: "List of RHSM repositories to make available to the osbuild compose builds."
+        elements: "str"
+
+      builder_custom_repos_persist:
+        type: "bool"
+        required: false
+        description: "This variable will cause custom repositories provided in the builder_custom_repos variable to persist for all osbuild stages."
+
+      builder_blueprint_name:
+        type: "str"
+        required: true
+        description: "The name of the osbuild blueprint"
+
+      builder_blueprint_src_path:
+        type: "str"
+        required: false
+        description: "This is the path to a location on the osbuild server that the generated blueprint should be stored at and used as the source content for the osbuild compose build." # noqa yaml[line-length]
+
+      builder_ostree_url:
+        type: "str"
+        required: false
+        description: "This variable is used to pass the ostree repo url of a perviously built commit to build an installer from."
+
+      builder_blueprint_ref:
+        type: "str"
+        required: false
+        description: "This variable need not be set and is only used when an rpm-ostree based image is defined in the builder_compose_type variable."
+
+      builder_compose_type:
+        type: "str"
+        required: false
+        description: "This variable defines the type of compose desired, valid inputs will vary based on operating system (RHEL, CentOS Stream, or Fedora) and release version therin." # noqa yaml[line-length]
+
+      builder_wait_compose_timeout:
+        type: "str"
+        required: false
+        description: "The amount of time in seconds that the wait_compose module will wait for a build to complete before failing."
+
+      builder_enforce_auth:
+        type: "str"
+        required: true
+        description: "Enforces system authentication using public ssh keys or user password."
+
+      builder_password:
+        type: "str"
+        required: false
+        description: "Password for the user that is created from the blueprint."
+
+      builder_pub_key_path:
+        type: "str"
+        required: false
+        description: "Path to location of ssh public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media." # noqa yaml[line-length]
+
+      builder_pub_key:
+        type: "str"
+        required: false
+        description: "SSH public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media." # noqa yaml[line-length]
+
+      builder_compose_pkgs:
+        type: "list"
+        required: false
+        description: "List of RPMs to include in the image."
+        elements: "str"
+
+      builder_compose_customizations:
+        type: "dict"
+        required: false
+        description: "This variable is the YAML dict expression of osbuild blueprint customizations."
+
+      builder_image_storage_threshold:
+        type: "int"
+        required: false
+        description: "The minimum amount of space left for the image storage expressed as a percentage."
+
+      builder_image_storage_cleared:
+        type: "bool"
+        required: false
+        description: "This variable will cause all images to be removed."
+
+      builder_kickstart_options:
+        type: "list"
+        required: false
+        description: "List of kickstart options to add to the kickstart file."
+        elements: "str"
+
+      additional_kickstart_post:
+        type: "list"
+        required: false
+        description: "List of kickstart post options to add to the kickstart file."
+        elements: "str"
+
+      builder_aap_url:
+        type: "str"
+        required: false
+        description: "Optionally perform automatic enrollment of systems installed via the resulting image build using a companion kickstart with Ansible Automation Platform, then set this variable to point to the URL where the Ansible Automation Platform can be reached." # noqa yaml[line-length]
+
+      builder_aap_user:
+        type: "str"
+        required: false
+
+      builder_aap_ks_user:
+        type: "str"
+        required: false
+
+      builder_aap_ks_password:
+        type: "str"
+        required: false
