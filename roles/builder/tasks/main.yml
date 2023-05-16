@@ -4,12 +4,12 @@
   block:
     - name: Get all images for removal
       ansible.builtin.command: /usr/bin/composer-cli compose list
-      register: output
+      register: builder_output
       changed_when: false
 
     - name: Remove each image by UUID
       ansible.builtin.command: "/usr/bin/composer-cli compose delete {{ (item | split)[0] }}"
-      loop: "{{ output.stdout_lines }}"
+      loop: "{{ builder_output.stdout_lines }}"
       changed_when: true
 
 - name: Get current image storage size
@@ -17,16 +17,16 @@
     - name: Verify if osbuild-composer artifacts dir exists
       ansible.builtin.stat:
         path: /var/lib/osbuild-composer/artifacts
-      register: artifacts_directory
+      register: builder_artifacts_directory
 
     - name: Query artifacts directory for storage size
-      when: artifacts_directory.stat.exists
+      when: builder_artifacts_directory.stat.exists
       ansible.builtin.shell: "set -eo pipefail df -h /var/lib/osbuild-composer/artifacts | tail -n 1 | awk '{ print $5; }' | rev | cut -c2- | rev"
-      register: current_image_storage_size
+      register: builder_current_image_storage_size
       changed_when: false
       failed_when:
-        - (current_image_storage_size | int) == 0 or ((current_image_storage_size | int) | type_debug) != 'int'
-        - 100 - (current_image_storage_size.stdout | int) <= builder_image_storage_threshold
+        - (builder_current_image_storage_size | int) == 0 or ((builder_current_image_storage_size | int) | type_debug) != 'int'
+        - 100 - (builder_current_image_storage_size.stdout | int) <= builder_image_storage_threshold
 
 - name: Check if ssh key is defined
   ansible.builtin.fail:
@@ -51,10 +51,10 @@
 - name: Check if image directory exists
   ansible.builtin.stat:
     path: "/var/www/html/{{ builder_blueprint_name }}/repo"
-  register: stat_output
+  register: builder_stat_output
 
 - name: Create image directory is it doesn't exist
-  when: not stat_output.stat.exists
+  when: not builder_stat_output.stat.exists
   block:
     - name: Create blueprint directory
       ansible.builtin.file:
@@ -69,7 +69,7 @@
       when: builder_rhsm_repos is defined
       infra.osbuild.rhsm_repo_info:
         repos: "{{ builder_rhsm_repos }}"
-      register: __builder_rhsm_repos_info
+      register: __builder_rhsm_repos_info  # noqa var-naming[no-role-prefix]
 
     - name: Image build process
       block:
@@ -84,14 +84,14 @@
             distro: "{{ builder_blueprint_distro | default(omit) }}"
             packages: "{{ builder_compose_pkgs }}"
             customizations: "{{ builder_compose_customizations }}"
-          register: blueprint_output
+          register: builder_blueprint_output
 
         - name: Push the blueprint into image builder
           infra.osbuild.push_blueprint:
             src: "{{ builder_blueprint_src_path }}"
 
         - name: Initialize rpm-ostree repo for blueprint
-          when: not stat_output.stat.exists
+          when: not builder_stat_output.stat.exists
           block:
             - name: Initialize repository
               ansible.builtin.command:
@@ -104,11 +104,11 @@
           infra.osbuild.start_compose:
             blueprint: "{{ builder_blueprint_name }}"
             compose_type: "{{ _builder_compose_type }}"
-          register: compose_start_out
+          register: builder_compose_start_out
 
         - name: Wait for compose to finish
           infra.osbuild.wait_compose:
-            compose_id: "{{ compose_start_out['result']['body']['build_id'] }}"
+            compose_id: "{{ builder_compose_start_out['result']['body']['build_id'] }}"
             timeout: "{{ builder_wait_compose_timeout | default(omit) }}"
       always:
         - name: Include disable_custom_repos.yml
@@ -123,37 +123,37 @@
 
     - name: Export the compose artifact
       infra.osbuild.export_compose:
-        compose_id: "{{ compose_start_out['result']['body']['build_id'] }}"
-        dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+        compose_id: "{{ builder_compose_start_out['result']['body']['build_id'] }}"
+        dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
     - name: Update ostree repository
       when: (_builder_compose_type == 'edge-commit' or _builder_compose_type == 'iot-commit') and (builder_skip_repo is undefined or not builder_skip_repo)
       block:
         - name: Untar artifact
           ansible.builtin.unarchive:
-            src: /tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.tar
+            src: /tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.tar
             dest: /tmp/{{ builder_blueprint_name }}
             remote_src: true
 
         - name: Get checksum from artifact
           ansible.builtin.command:
             cmd: "/usr/bin/ostree --repo=/tmp/{{ builder_blueprint_name }}/repo rev-parse {{ builder_blueprint_ref }}"
-          register: checksum_output
+          register: builder_checksum_output
           changed_when: false
 
         - name: Pull commit from artifact
           ansible.builtin.command:
-            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo pull-local /tmp/{{ builder_blueprint_name }}/repo {{ checksum_output['stdout'] }}"  # noqa yaml[line-length]
+            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo pull-local /tmp/{{ builder_blueprint_name }}/repo {{ builder_checksum_output['stdout'] }}"  # noqa yaml[line-length]
           changed_when: true
 
         - name: Commit changes to repository
           ansible.builtin.command:
-            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ blueprint_output['current_version'] }}' --add-metadata-string=version={{ blueprint_output['current_version'] }} --tree=ref={{ checksum_output['stdout'] }}"  # noqa yaml[line-length]
+            cmd: "/usr/bin/ostree --repo=/var/www/html/{{ builder_blueprint_name }}/repo commit -b {{ builder_blueprint_ref }} -s 'Release {{ builder_blueprint_output['current_version'] }}' --add-metadata-string=version={{ builder_blueprint_output['current_version'] }} --tree=ref={{ builder_checksum_output['stdout'] }}"  # noqa yaml[line-length]
           changed_when: true
 
         - name: Remove tar file
           ansible.builtin.file:
-            path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+            path: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
             state: absent
 
     - name: Serve all other compose types on the http server
@@ -161,13 +161,13 @@
       block:
         - name: Create images directory
           ansible.builtin.file:
-            path: "/var/www/html/{{ builder_blueprint_name }}/images/{{ blueprint_output['current_version'] }}"
+            path: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_output['current_version'] }}"
             mode: '0755'
             state: directory
         - name: Copy image to web dir
           ansible.builtin.copy:
-            src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
-            dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ blueprint_output['current_version'] }}/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+            src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+            dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_output['current_version'] }}/{{ builder_blueprint_name }}_{{ _builder_compose_type }}.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
             remote_src: true
             mode: '0644'
             owner: apache
@@ -196,7 +196,7 @@
         dest: "{{ builder_blueprint_src_path }}"
         name: "{{ builder_blueprint_name }}-empty"
         distro: "{{ builder_blueprint_distro | default(omit) }}"
-      register: blueprint_output
+      register: builder_blueprint_output
       when:
         - "'edge' in builder_compose_type or 'iot' in builder_compose_type"
 
@@ -212,7 +212,7 @@
         compose_type: "{{ builder_compose_type }}"
         ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
-      register: compose_start_out
+      register: builder_compose_start_out
       when:
         - "'edge' not in builder_compose_type and 'iot' not in builder_compose_type"
 
@@ -222,13 +222,13 @@
         compose_type: "{{ builder_compose_type }}"
         ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
-      register: compose_start_out
+      register: builder_compose_start_out
       when:
         - "'edge' in builder_compose_type or 'iot' in builder_compose_type"
 
     - name: Wait for compose to finish
       infra.osbuild.wait_compose:
-        compose_id: "{{ compose_start_out['result']['body']['build_id'] }}"
+        compose_id: "{{ builder_compose_start_out['result']['body']['build_id'] }}"
         timeout: "{{ builder_wait_compose_timeout | default(omit) }}"
 
     - name: Create tmp directory for blueprint
@@ -239,25 +239,25 @@
 
     - name: Export the compose artifact
       infra.osbuild.export_compose:
-        compose_id: "{{ compose_start_out['result']['body']['build_id'] }}"
-        dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+        compose_id: "{{ builder_compose_start_out['result']['body']['build_id'] }}"
+        dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
     - name: Create images directory
       ansible.builtin.file:
-        path: "/var/www/html/{{ builder_blueprint_name }}/images/{{ blueprint_output['current_version'] }}"
+        path: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_output['current_version'] }}"
         mode: '0755'
         state: directory
 
     - name: Inject kickstart into iso
       infra.osbuild.inject_ks:
         kickstart: "/var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
-        src_iso: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
-        dest_iso: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}_ks.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+        src_iso: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+        dest_iso: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}_ks.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
     - name: Copy installer to web dir
       ansible.builtin.copy:
-        src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ blueprint_output['current_version'] }}_ks.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
-        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ blueprint_output['current_version'] }}/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+        src: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}_ks.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
+        dest: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_output['current_version'] }}/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ builder_compose_start_out['result']['output_type'] }}"  # noqa yaml[line-length]
 
         remote_src: true
         mode: '0644'
