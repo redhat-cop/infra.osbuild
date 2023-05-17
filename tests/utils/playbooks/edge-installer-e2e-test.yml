@@ -37,118 +37,100 @@
           - "ansible-core"
       run_once: true
 
-    - name: Load IP from osbuild builder host
-      ansible.builtin.setup:
-        filter: ansible_default_ipv4
-      delegate_to: osbuild_builder
-
-    - name: Build edge-installer image
-      ansible.builtin.import_role:
-        name: infra.osbuild.builder
-      delegate_to: osbuild_builder
-      become: true
-
-    - name: Create VM with the image built
+    - name: E2E test
       block:
-        - name: Install required packages
-          ansible.builtin.package:
-            name:
-              - libguestfs-tools
-              - python3-libvirt
-            state: present
+        - name: Load IP from osbuild builder host
+          ansible.builtin.setup:
+            filter: ansible_default_ipv4
+          delegate_to: osbuild_builder
+
+        - name: Build edge-installer image
+          ansible.builtin.import_role:
+            name: infra.osbuild.builder
+          delegate_to: osbuild_builder
           become: true
 
-        - name: Download base image
-          ansible.builtin.get_url:
-            url: "{{ base_image_url }}"
-            dest: "{{ download_directory }}{{ base_image_name }}"
-            mode: "0660"
-            force: true
+        - name: Create VM with the image built
+          block:
+            - name: Install required packages
+              ansible.builtin.package:
+                name:
+                  - libguestfs-tools
+                  - python3-libvirt
+                state: present
+              become: true
 
-        - name: Copy base image to libvirt directory
-          ansible.builtin.copy:
-            dest: "{{ libvirt_image_directory }}/{{ base_image_name }}"
-            src: "{{ download_directory }}{{ base_image_name }}"
-            force: true
-            remote_src: true
-            mode: "0660"
-          register: copy_results
+            - name: Download base image
+              ansible.builtin.get_url:
+                url: "{{ base_image_url }}"
+                dest: "{{ download_directory }}{{ base_image_name }}"
+                mode: "0660"
+                force: true
 
-        - name: Create VM Disk
-          ansible.builtin.command:
-            cmd: "qemu-img create
-              -f qcow2
-              {{ libvirt_image_directory }}/{{ vm_name }}.qcow2 {{ vm_disk }}G"
-            creates: "{{ libvirt_image_directory }}/{{ vm_name }}.qcow2"
-          become: true
+            - name: Copy base image to libvirt directory
+              ansible.builtin.copy:
+                dest: "{{ libvirt_image_directory }}/{{ base_image_name }}"
+                src: "{{ download_directory }}{{ base_image_name }}"
+                force: true
+                remote_src: true
+                mode: "0660"
+              register: copy_results
 
-        - name: Create VM
-          community.libvirt.virt:
-            command: define
-            xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
-          become: true
+            - name: Create VM Disk
+              ansible.builtin.command:
+                cmd: "qemu-img create
+                  -f qcow2
+                  {{ libvirt_image_directory }}/{{ vm_name }}.qcow2 {{ vm_disk }}G"
+                creates: "{{ libvirt_image_directory }}/{{ vm_name }}.qcow2"
+              become: true
 
-        - name: Start VM
-          community.libvirt.virt:
-            name: "{{ vm_name }}"
-            state: "running"
-            autostart: true
-          register: vm_start_results
-          until: "vm_start_results is success"
-          retries: 5
-          delay: 2
-          become: true
+            - name: Create VM
+              community.libvirt.virt:
+                command: define
+                xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
+              become: true
 
-        - name: Wait VM have an IP
-          ansible.builtin.shell: set -o pipefail && virsh domifaddr {{ vm_name }} | awk 'NR==3 {split($4, array, "/") ; print array[1]}'
-          register: vm_ip
-          until: vm_ip is regex("[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
-          retries: 80
-          delay: 2
-          become: true
+            - name: Start VM
+              community.libvirt.virt:
+                name: "{{ vm_name }}"
+                state: "running"
+                autostart: true
+              register: vm_start_results
+              until: "vm_start_results is success"
+              retries: 5
+              delay: 2
+              become: true
+
+            - name: Wait VM have an IP
+              ansible.builtin.shell: set -o pipefail && virsh domifaddr {{ vm_name }} | awk 'NR==3 {split($4, array, "/") ; print array[1]}'
+              register: vm_ip
+              until: vm_ip is regex("[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
+              retries: 80
+              delay: 2
+              become: true
+              changed_when: false
+
+            - name: Wait VM starting up
+              ansible.builtin.wait_for_connection:
+                delay: 2
+                timeout: 120
+              delegate_to: "{{ vm_ip.stdout }}"
+              remote_user: core
+
+        - name: Get packages installed
+          ansible.builtin.shell: rpm -q {{ packages | join(' ') }} --qf "%{NAME}\n" # noqa: command-instead-of-module
+          register: package_installed
           changed_when: false
-
-        - name: Wait VM starting up
-          ansible.builtin.wait_for_connection:
-            delay: 2
-            timeout: 120
           delegate_to: "{{ vm_ip.stdout }}"
           remote_user: core
 
-    - name: Get packages installed
-      ansible.builtin.shell: rpm -q {{ packages | join(' ') }} --qf "%{NAME}\n" # noqa: command-instead-of-module
-      register: package_installed
-      changed_when: false
-      delegate_to: "{{ vm_ip.stdout }}"
-      remote_user: core
+        - name: Assert packages installed
+          ansible.builtin.assert:
+            that:
+              - item in package_installed.stdout_lines
+          loop: "{{ packages }}"
 
-    - name: Assert packages installed
-      ansible.builtin.assert:
-        that:
-          - item in package_installed.stdout_lines
-      loop: "{{ packages }}"
-
-    - name: Shutdown VM
-      community.libvirt.virt:
-        command: "destroy"
-        name: "{{ vm_name }}"
-
-    - name: Delete VM
-      community.libvirt.virt:
-        command: "undefine"
-        name: "{{ vm_name }}"
-
-    - name: Cleanup VM disk file
-      ansible.builtin.file:
-        path: "{{ libvirt_image_directory }}/{{ vm_name }}.qcow2"
-        state: absent
-
-    - name: Cleanup image file in tmp
-      ansible.builtin.file:
-        path: "{{ libvirt_image_directory }}/{{ base_image_name }}"
-        state: absent
-
-    - name: Cleanup image file in libvirt
-      ansible.builtin.file:
-        path: "{{ download_directory }}{{ base_image_name }}"
-        state: absent
+      always:
+        - name: Cleanup test environment
+          ansible.builtin.include_tasks:
+            file: tasks/cleanup-test-env.yml
