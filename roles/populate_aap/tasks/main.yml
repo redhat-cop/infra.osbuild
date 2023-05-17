@@ -1,18 +1,4 @@
 ---
-- name: Set controller execution environments facts
-  ansible.builtin.set_fact:
-    controller_execution_environments:
-      - name: "{{ item.name }}"
-        new_name: "{{ item.new_name | default(omit) }}"
-        description: "{{ item.description | default(omit) }}"
-        image: "{{ item.image }}"
-        organization: "{{ item.organization | default(omit) }}"
-        credential: "{{ item.credential | default(omit) }}"
-        pull: "{{ item.pull | default(omit) }}"
-        state: "{{ item.state | default('present') }}"
-  loop: "{{ populate_aap_execution_environments }}"
-  when: populate_aap_execution_environments is defined
-
 - name: Set controller organizations facts
   ansible.builtin.set_fact:
     controller_organizations:
@@ -32,6 +18,20 @@
         assign_default_ee_to_org: "{{ item.assign_default_ee_to_org | default(omit) }}"
   loop: "{{ populate_aap_organizations }}"
   when: populate_aap_organizations is defined
+
+- name: Set controller execution environments facts
+  ansible.builtin.set_fact:
+    controller_execution_environments:
+      - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(omit) }}"
+        description: "{{ item.description | default(omit) }}"
+        image: "{{ item.image }}"
+        organization: "{{ item.organization | default(omit) }}"
+        credential: "{{ item.credential | default(omit) }}"
+        pull: "{{ item.pull | default(omit) }}"
+        state: "{{ item.state | default('present') }}"
+  loop: "{{ populate_aap_execution_environments }}"
+  when: populate_aap_execution_environments is defined
 
 - name: Set controller inventories facts
   ansible.builtin.set_fact:

@@ -1,42 +1,55 @@
 ---
-controller_hostname: http://0.0.0.0:443
+controller_hostname: https://0.0.0.0
 controller_username: admin
 controller_password: test
 controller_validate_certs: false
-controller_configuration_async_retries: 20
-populate_aap_execution_environments:
-  - name: osbuild_ee
-    image: quay.io/repository/org/image
-    pull: always
+controller_configuration_async_retries: 30
+populate_aap_organization_name: Default
+populate_aap_execution_environment_name: osbuild_ee
+populate_aap_inventory_name: osbuild_inventory
+populate_aap_project_name: osbuild_project
+populate_aap_credential_name: osbuild_credential
 populate_aap_organizations:
-  - name: Osbuild_test
+  - name: "{{ populate_aap_organization_name }}"
+populate_aap_execution_environments:
+  - name: "{{ populate_aap_execution_environment_name }}"
+    image: quay.io/repository/osbuildee/osbuildee
+    pull: always
+    organization: "{{ populate_aap_organization_name }}"
 populate_aap_inventories:
-  - name: osbuild_inventory
-    organization: Osbuild_test
+  - name: "{{ populate_aap_inventory_name }}"
+    organization: "{{ populate_aap_organization_name }}"
 populate_aap_hosts:
   - name: osbuild_remote_system
-    inventory: osbuild_inventory
+    inventory: "{{ populate_aap_inventory_name }}"
     variables:
       ansible_host: 0.0.0.0
       ansible_user: user
 populate_aap_projects:
-  - name: osbuild_project
-    organization: Osbuild_test
-    default_environment: osbuild_ee
+  - name: "{{ populate_aap_project_name }}"
+    organization: "{{ populate_aap_organization_name }}"
+    default_environment: "{{ populate_aap_execution_environment_name }}"
     scm_type: git
     scm_url: https://github.com/redhat-cop/infra.osbuild
 populate_aap_credentials:
-  - name: osbuild_credential
-    organization: Osbuild_test
+  - name: "{{ populate_aap_credential_name }}"
+    organization: "{{ populate_aap_organization_name }}"
     credential_type: Machine
     inputs:
-      username: user
-      ssh_key_data: "{{ lookup('file', '~/.ssh/id_rsa_aap', errors='warn') }}"
+      username: msandova
+      ssh_key_data: "{{ lookup('file', '/home/matthewsandoval/.ssh/aap_id_rsa') }}"
 populate_aap_job_templates:
   - name: osbuild_setup_server
     job_type: run
-    inventory: osbuild_inventory
-    project: osbuild_project
+    inventory: "{{ populate_aap_inventory_name }}"
+    project: "{{ populate_aap_project_name }}"
     playbook: playbooks/osbuild_setup_server.yml
     credentials:
-      - osbuild_credential
+      - "{{ populate_aap_credential_name }}"
+  - name: osbuild_builder
+    job_type: run
+    inventory: "{{ populate_aap_inventory_name }}"
+    project: "{{ populate_aap_project_name }}"
+    playbook: playbooks/osbuild_builder.yml
+    credentials:
+      - "{{ populate_aap_credential_name }}"
