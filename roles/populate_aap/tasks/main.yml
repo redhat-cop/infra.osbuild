@@ -1,7 +1,7 @@
 ---
 - name: Set controller organizations facts
-  ansible.builtin.set_fact:
-    controller_organizations:  # noqa var-naming[no-role-prefix]
+  vars:
+    tmp:
       - name: "{{ item.name }}"
         description: "{{ item.description | default(omit) }}"
         custom_virtualenv: "{{ item.custom_virtualenv | default(omit) }}"
@@ -16,12 +16,14 @@
         state: "{{ item.state | default(omit) }}"
         assign_galaxy_credentials_to_org: "{{ item.assign_galaxy_credentials_to_org | default(omit) }}"
         assign_default_ee_to_org: "{{ item.assign_default_ee_to_org | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_organizations: "{{ controller_organizations | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
   loop: "{{ populate_aap_organizations }}"
   when: populate_aap_organizations is defined
 
 - name: Set controller execution environments facts
-  ansible.builtin.set_fact:
-    controller_execution_environments:  # noqa var-naming[no-role-prefix]
+  vars:
+    tmp:
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         description: "{{ item.description | default(omit) }}"
@@ -30,12 +32,14 @@
         credential: "{{ item.credential | default(omit) }}"
         pull: "{{ item.pull | default(omit) }}"
         state: "{{ item.state | default('present') }}"
+  ansible.builtin.set_fact:
+    controller_execution_environments: "{{ controller_execution_environments | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
   loop: "{{ populate_aap_execution_environments }}"
   when: populate_aap_execution_environments is defined
 
 - name: Set controller inventories facts
-  ansible.builtin.set_fact:
-    controller_inventories:  # noqa var-naming[no-role-prefix]
+  vars:
+    tmp:
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         copy_from: "{{ item.copy_from | default(omit) }}"
@@ -48,12 +52,14 @@
         host_filter: "{{ item.host_filter | default(omit) }}"
         prevent_instance_group_fallback: "{{ item.prevent_instance_group_fallback | default(omit) }}"
         state: "{{ item.state | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_inventories: "{{ controller_inventories | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
   loop: "{{ populate_aap_inventories }}"
   when: populate_aap_inventories is defined
 
 - name: Set controller hosts facts
-  ansible.builtin.set_fact:
-    controller_hosts:  # noqa var-naming[no-role-prefix]
+  vars:
+    tmp:
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         description: "{{ item.description | default(omit) }}"
@@ -61,12 +67,14 @@
         enabled: "{{ item.enabled | default(omit) }}"
         variables: "{{ item.variables | default(omit) }}"
         state: "{{ item.state | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_hosts: "{{ controller_hosts | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
   loop: "{{ populate_aap_hosts }}"
   when: populate_aap_hosts is defined
 
 - name: Set controller projests facts
-  ansible.builtin.set_fact:
-    controller_projects:  # noqa var-naming[no-role-prefix]
+  vars:
+    tmp:
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         copy_from: "{{ item.copy_from | default(omit) }}"
@@ -95,12 +103,14 @@
         wait: "{{ item.wait | default(omit) }}"
         update_project: "{{ item.update_project | default(omit) }}"
         interval: "{{ item.interval | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_projects: "{{ controller_projects | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
   loop: "{{ populate_aap_projects }}"
   when: populate_aap_projects is defined
 
 - name: Set controller credentials facts
-  ansible.builtin.set_fact:
-    controller_credentials:  # noqa var-naming[no-role-prefix]
+  vars:
+    tmp:
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         copy_from: "{{ item.copy_from | default(omit) }}"
@@ -109,12 +119,14 @@
         credential_type: "{{ item.credential_type | default(omit) }}"
         inputs: "{{ item.inputs | default(omit) }}"
         user: "{{ item.user | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_credentials: "{{ controller_credentials | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
   loop: "{{ populate_aap_credentials }}"
   when: populate_aap_credentials is defined
 
 - name: Set controller job templates facts
-  ansible.builtin.set_fact:
-    controller_templates:  # noqa var-naming[no-role-prefix]
+  vars:
+    tmp:  # noqa var-naming[no-role-prefix]
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         copy_from: "{{ item.copy_from | default(omit) }}"
@@ -171,18 +183,20 @@
         notification_templates_success: "{{ item.notification_templates_success | default(omit) }}"
         notification_templates_error: "{{ item.notification_templates_error | default(omit) }}"
         state: "{{ item.state | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_templates: "{{ controller_templates | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
   loop: "{{ populate_aap_job_templates }}"
   when: populate_aap_job_templates is defined
-
-- name: Configure execution enviornment for AAP
-  ansible.builtin.include_role:
-    name: redhat_cop.controller_configuration.execution_environments
-  when: controller_execution_environments is defined
 
 - name: Configure Organizations
   ansible.builtin.include_role:
     name: redhat_cop.controller_configuration.organizations
   when: controller_organizations is defined
+
+- name: Configure execution enviornment for AAP
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.execution_environments
+  when: controller_execution_environments is defined
 
 - name: Configure inventory
   ansible.builtin.include_role:

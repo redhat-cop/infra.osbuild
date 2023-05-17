@@ -4,7 +4,7 @@ controller_username: admin
 controller_password: test
 controller_validate_certs: false
 controller_configuration_async_retries: 30
-populate_aap_organization_name: Default
+populate_aap_organization_name: Osbuild_org
 populate_aap_execution_environment_name: osbuild_ee
 populate_aap_inventory_name: osbuild_inventory
 populate_aap_project_name: osbuild_project
