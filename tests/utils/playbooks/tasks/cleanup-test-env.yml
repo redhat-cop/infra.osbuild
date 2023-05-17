@@ -1,0 +1,29 @@
+- name: Shutdown VM
+  community.libvirt.virt:
+    command: "destroy"
+    name: "{{ vm_name }}"
+  failed_when: false
+
+- name: Delete VM
+  community.libvirt.virt:
+    command: "undefine"
+    name: "{{ vm_name }}"
+  failed_when: false
+
+- name: Cleanup VM disk file
+  ansible.builtin.file:
+    path: "{{ libvirt_image_directory }}/{{ vm_name }}.qcow2"
+    state: absent
+  failed_when: false
+
+- name: Cleanup image file in tmp
+  ansible.builtin.file:
+    path: "{{ libvirt_image_directory }}/{{ base_image_name }}"
+    state: absent
+  failed_when: false
+
+- name: Cleanup image file in libvirt
+  ansible.builtin.file:
+    path: "{{ download_directory }}{{ base_image_name }}"
+    state: absent
+  failed_when: false
