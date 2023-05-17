@@ -1,7 +1,7 @@
 ---
 - name: Set controller organizations facts
   ansible.builtin.set_fact:
-    controller_organizations:
+    controller_organizations:  # noqa var-naming[no-role-prefix]
       - name: "{{ item.name }}"
         description: "{{ item.description | default(omit) }}"
         custom_virtualenv: "{{ item.custom_virtualenv | default(omit) }}"
@@ -21,7 +21,7 @@
 
 - name: Set controller execution environments facts
   ansible.builtin.set_fact:
-    controller_execution_environments:
+    controller_execution_environments:  # noqa var-naming[no-role-prefix]
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         description: "{{ item.description | default(omit) }}"
@@ -35,7 +35,7 @@
 
 - name: Set controller inventories facts
   ansible.builtin.set_fact:
-    controller_inventories:
+    controller_inventories:  # noqa var-naming[no-role-prefix]
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         copy_from: "{{ item.copy_from | default(omit) }}"
@@ -53,7 +53,7 @@
 
 - name: Set controller hosts facts
   ansible.builtin.set_fact:
-    controller_hosts:
+    controller_hosts:  # noqa var-naming[no-role-prefix]
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         description: "{{ item.description | default(omit) }}"
@@ -66,7 +66,7 @@
 
 - name: Set controller projests facts
   ansible.builtin.set_fact:
-    controller_projects:
+    controller_projects:  # noqa var-naming[no-role-prefix]
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         copy_from: "{{ item.copy_from | default(omit) }}"
@@ -100,7 +100,7 @@
 
 - name: Set controller credentials facts
   ansible.builtin.set_fact:
-    controller_credentials:
+    controller_credentials:  # noqa var-naming[no-role-prefix]
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         copy_from: "{{ item.copy_from | default(omit) }}"
@@ -114,7 +114,7 @@
 
 - name: Set controller job templates facts
   ansible.builtin.set_fact:
-    controller_templates:
+    controller_templates:  # noqa var-naming[no-role-prefix]
       - name: "{{ item.name }}"
         new_name: "{{ item.new_name | default(omit) }}"
         copy_from: "{{ item.copy_from | default(omit) }}"
