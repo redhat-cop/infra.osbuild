@@ -1,0 +1,55 @@
+---
+controller_hostname: https://0.0.0.0
+controller_username: admin
+controller_password: test
+controller_validate_certs: false
+controller_configuration_async_retries: 30
+populate_aap_organization_name: Osbuild_org
+populate_aap_execution_environment_name: osbuild_ee
+populate_aap_inventory_name: osbuild_inventory
+populate_aap_project_name: osbuild_project
+populate_aap_credential_name: osbuild_credential
+populate_aap_organizations:
+  - name: "{{ populate_aap_organization_name }}"
+populate_aap_execution_environments:
+  - name: "{{ populate_aap_execution_environment_name }}"
+    image: quay.io/repository/osbuildee/osbuildee
+    pull: always
+    organization: "{{ populate_aap_organization_name }}"
+populate_aap_inventories:
+  - name: "{{ populate_aap_inventory_name }}"
+    organization: "{{ populate_aap_organization_name }}"
+populate_aap_hosts:
+  - name: osbuild_remote_system
+    inventory: "{{ populate_aap_inventory_name }}"
+    variables:
+      ansible_host: 0.0.0.0
+      ansible_user: user
+populate_aap_projects:
+  - name: "{{ populate_aap_project_name }}"
+    organization: "{{ populate_aap_organization_name }}"
+    default_environment: "{{ populate_aap_execution_environment_name }}"
+    scm_type: git
+    scm_url: https://github.com/redhat-cop/infra.osbuild
+populate_aap_credentials:
+  - name: "{{ populate_aap_credential_name }}"
+    organization: "{{ populate_aap_organization_name }}"
+    credential_type: Machine
+    inputs:
+      username: user
+      ssh_key_data: "{{ lookup('file', '/home/user/.ssh/id_rsa') }}"
+populate_aap_job_templates:
+  - name: osbuild_setup_server
+    job_type: run
+    inventory: "{{ populate_aap_inventory_name }}"
+    project: "{{ populate_aap_project_name }}"
+    playbook: playbooks/osbuild_setup_server.yml
+    credentials:
+      - "{{ populate_aap_credential_name }}"
+  - name: osbuild_builder
+    job_type: run
+    inventory: "{{ populate_aap_inventory_name }}"
+    project: "{{ populate_aap_project_name }}"
+    playbook: playbooks/osbuild_builder.yml
+    credentials:
+      - "{{ populate_aap_credential_name }}"

@@ -1,0 +1,224 @@
+---
+- name: Set controller organizations facts
+  vars:
+    tmp:
+      - name: "{{ item.name }}"
+        description: "{{ item.description | default(omit) }}"
+        custom_virtualenv: "{{ item.custom_virtualenv | default(omit) }}"
+        max_hosts: "{{ item.max_hosts | default(omit) }}"
+        instance_groups: "{{ item.instance_groups | default(omit) }}"
+        galaxy_credentials: "{{ item.galaxy_credentials | default(omit) }}"
+        default_environment: "{{ item.default_environment | default(omit) }}"
+        notification_templates_started: "{{ item.notification_templates_started | default(omit) }}"
+        notification_templates_success: "{{ item.notification_templates_success | default(omit) }}"
+        notification_templates_error: "{{ item.notification_templates_error | default(omit) }}"
+        notification_templates_approvals: "{{ item.notification_templates_approvals | default(omit) }}"
+        state: "{{ item.state | default(omit) }}"
+        assign_galaxy_credentials_to_org: "{{ item.assign_galaxy_credentials_to_org | default(omit) }}"
+        assign_default_ee_to_org: "{{ item.assign_default_ee_to_org | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_organizations: "{{ controller_organizations | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
+  loop: "{{ populate_aap_organizations }}"
+  when: populate_aap_organizations is defined
+
+- name: Set controller execution environments facts
+  vars:
+    tmp:
+      - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(omit) }}"
+        description: "{{ item.description | default(omit) }}"
+        image: "{{ item.image }}"
+        organization: "{{ item.organization | default(omit) }}"
+        credential: "{{ item.credential | default(omit) }}"
+        pull: "{{ item.pull | default(omit) }}"
+        state: "{{ item.state | default('present') }}"
+  ansible.builtin.set_fact:
+    controller_execution_environments: "{{ controller_execution_environments | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
+  loop: "{{ populate_aap_execution_environments }}"
+  when: populate_aap_execution_environments is defined
+
+- name: Set controller inventories facts
+  vars:
+    tmp:
+      - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(omit) }}"
+        copy_from: "{{ item.copy_from | default(omit) }}"
+        description: "{{ item.description | default(omit) }}"
+        organization: "{{ item.organization }}"
+        instance_groups: "{{ item.instance_groups | default(omit) }}"
+        input_inventories: "{{ item.input_inventories | default(omit) }}"
+        variables: "{{ item.variables | default(omit) }}"
+        kind: "{{ item.kind | default(omit) }}"
+        host_filter: "{{ item.host_filter | default(omit) }}"
+        prevent_instance_group_fallback: "{{ item.prevent_instance_group_fallback | default(omit) }}"
+        state: "{{ item.state | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_inventories: "{{ controller_inventories | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
+  loop: "{{ populate_aap_inventories }}"
+  when: populate_aap_inventories is defined
+
+- name: Set controller hosts facts
+  vars:
+    tmp:
+      - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(omit) }}"
+        description: "{{ item.description | default(omit) }}"
+        inventory: "{{ item.inventory }}"
+        enabled: "{{ item.enabled | default(omit) }}"
+        variables: "{{ item.variables | default(omit) }}"
+        state: "{{ item.state | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_hosts: "{{ controller_hosts | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
+  loop: "{{ populate_aap_hosts }}"
+  when: populate_aap_hosts is defined
+
+- name: Set controller projests facts
+  vars:
+    tmp:
+      - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(omit) }}"
+        copy_from: "{{ item.copy_from | default(omit) }}"
+        description: "{{ item.description | default(omit) }}"
+        organization: "{{ item.organization }}"
+        scm_type: "{{ item.scm_type | default(omit) }}"
+        scm_url: "{{ item.scm_url | default(omit) }}"
+        default_environment: "{{ item.default_environment | default(omit) }}"
+        local_path: "{{ item.local_path | default(omit) }}"
+        scm_branch: "{{ item.scm_branch | default(omit) }}"
+        scm_refspec: "{{ item.scm_refspec | default(omit) }}"
+        credential: "{{ item.credential | default(omit) }}"
+        signature_validation_credential: "{{ item.signature_validation_credential | default(omit) }}"
+        scm_clean: "{{ item.scm_clean | default(omit) }}"
+        scm_delete_on_update: "{{ item.scm_delete_on_update | default(omit) }}"
+        scm_track_submodules: "{{ item.scm_track_submodules | default(omit) }}"
+        scm_update_on_launch: "{{ item.scm_update_on_launch | default(omit) }}"
+        scm_update_cache_timeout: "{{ item.scm_update_cache_timeout | default(omit) }}"
+        allow_override: "{{ item.allow_override | default(omit) }}"
+        timeout: "{{ item.timeout | default(omit) }}"
+        custom_virtualenv: "{{ item.custom_virtualenv | default(omit) }}"
+        notification_templates_started: "{{ item.notification_templates_started | default(omit) }}"
+        notification_templates_success: "{{ item.notification_templates_success | default(omit) }}"
+        notification_templates_error: "{{ item.notification_templates_error | default(omit) }}"
+        state: "{{ item.state | default(omit) }}"
+        wait: "{{ item.wait | default(omit) }}"
+        update_project: "{{ item.update_project | default(omit) }}"
+        interval: "{{ item.interval | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_projects: "{{ controller_projects | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
+  loop: "{{ populate_aap_projects }}"
+  when: populate_aap_projects is defined
+
+- name: Set controller credentials facts
+  vars:
+    tmp:
+      - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(omit) }}"
+        copy_from: "{{ item.copy_from | default(omit) }}"
+        description: "{{ item.description | default(omit) }}"
+        organization: "{{ item.organization | default(omit) }}"
+        credential_type: "{{ item.credential_type | default(omit) }}"
+        inputs: "{{ item.inputs | default(omit) }}"
+        user: "{{ item.user | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_credentials: "{{ controller_credentials | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
+  loop: "{{ populate_aap_credentials }}"
+  when: populate_aap_credentials is defined
+
+- name: Set controller job templates facts
+  vars:
+    tmp:  # noqa var-naming[no-role-prefix]
+      - name: "{{ item.name }}"
+        new_name: "{{ item.new_name | default(omit) }}"
+        copy_from: "{{ item.copy_from | default(omit) }}"
+        description: "{{ item.description | default(omit) }}"
+        execution_environment: "{{ item.execution_environment | default(omit) }}"
+        job_type: "{{ item.job_type | default(omit) }}"
+        inventory: "{{ item.inventory | default(omit) }}"
+        organization: "{{ item.organization | default(omit) }}"
+        project: "{{ item.project | default(omit) }}"
+        playbook: "{{ item.playbook | default(omit) }}"
+        credentials: "{{ item.credentials | default(omit) }}"
+        fork: "{{ item.fork | default(omit) }}"
+        limit: "{{ item.limit | default(omit) }}"
+        verbosity: "{{ item.verbosity | default(omit) }}"
+        extra_vars: "{{ item.extra_vars | default(omit) }}"
+        job_tags: "{{ item.job_tags | default(omit) }}"
+        force_handlers: "{{ item.force_handlers | default(omit) }}"
+        skip_tags: "{{ item.skip_tags | default(omit) }}"
+        start_at_task: "{{ item.start_at_task | default(omit) }}"
+        diff_mode: "{{ item.diff_mode | default(omit) }}"
+        use_fact_cache: "{{ item.use_fact_cache | default(omit) }}"
+        host_config_key: "{{ item.host_config_key | default(omit) }}"
+        ask_scm_branch_on_launch: "{{ item.ask_scm_branch_on_launch | default(omit) }}"
+        ask_diff_mode_on_launch: "{{ item.ask_diff_mode_on_launch | default(omit) }}"
+        ask_variables_on_launch: "{{ item.ask_variables_on_launch | default(omit) }}"
+        ask_limit_on_launch: "{{ item.ask_limit_on_launch | default(omit) }}"
+        ask_tags_on_launch: "{{ item.ask_tags_on_launch | default(omit) }}"
+        ask_skip_tags_on_launch: "{{ item.ask_skip_tags_on_launch | default(omit) }}"
+        ask_job_type_on_launch: "{{ item.ask_job_type_on_launch | default(omit) }}"
+        ask_verbosity_on_launch: "{{ item.ask_verbosity_on_launch | default(omit) }}"
+        ask_inventory_on_launch: "{{ item.ask_inventory_on_launch | default(omit) }}"
+        ask_credential_on_launch: "{{ item.ask_credential_on_launch | default(omit) }}"
+        ask_execution_environment_on_launch: "{{ item.ask_execution_environment_on_launch | default(omit) }}"
+        ask_forks_on_launch: "{{ item.ask_forks_on_launch | default(omit) }}"
+        ask_instance_groups_on_launch: "{{ item.ask_instance_groups_on_launch | default(omit) }}"
+        ask_job_slice_count_on_launch: "{{ item.ask_job_slice_count_on_launch | default(omit) }}"
+        ask_labels_on_launch: "{{ item.ask_labels_on_launch | default(omit) }}"
+        ask_timeout_on_launch: "{{ item.ask_timeout_on_launch | default(omit) }}"
+        prevent_instance_group_fallback: "{{ item.prevent_instance_group_fallback | default(omit) }}"
+        survey_enabled: "{{ item.survey_enabled | default(omit) }}"
+        survey_spec: "{{ item.survey_spec | default(omit) }}"
+        survey: "{{ item.survey | default(omit) }}"
+        become_enabled: "{{ item.become_enabled | default(omit) }}"
+        allow_simultaneous: "{{ item.allow_simultaneous | default(omit) }}"
+        timeout: "{{ item.timeout | default(omit) }}"
+        instance_groups: "{{ item.instance_groups | default(omit) }}"
+        job_slice_count: "{{ item.job_slice_count | default(omit) }}"
+        webhook_service: "{{ item.webhook_service | default(omit) }}"
+        webhook_credential: "{{ item.webhook_credential | default(omit) }}"
+        scm_branch: "{{ item.scm_branch | default(omit) }}"
+        labels: "{{ item.labels | default(omit) }}"
+        custom_virtualenv: "{{ item.custom_virtualenv | default(omit) }}"
+        notification_templates_started: "{{ item.notification_templates_started | default(omit) }}"
+        notification_templates_success: "{{ item.notification_templates_success | default(omit) }}"
+        notification_templates_error: "{{ item.notification_templates_error | default(omit) }}"
+        state: "{{ item.state | default(omit) }}"
+  ansible.builtin.set_fact:
+    controller_templates: "{{ controller_templates | default([]) + tmp }}" # noqa var-naming[no-role-prefix]
+  loop: "{{ populate_aap_job_templates }}"
+  when: populate_aap_job_templates is defined
+
+- name: Configure Organizations
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.organizations
+  when: controller_organizations is defined
+
+- name: Configure execution enviornment for AAP
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.execution_environments
+  when: controller_execution_environments is defined
+
+- name: Configure inventory
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.inventories
+  when: controller_inventories is defined
+
+- name: Configure hosts
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.hosts
+  when: controller_hosts is defined
+
+- name: Configure Projects
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.projects
+  when: controller_projects is defined
+
+- name: Configure Looped Credentials
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.credentials
+  when: controller_credentials is defined
+
+- name: Configure Job Templates
+  ansible.builtin.include_role:
+    name: redhat_cop.controller_configuration.job_templates
+  when: controller_templates is defined
