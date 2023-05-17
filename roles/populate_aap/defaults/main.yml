@@ -36,8 +36,8 @@ populate_aap_credentials:
     organization: "{{ populate_aap_organization_name }}"
     credential_type: Machine
     inputs:
-      username: msandova
-      ssh_key_data: "{{ lookup('file', '/home/matthewsandoval/.ssh/aap_id_rsa') }}"
+      username: user
+      ssh_key_data: "{{ lookup('file', '/home/user/.ssh/id_rsa') }}"
 populate_aap_job_templates:
   - name: osbuild_setup_server
     job_type: run
