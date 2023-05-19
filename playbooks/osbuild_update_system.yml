@@ -5,4 +5,4 @@
   tasks:
     - name: Use role to update system
       ansible.builtin.import_role:
-        name: infra.osbuild.update_systems
+        name: infra.osbuild.update_system

@@ -1,5 +1,5 @@
 ---
-# tasks file for roles/update-systems
+# tasks file for roles/update_system
 - name: Update systems to the latest commit
   ansible.builtin.command: '/usr/bin/rpm-ostree upgrade'
   changed_when: false

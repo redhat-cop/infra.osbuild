@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: "update_systems"
+  role_name: "update_system"
   standalone: false
   company: "Red Hat"
   description: >

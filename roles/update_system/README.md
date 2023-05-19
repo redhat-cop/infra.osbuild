@@ -1,4 +1,4 @@
-# infra.osbuild.update_systems
+# infra.osbuild.update_system
 
 This role updates a running rpm-ostree based system with the latest image.
 
@@ -26,7 +26,7 @@ None.
   tasks:
     - name: Use role to update system
       ansible.builtin.import_role:
-        name: infra.osbuild.update_systems
+        name: infra.osbuild.update_system
 ```
 
 
