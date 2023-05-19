@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  role_name: "system_info"
+  standalone: false
+  company: "Red Hat"
+  description: >
+    Gather information from a rpm-ostree based system
+  author: Ansible Edge Working Group
+  license: "GPL-3.0-or-later"
+  min_ansible_version: "2.12"
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+    - name: Fedora
+      versions:
+        - all
+  galaxy_tags:
+    - image
+    - build
+    - os
+dependencies: []
