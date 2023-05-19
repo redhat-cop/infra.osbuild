@@ -354,17 +354,16 @@ stages:
           groups:
             - 5
 
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.14/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-installer
-      #         test: rhel/9.0/
-      #       - name: RHEL 8.6 edge-installer
-      #         test: rhel/8.6/
-      #     groups:
-      #       - 6
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.14/{0}
+          targets:
+            - name: RHEL 9.0 edge-installer
+              test: rhel/9.0/
+            - name: RHEL 8.6 edge-installer
+              test: rhel/8.6/
+          groups:
+            - 6
 
       # Fixme
       # - template: templates/matrix.yml
