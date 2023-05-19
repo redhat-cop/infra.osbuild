@@ -5,10 +5,6 @@
   ansible.posix.rpm_ostree_upgrade:
   register: update_system_output
 
-- name: debug
-  ansible.builtin.debug:
-    msg: "{{ update_system_output.msg }}"
-
 - name: Reboot system to apply new image
   when: "'No upgrade available' not in update_system_output.msg"
   ansible.builtin.reboot:
