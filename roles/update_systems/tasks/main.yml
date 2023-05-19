@@ -1,0 +1,10 @@
+---
+# tasks file for roles/update-systems
+- name: Update systems to the latest commit
+  ansible.builtin.command: '/usr/bin/rpm-ostree upgrade'
+  changed_when: false
+  register: update_system_output
+
+- name: Reboot system to apply new image
+  when: "'No upgrade available' not in update_system_output.stdout"
+  ansible.builtin.reboot:
