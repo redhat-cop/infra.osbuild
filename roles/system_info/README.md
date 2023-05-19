@@ -29,7 +29,7 @@ None.
 
     - name: debug
       ansible.builtin.debug:
-        msg: "{{ ansible_facts['rpm_ostree'] }}"
+        msg: "{{ ansible_facts['system_info_rpm_ostree'] }}"
 ```
 
 

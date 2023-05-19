@@ -6,6 +6,6 @@
       ansible.builtin.import_role:
         name: infra.osbuild.system_info
 
-    - name: debug
+    - name: Debug system info
       ansible.builtin.debug:
-        msg: "{{ ansible_facts['rpm_ostree'] }}"
+        msg: "{{ ansible_facts['system_info_rpm_ostree'] }}"
