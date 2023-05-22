@@ -1,5 +1,0 @@
----
-collections:
-  - community.general
-  - ansible.posix
-  - git+https://github.com/redhat-cop/infra.osbuild.git
