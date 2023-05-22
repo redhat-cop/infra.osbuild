@@ -1,0 +1,11 @@
+---
+- name: Get system info
+  hosts: all
+  tasks:
+    - name: Use system role to get image version
+      ansible.builtin.import_role:
+        name: infra.osbuild.system_info
+
+    - name: Debug system info
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts['rpm_ostree'] }}"

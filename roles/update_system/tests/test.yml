@@ -1,0 +1,6 @@
+---
+- name: Test the update_system role
+  hosts: localhost
+  remote_user: root
+  roles:
+    - update_system

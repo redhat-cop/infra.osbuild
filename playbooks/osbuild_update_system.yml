@@ -1,0 +1,8 @@
+---
+- name: Update systems
+  become: true
+  hosts: all
+  tasks:
+    - name: Use role to update system
+      ansible.builtin.import_role:
+        name: infra.osbuild.update_system

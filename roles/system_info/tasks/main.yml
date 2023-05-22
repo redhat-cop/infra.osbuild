@@ -1,0 +1,19 @@
+---
+# tasks file for system_info
+- name: Get system info
+  ansible.builtin.command: '/usr/bin/rpm-ostree status --json'
+  changed_when: false
+  register: system_info_output
+
+- name: Set rpm-ostree facts on system
+  vars:
+    system_info_json: "{{ system_info_output.stdout | from_json }}"
+  ansible.builtin.set_fact:
+    cacheable: true # noqa var-naming[no-role-prefix]
+    rpm_ostree:
+      - current:
+          version: "{{ system_info_json['deployments'][0]['version'] }}"
+          checksum: "{{ system_info_json['deployments'][0]['checksum'] }}"
+      - rollback:
+          version: "{{ system_info_json['deployments'][1]['version'] }}"
+          checksum: "{{ system_info_json['deployments'][1]['checksum'] }}"

@@ -1,0 +1,6 @@
+---
+- name: Run test for the system_info role
+  hosts: localhost
+  remote_user: root
+  roles:
+    - system_info
