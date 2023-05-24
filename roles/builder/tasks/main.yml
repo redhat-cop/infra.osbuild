@@ -196,20 +196,22 @@
         dest: "{{ builder_blueprint_src_path }}"
         name: "{{ builder_blueprint_name }}-empty"
         distro: "{{ builder_blueprint_distro | default(omit) }}"
-      register: __builder_blueprint_output
+      register: __builder_blueprint_output  # noqa var-naming[no-role-prefix]
       when:
         - "'simplified' not in builder_compose_type and 'edge' in builder_compose_type or 'iot' in builder_compose_type"
 
     - name: Create simplified installer blueprint
+      when:
+        - "'simplified' in builder_compose_type and 'edge' in builder_compose_type or 'iot' in builder_compose_type"
       block:
         - name: Create __simplified_insaller_customizations var
-          ansible.builtin.set_fact: 
+          ansible.builtin.set_fact:
             __simplified_insaller_customizations: {}
 
-        - name: Set _simplified_insaller_customizations value including only fdo and installation_device customizations
-          ansible.builtin.set_fact: 
+        - name: Set __simplified_insaller_customizations value including only fdo and installation_device customizations
+          ansible.builtin.set_fact:
             __simplified_insaller_customizations: "{{ __simplified_insaller_customizations | combine({item.key: item.value}) }}"
-          when: "{{ item.key in ['fdo', 'installation_device'] }}"
+          when: "item.key in ['fdo', 'installation_device']"
           with_dict: "{{ builder_compose_customizations }}"
 
         - name: Create simplified installer blueprint
@@ -218,13 +220,11 @@
             name: "{{ builder_blueprint_name }}-empty"
             distro: "{{ builder_blueprint_distro | default(omit) }}"
             customizations: "{{ __simplified_insaller_customizations }}"
-          register: __builder_blueprint_output_simplified
-      when:
-        - "'simplified' in builder_compose_type and 'edge' in builder_compose_type or 'iot' in builder_compose_type"
+          register: __builder_blueprint_output_simplified  # noqa var-naming[no-role-prefix]
 
     - name: Set builder_blueprint_output
       ansible.builtin.set_fact:
-        builder_blueprint_output: "{{ __builder_blueprint_output if __builder_blueprint_output['current_version'] is defined else __builder_blueprint_output_simplified }}"
+        builder_blueprint_output: "{{ __builder_blueprint_output if __builder_blueprint_output['current_version'] is defined else __builder_blueprint_output_simplified }}"  # noqa yaml[line-length]
 
     - name: Push the blueprint into image builder
       infra.osbuild.push_blueprint:
