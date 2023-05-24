@@ -1,7 +1,6 @@
 ---
 # tasks file for roles/update_system
 - name: Update system to the latest commit
-  # ansible.builtin.command: '/usr/bin/rpm-ostree upgrade'
   ansible.posix.rpm_ostree_upgrade:
   register: update_system_output
 
