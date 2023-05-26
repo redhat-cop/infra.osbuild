@@ -6,18 +6,18 @@ shared:
     - "#approved-reviews-by>=1"
     - "#changes-requested-reviews-by=0"
     - "#review-threads-unresolved=0"
-  pr_check_key: &pr-check-criteria
-    - -check-success=ci.int.devshift.net PR build
-    - -check-success=Lint
+    # pr_check_key: &pr-check-criteria
+    #  - -check-success=ci.int.devshift.net PR build
+    #  - -check-success=Lint
 #
 # Merge queue rules https://docs.mergify.com/actions/queue/#queue-rules
-queue_rules:
-  #
-  # Add this PR to the merge queue
-  - name: default
-    conditions:
-      - base=main
-      - and: *common-merge-criteria
+# queue_rules:
+#
+#  # Add this PR to the merge queue
+#  - name: default
+#    conditions:
+#      - base=main
+#      - and: *common-merge-criteria
 #
 # Pull request rules https://docs.mergify.com/configuration/#pull-request-rules
 # N.B. Evaluated in order defined
@@ -55,48 +55,48 @@ pull_request_rules:
           - question
   #
   # Dependabot PR merge rule
-  - name: Automatic merge for Dependabot pull requests
-    conditions:
-      - author~=^dependabot(|-preview)\[bot\]$
-      - and: *common-merge-criteria
-      - and: *pr-check-criteria
-    actions:
-      queue:
-        name: default
-        method: merge
+  # - name: Automatic merge for Dependabot pull requests
+  #  conditions:
+  #    - author~=^dependabot(|-preview)\[bot\]$
+  #    - and: *common-merge-criteria
+  #    - and: *pr-check-criteria
+  #  actions:
+  #    queue:
+  #      name: default
+  #      method: merge
   #
   # If PR check fails, request resolution (prevent stalling the merge queue)
-  - name: Request PR check re-run
-    conditions:
-      - and:
-          - base=main
-          - and: *common-merge-criteria
-          - label!=work in progress
-          - label!=do not merge
-          - updated-at<1 days ago
-          - or: *pr-check-criteria
-    actions:
-      comment:
-        message: "This pull request needs all pr-checks to run successfully. Could you fix it @{{author}}? 🙏"
-      label:
-        add:
-          - invalid
+  # - name: Request PR check re-run
+  #  conditions:
+  #    - and:
+  #       - base=main
+  #        - and: *common-merge-criteria
+  #        - label!=work in progress
+  #        - label!=do not merge
+  #        - updated-at<1 days ago
+  #        - or: *pr-check-criteria
+  #  actions:
+  #    comment:
+  #      message: "This pull request needs all pr-checks to run successfully. Could you fix it @{{author}}? 🙏"
+  #    label:
+  #      add:
+  #        - invalid
   #
   # Non-dependabot Merge PR rule
-  - name: Automatic merge on approval
-    conditions:
-      - base=main
-      - and: *common-merge-criteria
-      - and: *pr-check-criteria
-      - label!=work in progress
-      - label!=do not merge
-    actions:
-      label:
-        remove:
-          - invalid
-      queue:
-        name: default
-        method: merge
+  # - name: Automatic merge on approval
+  #  conditions:
+  #     - base=main
+  #    - and: *common-merge-criteria
+  #    - and: *pr-check-criteria
+  #    - label!=work in progress
+  #    - label!=do not merge
+  #  actions:
+  #    label:
+  #      remove:
+  #        - invalid
+  #    queue:
+  #      name: default
+  #      method: merge
   #
   # Detect when PR conflicts and add label
   - name: warn on conflicts
@@ -150,14 +150,24 @@ pull_request_rules:
         remove:
           - waiting for review
   #
-  # Detect when PR includes a bug fix and add label
-  - name: add bug fix label
+  # Detect when PR includes a bug and add label
+  - name: add bug label
     conditions:
       - body~=(?m)^- \[[xX]\] Bug fix \(non-breaking change which fixes an issue\)
     actions:
       label:
         add:
-          - bug fix
+          - bug
+  #
+  # Detect when PR no longer includes bug and remove label
+  - name: remove bug label
+    conditions:
+      - body~=(?m)^- \[ \] Bug fix \(non-breaking change which fixes an issue\)
+    actions:
+      label:
+        remove:
+          - bug
+
   #
   # Detect when PR includes new feature and add label
   - name: add new feature label
@@ -168,6 +178,16 @@ pull_request_rules:
         add:
           - new feature
   #
+  # Detect when PR no longer includes new feature and remove label
+  - name: remove new feature label
+    conditions:
+      - body~=(?m)^- \[ \] New feature \(non-breaking change which adds functionality\)
+    actions:
+      label:
+        remove:
+          - new feature
+
+  #
   # Detect when PR includes documentation updates and add label
   - name: add documentation label
     conditions:
@@ -177,34 +197,6 @@ pull_request_rules:
         add:
           - documentation
   #
-  # Detect when PR includes tests update and add label
-  - name: add test update label
-    conditions:
-      - body~=(?m)^- \[[xX]\] Tests update
-    actions:
-      label:
-        add:
-          - test update
-
-  #
-  # Detect when PR no longer includes bug fix and remove label
-  - name: remove bug fix label
-    conditions:
-      - body~=(?m)^- \[ \] Bug fix \(non-breaking change which fixes an issue\)
-    actions:
-      label:
-        remove:
-          - bug fix
-  #
-  # Detect when PR no longer includes new feature and remove label
-  - name: remove new feature label
-    conditions:
-      - body~=(?m)^- \[ \] New feature \(non-breaking change which adds functionality\)
-    actions:
-      label:
-        remove:
-          - new feature
-  #
   # Detect when PR no longer includes documentation updates and remove label
   - name: remove documentation label
     conditions:
@@ -213,6 +205,16 @@ pull_request_rules:
       label:
         remove:
           - documentation
+
+  #
+  # Detect when PR includes tests update and add label
+  - name: add test update label
+    conditions:
+      - body~=(?m)^- \[[xX]\] Tests update
+    actions:
+      label:
+        add:
+          - test update
   #
   # Detect when PR no longer includes tests update and remove label
   - name: remove test update label
@@ -222,16 +224,35 @@ pull_request_rules:
       label:
         remove:
           - test update
+
   #
-  # Detect when PR is ready and add label
-  - name: add ready label
+  # Detect when PR includes refactoring and add label
+  - name: add refactor label
     conditions:
-      - body~=(?m)^- \[[xX]\] I have commented my code, particularly in hard-to-understand areas
-      - body~=(?m)^- \[[xX]\] I have made corresponding changes to the documentation
-      - body~=(?m)^- \[[xX]\] I have added tests that prove my fix is effective or that my feature works
-      - body~=(?m)^- \[[xX]\] New and existing unit tests pass locally with my changes
-      - body~=(?m)^- \[[xX]\] I run `make pre-commit` to check fmt\/vet\/lint\/test-no-fdo
+      - body~=(?m)^- \[[xX]\] Refactor
     actions:
       label:
         add:
-          - ready
+          - refactor
+  #
+  # Detect when PR no longer includes refactoring and remove label
+  - name: remove refactor label
+    conditions:
+      - body~=(?m)^- \[ \] Refactor
+    actions:
+      label:
+        remove:
+          - refactor
+
+          #
+          # Detect when PR is ready and add label
+          # - name: add ready label
+          #  conditions:
+          #    - body~=(?m)^- \[[xX]\] I have commented my code, particularly in hard-to-understand areas
+          #    - body~=(?m)^- \[[xX]\] I have made corresponding changes to the documentation
+          #    - body~=(?m)^- \[[xX]\] I have added tests that prove my fix is effective or that my feature works
+          #    - body~=(?m)^- \[[xX]\] New and existing unit tests pass locally with my changes
+          #  actions:
+          #    label:
+          #      add:
+          #       - ready
