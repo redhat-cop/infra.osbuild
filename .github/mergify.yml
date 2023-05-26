@@ -53,18 +53,7 @@ pull_request_rules:
       label:
         remove:
           - question
-  #
-  # Dependabot PR merge rule
-  # - name: Automatic merge for Dependabot pull requests
-  #  conditions:
-  #    - author~=^dependabot(|-preview)\[bot\]$
-  #    - and: *common-merge-criteria
-  #    - and: *pr-check-criteria
-  #  actions:
-  #    queue:
-  #      name: default
-  #      method: merge
-  #
+
   # If PR check fails, request resolution (prevent stalling the merge queue)
   # - name: Request PR check re-run
   #  conditions:
@@ -82,10 +71,11 @@ pull_request_rules:
   #      add:
   #        - invalid
   #
-  # Non-dependabot Merge PR rule
-  # - name: Automatic merge on approval
+  # Dependabot pull request merge rule
+  # - name: Automatic merge for Dependabot pull request
   #  conditions:
-  #     - base=main
+  #    - author~=^dependabot(|-preview)\[bot\]$
+  #    - base=main
   #    - and: *common-merge-criteria
   #    - and: *pr-check-criteria
   #    - label!=work in progress
@@ -98,7 +88,23 @@ pull_request_rules:
   #      name: default
   #      method: merge
   #
-  # Detect when PR conflicts and add label
+  # Non-Dependabot Merge pull request rule
+  # - name: Automatic merge on approval for non-Dependabot pull requests
+  #  conditions:
+  #    - base=main
+  #    - and: *common-merge-criteria
+  #    - and: *pr-check-criteria
+  #    - label!=work in progress
+  #    - label!=do not merge
+  #  actions:
+  #    label:
+  #      remove:
+  #        - invalid
+  #    queue:
+  #      name: default
+  #      method: merge
+  #
+  # Detect when pull request conflicts and add label
   - name: warn on conflicts
     conditions:
       - conflict
@@ -129,12 +135,15 @@ pull_request_rules:
         message: |
           This pull request looks stale. Feel free to reopen it if you think it's a mistake.
   #
-  # Detect when PR is awaiting review and add label
-  - name: waiting for review
+  # Detect when PR is ready / awaiting review and add label
+  - name: Pull request is ready and waiting for review
     conditions:
       - "#commented-reviews-by<1"
       - created-at<1 days ago
       - -draft
+      # TODO: Check at least one change type is selected
+      # Checklist
+      # - body~=(?m)^- \[[xX]\] I have added unit tests that prove my fix is effective or that my feature works
     actions:
       label:
         add:
@@ -169,23 +178,23 @@ pull_request_rules:
           - bug
 
   #
-  # Detect when PR includes new feature and add label
-  - name: add new feature label
+  # Detect when PR includes enhancement and add label
+  - name: add enhancement label
     conditions:
       - body~=(?m)^- \[[xX]\] New feature \(non-breaking change which adds functionality\)
     actions:
       label:
         add:
-          - new feature
+          - enhancement
   #
-  # Detect when PR no longer includes new feature and remove label
-  - name: remove new feature label
+  # Detect when PR no longer includes enhancement and remove label
+  - name: remove enhancement label
     conditions:
       - body~=(?m)^- \[ \] New feature \(non-breaking change which adds functionality\)
     actions:
       label:
         remove:
-          - new feature
+          - enhancement
 
   #
   # Detect when PR includes documentation updates and add label
@@ -243,16 +252,3 @@ pull_request_rules:
       label:
         remove:
           - refactor
-
-          #
-          # Detect when PR is ready and add label
-          # - name: add ready label
-          #  conditions:
-          #    - body~=(?m)^- \[[xX]\] I have commented my code, particularly in hard-to-understand areas
-          #    - body~=(?m)^- \[[xX]\] I have made corresponding changes to the documentation
-          #    - body~=(?m)^- \[[xX]\] I have added tests that prove my fix is effective or that my feature works
-          #    - body~=(?m)^- \[[xX]\] New and existing unit tests pass locally with my changes
-          #  actions:
-          #    label:
-          #      add:
-          #       - ready
