@@ -1,0 +1,254 @@
+---
+#
+# Shared keys
+shared:
+  my_ci: &common-merge-criteria
+    - "#approved-reviews-by>=1"
+    - "#changes-requested-reviews-by=0"
+    - "#review-threads-unresolved=0"
+    # pr_check_key: &pr-check-criteria
+    #  - -check-success=ci.int.devshift.net PR build
+    #  - -check-success=Lint
+#
+# Merge queue rules https://docs.mergify.com/actions/queue/#queue-rules
+# queue_rules:
+#
+#  # Add this PR to the merge queue
+#  - name: default
+#    conditions:
+#      - base=main
+#      - and: *common-merge-criteria
+#
+# Pull request rules https://docs.mergify.com/configuration/#pull-request-rules
+# N.B. Evaluated in order defined
+pull_request_rules:
+  #
+  # Remove stale approvals or changes request
+  - name: Remove outdated reviews
+    conditions:
+      - base=main
+    actions:
+      dismiss_reviews:
+        approved: true
+        changes_requested: false
+        message: New commit(s) added, removing existing approval(s)
+        when: synchronize
+  #
+  # Require all conversations to be resolved
+  - name: Check for unresolved conversations before merging
+    conditions:
+      - "#review-threads-unresolved>0"
+    actions:
+      comment:
+        message: "This pull request needs all conversation threads to be resolved. Could you fix it @{{author}}? 🙏"
+      label:
+        add:
+          - question
+  #
+  # If all conversations to be resolved, remove question label
+  - name: Remove question label from resolved conversations
+    conditions:
+      - "#review-threads-unresolved=0"
+    actions:
+      label:
+        remove:
+          - question
+
+  # If PR check fails, request resolution (prevent stalling the merge queue)
+  # - name: Request PR check re-run
+  #  conditions:
+  #    - and:
+  #       - base=main
+  #        - and: *common-merge-criteria
+  #        - label!=work in progress
+  #        - label!=do not merge
+  #        - updated-at<1 days ago
+  #        - or: *pr-check-criteria
+  #  actions:
+  #    comment:
+  #      message: "This pull request needs all pr-checks to run successfully. Could you fix it @{{author}}? 🙏"
+  #    label:
+  #      add:
+  #        - invalid
+  #
+  # Dependabot pull request merge rule
+  # - name: Automatic merge for Dependabot pull request
+  #  conditions:
+  #    - author~=^dependabot(|-preview)\[bot\]$
+  #    - base=main
+  #    - and: *common-merge-criteria
+  #    - and: *pr-check-criteria
+  #    - label!=work in progress
+  #    - label!=do not merge
+  #  actions:
+  #    label:
+  #      remove:
+  #        - invalid
+  #    queue:
+  #      name: default
+  #      method: merge
+  #
+  # Non-Dependabot Merge pull request rule
+  # - name: Automatic merge on approval for non-Dependabot pull requests
+  #  conditions:
+  #    - base=main
+  #    - and: *common-merge-criteria
+  #    - and: *pr-check-criteria
+  #    - label!=work in progress
+  #    - label!=do not merge
+  #  actions:
+  #    label:
+  #      remove:
+  #        - invalid
+  #    queue:
+  #      name: default
+  #      method: merge
+  #
+  # Detect when pull request conflicts and add label
+  - name: warn on conflicts
+    conditions:
+      - conflict
+    actions:
+      comment:
+        message: "This pull request is now in conflicts. Could you fix it @{{author}}? 🙏"
+      label:
+        add:
+          - conflict
+  #
+  # Detect when PR conflict is cleared and remove label
+  - name: remove conflict label if not needed
+    conditions:
+      - -conflict
+    actions:
+      label:
+        remove:
+          - conflict
+  #
+  # Automatically close PR after 14 days
+  - name: close stale pull request
+    conditions:
+      - base=main
+      - -closed
+      - updated-at<14 days ago
+    actions:
+      close:
+        message: |
+          This pull request looks stale. Feel free to reopen it if you think it's a mistake.
+  #
+  # Detect when PR is ready / awaiting review and add label
+  - name: Pull request is ready and waiting for review
+    conditions:
+      - "#commented-reviews-by<1"
+      - created-at<1 days ago
+      - -draft
+      # TODO: Check at least one change type is selected
+      # Checklist
+      # - body~=(?m)^- \[[xX]\] I have added unit tests that prove my fix is effective or that my feature works
+    actions:
+      label:
+        add:
+          - waiting for review
+  #
+  # Detect when PR received review and remove label
+  - name: remove waiting for review label if not needed
+    conditions:
+      - "#commented-reviews-by>=1"
+      - -draft
+    actions:
+      label:
+        remove:
+          - waiting for review
+  #
+  # Detect when PR includes a bug and add label
+  - name: add bug label
+    conditions:
+      - body~=(?m)^- \[[xX]\] Bug fix \(non-breaking change which fixes an issue\)
+    actions:
+      label:
+        add:
+          - bug
+  #
+  # Detect when PR no longer includes bug and remove label
+  - name: remove bug label
+    conditions:
+      - body~=(?m)^- \[ \] Bug fix \(non-breaking change which fixes an issue\)
+    actions:
+      label:
+        remove:
+          - bug
+
+  #
+  # Detect when PR includes enhancement and add label
+  - name: add enhancement label
+    conditions:
+      - body~=(?m)^- \[[xX]\] New feature \(non-breaking change which adds functionality\)
+    actions:
+      label:
+        add:
+          - enhancement
+  #
+  # Detect when PR no longer includes enhancement and remove label
+  - name: remove enhancement label
+    conditions:
+      - body~=(?m)^- \[ \] New feature \(non-breaking change which adds functionality\)
+    actions:
+      label:
+        remove:
+          - enhancement
+
+  #
+  # Detect when PR includes documentation updates and add label
+  - name: add documentation label
+    conditions:
+      - body~=(?m)^- \[[xX]\] Documentation update
+    actions:
+      label:
+        add:
+          - documentation
+  #
+  # Detect when PR no longer includes documentation updates and remove label
+  - name: remove documentation label
+    conditions:
+      - body~=(?m)^- \[ \] Documentation update
+    actions:
+      label:
+        remove:
+          - documentation
+
+  #
+  # Detect when PR includes tests update and add label
+  - name: add test update label
+    conditions:
+      - body~=(?m)^- \[[xX]\] Tests update
+    actions:
+      label:
+        add:
+          - test update
+  #
+  # Detect when PR no longer includes tests update and remove label
+  - name: remove test update label
+    conditions:
+      - body~=(?m)^- \[ \] Tests update
+    actions:
+      label:
+        remove:
+          - test update
+
+  #
+  # Detect when PR includes refactoring and add label
+  - name: add refactor label
+    conditions:
+      - body~=(?m)^- \[[xX]\] Refactor
+    actions:
+      label:
+        add:
+          - refactor
+  #
+  # Detect when PR no longer includes refactoring and remove label
+  - name: remove refactor label
+    conditions:
+      - body~=(?m)^- \[ \] Refactor
+    actions:
+      label:
+        remove:
+          - refactor
