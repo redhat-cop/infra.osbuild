@@ -46,10 +46,27 @@ populate_aap_job_templates:
     playbook: playbooks/osbuild_setup_server.yml
     credentials:
       - "{{ populate_aap_credential_name }}"
+
   - name: osbuild_builder
     job_type: run
     inventory: "{{ populate_aap_inventory_name }}"
     project: "{{ populate_aap_project_name }}"
     playbook: playbooks/osbuild_builder.yml
+    credentials:
+      - "{{ populate_aap_credential_name }}"
+
+  - name: osbuild_system_info
+    job_type: run
+    inventory: "{{ populate_aap_inventory_name }}"
+    project: "{{ populate_aap_project_name }}"
+    playbook: playbooks/osbuild_system_info.yml
+    credentials:
+      - "{{ populate_aap_credential_name }}"
+
+  - name: osbuild_update_system
+    job_type: run
+    inventory: "{{ populate_aap_inventory_name }}"
+    project: "{{ populate_aap_project_name }}"
+    playbook: playbooks/osbuild_update_system.yml
     credentials:
       - "{{ populate_aap_credential_name }}"
