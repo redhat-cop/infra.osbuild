@@ -2,13 +2,16 @@
 #
 # Shared keys
 shared:
-  my_ci: &common-merge-criteria
+  my_ci: &common_merge_criteria
     - "#approved-reviews-by>=1"
     - "#changes-requested-reviews-by=0"
     - "#review-threads-unresolved=0"
-    # pr_check_key: &pr-check-criteria
-    #  - -check-success=ci.int.devshift.net PR build
-    #  - -check-success=Lint
+  pr_check_key: &pr_check_criteria
+    - -check-success="CI"
+    - -check-success="CI (Ansible devel sanity Lint)"
+    - -check-success="CI (Ansible devel sanity Sanity)"
+    - -check-success="CI (Ansible devel sanity Units)"
+    - -check-success="CI (Summary Code Coverage)"
 #
 # Merge queue rules https://docs.mergify.com/actions/queue/#queue-rules
 # queue_rules:
@@ -17,7 +20,7 @@ shared:
 #  - name: default
 #    conditions:
 #      - base=main
-#      - and: *common-merge-criteria
+#      - and: *common_merge_criteria
 #
 # Pull request rules https://docs.mergify.com/configuration/#pull-request-rules
 # N.B. Evaluated in order defined
@@ -55,47 +58,30 @@ pull_request_rules:
           - question
 
   # If PR check fails, request resolution (prevent stalling the merge queue)
-  # - name: Request PR check re-run
-  #  conditions:
-  #    - and:
-  #       - base=main
-  #        - and: *common-merge-criteria
-  #        - label!=work in progress
-  #        - label!=do not merge
-  #        - updated-at<1 days ago
-  #        - or: *pr-check-criteria
-  #  actions:
-  #    comment:
-  #      message: "This pull request needs all pr-checks to run successfully. Could you fix it @{{author}}? 🙏"
-  #    label:
-  #      add:
-  #        - invalid
-  #
-  # Dependabot pull request merge rule
-  # - name: Automatic merge for Dependabot pull request
-  #  conditions:
-  #    - author~=^dependabot(|-preview)\[bot\]$
-  #    - base=main
-  #    - and: *common-merge-criteria
-  #    - and: *pr-check-criteria
-  #    - label!=work in progress
-  #    - label!=do not merge
-  #  actions:
-  #    label:
-  #      remove:
-  #        - invalid
-  #    queue:
-  #      name: default
-  #      method: merge
+  - name: Request PR check re-run
+    conditions:
+      - and:
+          - base=main
+          - label!=work in progress
+          - label!=do not merge
+          - updated-at<1 days ago
+          - and: *common_merge_criteria
+          - or: *pr_check_criteria
+    actions:
+      comment:
+        message: "This pull request needs all PR checks to run successfully. Could you fix it @{{author}}? 🙏"
+      label:
+        add:
+          - invalid
   #
   # Non-Dependabot Merge pull request rule
   # - name: Automatic merge on approval for non-Dependabot pull requests
   #  conditions:
   #    - base=main
-  #    - and: *common-merge-criteria
-  #    - and: *pr-check-criteria
   #    - label!=work in progress
   #    - label!=do not merge
+  #    - and: *common_merge_criteria
+  #    - and: *pr_check_criteria
   #  actions:
   #    label:
   #      remove:
