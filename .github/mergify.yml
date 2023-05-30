@@ -2,28 +2,27 @@
 #
 # Shared keys
 shared:
-  my_ci: &common-merge-criteria
+  # Add "common_merge_criteria" anchor
+  # Use "*common_merge_criteria" alias to reference this anchor
+  my_ci: &common_merge_criteria
     - "#approved-reviews-by>=1"
     - "#changes-requested-reviews-by=0"
     - "#review-threads-unresolved=0"
-    # pr_check_key: &pr-check-criteria
-    #  - -check-success=ci.int.devshift.net PR build
-    #  - -check-success=Lint
 #
 # Merge queue rules https://docs.mergify.com/actions/queue/#queue-rules
-# queue_rules:
-#
-#  # Add this PR to the merge queue
-#  - name: default
-#    conditions:
-#      - base=main
-#      - and: *common-merge-criteria
+queue_rules:
+  #
+  # Q.1) Add this Pull Request to the merge queue
+  - name: default
+    conditions:
+      - base=main
+      - and: *common_merge_criteria
 #
 # Pull request rules https://docs.mergify.com/configuration/#pull-request-rules
 # N.B. Evaluated in order defined
 pull_request_rules:
   #
-  # Remove stale approvals or changes request
+  # PR.1) Remove stale approvals or changes requests
   - name: Remove outdated reviews
     conditions:
       - base=main
@@ -34,18 +33,18 @@ pull_request_rules:
         message: New commit(s) added, removing existing approval(s)
         when: synchronize
   #
-  # Require all conversations to be resolved
+  # PR.2) Require all conversations to be resolved
   - name: Check for unresolved conversations before merging
     conditions:
       - "#review-threads-unresolved>0"
     actions:
       comment:
-        message: "This pull request needs all conversation threads to be resolved. Could you fix it @{{author}}? 🙏"
+        message: "This Pull Request needs all conversation threads to be resolved. Could you fix it @{{author}}? 🙏"
       label:
         add:
           - question
   #
-  # If all conversations to be resolved, remove question label
+  # PR.3) If all conversations to be resolved, remove question label
   - name: Remove question label from resolved conversations
     conditions:
       - "#review-threads-unresolved=0"
@@ -54,69 +53,62 @@ pull_request_rules:
         remove:
           - question
 
-  # If PR check fails, request resolution (prevent stalling the merge queue)
-  # - name: Request PR check re-run
-  #  conditions:
-  #    - and:
-  #       - base=main
-  #        - and: *common-merge-criteria
-  #        - label!=work in progress
-  #        - label!=do not merge
-  #        - updated-at<1 days ago
-  #        - or: *pr-check-criteria
-  #  actions:
-  #    comment:
-  #      message: "This pull request needs all pr-checks to run successfully. Could you fix it @{{author}}? 🙏"
-  #    label:
-  #      add:
-  #        - invalid
+  # PR.4) If Pull Request check fails, request resolution (prevent stalling the merge queue)
+  - name: Request Pull Request check re-run
+    conditions:
+      - and:
+          - base=main
+          - label!=work in progress
+          - label!=do not merge
+          - updated-at<1 days ago
+          - and: *common_merge_criteria
+          - or:
+              - -check-success="CI"
+              - -check-success="CI (Ansible devel sanity Lint)"
+              - -check-success="CI (Ansible devel sanity Sanity)"
+              - -check-success="CI (Ansible devel sanity Units)"
+              - -check-success="CI (Summary Code Coverage)"
+
+    actions:
+      comment:
+        message: "This Pull Request needs all checks to run successfully. Could you fix it @{{author}}? 🙏"
+      label:
+        add:
+          - invalid
   #
-  # Dependabot pull request merge rule
-  # - name: Automatic merge for Dependabot pull request
-  #  conditions:
-  #    - author~=^dependabot(|-preview)\[bot\]$
-  #    - base=main
-  #    - and: *common-merge-criteria
-  #    - and: *pr-check-criteria
-  #    - label!=work in progress
-  #    - label!=do not merge
-  #  actions:
-  #    label:
-  #      remove:
-  #        - invalid
-  #    queue:
-  #      name: default
-  #      method: merge
+  # PR.5) Merge Pull Request rule
+  - name: Automatic merge on approval for Pull Requests
+    conditions:
+      - base=main
+      - label!=work in progress
+      - label!=do not merge
+      - check-success="CI"
+      - check-success="CI (Ansible devel sanity Lint)"
+      - check-success="CI (Ansible devel sanity Sanity)"
+      - check-success="CI (Ansible devel sanity Units)"
+      - check-success="CI (Summary Code Coverage)"
+      - and: *common_merge_criteria
+    actions:
+      label:
+        remove:
+          - invalid
+      queue:
+        name: default
+        method: merge
   #
-  # Non-Dependabot Merge pull request rule
-  # - name: Automatic merge on approval for non-Dependabot pull requests
-  #  conditions:
-  #    - base=main
-  #    - and: *common-merge-criteria
-  #    - and: *pr-check-criteria
-  #    - label!=work in progress
-  #    - label!=do not merge
-  #  actions:
-  #    label:
-  #      remove:
-  #        - invalid
-  #    queue:
-  #      name: default
-  #      method: merge
-  #
-  # Detect when pull request conflicts and add label
-  - name: warn on conflicts
+  # PR.6) Detect when Pull Request has conflicts and add conflicts label
+  - name: Warn on conflicts
     conditions:
       - conflict
     actions:
       comment:
-        message: "This pull request is now in conflicts. Could you fix it @{{author}}? 🙏"
+        message: "This Pull Request is now in conflict. Could you fix it @{{author}}? 🙏"
       label:
         add:
           - conflict
   #
-  # Detect when PR conflict is cleared and remove label
-  - name: remove conflict label if not needed
+  # PR.7) Detect when Pull Request conflict is cleared and remove label
+  - name: Remove conflict label if not needed
     conditions:
       - -conflict
     actions:
@@ -124,8 +116,8 @@ pull_request_rules:
         remove:
           - conflict
   #
-  # Automatically close PR after 14 days
-  - name: close stale pull request
+  # PR.8) Automatically close Pull Request after 14 days
+  - name: Close stale Pull Request
     conditions:
       - base=main
       - -closed
@@ -133,10 +125,10 @@ pull_request_rules:
     actions:
       close:
         message: |
-          This pull request looks stale. Feel free to reopen it if you think it's a mistake.
+          This Pull Request looks stale. Feel free to reopen it if you think it's a mistake.
   #
-  # Detect when PR is ready / awaiting review and add label
-  - name: Pull request is ready and waiting for review
+  # PR.9) Detect when Pull Request is ready / awaiting review and add label
+  - name: Pull Request is ready and waiting for review
     conditions:
       - "#commented-reviews-by<1"
       - created-at<1 days ago
@@ -149,8 +141,8 @@ pull_request_rules:
         add:
           - waiting for review
   #
-  # Detect when PR received review and remove label
-  - name: remove waiting for review label if not needed
+  # PR.10) Detect when Pull Request received review and remove label
+  - name: Remove waiting for review label if not needed
     conditions:
       - "#commented-reviews-by>=1"
       - -draft
@@ -159,8 +151,8 @@ pull_request_rules:
         remove:
           - waiting for review
   #
-  # Detect when PR includes a bug and add label
-  - name: add bug label
+  # PR.11) Detect when Pull Request includes a bug and add label
+  - name: Add bug label
     conditions:
       - body~=(?m)^- \[[xX]\] Bug fix \(non-breaking change which fixes an issue\)
     actions:
@@ -168,8 +160,8 @@ pull_request_rules:
         add:
           - bug
   #
-  # Detect when PR no longer includes bug and remove label
-  - name: remove bug label
+  # PR.12) Detect when Pull Request no longer includes bug and remove label
+  - name: Remove bug label
     conditions:
       - body~=(?m)^- \[ \] Bug fix \(non-breaking change which fixes an issue\)
     actions:
@@ -178,7 +170,7 @@ pull_request_rules:
           - bug
 
   #
-  # Detect when PR includes enhancement and add label
+  # PR.13) Detect when Pull Request includes enhancement and add label
   - name: add enhancement label
     conditions:
       - body~=(?m)^- \[[xX]\] New feature \(non-breaking change which adds functionality\)
@@ -187,7 +179,7 @@ pull_request_rules:
         add:
           - enhancement
   #
-  # Detect when PR no longer includes enhancement and remove label
+  # PR.14) Detect when Pull Request no longer includes enhancement and remove label
   - name: remove enhancement label
     conditions:
       - body~=(?m)^- \[ \] New feature \(non-breaking change which adds functionality\)
@@ -197,7 +189,7 @@ pull_request_rules:
           - enhancement
 
   #
-  # Detect when PR includes documentation updates and add label
+  # PR.15) Detect when Pull Request includes documentation updates and add label
   - name: add documentation label
     conditions:
       - body~=(?m)^- \[[xX]\] Documentation update
@@ -206,7 +198,7 @@ pull_request_rules:
         add:
           - documentation
   #
-  # Detect when PR no longer includes documentation updates and remove label
+  # PR.16) Detect when Pull Request no longer includes documentation updates and remove label
   - name: remove documentation label
     conditions:
       - body~=(?m)^- \[ \] Documentation update
@@ -216,8 +208,8 @@ pull_request_rules:
           - documentation
 
   #
-  # Detect when PR includes tests update and add label
-  - name: add test update label
+  # PR.17) Detect when Pull Request includes tests update and add label
+  - name: Add test update label
     conditions:
       - body~=(?m)^- \[[xX]\] Tests update
     actions:
@@ -225,7 +217,7 @@ pull_request_rules:
         add:
           - test update
   #
-  # Detect when PR no longer includes tests update and remove label
+  # PR.18) Detect when Pull Request no longer includes tests update and remove label
   - name: remove test update label
     conditions:
       - body~=(?m)^- \[ \] Tests update
@@ -235,7 +227,7 @@ pull_request_rules:
           - test update
 
   #
-  # Detect when PR includes refactoring and add label
+  # PR.19) Detect when Pull Request includes refactoring and add label
   - name: add refactor label
     conditions:
       - body~=(?m)^- \[[xX]\] Refactor
@@ -244,7 +236,7 @@ pull_request_rules:
         add:
           - refactor
   #
-  # Detect when PR no longer includes refactoring and remove label
+  # PR.20) Detect when Pull Request no longer includes refactoring and remove label
   - name: remove refactor label
     conditions:
       - body~=(?m)^- \[ \] Refactor
