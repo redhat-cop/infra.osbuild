@@ -6,12 +6,6 @@ shared:
     - "#approved-reviews-by>=1"
     - "#changes-requested-reviews-by=0"
     - "#review-threads-unresolved=0"
-  pr_check_key: &pr_check_criteria
-    - -check-success="CI"
-    - -check-success="CI (Ansible devel sanity Lint)"
-    - -check-success="CI (Ansible devel sanity Sanity)"
-    - -check-success="CI (Ansible devel sanity Units)"
-    - -check-success="CI (Summary Code Coverage)"
 #
 # Merge queue rules https://docs.mergify.com/actions/queue/#queue-rules
 # queue_rules:
@@ -66,7 +60,13 @@ pull_request_rules:
           - label!=do not merge
           - updated-at<1 days ago
           - and: *common_merge_criteria
-          - or: *pr_check_criteria
+          - or:
+              - -check-success="CI"
+              - -check-success="CI (Ansible devel sanity Lint)"
+              - -check-success="CI (Ansible devel sanity Sanity)"
+              - -check-success="CI (Ansible devel sanity Units)"
+              - -check-success="CI (Summary Code Coverage)"
+
     actions:
       comment:
         message: "This pull request needs all PR checks to run successfully. Could you fix it @{{author}}? 🙏"
@@ -80,8 +80,12 @@ pull_request_rules:
   #    - base=main
   #    - label!=work in progress
   #    - label!=do not merge
+  #    - check-success="CI"
+  #    - check-success="CI (Ansible devel sanity Lint)"
+  #    - check-success="CI (Ansible devel sanity Sanity)"
+  #    - check-success="CI (Ansible devel sanity Units)"
+  #    - check-success="CI (Summary Code Coverage)"
   #    - and: *common_merge_criteria
-  #    - and: *pr_check_criteria
   #  actions:
   #    label:
   #      remove:
