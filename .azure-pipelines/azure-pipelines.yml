@@ -1,3 +1,4 @@
+---
 trigger:
   batch: true
   branches:
@@ -41,7 +42,7 @@ resources:
 pool: Standard
 
 stages:
-## Sanity
+  ## Sanity
   - stage: Sanity_devel
     displayName: Ansible devel sanity
     dependsOn: []
@@ -97,11 +98,11 @@ stages:
             - name: Units
               test: units
 
-## Remote tests
-# choices of targets defined here:
-#   https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_data/completion/remote.txt
-#
-#   NOTE: defined targets vary by ansible-core branch
+  ## Remote tests
+  # choices of targets defined here:
+  #   https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_data/completion/remote.txt
+  #
+  #   NOTE: defined targets vary by ansible-core branch
   - stage: Remote_devel
     displayName: Remote devel
     dependsOn: []
@@ -755,7 +756,7 @@ stages:
             - 19
 
 
-## Finally
+  ## Finally
   - stage: Summary
     condition: succeededOrFailed()
     dependsOn:

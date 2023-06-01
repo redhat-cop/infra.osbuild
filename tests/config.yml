@@ -1,3 +1,4 @@
+---
 # Sample ansible-test configuration file for collections.
 # Support for this feature was first added in ansible-core 2.12.
 # Use of this file is optional.
