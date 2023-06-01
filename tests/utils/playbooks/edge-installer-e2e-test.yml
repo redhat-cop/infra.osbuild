@@ -118,7 +118,7 @@
               remote_user: core
 
         - name: Get packages installed
-          ansible.builtin.shell: rpm -q {{ packages | join(' ') }} --qf "%{NAME}\n" # noqa: command-instead-of-module
+          ansible.builtin.shell: rpm -q {{ packages | join(' ') }} --qf "%{NAME}\n"  # noqa: command-instead-of-module
           register: package_installed
           changed_when: false
           delegate_to: "{{ vm_ip.stdout }}"

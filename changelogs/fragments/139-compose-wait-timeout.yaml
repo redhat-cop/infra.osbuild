@@ -1,3 +1,4 @@
+---
 major_changes:
   - builder - added new versions image directory structure. From /blueprint_name/images to /blueprint_name/images/version
 minor_changes:

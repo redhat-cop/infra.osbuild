@@ -1,3 +1,4 @@
+---
 - name: Add source for custom packages
   when:
     - builder_custom_repos is defined

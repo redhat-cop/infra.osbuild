@@ -8,7 +8,7 @@
 #       within these test cases (yet?).
 - name: Check if image was built and served
   ansible.builtin.stat:
-    path: "/var/www/html/{{ builder_blueprint_name }}/images/0.0.1/{{ builder_blueprint_name }}_edge-installer.iso" # noqa yaml[line-length]
+    path: "/var/www/html/{{ builder_blueprint_name }}/images/0.0.1/{{ builder_blueprint_name }}_edge-installer.iso"  # noqa yaml[line-length]
   register: edge_installer_stat_result
 
 - name: Assert that the image was successful and that it is available on the server.

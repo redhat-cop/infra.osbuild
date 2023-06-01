@@ -2,8 +2,10 @@
 # tasks file for roles/update_system
 - name: Update system to the latest commit
   ansible.posix.rpm_ostree_upgrade:
+    allow_downgrade: false
   register: update_system_output
 
 - name: Reboot system to apply new image
   when: "'No upgrade available' not in update_system_output.msg"
   ansible.builtin.reboot:
+    reboot_timeout: 600

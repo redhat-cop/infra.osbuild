@@ -1,2 +1,3 @@
+---
 bugfixes:
   - Fixes multiple file searching in /etc/yum.repos.d/

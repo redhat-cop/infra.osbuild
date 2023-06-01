@@ -2,6 +2,7 @@
 
 - name: Get Package Facts
   ansible.builtin.package_facts:
+    manager: auto
 
 - name: Test for ostree-based OS
   ansible.builtin.shell:

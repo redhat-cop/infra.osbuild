@@ -1,3 +1,4 @@
+---
 - name: Shutdown VM
   community.libvirt.virt:
     command: "destroy"
