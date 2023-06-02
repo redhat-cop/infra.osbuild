@@ -1,6 +1,7 @@
 # infra.osbuild.system_info
 
-This role automates the gathering of information from a running rpm-ostree based system.
+This role automates the gathering of information from a running
+rpm-ostree based system.
 
 ## Requirements
 
@@ -32,9 +33,6 @@ None.
         msg: "{{ ansible_facts['rpm_ostree'] }}"
 ```
 
-
 ## License
 
 GPLv3
-
-

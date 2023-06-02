@@ -9,6 +9,7 @@ This role uses the [controller_configuration](https://github.com/redhat-cop/cont
 None
 
 ## Role Variables
+
 |Variable Name|Default Value|Required|Type|Description|Example|
 |:---:|:---:|:---:|:---:|:---:|:---|
 |`controller_hostname`|""|yes|str|URL to the Ansible Controller Server.|<pre>controller_hostname: http://0.0.0.0:443</pre>|
@@ -45,8 +46,6 @@ None.
         name: infra.osbuild.populate_aap
 ```
 
-
 ## License
 
 GPLv3
-
