@@ -29,9 +29,6 @@ None.
         name: infra.osbuild.update_system
 ```
 
-
 ## License
 
 GPLv3
-
-

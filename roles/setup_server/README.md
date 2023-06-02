@@ -31,9 +31,6 @@ None.
         name: infra.osbuild.setup_server
 ```
 
-
 ## License
 
 GPLv3
-
-
