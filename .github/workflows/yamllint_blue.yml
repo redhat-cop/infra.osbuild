@@ -9,6 +9,7 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
   lint:
+    name: Lint Blue
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
