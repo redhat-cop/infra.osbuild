@@ -134,7 +134,7 @@ argument_specs:
       builder_aap_url:
         type: "str"
         required: false
-        description: "Optionally perform automatic enrollment of systems installed via the resulting image build using a companion kickstart with Ansible Automation Platform, then set this variable to point to the URL where the Ansible Automation Platform can be reached."  # noqa yaml[line-length]
+        description: "Optionally perform automatic enrollment of systems installed via the resulting image build using a companion kickstart with Ansible Automation Platform, then set this variable to point to the URL where the Ansible Automation Platform can be reached."  # yamllint disable-line rule:line-length
 
       builder_aap_user:
         type: "str"
