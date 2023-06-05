@@ -1,5 +1,11 @@
 ---
-on: push  # yamllint disable-line rule:truthy
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   lint:
@@ -12,4 +18,4 @@ jobs:
 
       - name: Lint YAML files
         run: |
-          yamllint -d "{extends: default, rules: {line-length: {max: 200, level: warning}}}" .
+          yamllint -d "{extends: default, rules: {line-length: {max: 350, level: warning}}}" .
