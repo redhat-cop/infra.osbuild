@@ -87,6 +87,7 @@ pull_request_rules:
       - check-success="CI (Ansible devel sanity Sanity)"
       - check-success="CI (Ansible devel sanity Units)"
       - check-success="CI (Summary Code Coverage)"
+      - check-success="Lint Green"
       - and: *common_merge_criteria
     actions:
       label:
