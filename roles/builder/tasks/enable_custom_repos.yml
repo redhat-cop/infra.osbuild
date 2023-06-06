@@ -22,6 +22,9 @@
       loop: "{{ builder_custom_repos }}"
       loop_control:
         loop_var: __builder_repo
+      notify:
+        - __clear_package_cache
+        - __restart_services
 
 - name: Add RHSM repos for additional Red Hat packages
   when:
@@ -46,3 +49,9 @@
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
+      notify:
+        - __clear_package_cache
+        - __restart_services
+
+- name: flush handlers
+  ansible.builtin.meta: flush_handlers
