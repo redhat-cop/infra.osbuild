@@ -6,11 +6,12 @@
     path: /var/cache/osbuild-composer/rpmmd
     state: absent
   listen:
-    - __clear_package_cache
+    - __clear_osbuild_composer_package_cache
 
 - name: restart services
   ansible.builtin.systemd:
     name: osbuild-composer.service
     state: restarted
   listen:
-    - __restart_services
+    - __clear_osbuild_composer_package_cache
+    - __restart_osbuild_composer_service

@@ -24,8 +24,7 @@
       loop_control:
         loop_var: __builder_repo
       notify:
-        - __clear_package_cache
-        - __restart_services
+        - __clear_osbuild_composer_package_cache
 
 - name: Remove source for additional RHSM packages
   when:
@@ -45,8 +44,7 @@
       loop_control:
         loop_var: __builder_rhsm_repo
       notify:
-        - __clear_package_cache
-        - __restart_services
+        - __clear_osbuild_composer_package_cache
 
 - name: flush handlers
   ansible.builtin.meta: flush_handlers
