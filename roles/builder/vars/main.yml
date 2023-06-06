@@ -11,9 +11,9 @@ builder_kickstart_options:
   - reboot
   - network --bootproto=dhcp
   - services --enabled=ostree-remount
-  - ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_facts["default_ipv4"]["address"] }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}  # noqa yaml[line-length]
+  - ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ ansible_facts["default_ipv4"]["address"] }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}  # yamllint disable-line rule:line-length
 _builder_kickstart_post:
   - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') if builder_aap_url is defined | default(None) }}"
 builder_kickstart_post: "{{ _builder_kickstart_post + additional_kickstart_post if additional_kickstart_post is defined else _builder_kickstart_post }}"
 _builder_pub_key: "{{ builder_pub_key if builder_pub_key is defined else (builder_pub_key_path if builder_pub_key_path is defined else '') }}"
-_builder_compose_type: "{{ ('iot-commit' if ansible_distribution == 'Fedora' else 'edge-commit') if 'installer' in builder_compose_type or 'raw' in builder_compose_type else builder_compose_type }}"  # noqa yaml[line-length]
+_builder_compose_type: "{{ ('iot-commit' if ansible_distribution == 'Fedora' else 'edge-commit') if 'installer' in builder_compose_type or 'raw' in builder_compose_type else builder_compose_type }}"  # yamllint disable-line rule:line-length
