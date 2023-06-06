@@ -1,2 +1,16 @@
 ---
 # handlers file for builder
+
+- name: clear the package cache
+  ansible.builtin.file:
+    path: /var/cache/osbuild-composer/rpmmd
+    state: absent
+  listen:
+    - __clear_package_cache
+
+- name: restart services
+  ansible.builtin.systemd:
+    name: osbuild-composer.service
+    state: restarted
+  listen:
+    - __restart_services
