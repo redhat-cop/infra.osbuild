@@ -9,52 +9,48 @@ shared:
     - "#changes-requested-reviews-by=0"
     - "#review-threads-unresolved=0"
 #
-# Merge queue rules https://docs.mergify.com/actions/queue/#queue-rules
-queue_rules:
-  #
-  # Q.1) Add this Pull Request to the merge queue
-  - name: default
-    conditions:
-      - base=main
-      - and: *common_merge_criteria
-#
 # Pull request rules https://docs.mergify.com/configuration/#pull-request-rules
 # N.B. Evaluated in order defined
-pull_request_rules:
+pull_request_rules:  # yamllint disable-line rule:key-ordering
   #
   # PR.1) Remove stale approvals or changes requests
-  - name: Remove outdated reviews
-    conditions:
-      - base=main
-    actions:
+  - actions:
       dismiss_reviews:
         approved: true
         changes_requested: false
         message: New commit(s) added, removing existing approval(s)
         when: synchronize
+    conditions:
+      - base=main
+    name: Remove outdated reviews
   #
   # PR.2) Require all conversations to be resolved
-  - name: Check for unresolved conversations before merging
-    conditions:
-      - "#review-threads-unresolved>0"
-    actions:
+  - actions:
       comment:
         message: "This Pull Request needs all conversation threads to be resolved. Could you fix it @{{author}}? 🙏"
       label:
         add:
           - question
+    conditions:
+      - "#review-threads-unresolved>0"
+    name: Check for unresolved conversations before merging
   #
   # PR.3) If all conversations to be resolved, remove question label
-  - name: Remove question label from resolved conversations
-    conditions:
-      - "#review-threads-unresolved=0"
-    actions:
+  - actions:
       label:
         remove:
           - question
+    conditions:
+      - "#review-threads-unresolved=0"
+    name: Remove question label from resolved conversations
 
   # PR.4) If Pull Request check fails, request resolution (prevent stalling the merge queue)
-  - name: Request Pull Request check re-run
+  - actions:
+      comment:
+        message: "This Pull Request needs all checks to run successfully. Could you fix it @{{author}}? 🙏"
+      label:
+        add:
+          - invalid
     conditions:
       - and:
           - base=main
@@ -68,16 +64,16 @@ pull_request_rules:
               - -check-success="CI (Ansible devel sanity Sanity)"
               - -check-success="CI (Ansible devel sanity Units)"
               - -check-success="CI (Summary Code Coverage)"
-
-    actions:
-      comment:
-        message: "This Pull Request needs all checks to run successfully. Could you fix it @{{author}}? 🙏"
-      label:
-        add:
-          - invalid
+    name: Request Pull Request check re-run
   #
   # PR.5) Merge Pull Request rule
-  - name: Automatic merge on approval for Pull Requests
+  - actions:
+      label:
+        remove:
+          - invalid
+      queue:
+        method: merge
+        name: default
     conditions:
       - base=main
       - label!=work in progress
@@ -89,47 +85,44 @@ pull_request_rules:
       - check-success="CI (Summary Code Coverage)"
       - check-success="Lint Green"
       - and: *common_merge_criteria
-    actions:
-      label:
-        remove:
-          - invalid
-      queue:
-        name: default
-        method: merge
+    name: Automatic merge on approval for Pull Requests
   #
   # PR.6) Detect when Pull Request has conflicts and add conflicts label
-  - name: Warn on conflicts
-    conditions:
-      - conflict
-    actions:
+  - actions:
       comment:
         message: "This Pull Request is now in conflict. Could you fix it @{{author}}? 🙏"
       label:
         add:
           - conflict
+    conditions:
+      - conflict
+    name: Warn on conflicts
   #
   # PR.7) Detect when Pull Request conflict is cleared and remove label
-  - name: Remove conflict label if not needed
-    conditions:
-      - -conflict
-    actions:
+  - actions:
       label:
         remove:
           - conflict
+    conditions:
+      - -conflict
+    name: Remove conflict label if not needed
   #
   # PR.8) Automatically close Pull Request after 14 days
-  - name: Close stale Pull Request
+  - actions:
+      close:
+        message: |
+          This Pull Request looks stale. Feel free to reopen it if you think it's a mistake.
     conditions:
       - base=main
       - -closed
       - updated-at<14 days ago
-    actions:
-      close:
-        message: |
-          This Pull Request looks stale. Feel free to reopen it if you think it's a mistake.
+    name: Close stale Pull Request
   #
   # PR.9) Detect when Pull Request is ready / awaiting review and add label
-  - name: Pull Request is ready and waiting for review
+  - actions:
+      label:
+        add:
+          - waiting for review
     conditions:
       - "#commented-reviews-by<1"
       - created-at<1 days ago
@@ -137,111 +130,117 @@ pull_request_rules:
       # TODO: Check at least one change type is selected
       # Checklist
       # - body~=(?m)^- \[[xX]\] I have added unit tests that prove my fix is effective or that my feature works
-    actions:
-      label:
-        add:
-          - waiting for review
+    name: Pull Request is ready and waiting for review
   #
   # PR.10) Detect when Pull Request received review and remove label
-  - name: Remove waiting for review label if not needed
+  - actions:
+      label:
+        remove:
+          - waiting for review
     conditions:
       - "#commented-reviews-by>=1"
       - -draft
-    actions:
-      label:
-        remove:
-          - waiting for review
+    name: Remove waiting for review label if not needed
   #
   # PR.11) Detect when Pull Request includes a bug and add label
-  - name: Add bug label
-    conditions:
-      - body~=(?m)^- \[[xX]\] Bug fix \(non-breaking change which fixes an issue\)
-    actions:
+  - actions:
       label:
         add:
           - bug
+    conditions:
+      - body~=(?m)^- \[[xX]\] Bug fix \(non-breaking change which fixes an issue\)
+    name: Add bug label
   #
   # PR.12) Detect when Pull Request no longer includes bug and remove label
-  - name: Remove bug label
-    conditions:
-      - body~=(?m)^- \[ \] Bug fix \(non-breaking change which fixes an issue\)
-    actions:
+  - actions:
       label:
         remove:
           - bug
+    conditions:
+      - body~=(?m)^- \[ \] Bug fix \(non-breaking change which fixes an issue\)
+    name: Remove bug label
 
   #
   # PR.13) Detect when Pull Request includes enhancement and add label
-  - name: add enhancement label
-    conditions:
-      - body~=(?m)^- \[[xX]\] New feature \(non-breaking change which adds functionality\)
-    actions:
+  - actions:
       label:
         add:
           - enhancement
+    conditions:
+      - body~=(?m)^- \[[xX]\] New feature \(non-breaking change which adds functionality\)
+    name: add enhancement label
   #
   # PR.14) Detect when Pull Request no longer includes enhancement and remove label
-  - name: remove enhancement label
-    conditions:
-      - body~=(?m)^- \[ \] New feature \(non-breaking change which adds functionality\)
-    actions:
+  - actions:
       label:
         remove:
           - enhancement
+    conditions:
+      - body~=(?m)^- \[ \] New feature \(non-breaking change which adds functionality\)
+    name: remove enhancement label
 
   #
   # PR.15) Detect when Pull Request includes documentation updates and add label
-  - name: add documentation label
-    conditions:
-      - body~=(?m)^- \[[xX]\] Documentation update
-    actions:
+  - actions:
       label:
         add:
           - documentation
+    conditions:
+      - body~=(?m)^- \[[xX]\] Documentation update
+    name: add documentation label
   #
   # PR.16) Detect when Pull Request no longer includes documentation updates and remove label
-  - name: remove documentation label
-    conditions:
-      - body~=(?m)^- \[ \] Documentation update
-    actions:
+  - actions:
       label:
         remove:
           - documentation
+    conditions:
+      - body~=(?m)^- \[ \] Documentation update
+    name: remove documentation label
 
   #
   # PR.17) Detect when Pull Request includes tests update and add label
-  - name: Add test update label
-    conditions:
-      - body~=(?m)^- \[[xX]\] Tests update
-    actions:
+  - actions:
       label:
         add:
           - test update
+    conditions:
+      - body~=(?m)^- \[[xX]\] Tests update
+    name: Add test update label
   #
   # PR.18) Detect when Pull Request no longer includes tests update and remove label
-  - name: remove test update label
-    conditions:
-      - body~=(?m)^- \[ \] Tests update
-    actions:
+  - actions:
       label:
         remove:
           - test update
+    conditions:
+      - body~=(?m)^- \[ \] Tests update
+    name: remove test update label
 
   #
   # PR.19) Detect when Pull Request includes refactoring and add label
-  - name: add refactor label
-    conditions:
-      - body~=(?m)^- \[[xX]\] Refactor
-    actions:
+  - actions:
       label:
         add:
           - refactor
+    conditions:
+      - body~=(?m)^- \[[xX]\] Refactor
+    name: add refactor label
   #
   # PR.20) Detect when Pull Request no longer includes refactoring and remove label
-  - name: remove refactor label
-    conditions:
-      - body~=(?m)^- \[ \] Refactor
-    actions:
+  - actions:
       label:
         remove:
           - refactor
+    conditions:
+      - body~=(?m)^- \[ \] Refactor
+    name: remove refactor label
+#
+# Merge queue rules https://docs.mergify.com/actions/queue/#queue-rules
+queue_rules:  # yamllint disable-line rule:key-ordering
+  #
+  # Q.1) Add this Pull Request to the merge queue
+  - conditions:
+      - base=main
+      - and: *common_merge_criteria
+    name: default
