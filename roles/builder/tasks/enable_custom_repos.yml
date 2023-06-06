@@ -51,5 +51,5 @@
       notify:
         - __clear_osbuild_composer_package_cache
 
-- name: flush handlers
+- name: Flush handlers
   ansible.builtin.meta: flush_handlers
