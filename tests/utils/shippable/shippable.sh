@@ -99,6 +99,9 @@ if [ "${script}" != "sanity" ] && [ "${script}" != "units" ] && [ "${test}" != "
 
     # retry ansible-galaxy -vvv collection install community.libvirt
     retry git clone --depth=1 --single-branch --single-branch https://github.com/ansible-collections/community.libvirt.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/community/libvirt"
+
+    # retry ansible-galaxy -vvv collection install amazon.aws
+    retry git clone --depth=1 --single-branch --single-branch https://github.com/ansible-collections/amazon.aws.git "${ANSIBLE_COLLECTIONS_PATHS}/ansible_collections/amazon/aws"
 fi
 
 # END: HACK
