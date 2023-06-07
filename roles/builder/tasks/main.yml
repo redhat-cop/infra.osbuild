@@ -1,10 +1,10 @@
 ---
 - name: Set fact system internal ipv4 to public ec2 ipv4
-  when: is_aws_ec2 is defined and is_aws_ec2
+  when: "'ec2' in ansible_facts['domain']"
   block:
     - amazon.aws.ec2_metadata_facts:
 
-    - name: set stuff
+    - name: Set new builder system ipv4 address
       ansible.builtin.set_fact:
         builder_system_ipv4: "{{ ansible_ec2_public_ipv4 }}"
 
