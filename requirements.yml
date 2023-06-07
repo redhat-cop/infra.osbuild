@@ -3,3 +3,4 @@ collections:
   - community.general
   - ansible.posix
   - community.libvirt
+  - amazon.aws
