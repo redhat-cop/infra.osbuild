@@ -8,8 +8,6 @@ from unittest.mock import patch
 import pytest
 
 from .....plugins.module_utils.weldrapiv1 import WeldrV1
-from ..modules.utils import AnsibleExitJson
-from ..modules.utils import mock_module
 from ..modules.utils import mock_weldr
 
 # from ..modules.utils import AnsibleFailJson
@@ -25,30 +23,66 @@ def test_get_status(mocker):
 
 
 # Projects source
-@pytest.mark.skip(reason="Test not implemented yet")
 def test_get_projects_source_list(mocker):
-    # weldr = mock_weldr()
-    # weldrv1 = WeldrV1(weldr)
+    MOCK_FUNCTION_RETURN_VALUE = "{ 'ansible': 'rocks' }"
 
-    args = {}
-    module = mock_module(args)
-    MOCK_FUNCTION_RETURN_VALUE = "Initial return value"
-    with pytest.raises(AnsibleExitJson) as exit_json_obj:  # noqa F841
-        MOCK_FUNCTION_RETURN_VALUE = module.exit_json("No result")
-    EXPECTED_RESULTS = MOCK_FUNCTION_RETURN_VALUE  # noqa F841
-    with patch(target="plugins.module_utils.weldrapiv1.open", return_value=MOCK_FUNCTION_RETURN_VALUE):
-        # actual_results = weldrv1.get_projects_source_list()
-        # assert actual_results == EXPECTED_RESULTS
-        pass
+    weldr = mock_weldr()
+
+    open_request = MagicMock()
+    open_request.read.return_value = json.dumps(MOCK_FUNCTION_RETURN_VALUE, ensure_ascii=False).encode("utf-8")
+
+    weldr.request.open = MagicMock(return_value=open_request)
+    weldrv1 = WeldrV1(weldr)
+
+    EXPECTED_RESULTS = MOCK_FUNCTION_RETURN_VALUE
+    actual_results = weldrv1.get_projects_source_list()
+    assert actual_results == EXPECTED_RESULTS
 
 
 @pytest.mark.skip(reason="Test not implemented yet")
-def test_get_projects_source_info(mocker):
+def test_get_projects_source_list_negative(mocker):
     pass
 
 
+def test_get_projects_source_info(mocker):
+    MOCK_FUNCTION_RETURN_VALUE = "{ 'ansible': 'rocks' }"
+
+    weldr = mock_weldr()
+
+    open_request = MagicMock()
+    open_request.read.return_value = json.dumps(MOCK_FUNCTION_RETURN_VALUE, ensure_ascii=False).encode("utf-8")
+
+    weldr.request.open = MagicMock(return_value=open_request)
+    weldrv1 = WeldrV1(weldr)
+
+    EXPECTED_RESULTS = MOCK_FUNCTION_RETURN_VALUE
+    actual_results = weldrv1.get_projects_source_info("BaseOS")
+    assert actual_results == EXPECTED_RESULTS
+
+
 @pytest.mark.skip(reason="Test not implemented yet")
+def test_get_projects_source_info_negative(mocker):
+    pass
+
+
 def test_get_projects_source_info_sources(mocker):
+    MOCK_FUNCTION_RETURN_VALUE = "{ 'ansible': 'rocks' }"
+
+    weldr = mock_weldr()
+
+    open_request = MagicMock()
+    open_request.read.return_value = json.dumps(MOCK_FUNCTION_RETURN_VALUE, ensure_ascii=False).encode("utf-8")
+
+    weldr.request.open = MagicMock(return_value=open_request)
+    weldrv1 = WeldrV1(weldr)
+
+    EXPECTED_RESULTS = MOCK_FUNCTION_RETURN_VALUE
+    actual_results = weldrv1.get_projects_source_info_sources("BaseOS")
+    assert actual_results == EXPECTED_RESULTS
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_get_projects_source_info_sources_negative(mocker):
     pass
 
 
@@ -58,7 +92,17 @@ def test_post_projects_source_new(mocker):
 
 
 @pytest.mark.skip(reason="Test not implemented yet")
+def test_post_projects_source_new_negative(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
 def test_delete_projects_source(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_delete_projects_source_negative(mocker):
     pass
 
 
@@ -84,6 +128,11 @@ def test_get_projects_depsolve_projects(mocker):
 # Modules/projects list
 @pytest.mark.skip(reason="Test not implemented yet")
 def test_get_modules_list(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_get_modules_list_negative(mocker):
     pass
 
 
@@ -159,7 +208,17 @@ def test_get_blueprints_list(mocker):
 
 
 @pytest.mark.skip(reason="Test not implemented yet")
+def test_get_blueprints_list_negative(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
 def test_get_blueprints_info(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_get_blueprints_info_negative(mocker):
     pass
 
 
@@ -210,6 +269,11 @@ def test_get_blueprints_changes(mocker):
 
 @pytest.mark.skip(reason="Test not implemented yet")
 def test_post_blueprint_new(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_post_blueprint_new_negative(mocker):
     pass
 
 
@@ -298,7 +362,17 @@ def test_delete_compose(mocker):
 
 
 @pytest.mark.skip(reason="Test not implemented yet")
+def test_delete_compose_negative(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
 def test_get_compose_types(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_get_compose_types_negative(mocker):
     pass
 
 
@@ -308,7 +382,17 @@ def test_get_compose_queue(mocker):
 
 
 @pytest.mark.skip(reason="Test not implemented yet")
+def test_get_compose_queue_negative(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
 def test_get_compose_status(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_get_compose_status_negative(mocker):
     pass
 
 
@@ -318,7 +402,17 @@ def test_get_compose_info(mocker):
 
 
 @pytest.mark.skip(reason="Test not implemented yet")
+def test_get_compose_info_negative(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
 def test_get_compose_finished(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_get_compose_finished_negative(mocker):
     pass
 
 
@@ -328,7 +422,17 @@ def test_get_compose_failed(mocker):
 
 
 @pytest.mark.skip(reason="Test not implemented yet")
+def test_get_compose_failed_negative(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
 def test_get_compose_image(mocker):
+    pass
+
+
+@pytest.mark.skip(reason="Test not implemented yet")
+def test_get_compose_image_negative(mocker):
     pass
 
 
