@@ -3,7 +3,7 @@ builder_blueprint_name: test_blueprint
 builder_blueprint_src_path: /tmp/blueprint.toml
 builder_blueprint_distro_lower: "{{ 'rhel' if ansible_distribution == 'RedHat' else ansible_distribution | lower }}"
 builder_blueprint_ref: "{{ builder_blueprint_distro_lower }}/{{ hostvars[inventory_hostname].ansible_distribution_major_version }}/x86_64/{{ 'iot' if ansible_distribution == 'Fedora' else 'edge' }}" # noqa yaml[line-length]
-builder_compose_type: edge-installer
+builder_compose_type: edge-commit
 builder_pub_key_path: "~/.ssh/id_rsa.pub"
 builder_password: openshift
 builder_enforce_auth: true
@@ -11,6 +11,8 @@ builder_compose_pkgs:
   - "vim-enhanced"
   - "git"
   - "ansible-core"
+  - "tmux"
+  - "emacs"
 builder_compose_customizations:
   user:
     name: "core"
@@ -22,3 +24,5 @@ builder_compose_customizations:
       - "wheel"
 builder_image_storage_threshold: 3 # percentage
 builder_image_storage_cleared: false
+builder_system_ipv4: "{{ ansible_default_ipv4.address }}"
+is_aws_ec2: true

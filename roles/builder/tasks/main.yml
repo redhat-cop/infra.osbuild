@@ -1,4 +1,13 @@
 ---
+- name: Set fact system internal ipv4 to public ec2 ipv4
+  when: is_aws_ec2 is defined and is_aws_ec2
+  block:
+    - amazon.aws.ec2_metadata_facts:
+
+    - name: set stuff
+      ansible.builtin.set_fact:
+        builder_system_ipv4: "{{ ansible_ec2_public_ipv4 }}"
+
 - name: Remove all images from storage
   when: builder_image_storage_cleared
   block:
@@ -236,7 +245,7 @@
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}"
         compose_type: "{{ builder_compose_type }}"
-        ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
+        ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + builder_system_ipv4 + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
       register: builder_compose_start_out
       when:
@@ -246,7 +255,7 @@
       infra.osbuild.start_compose:
         blueprint: "{{ builder_blueprint_name }}-empty"
         compose_type: "{{ builder_compose_type }}"
-        ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + ansible_default_ipv4.address + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
+        ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + builder_system_ipv4 + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
       register: builder_compose_start_out
       when:
