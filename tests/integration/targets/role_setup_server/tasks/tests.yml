@@ -75,6 +75,7 @@
 
 - name: Check Firewall Status
   ansible.posix.firewalld_info:
+    active_zones: false
   register: firewalld_info_out
 
 - name: Set default firewalld zone fact

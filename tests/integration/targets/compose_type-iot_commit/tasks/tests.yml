@@ -8,7 +8,7 @@
 #       within these test cases (yet?).
 - name: Get latest checksum from repo.
   ansible.builtin.command:
-    cmd: "/usr/bin/ostree rev-parse {{ builder_blueprint_ref }} --repo=/var/www/html/{{ builder_blueprint_name }}/repo" # noqa yaml[line-length]
+    cmd: "/usr/bin/ostree rev-parse {{ builder_blueprint_ref }} --repo=/var/www/html/{{ builder_blueprint_name }}/repo"  # noqa yaml[line-length]
   register: checksum_output
   changed_when: false
 

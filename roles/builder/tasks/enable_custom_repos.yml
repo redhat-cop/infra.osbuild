@@ -1,3 +1,4 @@
+---
 - name: Add source for custom packages
   when:
     - builder_custom_repos is defined
@@ -21,6 +22,8 @@
       loop: "{{ builder_custom_repos }}"
       loop_control:
         loop_var: __builder_repo
+      notify:
+        - __clear_osbuild_composer_package_cache
 
 - name: Add RHSM repos for additional Red Hat packages
   when:
@@ -45,3 +48,8 @@
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
+      notify:
+        - __clear_osbuild_composer_package_cache
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

@@ -15,7 +15,7 @@ the `infra.osbuild.builder` role will automate the deployment of.
 Type: complex
 Required: false
 
-Custom list of RPM repositories to make available to the 
+Custom list of RPM repositories to make available to the
 [osbuild](https://www.osbuild.org/) [compose builds](https://www.osbuild.org/guides/user-guide/user-guide.html).
 
 Each list entry is a [YAML dictionary](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
@@ -30,7 +30,7 @@ type and has the following attributes:
 | check_gpg     | bool                              | No        | true          |
 | gpgkey_urls   | list of strings                   | No        | omit          |
 | rhsm          | bool                              | No        | false         |
-| state         | string ("present" or "absent" )   | No  | "present"     | 
+| state         | string ("present" or "absent" )   | No  | "present"     |
 
 Example:
 
@@ -51,7 +51,7 @@ builder_custom_repos:
 Type: list
 Required: false
 
-List of RHSM repositories to make available to the 
+List of RHSM repositories to make available to the
 [osbuild](https://www.osbuild.org/) [compose builds](https://www.osbuild.org/guides/user-guide/user-guide.html).
 
 Example:
@@ -62,7 +62,7 @@ builder_rhsm_repos:
   - "fast-datapath-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
 ```
 
-#### NOTES:
+#### NOTES
 
 osbuild performs builds in [multiple stages](https://www.osbuild.org/guides/developer-guide/osbuild.html?highlight=stage#osbuild)
 and if an `*-installer` compose type is defined for `builder_compose_type`, as
@@ -90,7 +90,7 @@ Type: string
 Required: false
 
 This is the name of the [osbuild blueprint](https://www.osbuild.org/guides/blueprint-reference/blueprint-reference.html?highlight=distro#distribution-selection-with-blueprints)
-to use. The blueprint will be auto generated based on the contents of the 
+to use. The blueprint will be auto generated based on the contents of the
 `builder_compose_customizations` role variable. In the event an of an [rpm-ostree](https://rpm-ostree.readthedocs.io/en/stable/)
 based compose type specified by the `builder_compose_type` role variable, the
 blueprint name defined in this variable will use used to define the resulting [ostree](https://ostreedev.github.io/ostree/)
@@ -110,9 +110,12 @@ compose build.
 Type: string
 Required: false
 
-This variable is used to pass the ostree repo url of a perviously built commit to build an installer from. When this variable is not defined a new commit will be built for the installer.
+This variable is used to pass the ostree repo url of a previously built commit
+to build an installer from. When this variable is not defined a new commit will
+be built for the installer.
 
 Example:
+
 ```yaml
 builder_ostree_url: "http://0.0.0.0/test_blueprint_aap/repo/"
 ```
@@ -122,12 +125,12 @@ builder_ostree_url: "http://0.0.0.0/test_blueprint_aap/repo/"
 Type: string
 Required: false
 
-This variable need not be set and is only used when an [rpm-ostree]() based
-image is defined in the `builder_compose_type` variable. The `builder_blueprint_ref`
+This variable need not be set and is only used when an
+[rpm-ostree](https://rpm-ostree.readthedocs.io/en/stable/) based image is
+defined in the `builder_compose_type` variable. The `builder_blueprint_ref`
 variable defines the [ostree](https://ostreedev.github.io/ostree/) ref (branch)
 to commit the ostree payload to in the resulting ostree repository on the
 osbuild server.
-
 
 ### builder_compose_type
 
@@ -137,21 +140,24 @@ Required: false
 This variable defines the type of compose desired, valid inputs will vary based
 on operating system (RHEL, CentOS Stream, or Fedora) and release version therin.
 
-For RHEL, the Red Hat Enterprise Linux Documentation Team publishes these and they can be found [here](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/composing_a_customized_rhel_system_image/index#composer-output-formats_composer-description).
+For RHEL, the Red Hat Enterprise Linux Documentation Team publishes these and
+they can be found [here](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/composing_a_customized_rhel_system_image/index#composer-output-formats_composer-description).
 
-For CentOS Stream and Fedora, you will need to reference the output of the 
-`composer-cli compose types` command on the osbuild server (this can also be 
+For CentOS Stream and Fedora, you will need to reference the output of the
+`composer-cli compose types` command on the osbuild server (this can also be
 done on RHEL if preferred).
-
 
 ### builder_wait_compose_timeout
 
 Type: int
 Required: false
 
-The amount of time in seconds that the wait_compose module will wait for a build to complete before failing. By default wait_compose waits for 1800 seconds unless this variable is set.
+The amount of time in seconds that the wait_compose module will wait for a build
+to complete before failing. By default wait_compose waits for 1800 seconds unless
+this variable is set.
 
 Example:
+
 ```yaml
 builder_wait_compose_timeout: 2400
 ```
@@ -164,6 +170,7 @@ Required: true
 Enforces system authentication using public ssh keys or user password
 
 Example:
+
 ```yaml
 builder_enforce_auth: true
 ```
@@ -175,7 +182,8 @@ Required: false
 
 Password for the user that is created from the blueprint
 
-`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs to be defined for system authentication.
+`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs
+to be defined for system authentication.
 
 ### builder_pub_key_path
 
@@ -186,14 +194,17 @@ Path to location of ssh public key to inject into the resulting image to allow
 key-based ssh functionality without extra configuration for systems installed
 with the resulting build media.
 
-`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs to be defined for system authentication.
+`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs
+to be defined for system authentication.
 
 Example:
+
 ```yaml
 builder_pub_key_path: ~/.ssh/id_rsa.pub
 ```
 
 ### builder_pub_key
+
 Type: string
 Required: false
 
@@ -201,9 +212,11 @@ SSH public key to inject into the resulting image to allow
 key-based ssh functionality without extra configuration for systems installed
 with the resulting build media.
 
-`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs to be defined for system authentication.
+`builder_password` or `builder_pub_key` / `builder_pub_key_path` needs
+to be defined for system authentication.
 
 Example:
+
 ```yaml
 builder_pub_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDA8mSWJrMW9PSy3gXpqTu/QQPB/gfahwLIvt007poNHRartDaLQPNOwfGzBRXXaaP5RVAHqwmxStP3eVkIdm1UhzJ1X50KCWz5Oq0PW2UGjxCxdgutNbBEtGqewR9N7jOulcEjV+JQG1//vSuLlPWm/5W3nAE6objc+YQ1RyBSqgN58pvvqfhh2kjBKxAS1urDSc0CUlhefWnV60dYY7dApHemEC/+XZbYP68bVznZVPf4k0s+0Tx1GAxDMxUWUj4owldO6XVwxYkEgTBaMllSYyT95Mq6wqFQZ/k3IKikczwKnqsjFTl3/AFMaWgGlyGurCrKZtPEpZVsZYLlgWUtoZWlbUJHiKgyn4V8ErHVZBzauOkyydTaBp0O2ZxOTvIWlCkzR9129hxK4C2u0eewAfw0m1x8C2sB9OboteWpVFSIKXUb9he72lDguR8rfoTrvMwYKQ27z4FQbLQeAt4I1hPY/7bL4UYnKMszpmV7GuAPfzwtz0tBt2C4uX4b7OE= resolutecoder@fedora
 ```
@@ -216,6 +229,7 @@ Required: false
 List of RPMs to include in the image.
 
 Example:
+
 ```yaml
 builder_compose_pkgs:
   - "vim-enhanced"
@@ -223,15 +237,16 @@ builder_compose_pkgs:
   - "tmux"
 ```
 
-### builder_compose_customizations:
+### builder_compose_customizations
 
 Type: dict
 Required: false
 
-This variable is the YAML dict expression of 
+This variable is the YAML dict expression of
 [osbuild blueprint](https://www.osbuild.org/guides/blueprint-reference/blueprint-reference.html) customizations.
 
 Example:
+
 ```yaml
 builder_compose_customizations:
   user:
@@ -246,28 +261,33 @@ builder_compose_customizations:
     enabled: ["firewalld"]
   firewalld.services:
     enabled: ["ssh", "https"]
-    
+
 ```
 
 ### builder_image_storage_threshold
+
 Type: int
 Required: false
 
 The minimum amount of space left for the image storage expressed as a percentage.
-For example defining 3 (default) means there needs to be at least 3% left of storage for images to be built successfully.
+For example defining 3 (default) means there needs to be at least 3% left of
+storage for images to be built successfully.
 
 Example:
+
 ```yaml
 builder_image_storage_threshold: 3
 ```
 
 ### builder_image_storage_cleared
+
 Type: bool
 Required: false
 
 This variable will cause all images to be removed
 
 Example:
+
 ```yaml
 builder_image_storage_cleared: true
 ```
@@ -284,6 +304,7 @@ Required: false
 List of kickstart options to add to the kickstart file
 
 Example:
+
 ```yaml
 builder_kickstart_options:
   - lang en_US.UTF-8
@@ -302,11 +323,13 @@ builder_kickstart_options:
 Type: list
 Required: false
 
-List of kickstart post options to add to the kickstart file. Use default(None) when conditionally setting a variable in the builder_kickstart_post list.
+List of kickstart post options to add to the kickstart file. Use default(None)
+when conditionally setting a variable in the builder_kickstart_post list.
 
 Example:
+
 ```yaml
-additional_kickstart_post: 
+additional_kickstart_post:
   - "{{ microshift_image_ovn_options_template | default(None) }}"
 ```
 
@@ -314,7 +337,8 @@ additional_kickstart_post:
 
 Define these variables to auto register the system with AAP
 
-Example: 
+Example:
+
 ```yaml
 builder_aap_url: 'https://<IP_ADDRESS>/api/v2/inventories/<INVENTORY_NUMBER>/hosts/'
 builder_set_hostname: "{% raw %}{{ ansible_default_ipv4.macaddress | replace(':','') }}{% endraw %}"
@@ -340,6 +364,7 @@ Type: string
 Required: false
 
 Example:
+
 ```yaml
 builder_set_hostname: "{% raw %}{{ ansible_default_ipv4.macaddress | replace(':','') }}{% endraw %}"
 ```
@@ -360,6 +385,7 @@ Type: string
 Required: false
 
 Example:
+
 ```yaml
 builder_set_variables: "{% raw %}{ipaddress: {{ ansible_all_ipv4_addresses }}, macaddress: '{{ ansible_default_ipv4.macaddress }}' }{% endraw %}"
 ```
@@ -407,8 +433,6 @@ None.
         name: infra.osbuild.builder
 ```
 
-
 ## License
 
 GPLv3
-

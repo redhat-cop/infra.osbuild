@@ -3,14 +3,16 @@
 [![GitHub Super-Linter](https://github.com/redhat-cop/infra.osbuild/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)[![Codecov](https://img.shields.io/codecov/c/github/redhat-cop/infra.osbuild)](https://codecov.io/gh/redhat-cop/infra.osbuild)
 
 [Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html)
-for management of [osbuild composer](https://www.osbuild.org/documentation/#composer) 
-to build [rpm-ostree](https://rpm-ostree.readthedocs.io/en/latest/) based images for Fedora,
-Red Hat Enterprise Linux, and Centos Stream. This collection has roles to build an osbuild server,
-an apache httpd server to host images, and a role to build installer images and rpm-ostree updates.
+for management of [osbuild composer](https://www.osbuild.org/documentation/#composer)
+to build [rpm-ostree](https://rpm-ostree.readthedocs.io/en/latest/) based
+images for Fedora, Red Hat Enterprise Linux, and Centos Stream.
+This collection has roles to build an osbuild server, an apache httpd server
+to host images, and a role to build installer images and rpm-ostree updates.
 
 ## Installing
 
-To install this collection and its dependencies, you will need to use the [Ansible](https://github.com/ansible/ansible) `ansible-galaxy` command:
+To install this collection and its dependencies, you will need to use the
+[Ansible](https://github.com/ansible/ansible) `ansible-galaxy` command:
 
 ```shell
 ansible-galaxy collection install git+https://github.com/redhat-cop/infra.osbuild
@@ -39,6 +41,7 @@ ansible-playbook playbooks/osbuild_setup_server.yml
 ```shell
 ansible-playbook playbooks/osbuild_builder.yml
 ```
+
 You can specify what kind of build you prefer with the variable buidler_compose_type.
 
 Current supported and tested build types are:
@@ -61,21 +64,28 @@ ansible-playbook playbooks/osbuild_builder.yml -e builder_compose_type=edge-inst
 
 ### Image Hosting
 
-Images are hosted via apache http server that is setup using the setup_server playbook. The images are located at this path on the osbuild server: `/var/www/html/<blueprint_name>/images`. Inside the image directory will be version subdirectories for each iso built.
-
+Images are hosted via apache http server that is setup using the setup_server playbook.
+The images are located at this path on the osbuild server: `/var/www/html/<blueprint_name>/images`.
+Inside the image directory will be version subdirectories for each iso built.
 
 ### Kickstart Hosting
 
-Image kickstart files are also hosted that can be used as a boot option via http on the osbuild server. The path is `http://<ip_addr>/<blueprint_name>/kickstart.ks`
+Image kickstart files are also hosted that can be used as a boot option
+via http on the osbuild server. The path is `http://<ip_addr>/<blueprint_name>/kickstart.ks`
 
 ### Auditing versions
 
 You can run `rpm-ostree status` to see what specific version the system is using.
 
 Here is a sample output:
+
 ```
 Deployments:
 * edge:rhel/8/x86_64/edge
     Version: 0.0.1 (2023-04-07T19:40:08Z)
     Commit: 7d3461f2fce7572fcdc9b3e8f75677bcdf96afed1ff5a3953f81852aad51f78d
 ```
+
+## Code of Conduct
+
+Please see the official [Ansible Community Code of Conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html).
