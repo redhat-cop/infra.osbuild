@@ -1,0 +1,18 @@
+{
+    "name": "Basic Survey",
+    "description": "This is the name of the osbuild blueprint to use.",
+    "spec": [
+      {
+        "question_description": "Name",
+        "min": 0,
+        "default": "",
+        "max": 128,
+        "required": true,
+        "choices": "",
+        "new_question": true,
+        "variable": "basic_name",
+        "question_name": "Basic Name",
+        "type": "text"
+      }
+		]
+}
