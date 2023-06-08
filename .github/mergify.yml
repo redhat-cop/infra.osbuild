@@ -44,7 +44,28 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - "#review-threads-unresolved=0"
     name: Remove question label from resolved conversations
 
-  # PR.4) If Pull Request check fails, request resolution (prevent stalling the merge queue)
+  #
+  # PR.4) Require all changes requested reviews to be resolved
+  - actions:
+      comment:
+        message: "This Pull Request needs all changes requested to be resolved. Could you fix it @{{author}}? 🙏"
+      label:
+        add:
+          - changes requested
+    conditions:
+      - "#changes-requested-reviews-by=0"
+    name: Check for unresolved changes requested before merging
+  #
+  # PR.5) If all changes requested are resolved, remove question label
+  - actions:
+      label:
+        remove:
+          - changes requested
+    conditions:
+      - "#changes-requested-reviews-by=0"
+    name: Remove question label from resolved changes requested
+
+  # PR.6) If Pull Request check fails, request resolution (prevent stalling the merge queue)
   - actions:
       comment:
         message: "This Pull Request needs all checks to run successfully. Could you fix it @{{author}}? 🙏"
@@ -66,7 +87,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
               - -check-success="CI (Summary Code Coverage)"
     name: Request Pull Request check re-run
   #
-  # PR.5) Merge Pull Request rule
+  # PR.7) Merge Pull Request rule
   - actions:
       label:
         remove:
@@ -83,11 +104,12 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - check-success="CI (Ansible devel sanity Sanity)"
       - check-success="CI (Ansible devel sanity Units)"
       - check-success="CI (Summary Code Coverage)"
-      - check-success="Lint Green"
+      - check-success="Lint Blue"
+      # - check-success="Lint Green"
       - and: *common_merge_criteria
     name: Automatic merge on approval for Pull Requests
   #
-  # PR.6) Detect when Pull Request has conflicts and add conflicts label
+  # PR.8) Detect when Pull Request has conflicts and add conflicts label
   - actions:
       comment:
         message: "This Pull Request is now in conflict. Could you fix it @{{author}}? 🙏"
@@ -98,7 +120,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - conflict
     name: Warn on conflicts
   #
-  # PR.7) Detect when Pull Request conflict is cleared and remove label
+  # PR.9) Detect when Pull Request conflict is cleared and remove label
   - actions:
       label:
         remove:
@@ -107,7 +129,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - -conflict
     name: Remove conflict label if not needed
   #
-  # PR.8) Automatically close Pull Request after 14 days
+  # PR.10) Automatically close Pull Request after 14 days
   - actions:
       close:
         message: |
@@ -118,7 +140,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - updated-at<14 days ago
     name: Close stale Pull Request
   #
-  # PR.9) Detect when Pull Request is ready / awaiting review and add label
+  # PR.11) Detect when Pull Request is ready / awaiting review and add label
   - actions:
       label:
         add:
@@ -132,7 +154,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       # - body~=(?m)^- \[[xX]\] I have added unit tests that prove my fix is effective or that my feature works
     name: Pull Request is ready and waiting for review
   #
-  # PR.10) Detect when Pull Request received review and remove label
+  # PR.12) Detect when Pull Request received review and remove label
   - actions:
       label:
         remove:
@@ -142,7 +164,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - -draft
     name: Remove waiting for review label if not needed
   #
-  # PR.11) Detect when Pull Request includes a bug and add label
+  # PR.13) Detect when Pull Request includes a bug and add label
   - actions:
       label:
         add:
@@ -151,7 +173,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - body~=(?m)^- \[[xX]\] Bug fix \(non-breaking change which fixes an issue\)
     name: Add bug label
   #
-  # PR.12) Detect when Pull Request no longer includes bug and remove label
+  # PR.14) Detect when Pull Request no longer includes bug and remove label
   - actions:
       label:
         remove:
@@ -161,7 +183,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
     name: Remove bug label
 
   #
-  # PR.13) Detect when Pull Request includes enhancement and add label
+  # PR.15) Detect when Pull Request includes enhancement and add label
   - actions:
       label:
         add:
@@ -170,7 +192,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - body~=(?m)^- \[[xX]\] New feature \(non-breaking change which adds functionality\)
     name: add enhancement label
   #
-  # PR.14) Detect when Pull Request no longer includes enhancement and remove label
+  # PR.16) Detect when Pull Request no longer includes enhancement and remove label
   - actions:
       label:
         remove:
@@ -180,7 +202,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
     name: remove enhancement label
 
   #
-  # PR.15) Detect when Pull Request includes documentation updates and add label
+  # PR.17) Detect when Pull Request includes documentation updates and add label
   - actions:
       label:
         add:
@@ -189,7 +211,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - body~=(?m)^- \[[xX]\] Documentation update
     name: add documentation label
   #
-  # PR.16) Detect when Pull Request no longer includes documentation updates and remove label
+  # PR.18) Detect when Pull Request no longer includes documentation updates and remove label
   - actions:
       label:
         remove:
@@ -199,7 +221,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
     name: remove documentation label
 
   #
-  # PR.17) Detect when Pull Request includes tests update and add label
+  # PR.19) Detect when Pull Request includes tests update and add label
   - actions:
       label:
         add:
@@ -208,7 +230,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - body~=(?m)^- \[[xX]\] Tests update
     name: Add test update label
   #
-  # PR.18) Detect when Pull Request no longer includes tests update and remove label
+  # PR.20) Detect when Pull Request no longer includes tests update and remove label
   - actions:
       label:
         remove:
@@ -218,7 +240,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
     name: remove test update label
 
   #
-  # PR.19) Detect when Pull Request includes refactoring and add label
+  # PR.21) Detect when Pull Request includes refactoring and add label
   - actions:
       label:
         add:
@@ -227,7 +249,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - body~=(?m)^- \[[xX]\] Refactor
     name: add refactor label
   #
-  # PR.20) Detect when Pull Request no longer includes refactoring and remove label
+  # PR.22) Detect when Pull Request no longer includes refactoring and remove label
   - actions:
       label:
         remove:
