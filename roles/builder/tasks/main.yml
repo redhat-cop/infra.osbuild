@@ -3,7 +3,7 @@
   when: "'ec2' in ansible_facts['domain']"
   block:
     - name: Gather ec2 metadata facts
-      amazon.aws.ec2_metadata_facts:
+      amazon.aws.ec2_metadata_facts: # yamllint disable-line rule:empty-values
 
     - name: Set new builder system ipv4 address
       ansible.builtin.set_fact:
