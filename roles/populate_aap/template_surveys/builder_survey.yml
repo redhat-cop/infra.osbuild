@@ -10,7 +10,7 @@ spec:
     question_name: 'What is the blueprint name?'
     type: 'text'
 
-  - question_description: 'This is the path to a location on the osbuild server that the generated blueprint should be stored at and used as the source content for the osbuild compose build.'
+  - question_description: 'This is the path to a location on the osbuild server that the generated blueprint should be stored at and used as the source content for the osbuild compose build.'  # yamllint disable-line rule:line-length
     default: ""
     required: false
     new_question: true
