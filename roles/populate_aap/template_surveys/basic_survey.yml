@@ -17,7 +17,7 @@ spec:
     question_name: 'What is the blueprint source path?'
     type: 'text'
 
-  - question_description: 'This variable is used to pass the ostree repo url of a previously built commit to build an installer from. When this variable is not defined a new commit will be built for the installer.'
+  - question_description: 'This variable is used to pass the ostree repo url of a previously built commit to build an installer from. When this variable is not defined a new commit will be built for the installer.'  # yamllint disable-line rule:line-length
     default: ""
     required: false
     new_question: true
@@ -33,7 +33,7 @@ spec:
     question_name: 'What is the blueprint ref?'
     type: 'text'
 
-  - question_description: 'This variable defines the type of compose desired, valid inputs will vary based on operating system (RHEL, CentOS Stream, or Fedora) and release version therin.'
+  - question_description: 'This variable defines the type of compose desired, valid inputs will vary based on operating system (RHEL, CentOS Stream, or Fedora) and release version therin.'  # yamllint disable-line rule:line-length
     default: ""
     required: false
     new_question: true
@@ -41,7 +41,7 @@ spec:
     question_name: 'What is the compose type?'
     type: 'text'
 
-  - question_description: 'The amount of time in seconds that the wait_compose module will wait for a build to complete before failing. By default wait_compose waits for 1800 seconds unless this variable is set.'
+  - question_description: 'The amount of time in seconds that the wait_compose module will wait for a build to complete before failing. By default wait_compose waits for 1800 seconds unless this variable is set.'  # yamllint disable-line rule:line-length
     default: ""
     required: false
     new_question: true
@@ -66,7 +66,7 @@ spec:
     question_name: 'What is the password for the system user?'
     type: 'text'
 
-  - question_description: 'Path to location of ssh public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media.'
+  - question_description: 'Path to location of ssh public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media.'  # yamllint disable-line rule:line-length
     default: ""
     required: false
     new_question: true
@@ -74,7 +74,7 @@ spec:
     question_name: 'What is the ssh key public path?'
     type: 'text'
 
-  - question_description: 'SSH public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media.'
+  - question_description: 'SSH public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media.'  # yamllint disable-line rule:line-length
     default: ""
     required: false
     new_question: true
@@ -82,7 +82,7 @@ spec:
     question_name: 'What is the ssh key public?'
     type: 'text'
 
-  - question_description: 'The minimum amount of space left for the image storage expressed as a percentage. For example defining 3 (default) means there needs to be at least 3% left of storage for images to be built successfully.'
+  - question_description: 'The minimum amount of space left for the image storage expressed as a percentage. For example defining 3 (default) means there needs to be at least 3% left of storage for images to be built successfully.'  # yamllint disable-line rule:line-length
     default: ""
     required: false
     new_question: true
@@ -101,7 +101,7 @@ spec:
       - 'yes'
       - 'no'
 
-  - question_description: 'Optionally perform automatic enrollment of systems installed via the resulting image build using a companion kickstart with Ansible Automation Platform, then set this variable to point to the URL where the Ansible Automation Platform can be reached.'
+  - question_description: 'Optionally perform automatic enrollment of systems installed via the resulting image build using a companion kickstart with Ansible Automation Platform, then set this variable to point to the URL where the Ansible Automation Platform can be reached.'  # yamllint disable-line rule:line-length
     default: ""
     required: false
     new_question: true
