@@ -1,6 +1,7 @@
 # Osbuild Composer Ansible Collection
 
-[![GitHub Super-Linter](https://github.com/redhat-cop/infra.osbuild/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)[![Codecov](https://img.shields.io/codecov/c/github/redhat-cop/infra.osbuild)](https://codecov.io/gh/redhat-cop/infra.osbuild)
+[![GitHub Super-Linter](https://github.com/redhat-cop/infra.osbuild/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)[![Codecov](https://img.shields.io/codecov/c/github/redhat-cop/infra.osbuild)](https://codecov.io/gh/redhat-cop/infra.osbuild)[![OpenSSF
+Scorecard](https://api.securityscorecards.dev/projects/github.com/{owner}/{repo}/badge)](https://api.securityscorecards.dev/projects/github.com/{owner}/{repo})
 
 [Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html)
 for management of [osbuild composer](https://www.osbuild.org/documentation/#composer)
