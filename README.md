@@ -92,4 +92,4 @@ Please see the official [Ansible Community Code of Conduct](https://docs.ansible
 
 ## Licensing
 
-GNU General Public License v3.0 or later.
+[GNU General Public License v3.0 or later](https://github.com/redhat-cop/infra.osbuild/blob/main/LICENSE)
