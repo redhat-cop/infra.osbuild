@@ -86,6 +86,26 @@ Deployments:
     Commit: 7d3461f2fce7572fcdc9b3e8f75677bcdf96afed1ff5a3953f81852aad51f78d
 ```
 
+## Supported Versions of Ansible
+
+<!--start requires_ansible-->
+
+## Ansible version compatibility
+
+This collection has been tested against following Ansible versions: **>=2.12**.
+
+Plugins and modules within a collection may be tested with only specific
+Ansible versions.  A collection may contain metadata that identifies these versions.
+PEP440 is the schema used to describe the versions of Ansible.
+
+<!--end requires_ansible-->
+
+## Tested with Ansible
+
+- ansible-core 2.14 (devel)
+- ansible-core 2.13 (stable)
+- ansible-core 2.12 (stable)
+
 ## Code of Conduct
 
 Please see the official [Ansible Community Code of Conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html).
