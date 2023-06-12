@@ -4,10 +4,10 @@
 # policy, and support documentation.
 
 name: Scorecard supply-chain security
-on: # yamllint disable-line rule:truthy
+on:  # yamllint disable-line rule:truthy
   # For Branch-Protection check. Only the default branch is supported. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
-  branch_protection_rule:
+  branch_protection_rule:  # yamllint disable-line rule:empty-values
   # To guarantee Maintained check is occasionally updated. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
   schedule:
