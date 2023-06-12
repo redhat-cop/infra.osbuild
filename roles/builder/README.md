@@ -392,7 +392,11 @@ builder_set_variables: "{% raw %}{ipaddress: {{ ansible_all_ipv4_addresses }}, m
 
 ## Variables Exported by the Role
 
-None.
+### builder_image_path
+
+Type: string
+
+Returns the path where the newly built image is located.
 
 ## Dependencies
 
