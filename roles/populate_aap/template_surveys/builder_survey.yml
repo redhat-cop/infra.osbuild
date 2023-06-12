@@ -3,7 +3,6 @@ name: 'Builder survey'
 description: 'Survey to help populate variable for the builder role.'
 spec:
   - question_description: 'This is the name of the osbuild blueprint to use.'
-    default: ""
     required: false
     new_question: true
     variable: 'builder_blueprint_name'
@@ -11,7 +10,6 @@ spec:
     type: 'text'
 
   - question_description: 'This is the path to a location on the osbuild server that the generated blueprint should be stored at and used as the source content for the osbuild compose build.'  # yamllint disable-line rule:line-length
-    default: ""
     required: false
     new_question: true
     variable: 'builder_blueprint_src_path'
@@ -19,7 +17,6 @@ spec:
     type: 'text'
 
   - question_description: 'This variable is used to pass the ostree repo url of a previously built commit to build an installer from. When this variable is not defined a new commit will be built for the installer.'  # yamllint disable-line rule:line-length
-    default: ""
     required: false
     new_question: true
     variable: 'builder_ostree_url'
@@ -27,7 +24,6 @@ spec:
     type: 'text'
 
   - question_description: 'This variable need not be set and is only used when an rpm-ostree based image is defined in the builder_compose_type variable.'
-    default: ""
     required: false
     new_question: true
     variable: 'builder_blueprint_ref'
@@ -35,7 +31,6 @@ spec:
     type: 'text'
 
   - question_description: 'This variable defines the type of compose desired, valid inputs will vary based on operating system (RHEL, CentOS Stream, or Fedora) and release version therin.'  # yamllint disable-line rule:line-length
-    default: ""
     required: false
     new_question: true
     variable: 'builder_compose_type'
@@ -43,7 +38,6 @@ spec:
     type: 'text'
 
   - question_description: 'The amount of time in seconds that the wait_compose module will wait for a build to complete before failing. By default wait_compose waits for 1800 seconds unless this variable is set.'  # yamllint disable-line rule:line-length
-    default: ""
     required: false
     new_question: true
     variable: 'builder_wait_compose_timeout'
@@ -51,7 +45,6 @@ spec:
     type: 'integer'
 
   - question_description: 'Enforces system authentication using public ssh keys or user password'
-    default: ""
     required: false
     new_question: true
     variable: 'builder_enforce_auth'
@@ -60,7 +53,6 @@ spec:
     choices: 'yes\nno'
 
   - question_description: 'Password for the user that is created from the blueprint'
-    default: ""
     required: false
     new_question: true
     variable: 'builder_password'
@@ -68,23 +60,20 @@ spec:
     type: 'text'
 
   - question_description: 'Path to location of ssh public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media.'  # yamllint disable-line rule:line-length
-    default: ""
     required: false
     new_question: true
     variable: 'builder_pub_key_path'
-    question_name: 'What is the ssh key public path?'
+    question_name: 'What is the public ssh key path?'
     type: 'text'
 
   - question_description: 'SSH public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media.'  # yamllint disable-line rule:line-length
-    default: ""
     required: false
     new_question: true
     variable: 'builder_pub_key'
-    question_name: 'What is the ssh key public?'
+    question_name: 'What is the public ssh key?'
     type: 'text'
 
   - question_description: 'The minimum amount of space left for the image storage expressed as a percentage. For example defining 3 (default) means there needs to be at least 3% left of storage for images to be built successfully.'  # yamllint disable-line rule:line-length
-    default: ""
     required: false
     new_question: true
     variable: 'builder_image_storage_threshold'
@@ -92,7 +81,6 @@ spec:
     type: 'integer'
 
   - question_description: 'This variable will cause all images to be removed'
-    default: ""
     required: false
     new_question: true
     variable: 'builder_image_storage_cleared'
@@ -103,7 +91,6 @@ spec:
       - 'no'
 
   - question_description: 'Optionally perform automatic enrollment of systems installed via the resulting image build using a companion kickstart with Ansible Automation Platform, then set this variable to point to the URL where the Ansible Automation Platform can be reached.'  # yamllint disable-line rule:line-length
-    default: ""
     required: false
     new_question: true
     variable: 'builder_aap_url'
@@ -111,7 +98,6 @@ spec:
     type: 'text'
 
   - question_description: 'The username for connecting to AAP after system first boots to auto register.'
-    default: ""
     required: false
     new_question: true
     variable: 'builder_aap_ks_user'
@@ -119,7 +105,6 @@ spec:
     type: 'text'
 
   - question_description: 'The password for connecting to AAP after system first boots to auto register.'
-    default: ""
     required: false
     new_question: true
     variable: 'builder_aap_ks_password'
