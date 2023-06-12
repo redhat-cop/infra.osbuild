@@ -52,6 +52,8 @@ populate_aap_job_templates:
     inventory: "{{ populate_aap_inventory_name }}"
     project: "{{ populate_aap_project_name }}"
     playbook: playbooks/osbuild_builder.yml
+    survey_enabled: true
+    survey: "{{ lookup('template', 'template_surveys/builder_survey.yml') | from_yaml }}"
     credentials:
       - "{{ populate_aap_credential_name }}"
 
