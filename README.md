@@ -113,3 +113,11 @@ Please see the official [Ansible Community Code of Conduct](https://docs.ansible
 ## Licensing
 
 [GNU General Public License v3.0 or later](https://github.com/redhat-cop/infra.osbuild/blob/main/LICENSE)
+
+## Contributing to this collection
+
+We welcome community contributions to this collection. See [Contributing to Ansible-maintained collections](https://docs.ansible.com/ansible/devel/community/contributing_maintained_collections.html#contributing-maintained-collections) for complete details.
+
+* [Issues](https://github.com/redhat-cop/infra.osbuild/issues)
+* [Pull Requests](https://github.com/redhat-cop/infra.osbuild/pulls)
+* [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html)
