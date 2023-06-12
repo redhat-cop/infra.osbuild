@@ -1,6 +1,6 @@
 # Osbuild Composer Ansible Collection
 
-[![GitHub Super-Linter](https://github.com/redhat-cop/infra.osbuild/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)[![Codecov](https://img.shields.io/codecov/c/github/redhat-cop/infra.osbuild)](https://codecov.io/gh/redhat-cop/infra.osbuild)
+[![GitHub Super-Linter](https://github.com/redhat-cop/infra.osbuild/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)[![Codecov](https://img.shields.io/codecov/c/github/redhat-cop/infra.osbuild)](https://codecov.io/gh/redhat-cop/infra.osbuild)[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7460/badge)](https://bestpractices.coreinfrastructure.org/projects/7460)[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/redhat-cop/infra.osbuild/badge)](https://api.securityscorecards.dev/projects/github.com/redhat-cop/infra.osbuild)
 
 [Ansible Collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html)
 for management of [osbuild composer](https://www.osbuild.org/documentation/#composer)
@@ -86,6 +86,30 @@ Deployments:
     Commit: 7d3461f2fce7572fcdc9b3e8f75677bcdf96afed1ff5a3953f81852aad51f78d
 ```
 
+## Supported Versions of Ansible
+
+<!--start requires_ansible-->
+
+## Ansible version compatibility
+
+This collection has been tested against following Ansible versions: **>=2.12**.
+
+Plugins and modules within a collection may be tested with only specific
+Ansible versions.  A collection may contain metadata that identifies these versions.
+PEP440 is the schema used to describe the versions of Ansible.
+
+<!--end requires_ansible-->
+
+## Tested with Ansible
+
+- ansible-core 2.14 (devel)
+- ansible-core 2.13 (stable)
+- ansible-core 2.12 (stable)
+
 ## Code of Conduct
 
 Please see the official [Ansible Community Code of Conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html).
+
+## Licensing
+
+[GNU General Public License v3.0 or later](https://github.com/redhat-cop/infra.osbuild/blob/main/LICENSE)

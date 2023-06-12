@@ -11,7 +11,7 @@ jobs:
 
       - name: Lint YAML files
         run: |
-          yamllint -d "{extends: default, rules: {line-length: {max: 350, level: warning}}}" .
+          yamllint -d "{extends: default, rules: {line-length: {max: 200}}}" .
 
 on:  # yamllint disable-line rule:truthy
   pull_request:
