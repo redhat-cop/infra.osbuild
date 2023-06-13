@@ -54,6 +54,9 @@ populate_aap_job_templates:
     playbook: playbooks/osbuild_builder.yml
     survey_enabled: true
     survey: "{{ lookup('template', 'template_surveys/builder_survey.yml') | from_yaml }}"
+    ask_variables_on_launch: true
+    extra_vars:
+      _docs: 'REPLACE WITH VARS FROM DOCS: https://github.com/redhat-cop/infra.osbuild/blob/main/roles/builder/APP_EXTRA_VARS.md'
     credentials:
       - "{{ populate_aap_credential_name }}"
 
