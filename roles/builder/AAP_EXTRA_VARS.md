@@ -1,4 +1,7 @@
 # AAP extra vars
+These are optional extra variables that can be added to the section `other prompts` in AAP template launcher to provide further customization to osbuild.
+
+To get started remove everything from the variables text box and provide any of the variables below in either yaml or json format.
 
 ## Role Variables
 
