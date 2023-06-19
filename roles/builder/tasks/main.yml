@@ -21,6 +21,7 @@
       ansible.builtin.command: "/usr/bin/composer-cli compose delete {{ (item | split)[0] }}"
       loop: "{{ builder_output.stdout_lines }}"
       changed_when: true
+      when: (item | split)[0] != "ID"
 
 - name: Get current image storage size
   block:

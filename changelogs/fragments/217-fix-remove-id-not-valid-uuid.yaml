@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - builder - Fixed remove all images from storage task when UUID is an ID.
