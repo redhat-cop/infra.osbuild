@@ -4,6 +4,10 @@
   ansible.builtin.package_facts:
     manager: auto
 
+- name: Collect facts for the role
+  ansible.builtin.setup:
+    gather_subset: min
+
 - name: Test for ostree-based OS
   ansible.builtin.shell:
     cmd: "set -eo pipefail rpm-ostree status | grep Deployments"
@@ -12,112 +16,22 @@
   changed_when: false
   check_mode: false
 
-- name: Set ostree-based OS fact
-  ansible.builtin.set_fact:
-    _setup_server_infra_osbuild_ostree_os: true  # noqa var-naming[no-role-prefix]
-  when:
-    - _setup_server_infra_osbuild_ostree_check.rc | int == 0
+- name: Run different steps if this is ostree based OS
+  ansible.builtin.include_role:
+    name: "{{ _setup_server_infra_osbuild_ostree_os | ternary('ostree.yml','no-ostree.yml') }}"
 
-- name: Non ostree-based OS specific setup
-  when:
-    - not _setup_server_infra_osbuild_ostree_os
-  block:
-    - name: Setup Repositories
-      community.general.rhsm_repository:  # noqa only-builtins
-        state: enabled
-        purge: true
-        name:
-          - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-rpms"
-          - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms"
-      when:
-        - ansible_distribution == 'RedHat'
-        - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
-        - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
-        - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
 
-    - name: Install Packages
-      ansible.builtin.dnf:
-        state: present
-        name: "{{ _setup_server_base_packages }}"
-
-- name: RHEL8, CentOS8 and Fedora32 =< specific setup
-  when:
-    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
-      ansible_distribution_major_version|int == 8
-    - not _setup_server_infra_osbuild_ostree_os
-  block:
-    - name: Install pytoml
-      ansible.builtin.dnf:
-        state: present
-        name:
-          - python3-pytoml
-
-- name: RHEL9, CentOS9 and Fedora33 => specific setup
-  when:
-    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
-      ansible_distribution_major_version|int == 9
-    - not _setup_server_infra_osbuild_ostree_os
-  block:
-    - name: Install toml
-      ansible.builtin.dnf:
-        state: present
-        name:
-          - python3-toml
-
-- name: Ostree-based OS checks
-  when:
-    - _setup_server_infra_osbuild_ostree_os
-  block:
-    - name: Ensure packages are present
-      ansible.builtin.assert:
-        that:
-          - '{{ package }} in ansible_facts["packages"]'
-        fail_msg: "Cannot continue, ensure that {{ package }} is present"
-      loop_control:
-        loop_var: package
-      loop:
-        - "{{ _setup_server_base_packages }}"
-
-    - name: Ensure EL9/Fedora33 => packages are present
-      ansible.builtin.assert:
-        that:
-          - '"python3-toml" in ansible_facts["packages"]'
-        fail_msg: "Ensure python3-toml is present on EL9/Fedora33+ systems"
-
-      when:
-        - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-        - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
-          ansible_distribution_major_version|int == 9
-
-    - name: Ensure EL8/Fedora32 =< packages are present
-      ansible.builtin.assert:
-        that:
-          - '"python3-pytoml" in ansible_facts["packages"]'
-        fail_msg: "Ensure python3-pytoml is present on EL8/Fedora32- systems"
-      when:
-        - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
-        - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
-          ansible_distribution_major_version|int == 8
-
-- name: Enable Cockpit/Composer/Firewalld/Apache
+- name: Enable required systemd services
   ansible.builtin.systemd:
     state: started
     enabled: true
     name: "{{ item }}"
-  loop:
-    - osbuild-composer.socket
-    - cockpit.socket
-    - httpd.service
-    - firewalld
+  loop: "{{ __setup_server_required_systemd_services }}"
 
-- name: Enable Firewall Ports for Cockpit/Composer/Apache
+- name: Enable required Firewall services
   ansible.posix.firewalld:  # noqa only-builtins
     permanent: true
     immediate: true
     service: "{{ item }}"
     state: enabled
-  loop:
-    - cockpit
-    - http
+  loop: "{{ __setup_server_required_firewall_services }}"

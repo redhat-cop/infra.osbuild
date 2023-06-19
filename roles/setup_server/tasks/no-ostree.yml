@@ -1,0 +1,25 @@
+---
+# NO ostree specific steps
+
+- name: Fedora32 =< specific setup
+  when:
+    - ansible_distribution in ['Fedora']
+    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
+  block:
+    - name: Install pytoml
+      ansible.builtin.dnf:
+        state: present
+        name:
+          - python3-pytoml
+
+- name: Fedora33 => specific setup
+  when:
+    - ansible_distribution in ['Fedora']
+    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
+  block:
+    - name: Install toml
+      ansible.builtin.dnf:
+        state: present
+        name:
+          - python3-toml
+

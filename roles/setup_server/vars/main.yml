@@ -16,4 +16,38 @@ _setup_server_base_packages:
   - python3
   - lorax
   - pykickstart
-_setup_server_infra_osbuild_ostree_os: false
+
+_setup_server_infra_osbuild_ostree_os: "{{ _setup_server_infra_osbuild_ostree_check.rc | int == 0 | default(false) }}"
+
+__setup_server_specific_packages_mapping:
+  'RedHat':
+    '8':
+      - python3-pytoml
+    '9':
+      - python3-toml
+  'CentOS':
+    '8':
+      - python3-pytoml
+    '9':
+      - python3-toml
+  'Fedora': # this is not working, kept separate Fedora action
+  # Thinking how to do that properly
+    '<=32':
+      - python3-pytoml
+    '>=33':
+      - python3-toml
+
+_setup_server_specific_packages: "{{ _setup_server_specific_packages_mapping[ansible_distribution][ansible_distribution_major_version] }}"
+
+__setup_server_required_packages: _setup_server_base_packages + _setup_server_specific_packages
+
+
+__setup_server_required_systemd_services:
+  - osbuild-composer.socket
+  - cockpit.socket
+  - httpd.service
+  - firewalld
+
+__setup_server_required_firewall_services:
+  - cockpit
+  - http

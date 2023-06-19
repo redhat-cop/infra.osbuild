@@ -1,0 +1,53 @@
+---
+# ostree specific steps
+
+- name: Setup Repositories
+  community.general.rhsm_repository:
+    state: enabled
+    purge: true
+    name:
+      - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-rpms"
+      - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms"
+  when:
+    - ansible_distribution == 'RedHat'
+    - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
+    - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
+    - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
+
+- name: Install required packages
+  ansible.builtin.dnf:
+    state: present
+    name: "{{ __setup_server_required_packages }}"
+
+
+
+- name: Ensure packages are present
+  ansible.builtin.assert:
+    that:
+      - '{{ package }} in ansible_facts["packages"]'
+    fail_msg: "Cannot continue, ensure that {{ package }} is present"
+  loop_control:
+    loop_var: package
+  loop:
+    - "{{ _setup_server_base_packages }}"
+
+- name: Ensure EL9/Fedora33 => packages are present
+  ansible.builtin.assert:
+    that:
+      - '"python3-toml" in ansible_facts["packages"]'
+    fail_msg: "Ensure python3-toml is present on EL9/Fedora33+ systems"
+
+  when:
+    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int > 32 or
+      ansible_distribution_major_version|int == 9
+
+- name: Ensure EL8/Fedora32 =< packages are present
+  ansible.builtin.assert:
+    that:
+      - '"python3-pytoml" in ansible_facts["packages"]'
+    fail_msg: "Ensure python3-pytoml is present on EL8/Fedora32- systems"
+  when:
+    - ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+    - ansible_distribution == 'Fedora' and ansible_distribution_major_version|int < 33 or
+      ansible_distribution_major_version|int == 8

@@ -6,9 +6,11 @@ using the osbuild backend [Weldr](https://weldr.io/) API.
 
 ## Requirements
 
-None
+Role requires become root to be set to install packages and ensure other role requirements.
 
 ## Role Variables
+
+All role variables are set in var folder and should not be set by user.
 
 ## Variables Exported by the Role
 
