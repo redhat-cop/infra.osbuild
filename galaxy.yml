@@ -22,6 +22,18 @@ authors:
   - Chris Santiago (@resoluteCoder)
   - Matthew Sandoval (@matoval)
   - Josh Swanson (@jjaswanson4)
+  - Thom Carlin (@thom-at-redhat)
+  - Demetrius Lima (@de1987)
+
+build_ignore:
+  - ".ansible-lint"
+  - ".mypy_cache"
+  - ".pre-commit-config.yaml"
+  - ".pytest_cache"
+  - ".sonarqube_token.txt"
+  - "sonarqube.sh"
+  - "ansible-navigator.log"
+  - "Makefile"
 
 ### OPTIONAL but strongly recommended
 
@@ -39,7 +51,7 @@ license_file: LICENSE
 
 # A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
 # requirements as 'namespace' and 'name'
-tags: ['infrastructure']
+tags: ["infrastructure"]
 
 # Collections that this collection requires to be installed for it to be usable. The key of the dict is the
 # collection label 'namespace.name'. The value is a version range

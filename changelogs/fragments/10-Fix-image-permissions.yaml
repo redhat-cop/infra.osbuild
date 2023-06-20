@@ -1,0 +1,5 @@
+---
+trivial:
+  - Changed to test as non-privileged user added to weldr group
+  - Fixed typo
+  - Installed rsync

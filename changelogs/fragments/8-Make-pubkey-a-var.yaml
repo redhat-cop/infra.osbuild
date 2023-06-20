@@ -1,0 +1,3 @@
+---
+trivial:
+  - Make public key a variable (replace hard coded key)

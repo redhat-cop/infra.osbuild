@@ -1,0 +1,3 @@
+---
+trivial:
+  - Fix permissions bug with copying a file owned by root
