@@ -106,6 +106,25 @@ PEP440 is the schema used to describe the versions of Ansible.
 - ansible-core 2.13 (stable)
 - ansible-core 2.12 (stable)
 
+## Included Content
+Roles:
+- builder
+- populate_aap
+- setup_server
+- system_info
+- update_system
+
+Modules:
+- create_blueprint
+- export_compose
+- get_all_finished_images
+- inject_ks
+- list_blueprint
+- repository
+- rhsm_repo_info
+- start_compose
+- wait_compose
+
 ## Code of Conduct
 
 Please see the official [Ansible Community Code of Conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html).
