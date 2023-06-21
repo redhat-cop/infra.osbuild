@@ -132,8 +132,8 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 38 container
-              test: fedora/38/
+            - name: fedora 37 container
+              test: fedora/37/
           groups:
             - 3
       - template: templates/matrix.yml
@@ -209,16 +209,16 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 38 iot-commit
-              test: fedora/38/
+            - name: fedora 37 iot-commit
+              test: fedora/37/
           groups:
             - 10
       - template: templates/matrix.yml
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: Fedora 38 iot-container
-              test: fedora/38/
+            - name: fedora 37 iot-container
+              test: fedora/37/
           groups:
             - 11
 
@@ -227,8 +227,8 @@ stages:
       #   parameters:
       #     testFormat: devel/{0}
       #     targets:
-      #       - name: Fedora 38 iot-installer
-      #         test: fedora/38/
+      #       - name: fedora 37 iot-installer
+      #         test: fedora/37/
       #     groups:
       #       - 12
 
@@ -237,8 +237,8 @@ stages:
       #   parameters:
       #     testFormat: devel/{0}
       #     targets:
-      #       - name: Fedora 38 iot-raw-image
-      #         test: fedora/38/
+      #       - name: fedora 37 iot-raw-image
+      #         test: fedora/37/
       #     groups:
       #       - 13
       - template: templates/matrix.yml
@@ -330,8 +330,8 @@ stages:
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: Fedora 38 container
-              test: fedora/38/
+            - name: fedora 37 container
+              test: fedora/37/
           groups:
             - 3
       - template: templates/matrix.yml
@@ -407,16 +407,16 @@ stages:
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: Fedora 38 iot-commit
-              test: fedora/38/
+            - name: fedora 37 iot-commit
+              test: fedora/37/
           groups:
             - 10
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: Fedora 38 iot-container
-              test: fedora/38/
+            - name: fedora 37 iot-container
+              test: fedora/37/
           groups:
             - 11
 
@@ -425,8 +425,8 @@ stages:
       #   parameters:
       #     testFormat: 2.15/{0}
       #     targets:
-      #       - name: Fedora 38 iot-installer
-      #         test: fedora/38/
+      #       - name: fedora 37 iot-installer
+      #         test: fedora/37/
       #     groups:
       #       - 12
 
@@ -435,8 +435,8 @@ stages:
       #   parameters:
       #     testFormat: 2.15/{0}
       #     targets:
-      #       - name: Fedora 38 iot-raw-image
-      #         test: fedora/38/
+      #       - name: fedora 37 iot-raw-image
+      #         test: fedora/37/
       #     groups:
       #       - 13
       - template: templates/matrix.yml
