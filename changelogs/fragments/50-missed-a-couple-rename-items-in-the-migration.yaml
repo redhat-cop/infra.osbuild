@@ -1,0 +1,3 @@
+---
+trivial:
+  - Changed organization name from ansible-collections to redhat-cop

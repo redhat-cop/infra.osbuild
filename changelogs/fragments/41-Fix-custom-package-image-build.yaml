@@ -1,0 +1,3 @@
+---
+trivial:
+  - Correct method of passing custom packages to the build role

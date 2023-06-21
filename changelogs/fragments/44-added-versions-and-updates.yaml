@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - Add blueprint details (semantic versioning, name)
+  - Add weldr socket timeout
