@@ -1,0 +1,5 @@
+---
+trivial:
+  - Add more tests for builder role
+  - Correct test matrix
+  - Fix typos in variable names and copyrights

@@ -1,0 +1,4 @@
+---
+major_changes:
+  - Add custom repositories as sources for blueprints
+  - Implement more weldrapiv1 methods
