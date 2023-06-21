@@ -1,0 +1,3 @@
+---
+trivial:
+  - More fixes for https://github.com/redhat-cop/infra.osbuild/issues/14
