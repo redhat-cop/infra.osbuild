@@ -25,11 +25,11 @@ if [ "${platform}" == "rhel" ] && [[ "${version}" =~ ^8 ]]; then
 fi
 
 if [ "${platform}" == "rhel" ] && [ "${version}" == "8.8" ]; then
-    PYTHON="--python 3.9"
+    PYTHON="--python '3.9'"
 elif [ "${platform}" == "rhel" ] && [ "${version}" == "9.1" ]; then
-    PYTHON="--python 3.9"
+    PYTHON="--python '3.9'"
 elif [ "${platform}" == "rhel" ] && [ "${version}" == "9.2" ]; then
-    PYTHON="--python 3.9"
+    PYTHON="--python '3.9'"
 else
     PYTHON=""
 fi
@@ -40,7 +40,7 @@ ansible-test integration --color -v --retry-on-error \
     ${COVERAGE:+"$COVERAGE"} \
     ${CHANGED:+"$CHANGED"} \
     ${UNSTABLE:+"$UNSTABLE"} \
-    ${PYTHON:+"$PYTHON"} \
+    ${PYTHON} \
     --remote "${platform}/${version}" \
     --remote-terminate always \
     --remote-stage "${stage}" \
