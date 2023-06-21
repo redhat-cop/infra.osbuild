@@ -27,7 +27,7 @@ fi
 if [ "${platform}" == "rhel" ] && [ "${version}" == "8.8" ]; then
     PYTHON="--python 3.9"
 elif [ "${platform}" == "rhel" ] && [ "${version}" == "9.2" ]; then
-    PYTHON="3.9"
+    PYTHON="--python 3.9"
 else
     PYTHON=""
 fi
