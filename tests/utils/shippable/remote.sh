@@ -24,7 +24,11 @@ if [ "${platform}" == "rhel" ] && [[ "${version}" =~ ^8 ]]; then
     echo "pynacl >= 1.4.0, < 1.5.0; python_version == '3.6'" >> tests/utils/constraints.txt
 fi
 
-if [ "${platform}" == "rhel" ] && [ "${version}" == "8.8" ]; then
+if [ "${platform}" == "fedora" ] && [ "${version}" == "37" ]; then
+    PYTHON="--python 3.9"
+elif [ "${platform}" == "fedora" ] && [ "${version}" == "38" ]; then
+    PYTHON="--python 3.11"
+elif [ "${platform}" == "rhel" ] && [ "${version}" == "8.8" ]; then
     PYTHON="--python 3.11"
 elif [ "${platform}" == "rhel" ] && [ "${version}" == "9.1" ]; then
     PYTHON="--python 3.9"
