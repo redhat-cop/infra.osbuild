@@ -1,0 +1,5 @@
+---
+trivial:
+  - Fix https://github.com/redhat-cop/infra.osbuild/issues/18
+  - Fix https://github.com/redhat-cop/infra.osbuild/issues/21
+  - Fix https://github.com/redhat-cop/infra.osbuild/pull/20

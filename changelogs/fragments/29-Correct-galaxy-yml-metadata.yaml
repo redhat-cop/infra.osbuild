@@ -1,0 +1,4 @@
+---
+trivial:
+  - Remove community.general installation from docs
+  - Change URLs from personal organization to ansible-collections
