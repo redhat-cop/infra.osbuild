@@ -301,6 +301,204 @@ stages:
               test: rhel/8.8/
           groups:
             - 19
+  - stage: Remote_2_15
+    displayName: Remote 2.15
+    dependsOn: []
+    jobs:
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2
+              test: rhel/9.2/
+            - name: RHEL 8.8
+              test: rhel/8.8/
+          groups:
+            - 1
+      # FIXME - ami is currently broken in CI
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: RHEL 9.2 ami
+      #         test: rhel/9.2/azure
+      #       - name: RHEL 8.8 ami
+      #         test: rhel/8.8/azure
+      #     groups:
+      #       - 2
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: Fedora 36 container
+              test: fedora/36/
+          groups:
+            - 3
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2 edge-commit
+              test: rhel/9.2/
+            - name: RHEL 8.8 edge-commit
+              test: rhel/8.8/
+          groups:
+            - 4
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2 edge-container
+              test: rhel/9.2/
+            - name: RHEL 8.8 edge-container
+              test: rhel/8.8/
+          groups:
+            - 5
+
+      # Fixme
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: RHEL 9.2 edge-installer
+      #         test: rhel/9.2/
+      #       - name: RHEL 8.8 edge-installer
+      #         test: rhel/8.8/
+      #     groups:
+      #       - 6
+
+      # Fixme
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: RHEL 9.2 edge-raw-image
+      #         test: rhel/9.2/
+      #       - name: RHEL 8.8 edge-raw-image
+      #         test: rhel/8.8/
+      #     groups:
+      #       - 7
+
+      # comment out because edge-simplified-installer requireds an installation device
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: RHEL 9.2 edge-simplified-installer
+      #         test: rhel/9.2/
+      #       - name: RHEL 8.8 edge-simplified-installer
+      #         test: rhel/8.8/
+      #     groups:
+      #       - 8
+
+      # Fixme
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: RHEL 9.2 image-installer
+      #         test: rhel/9.2/
+      #       - name: RHEL 8.8 image-installer
+      #         test: rhel/8.8/
+      #     groups:
+      #       - 9
+
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: Fedora 36 iot-commit
+              test: fedora/36/
+          groups:
+            - 10
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: Fedora 36 iot-container
+              test: fedora/36/
+          groups:
+            - 11
+
+      # Fixme
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: Fedora 36 iot-installer
+      #         test: fedora/36/
+      #     groups:
+      #       - 12
+
+      # Fixme
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: Fedora 36 iot-raw-image
+      #         test: fedora/36/
+      #     groups:
+      #       - 13
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2 oci
+              test: rhel/9.2/
+            - name: RHEL 8.8 oci
+              test: rhel/8.8/
+          groups:
+            - 14
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2 openstack
+              test: rhel/9.2/
+            - name: RHEL 8.8 openstack
+              test: rhel/8.8/
+          groups:
+            - 15
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2 qcow2
+              test: rhel/9.2/
+            - name: RHEL 8.8 qcow2
+              test: rhel/8.8/
+          groups:
+            - 16
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2 tar
+              test: rhel/9.2/
+            - name: RHEL 8.8 tar
+              test: rhel/8.8/
+          groups:
+            - 17
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2 vhd
+              test: rhel/9.2/
+            - name: RHEL 8.8 vhd
+              test: rhel/8.8/
+          groups:
+            - 18
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.15/{0}
+          targets:
+            - name: RHEL 9.2 vmdk
+              test: rhel/9.2/
+            - name: RHEL 8.8 vmdk
+              test: rhel/8.8/
+          groups:
+            - 19
   - stage: Remote_2_14
     displayName: Remote 2.14
     dependsOn: []
@@ -649,124 +847,18 @@ stages:
               test: rhel/8.8/
           groups:
             - 19
-  - stage: Remote_2_12
-    displayName: Remote 2.12
-    dependsOn: []
-    jobs:
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8
-              test: rhel/8.8/
-          groups:
-            - 1
-      # FIXME - ami is currently broken in CI
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.12/{0}
-      #     targets:
-      #       - name: RHEL 8.8 ami
-      #         test: rhel/8.8/azure
-      #     groups:
-      #       - 2
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8 edge-commit
-              test: rhel/8.8/
-          groups:
-            - 4
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8 edge-container
-              test: rhel/8.8/
-          groups:
-            - 5
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.12/{0}
-      #     targets:
-      #       - name: RHEL 8.8 edge-installer
-      #         test: rhel/8.8/
-      #     groups:
-      #       - 6
-
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.12/{0}
-      #     targets:
-      #       - name: RHEL 8.8 image-installer
-      #         test: rhel/8.8/
-      #     groups:
-      #       - 9
-
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8 oci
-              test: rhel/8.8/
-          groups:
-            - 14
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8 openstack
-              test: rhel/8.8/
-          groups:
-            - 15
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8 qcow2
-              test: rhel/8.8/
-          groups:
-            - 16
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8 tar
-              test: rhel/8.8/
-          groups:
-            - 17
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8 vhd
-              test: rhel/8.8/
-          groups:
-            - 18
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.12/{0}
-          targets:
-            - name: RHEL 8.8 vmdk
-              test: rhel/8.8/
-          groups:
-            - 19
-
 
   ## Finally
   - stage: Summary
     condition: succeededOrFailed()
     dependsOn:
       - Sanity_devel
+      - Sanity_2_15
       - Sanity_2_14
       - Sanity_2_13
-      - Sanity_2_12
       - Remote_devel
+      - Remote_2_15
       - Remote_2_14
       - Remote_2_13
-      - Remote_2_12
     jobs:
       - template: templates/coverage.yml
