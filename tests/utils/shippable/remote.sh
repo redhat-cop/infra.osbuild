@@ -26,29 +26,12 @@ if [ "${platform}" == "rhel" ] && [[ "${version}" =~ ^8 ]]; then
     fi
 fi
 
-if [ "${platform}" == "fedora" ] && [ "${version}" == "37" ]; then
-    PYTHON="--python 3.11"
-elif [ "${platform}" == "fedora" ] && [ "${version}" == "38" ]; then
-    PYTHON="--python 3.11"
-elif [ "${platform}" == "rhel" ] && [ "${version}" == "8.7" ]; then
-    PYTHON="--python 3.10"
-elif [ "${platform}" == "rhel" ] && [ "${version}" == "8.8" ]; then
-    PYTHON="--python 3.9"
-elif [ "${platform}" == "rhel" ] && [ "${version}" == "9.1" ]; then
-    PYTHON="--python 3.9"
-elif [ "${platform}" == "rhel" ] && [ "${version}" == "9.2" ]; then
-    PYTHON="--python 3.9"
-else
-    PYTHON=""
-fi
-
 # shellcheck disable=SC2086
 ansible-test integration --color -v --retry-on-error \
     "${target}" \
     ${COVERAGE:+"$COVERAGE"} \
     ${CHANGED:+"$CHANGED"} \
     ${UNSTABLE:+"$UNSTABLE"} \
-    ${PYTHON} \
     --remote "${platform}/${version}" \
     --remote-terminate always \
     --remote-stage "${stage}" \
