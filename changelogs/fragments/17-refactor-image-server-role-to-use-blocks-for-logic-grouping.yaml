@@ -1,0 +1,3 @@
+---
+trivial:
+  - refactor image_server_role to use blocks for logical grouping of tasks

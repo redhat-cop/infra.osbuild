@@ -1,0 +1,4 @@
+---
+trivial:
+  - Add Ansible 2.14 sanity and unit tests
+  - Fix Ansible 2.15 sanity tests

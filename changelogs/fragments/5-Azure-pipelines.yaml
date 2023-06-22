@@ -1,0 +1,4 @@
+---
+trivial:
+  - Added Azure Pipelines
+  - Ansible sanity test fixes

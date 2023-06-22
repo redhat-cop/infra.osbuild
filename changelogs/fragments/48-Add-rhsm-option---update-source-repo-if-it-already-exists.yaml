@@ -1,0 +1,6 @@
+---
+minor_changes:
+  - Add rhsm (Red Hat Subscription Manager) option
+
+trivial:
+  - Update source repository (delete and re-add)

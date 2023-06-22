@@ -1,0 +1,3 @@
+---
+trivial:
+  - Added compose type variable to expand composes beyond edge-commit

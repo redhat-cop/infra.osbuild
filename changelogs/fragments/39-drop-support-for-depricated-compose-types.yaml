@@ -1,0 +1,3 @@
+---
+trivial:
+  - Drop support for deprecated compose types

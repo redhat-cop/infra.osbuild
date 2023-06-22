@@ -1,0 +1,4 @@
+---
+major_changes:
+  - Added image_server role
+  - Added get_all_finished_images module

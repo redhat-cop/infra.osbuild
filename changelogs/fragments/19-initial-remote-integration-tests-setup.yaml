@@ -1,0 +1,5 @@
+---
+trivial:
+  - Add initial remote integration tests
+  - Expand documentation
+  - Lint fixes
