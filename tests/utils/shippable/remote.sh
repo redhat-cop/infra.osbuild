@@ -28,6 +28,8 @@ if [ "${platform}" == "fedora" ] && [ "${version}" == "37" ]; then
     PYTHON="--python 3.11"
 elif [ "${platform}" == "fedora" ] && [ "${version}" == "38" ]; then
     PYTHON="--python 3.11"
+elif [ "${platform}" == "rhel" ] && [ "${version}" == "8.7" ]; then
+    PYTHON="--python 3.6"
 elif [ "${platform}" == "rhel" ] && [ "${version}" == "8.8" ]; then
     PYTHON="--python 3.6"
 elif [ "${platform}" == "rhel" ] && [ "${version}" == "9.1" ]; then
