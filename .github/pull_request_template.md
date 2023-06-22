@@ -20,4 +20,4 @@ What is it?
 
 ## Checklist
 
-- [ ] I have created a changelog fragment file for this pull request
+- [ ] Added changelog fragment
