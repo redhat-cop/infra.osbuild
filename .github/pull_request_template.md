@@ -14,3 +14,7 @@ What is it?
 - [ ] Documentation update
 - [ ] Tests update
 - [ ] Refactor
+
+## Checklist
+
+- [ ] Added changelog fragment
