@@ -31,9 +31,10 @@ build_ignore:
   - ".pre-commit-config.yaml"
   - ".pytest_cache"
   - ".sonarqube_token.txt"
-  - "sonarqube.sh"
   - "ansible-navigator.log"
+  - changelog/.plugin-cache.yaml
   - "Makefile"
+  - "sonarqube.sh"
 
 ### OPTIONAL but strongly recommended
 
