@@ -1,15 +1,18 @@
 ---
+archive_path_template: changelogs/archive/{version}
 changelog_filename_template: ../CHANGELOG.rst
 changelog_filename_version_depth: 0
 changes_file: changelog.yaml
 changes_format: combined
+flatmap: disable
 ignore_other_fragment_extensions: true
+is_other_project: false
 keep_fragments: false
 mention_ancestor: true
-new_plugins_after_name: removed_features
 notesdir: fragments
 prelude_section_name: release_summary
 prelude_section_title: Release Summary
+prevent_known_fragments: true
 sanitize_changelog: true
 sections:
   - - major_changes

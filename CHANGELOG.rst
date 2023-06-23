@@ -1,6 +1,31 @@
-Placeholder changelog
-=====================
+===========================
+Infra.Osbuild Release Notes
+===========================
 
-This file is a placeholder; a version-specific ``CHANGELOG-vX.Y.rst`` will be generated during releases from fragments
-under changelogs/fragments. On release branches once a release has been created, consult the branch's version-specific
-file for changes that have occurred in that branch.
+.. contents:: Topics
+
+
+v1.0.0
+======
+
+Release Summary
+---------------
+
+Initial release of infra.osbuild
+
+Major Changes
+-------------
+
+- Add custom repositories as sources for blueprints
+- Added get_all_finished_images module
+- Added image_server role
+- Added osbuild_server role
+- Implement more weldrapiv1 methods
+
+Minor Changes
+-------------
+
+- Add blueprint details (semantic versioning, name)
+- Add rhsm (Red Hat Subscription Manager) option
+- Add weldr socket timeout
+- Change name from osbuild.composer to infra.osbuild (Validated Content)

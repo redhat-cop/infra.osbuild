@@ -139,3 +139,6 @@ testing.extra-vars.yml
 
 # IDEs
 .idea
+
+# Changelogs
+changelogs/.plugin-cache.yaml
