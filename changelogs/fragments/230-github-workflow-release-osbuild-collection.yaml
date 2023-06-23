@@ -1,3 +1,3 @@
 ---
 trivial:
-  - Added GitHub workflow to release osbuild collection
+  - Added GitHub workflows to release osbuild collection and refresh Automation Hub token
