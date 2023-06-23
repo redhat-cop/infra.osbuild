@@ -4,53 +4,53 @@ releases:
   1.0.0:
     changes:
       major_changes:
-      - Add custom repositories as sources for blueprints
-      - Added get_all_finished_images module
-      - Added image_server role
-      - Added osbuild_server role
-      - Implement more weldrapiv1 methods
+        - Add custom repositories as sources for blueprints
+        - Added get_all_finished_images module
+        - Added image_server role
+        - Added osbuild_server role
+        - Implement more weldrapiv1 methods
       minor_changes:
-      - Add blueprint details (semantic versioning, name)
-      - Add rhsm (Red Hat Subscription Manager) option
-      - Add weldr socket timeout
-      - Change name from osbuild.composer to infra.osbuild (Validated Content)
+        - Add blueprint details (semantic versioning, name)
+        - Add rhsm (Red Hat Subscription Manager) option
+        - Add weldr socket timeout
+        - Change name from osbuild.composer to infra.osbuild (Validated Content)
       release_summary: Initial release of infra.osbuild
     fragments:
-    - 1-added-builder-role.yaml
-    - 1.0.0_release_summary.yaml
-    - 10-Fix-image-permissions.yaml
-    - 11-created-variable-for-the-compose-type.yaml
-    - 12-Create-role-for-an-http-server-to-host-images.yaml
-    - 13-fix-sanity-tests-for-core-2-15-branch.yaml
-    - 17-refactor-image-server-role-to-use-blocks-for-logic-grouping.yaml
-    - 19-initial-remote-integration-tests-setup.yaml
-    - 2-Added-Superlinter-and-fixed-linting-issues.yaml
-    - 20-Fix-fedora-support--improve-unsupported-image-err.yaml
-    - 22-Updated-docs-and-fixed-outstanding-issues.yaml
-    - 23-Ci-test-prep-build-server.yaml
-    - 29-Correct-galaxy-yml-metadata.yaml
-    - 3-Corrected-typo-in-variable-name.yaml
-    - 30-add-dependencies-that-we-ve-picked-up-along-the-way.yaml
-    - 31-fix-module-name.yaml
-    - 32-Update-README-md.yaml
-    - 33-add-tests-for-builder-role.yaml
-    - 34-add-proper-output-type-for-compose-type.yaml
-    - 35-enable-integration-tests-for-rhel8-x.yaml
-    - 36-Add-custom-repo-functionality.yaml
-    - 39-drop-support-for-depricated-compose-types.yaml
-    - 4-Added-isort-configuration-so-superlinter-does-not-fail-on-libs-that-are-not-in-the-superlinter-container.yaml
-    - 41-Fix-custom-package-image-build.yaml
-    - 42-Ansible-lint-cleanup.yaml
-    - 43-WIP--enable-ansible-lint---profile-production-for-sanity-tests.yaml
-    - 44-added-versions-and-updates.yaml
-    - 46-move-to-infra-osbuild-name-for-inclusion-as-Validated-Content.yaml
-    - 47-Delete-inventory-ini.yaml
-    - 48-Add-rhsm-option---update-source-repo-if-it-already-exists.yaml
-    - 49-missed-a-couple-rename-items-in-the-migration.yaml
-    - 5-Azure-pipelines.yaml
-    - 50-missed-a-couple-rename-items-in-the-migration.yaml
-    - 6-Fix-sanity-tests.yaml
-    - 7-Fixed-typo-in-method-call.yaml
-    - 8-Make-pubkey-a-var.yaml
-    - 9-fix-image-permissions-issue.yaml
+      - 1-added-builder-role.yaml
+      - 1.0.0_release_summary.yaml
+      - 10-Fix-image-permissions.yaml
+      - 11-created-variable-for-the-compose-type.yaml
+      - 12-Create-role-for-an-http-server-to-host-images.yaml
+      - 13-fix-sanity-tests-for-core-2-15-branch.yaml
+      - 17-refactor-image-server-role-to-use-blocks-for-logic-grouping.yaml
+      - 19-initial-remote-integration-tests-setup.yaml
+      - 2-Added-Superlinter-and-fixed-linting-issues.yaml
+      - 20-Fix-fedora-support--improve-unsupported-image-err.yaml
+      - 22-Updated-docs-and-fixed-outstanding-issues.yaml
+      - 23-Ci-test-prep-build-server.yaml
+      - 29-Correct-galaxy-yml-metadata.yaml
+      - 3-Corrected-typo-in-variable-name.yaml
+      - 30-add-dependencies-that-we-ve-picked-up-along-the-way.yaml
+      - 31-fix-module-name.yaml
+      - 32-Update-README-md.yaml
+      - 33-add-tests-for-builder-role.yaml
+      - 34-add-proper-output-type-for-compose-type.yaml
+      - 35-enable-integration-tests-for-rhel8-x.yaml
+      - 36-Add-custom-repo-functionality.yaml
+      - 39-drop-support-for-depricated-compose-types.yaml
+      - 4-Added-isort-configuration-so-superlinter-does-not-fail-on-libs-that-are-not-in-the-superlinter-container.yaml
+      - 41-Fix-custom-package-image-build.yaml
+      - 42-Ansible-lint-cleanup.yaml
+      - 43-WIP--enable-ansible-lint---profile-production-for-sanity-tests.yaml
+      - 44-added-versions-and-updates.yaml
+      - 46-move-to-infra-osbuild-name-for-inclusion-as-Validated-Content.yaml
+      - 47-Delete-inventory-ini.yaml
+      - 48-Add-rhsm-option---update-source-repo-if-it-already-exists.yaml
+      - 49-missed-a-couple-rename-items-in-the-migration.yaml
+      - 5-Azure-pipelines.yaml
+      - 50-missed-a-couple-rename-items-in-the-migration.yaml
+      - 6-Fix-sanity-tests.yaml
+      - 7-Fixed-typo-in-method-call.yaml
+      - 8-Make-pubkey-a-var.yaml
+      - 9-fix-image-permissions-issue.yaml
     release_date: '2022-11-18'
