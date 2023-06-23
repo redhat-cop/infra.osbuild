@@ -28,3 +28,24 @@
     path: "{{ download_directory }}{{ base_image_name }}"
     state: absent
   failed_when: false
+
+- name: Get builder files
+  ansible.builtin.find:
+    paths:
+      - /var/www/html/
+      - /tmp/
+    file_type: any
+    patterns: "*image-test*"
+  register: cleanup_files
+  become: true
+  delegate_to: osbuild_builder
+  failed_when: false
+
+- name: Cleanup builder files
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ cleanup_files.files }}"
+  become: true
+  delegate_to: osbuild_builder
+  failed_when: false

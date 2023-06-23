@@ -1,13 +1,13 @@
 ---
 - name: Run edge-installer E2E test
-  hosts: morstan-local
+  hosts: test
   gather_facts: true
 
   tasks:
     - name: Init config - phase 1
       ansible.builtin.set_fact:
         image_name: "image-test-{{ query('community.general.random_string', upper=false, special=false, length=16)[0] }}"
-        libvirt_directory: "/home/libvirt"
+        libvirt_directory: "/var/lib/libvirt"
         builder_compose_type: edge-installer
       run_once: true
 
@@ -55,6 +55,7 @@
             - name: Install required packages
               ansible.builtin.package:
                 name:
+                  - libvirt-devel
                   - libguestfs-tools
                   - python3-libvirt
                 state: present
