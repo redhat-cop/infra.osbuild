@@ -1,0 +1,3 @@
+---
+major_changes:
+  - Modifies the setup_server role for use with an ostree-based operating system

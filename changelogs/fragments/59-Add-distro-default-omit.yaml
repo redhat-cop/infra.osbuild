@@ -1,0 +1,3 @@
+---
+trivial:
+  - Add distro default (omit when distro is not being used)

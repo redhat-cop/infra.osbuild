@@ -1,0 +1,3 @@
+---
+trivial:
+  - Remove extra space in galaxy.yml (lint)
