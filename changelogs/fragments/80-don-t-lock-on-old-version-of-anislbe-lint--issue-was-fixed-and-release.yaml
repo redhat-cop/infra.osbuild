@@ -1,0 +1,3 @@
+---
+trivial:
+  - Remove pinning of ansible-lint since underlying issue was resolved

@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fix issue where kickstart would not properly resolve hostnames

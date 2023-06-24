@@ -1,0 +1,5 @@
+---
+minor_changes:
+  - Remove Ansible Automation Platform (AAP) defaults
+  - Update builder README.md to provide example of AAP playbook added to kickstart file
+  - Conditionally create AAP playbook if builder_aap_url is defined

@@ -1,0 +1,5 @@
+---
+minor_changes:
+  - Add support for RHSM repositories
+  - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/85
+  - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/98
