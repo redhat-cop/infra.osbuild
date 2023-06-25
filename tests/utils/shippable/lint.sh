@@ -9,4 +9,6 @@ command -v ansible
 pip install --upgrade --user pip
 pip install --upgrade --user ansible-lint
 
-PATH="${PATH/\~/${HOME}}" ansible-lint --profile=production
+PATH="${PATH/\~/${HOME}}" ansible-lint \
+                                    --exclude changelog/fragments/*.yaml \
+                                    --profile=production
