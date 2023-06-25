@@ -1,12 +1,12 @@
 ---
 - name: Shutdown VM
-  community.libvirt.virt:
+  community.libvirt.virt:  # noqa only-builtins
     command: "destroy"
     name: "{{ vm_name }}"
   failed_when: false
 
 - name: Delete VM
-  community.libvirt.virt:
+  community.libvirt.virt:  # noqa only-builtins
     command: "undefine"
     name: "{{ vm_name }}"
   failed_when: false

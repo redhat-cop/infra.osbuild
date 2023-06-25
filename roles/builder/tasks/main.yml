@@ -2,7 +2,7 @@
 - name: Set fact system internal ipv4 to public ec2 ipv4
   when: "'ec2' in ansible_facts['domain']"
   block:
-    - name: Gather ec2 metadata facts
+    - name: Gather ec2 metadata facts  # noqa only-builtins
       amazon.aws.ec2_metadata_facts:  # yamllint disable-line rule:empty-values
 
     - name: Set new builder system ipv4 address
@@ -78,7 +78,7 @@
   block:
     - name: Get rhsm repos properties
       when: builder_rhsm_repos is defined
-      infra.osbuild.rhsm_repo_info:
+      infra.osbuild.rhsm_repo_info:  # noqa only-builtins
         repos: "{{ builder_rhsm_repos }}"
       register: __builder_rhsm_repos_info  # noqa var-naming[no-role-prefix]
 
@@ -89,7 +89,7 @@
             file: enable_custom_repos.yml
 
         - name: Create a blueprint
-          infra.osbuild.create_blueprint:
+          infra.osbuild.create_blueprint:  # noqa only-builtins
             dest: "{{ builder_blueprint_src_path }}"
             name: "{{ builder_blueprint_name }}"
             distro: "{{ builder_blueprint_distro | default(omit) }}"
@@ -98,7 +98,7 @@
           register: builder_blueprint_output
 
         - name: Push the blueprint into image builder
-          infra.osbuild.push_blueprint:
+          infra.osbuild.push_blueprint:  # noqa only-builtins
             src: "{{ builder_blueprint_src_path }}"
 
         - name: Initialize rpm-ostree repo for blueprint
@@ -112,13 +112,13 @@
                 creates: "/var/www/html/{{ builder_blueprint_name }}/repo"
 
         - name: Start compose
-          infra.osbuild.start_compose:
+          infra.osbuild.start_compose:  # noqa only-builtins
             blueprint: "{{ builder_blueprint_name }}"
             compose_type: "{{ _builder_compose_type }}"
           register: builder_compose_start_out
 
         - name: Wait for compose to finish
-          infra.osbuild.wait_compose:
+          infra.osbuild.wait_compose:  # noqa only-builtins
             compose_id: "{{ builder_compose_start_out['result']['body']['build_id'] }}"
             timeout: "{{ builder_wait_compose_timeout | default(omit) }}"
       always:
@@ -133,7 +133,7 @@
         state: directory
 
     - name: Export the compose artifact
-      infra.osbuild.export_compose:
+      infra.osbuild.export_compose:  # noqa only-builtins
         compose_id: "{{ builder_compose_start_out['result']['body']['build_id'] }}"
         dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.{{ builder_compose_start_out['result']['output_type'] }}"  # yamllint disable-line rule:line-length
 
@@ -206,7 +206,7 @@
     - "'installer' in builder_compose_type or 'raw' in builder_compose_type"
   block:
     - name: Create blank blueprint
-      infra.osbuild.create_blueprint:
+      infra.osbuild.create_blueprint:  # noqa only-builtins
         dest: "{{ builder_blueprint_src_path }}"
         name: "{{ builder_blueprint_name }}-empty"
         distro: "{{ builder_blueprint_distro | default(omit) }}"
@@ -229,7 +229,7 @@
           with_dict: "{{ builder_compose_customizations }}"
 
         - name: Create simplified installer blueprint
-          infra.osbuild.create_blueprint:
+          infra.osbuild.create_blueprint:  # noqa only-builtins
             dest: "{{ builder_blueprint_src_path }}"
             name: "{{ builder_blueprint_name }}-empty"
             distro: "{{ builder_blueprint_distro | default(omit) }}"
@@ -241,13 +241,13 @@
         builder_blueprint_output: "{{ __builder_blueprint_output if __builder_blueprint_output['current_version'] is defined else __builder_blueprint_output_simplified }}"  # noqa yaml[line-length]
 
     - name: Push the blueprint into image builder
-      infra.osbuild.push_blueprint:
+      infra.osbuild.push_blueprint:  # noqa only-builtins
         src: "{{ builder_blueprint_src_path }}"
       when:
         - "'edge' in builder_compose_type or 'iot' in builder_compose_type"
 
     - name: Start installer compose
-      infra.osbuild.start_compose:
+      infra.osbuild.start_compose:  # noqa only-builtins
         blueprint: "{{ builder_blueprint_name }}"
         compose_type: "{{ builder_compose_type }}"
         ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + builder_system_ipv4 + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
@@ -257,7 +257,7 @@
         - "'edge' not in builder_compose_type and 'iot' not in builder_compose_type"
 
     - name: Start ostree installer compose
-      infra.osbuild.start_compose:
+      infra.osbuild.start_compose:  # noqa only-builtins
         blueprint: "{{ builder_blueprint_name }}-empty"
         compose_type: "{{ builder_compose_type }}"
         ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + builder_system_ipv4 + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
@@ -267,7 +267,7 @@
         - "'edge' in builder_compose_type or 'iot' in builder_compose_type"
 
     - name: Wait for compose to finish
-      infra.osbuild.wait_compose:
+      infra.osbuild.wait_compose:  # noqa only-builtins
         compose_id: "{{ builder_compose_start_out['result']['body']['build_id'] }}"
         timeout: "{{ builder_wait_compose_timeout | default(omit) }}"
 
@@ -278,7 +278,7 @@
         state: directory
 
     - name: Export the compose artifact
-      infra.osbuild.export_compose:
+      infra.osbuild.export_compose:  # noqa only-builtins
         compose_id: "{{ builder_compose_start_out['result']['body']['build_id'] }}"
         dest: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.{{ builder_compose_start_out['result']['output_type'] }}"  # yamllint disable-line rule:line-length
 
@@ -289,7 +289,7 @@
         state: directory
 
     - name: Inject kickstart into iso
-      infra.osbuild.inject_ks:
+      infra.osbuild.inject_ks:  # noqa only-builtins
         kickstart: "/var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
         src_iso: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}.{{ builder_compose_start_out['result']['output_type'] }}"  # yamllint disable-line rule:line-length
         dest_iso: "/tmp/{{ builder_blueprint_name }}/{{ builder_blueprint_name }}-{{ builder_blueprint_output['current_version'] }}_ks.{{ builder_compose_start_out['result']['output_type'] }}"  # yamllint disable-line rule:line-length

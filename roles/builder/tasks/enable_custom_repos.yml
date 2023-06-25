@@ -10,7 +10,7 @@
       loop_control:
         loop_var: __builder_repo
     - name: Loop through the repos and configure them
-      infra.osbuild.repository:
+      infra.osbuild.repository:  # noqa only-builtins
         repo_name: "{{ __builder_repo['name'] }}"
         base_url: "{{ __builder_repo['base_url'] }}"
         type: "{{ __builder_repo['type'] | default('yum-baseurl') }}"
@@ -36,7 +36,7 @@
       loop_control:
         loop_var: __builder_rhsm_repo
     - name: Loop through the repos and configure them
-      infra.osbuild.repository:
+      infra.osbuild.repository:  # noqa only-builtins
         repo_name: "{{ __builder_rhsm_repo['name'] }}"
         base_url: "{{ __builder_rhsm_repo['base_url'] }}"
         type: "{{ __builder_rhsm_repo['type'] | default('yum-baseurl') }}"

@@ -23,7 +23,7 @@
     - not _setup_server_infra_osbuild_ostree_os
   block:
     - name: Setup Repositories
-      community.general.rhsm_repository:
+      community.general.rhsm_repository:  # noqa only-builtins
         state: enabled
         purge: true
         name:
@@ -113,7 +113,7 @@
     - firewalld
 
 - name: Enable Firewall Ports for Cockpit/Composer/Apache
-  ansible.posix.firewalld:
+  ansible.posix.firewalld:  # noqa only-builtins
     permanent: true
     immediate: true
     service: "{{ item }}"

@@ -1,7 +1,7 @@
 ---
 # tasks file for roles/update_system
 - name: Update system to the latest commit
-  ansible.posix.rpm_ostree_upgrade:
+  ansible.posix.rpm_ostree_upgrade:  # noqa only-builtins
     allow_downgrade: false
   register: update_system_output
 

@@ -74,7 +74,7 @@
     - firewalld
 
 - name: Check Firewall Status
-  ansible.posix.firewalld_info:
+  ansible.posix.firewalld_info:  # noqa only-builtins
     active_zones: false
   register: firewalld_info_out
 

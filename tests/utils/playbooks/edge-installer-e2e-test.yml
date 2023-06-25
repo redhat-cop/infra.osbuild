@@ -5,14 +5,14 @@
 
   tasks:
     - name: Init config - phase 1
-      ansible.builtin.set_fact:
+      ansible.builtin.set_fact:  # noqa: run-once[task]
         image_name: "image-test-{{ query('community.general.random_string', upper=false, special=false, length=16)[0] }}"
         libvirt_directory: "/var/lib/libvirt"
         builder_compose_type: edge-installer
       run_once: true
 
     - name: Init config - phase 2
-      ansible.builtin.set_fact:
+      ansible.builtin.set_fact:  # noqa: run-once[task]
         builder_blueprint_name: "{{ image_name }}"
         builder_blueprint_src_path: "/tmp/blueprint_{{ image_name }}.toml"
         builder_blueprint_ref: "rhel/8/x86_64/edge"
@@ -86,13 +86,13 @@
               become: true
 
             - name: Create VM
-              community.libvirt.virt:
+              community.libvirt.virt:  # noqa only-builtins
                 command: define
                 xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
               become: true
 
             - name: Start VM
-              community.libvirt.virt:
+              community.libvirt.virt:  # noqa only-builtins
                 name: "{{ vm_name }}"
                 state: "running"
                 autostart: true
