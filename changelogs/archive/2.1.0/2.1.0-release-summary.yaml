@@ -1,6 +1,6 @@
 ---
 release_summary: |-
-  This release includes new populate_aap, system_info, and update_systems roles,
+  Adds new populate_aap, system_info, and update_systems roles,
   AWS as a hosted osbuild server, survey questions, substantial enhancements to the
   builder role and weldr interface, and a large number of bugfixes, test, security,
   documentation, and environment stabilization enhancements.
