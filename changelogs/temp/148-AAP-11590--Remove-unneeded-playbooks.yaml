@@ -1,0 +1,4 @@
+---
+trivial:
+  - Removed old (DEPRECATED) playbooks that were refactored to another collection (edge.microshift)
+...

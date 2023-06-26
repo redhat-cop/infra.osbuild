@@ -1,0 +1,4 @@
+---
+major_changes:
+  - Add AWS as an hosted osbuild server
+...

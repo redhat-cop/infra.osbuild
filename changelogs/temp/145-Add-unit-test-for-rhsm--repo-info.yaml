@@ -1,0 +1,5 @@
+---
+trivial:
+  - Add unit test for rhsm_repo_info
+  - Add code coverage badge to README.md
+...

@@ -1,3 +1,6 @@
 ---
+bugfixes:
+  - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/127
 minor_changes:
   - builder - allowed for passing aap vars to the role will generate the corresponding template instead of doing this manually.
+...

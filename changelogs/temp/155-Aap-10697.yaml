@@ -1,0 +1,4 @@
+---
+minor_features:
+  - When HTTP errors occur, display message body so user has more context
+...

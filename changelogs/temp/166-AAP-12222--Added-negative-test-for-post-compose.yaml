@@ -1,0 +1,4 @@
+---
+trivial:
+  - Add negative test for post_compose() (AAP-12222)
+...

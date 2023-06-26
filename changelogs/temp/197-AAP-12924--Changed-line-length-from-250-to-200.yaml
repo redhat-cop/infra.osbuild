@@ -1,0 +1,4 @@
+---
+trivial:
+  - Reduce yamllint max line length from 250 to 200 (AAP-12924)
+...

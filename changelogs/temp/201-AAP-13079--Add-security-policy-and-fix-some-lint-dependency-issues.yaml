@@ -1,0 +1,6 @@
+---
+trivial:
+  - Add security policy
+  - Fix lint issues
+  - Add missing collection dependency
+...

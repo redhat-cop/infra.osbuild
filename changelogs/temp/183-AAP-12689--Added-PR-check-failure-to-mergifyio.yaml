@@ -1,0 +1,4 @@
+---
+trivial:
+  - Add PR check failure rule to mergify.io (AAP-12689)
+...

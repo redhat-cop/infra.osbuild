@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - Fixes ansible-lint errors which prevented Azure Pipelines from passing (AAP-12274)
+...

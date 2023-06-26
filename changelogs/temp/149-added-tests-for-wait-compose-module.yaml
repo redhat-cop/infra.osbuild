@@ -1,0 +1,4 @@
+---
+trivial:
+  - Added wait_compose module tests
+...

@@ -1,0 +1,5 @@
+---
+trivial:
+  - Reorder weldrapv1 functions (AAP-11046)
+  - Fix typos and lint issues
+...

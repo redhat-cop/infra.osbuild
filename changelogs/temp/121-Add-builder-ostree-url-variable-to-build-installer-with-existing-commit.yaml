@@ -1,0 +1,6 @@
+---
+bugfixes:
+  - Fixes issue https://github.com/redhat-cop/infra.osbuild/issues/119
+minor_changes:
+  - Allow builds with existing ostree commit (skipping building a commit)
+...

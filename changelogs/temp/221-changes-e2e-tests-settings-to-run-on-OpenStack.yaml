@@ -1,0 +1,4 @@
+---
+trivial:
+  - Add ability to run end-to-end (e2e) tests on OpenStack
+...

@@ -1,0 +1,4 @@
+---
+trivial:
+  - Add GitHub workflow to release osbuild collection (AAP-10052)
+...

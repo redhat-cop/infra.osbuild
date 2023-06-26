@@ -1,0 +1,4 @@
+---
+trivial:
+  - Run OpenSSF Scorecard as a GitHub Action (AAP-13148)
+...

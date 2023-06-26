@@ -1,0 +1,4 @@
+---
+trivial:
+  - Add distribution name to empty blueprint to allow cross-distribution installer
+...

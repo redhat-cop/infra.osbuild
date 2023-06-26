@@ -1,0 +1,6 @@
+---
+trivial:
+  - Fix OpenSSF Scorecard badge (AAP-13167)
+  - Add OpenSSF Best Practices badge
+  - Fix yamllint issues
+...

@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - Fix improper file extension issue which causes playbook runs to fail
+...

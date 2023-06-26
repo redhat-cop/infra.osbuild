@@ -1,0 +1,5 @@
+---
+trivial:
+  - Fix mergify rules
+  - Switch from yamllint green to blue for production
+...

@@ -1,0 +1,4 @@
+---
+trivial:
+  - Reduce yamllint max line length
+...

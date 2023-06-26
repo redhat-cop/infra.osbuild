@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - Fix "UnknownUUID is not a valid UUID" issue
+...
