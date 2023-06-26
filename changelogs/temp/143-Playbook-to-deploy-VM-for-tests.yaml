@@ -1,0 +1,4 @@
+---
+trivial:
+  - Added playbook to deploy VM used in testing
+...

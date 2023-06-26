@@ -1,3 +1,4 @@
 ---
 major_changes:
   - system_info - created new role to gather information from a running rpm-ostree based system
+...

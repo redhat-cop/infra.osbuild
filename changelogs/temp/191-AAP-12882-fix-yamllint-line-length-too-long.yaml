@@ -1,0 +1,4 @@
+---
+trivial:
+  - Fix yamllint line-length too long
+...

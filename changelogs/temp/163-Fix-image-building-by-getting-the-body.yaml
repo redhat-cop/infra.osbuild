@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - Fix issue with image building by getting the body
+...

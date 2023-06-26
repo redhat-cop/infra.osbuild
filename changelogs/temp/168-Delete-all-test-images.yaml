@@ -1,0 +1,4 @@
+---
+trivial:
+  - Delete all test images when running the test
+...

@@ -1,0 +1,6 @@
+---
+major_changes:
+  - Add role for building edge-installer ISOs using the modules within the collection
+
+minor_changes:
+  - Add example playbook

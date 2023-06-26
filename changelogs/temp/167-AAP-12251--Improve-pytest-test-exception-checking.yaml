@@ -1,0 +1,4 @@
+---
+trivial:
+  - Improve pytest test exception checking
+...

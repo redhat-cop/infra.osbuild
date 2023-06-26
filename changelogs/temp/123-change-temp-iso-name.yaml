@@ -1,3 +1,0 @@
----
-bugfixes:
-  - builder - added _ks to tmp iso name to avoid confliction

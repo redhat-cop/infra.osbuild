@@ -1,0 +1,6 @@
+---
+major_changes:
+  - Add edge-installer to builder role
+
+trivial:
+  - Added kickstart variables

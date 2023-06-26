@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - Handle cross-distro composes
+  - Change test cases to validate function

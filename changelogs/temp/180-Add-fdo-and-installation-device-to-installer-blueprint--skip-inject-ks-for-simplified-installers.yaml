@@ -1,0 +1,5 @@
+---
+trivial:
+  - Add options to installer blueprint
+  - Skip inject kickstart (ks) for simplified installers
+...

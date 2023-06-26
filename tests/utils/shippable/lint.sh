@@ -6,7 +6,10 @@ echo "${PATH/\~/${HOME}}"
 echo "${HOME}"
 command -v ansible
 
-pip install --upgrade pip
-pip install --upgrade ansible-lint
+pip install --upgrade --user pip
+pip install --upgrade --user ansible-lint
 
-PATH="${PATH/\~/${HOME}}" ansible-lint --profile=production
+PATH="${PATH/\~/${HOME}}" ansible-lint \
+                                    --exclude changelogs/fragments/*.yaml \
+                                    --exclude changelogs/temp/*.yaml \
+                                    --profile=production

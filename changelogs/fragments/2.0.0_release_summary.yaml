@@ -1,0 +1,7 @@
+---
+release_summary: |-
+  This release adds support for more compose types, ostree-based OS, Ansible Execution Environment (AEE),
+  cross-distribution composes, RHSM repositories, and kickstart support (including Ansible Authomation
+  Platform (AAP) auto-registration and custom template).
+  Documentation expanded for more compose_types and use cases
+  As always, we corrected a number of bugs.

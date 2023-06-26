@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - Allow edge-installer kickstart file to optionally use a custom Jinja2 template

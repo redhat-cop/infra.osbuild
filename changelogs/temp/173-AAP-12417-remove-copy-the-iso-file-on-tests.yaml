@@ -1,0 +1,4 @@
+---
+trivial:
+  - Remove unneeded copy the iso file on tests (AAP-12417)
+...

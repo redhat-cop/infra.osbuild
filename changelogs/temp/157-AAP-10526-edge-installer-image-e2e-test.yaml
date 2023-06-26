@@ -1,0 +1,4 @@
+---
+trivial:
+  - Add edge-installer image end-to-end (e2e) tests
+...

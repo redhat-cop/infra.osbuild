@@ -1,0 +1,4 @@
+---
+trivial:
+  - Added required ansible-core versions (AAP-12970)
+...

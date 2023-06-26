@@ -1,0 +1,4 @@
+---
+trivial:
+  - Point mergify.io rules to yamlllint green (new production) (AAP-12918)
+...

@@ -4,3 +4,4 @@ minor_changes:
   - builder - builder_pub_key is for raw ssh keys
   - builder - use blueprint for builder_password not kickstart
   - builder - added enforce_auth to fail when no ssh key or password is defined. Can be set to false to bypass auth for image.
+...

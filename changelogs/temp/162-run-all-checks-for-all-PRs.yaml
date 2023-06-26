@@ -1,0 +1,4 @@
+---
+trivial:
+  - Run all checks for all Pull Requests (PRs)
+...

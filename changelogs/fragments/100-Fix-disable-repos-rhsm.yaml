@@ -1,0 +1,3 @@
+---
+trivial:
+  - Fix issue with disabling RHSM repositories

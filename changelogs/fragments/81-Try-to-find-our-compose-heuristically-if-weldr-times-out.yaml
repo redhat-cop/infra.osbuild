@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Resolve issue https://github.com/redhat-cop/infra.osbuild/issues/73

@@ -1,0 +1,3 @@
+---
+trivial:
+  - Properly check for disabled RHSM repositories

@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 # Copyright: Red Hat Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 __metaclass__ = type
 
@@ -40,7 +40,7 @@ options:
             - Name of distribution, if left blank the distro is inferred from the build server
         type: str
         required: false
-        choices: ["", "rhel-8", "rhel-9", "centos-8", "centos-9", "fedora-36", "fedora-37"]
+        choices: ["", "rhel-8", "rhel-9", "centos-8", "centos-9", "fedora-36", "fedora-37", "fedora-38"]
         default: ""
     description:
         description:
@@ -109,16 +109,16 @@ EXAMPLES = """
         groups: '["users", "wheel"]'
 """
 
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
+from ansible.module_utils.basic import AnsibleModule  # noqa E402
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr  # noqa E402
 
 
 argument_spec = dict(
     dest=dict(type="str", required=True),
     name=dict(type="str", required=True),
     description=dict(type="str", required=False, default=""),
-    distro=dict(type="str", required=False, default="", choices=['', 'rhel-8', 'rhel-9', 'centos-8', 'centos-9', 'fedora-36', 'fedora-37']),
-    version_type=dict(type="str", required=False, default="patch", choices=['major', 'minor', 'patch']),
+    distro=dict(type="str", required=False, default="", choices=["", "rhel-8", "rhel-9", "centos-8", "centos-9", "fedora-36", "fedora-37", "fedora-38"]),
+    version_type=dict(type="str", required=False, default="patch", choices=["major", "minor", "patch"]),
     packages=dict(type="list", required=False, elements="str", default=[]),
     groups=dict(type="list", required=False, elements="str", default=[]),
     customizations=dict(type="dict", required=False, default={}),
@@ -126,14 +126,14 @@ argument_spec = dict(
 
 
 def increment_version(version: str, version_type: str) -> str:
-    if not version.replace('.', '').isdigit():
-        raise ValueError('Version contains non integer values')
-    major, minor, patch = version.split('.')
-    if version_type == 'major':
-        return f'{int(major) + 1}.{minor}.{patch}'
-    if version_type == 'minor':
-        return f'{major}.{int(minor) + 1}.{patch}'
-    return f'{major}.{minor}.{int(patch) + 1}'
+    if not version.replace(".", "").isdigit():
+        raise ValueError("Version contains non integer values")
+    major, minor, patch = version.split(".")
+    if version_type == "major":
+        return f"{int(major) + 1}.{minor}.{patch}"
+    if version_type == "minor":
+        return f"{major}.{int(minor) + 1}.{patch}"
+    return f"{major}.{minor}.{int(patch) + 1}"
 
 
 def create_blueprint(module, weldr):
@@ -142,29 +142,26 @@ def create_blueprint(module, weldr):
     else:
         description: str = module.params["description"]
 
-    toml_data: dict = {
-        "name": f"{module.params['name']}",
-        "description": f"{description}"
-    }
+    toml_data: dict = {"name": f"{module.params['name']}", "description": f"{description}"}
     if module.params["distro"]:
         toml_data["distro"]: str = f"{module.params['distro']}"
 
     blueprint_version = ""
     try:
-        blueprint_version: str = '0.0.1'
+        blueprint_version: str = "0.0.1"
         blueprint_exists: bool = True
-        results: dict = weldr.api.get_blueprints_info(module.params['name'])
-        for error in results['errors']:
-            if error['id'] == 'UnknownBlueprint':
+        results: dict = weldr.api.get_blueprints_info(module.params["name"])
+        for error in results["errors"]:
+            if error["id"] == "UnknownBlueprint":
                 blueprint_exists: bool = False
 
         if blueprint_exists:
-            current_version: str = results['blueprints'][0]['version']
-            blueprint_version: str = increment_version(current_version, module.params['version_type'])
+            current_version: str = results["blueprints"][0]["version"]
+            blueprint_version: str = increment_version(current_version, module.params["version_type"])
 
         toml_data["version"]: str = f"{blueprint_version}"
     except Exception as e:
-        module.fail_json(msg=f'Error: {e}. OSbuild composer service is unavailable')
+        module.fail_json(msg=f"Error: {e}. OSbuild composer service is unavailable")
 
     if module.params["packages"]:
         toml_data["packages"]: list = []
@@ -178,7 +175,6 @@ def create_blueprint(module, weldr):
 
     toml_data["customizations"]: dict = {}
     for key, customization in module.params["customizations"].items():
-
         if isinstance(customization, str):
             toml_data["customizations"][key]: str = customization
             continue
@@ -196,15 +192,9 @@ def create_blueprint(module, weldr):
         with open(module.params["dest"], "w") as fd:
             weldr.toml.dump(toml_data, fd)
     except Exception as e:
-        module.fail_json(
-            msg=f'Failed to write to file: {module.params["dest"]}', error=e
-        )
+        module.fail_json(msg=f'Failed to write to file: {module.params["dest"]}', error=e)
 
-    module.exit_json(
-        msg=f'Blueprint file written to location: {module.params["dest"]}',
-        changed=True,
-        current_version=blueprint_version
-    )
+    module.exit_json(msg=f'Blueprint file written to location: {module.params["dest"]}', changed=True, current_version=blueprint_version)
 
 
 def main() -> None:

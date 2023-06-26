@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - Added argument specification file to validate arguments supplied to builder role
+...

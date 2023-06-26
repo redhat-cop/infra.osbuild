@@ -31,6 +31,8 @@ sections:
     - Bugfixes
   - - known_issues
     - Known Issues
+  - - doc_changes
+    - Documentation Changes
 title: Infra.Osbuild
 trivial_section_name: trivial
 use_fqcn: true

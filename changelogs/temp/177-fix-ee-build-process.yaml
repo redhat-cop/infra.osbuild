@@ -1,0 +1,4 @@
+---
+trivial:
+  - Make Ansible Execution Environment (AEE) build process to match https://www.ansible.com/blog/introduction-to-ansible-builder
+...

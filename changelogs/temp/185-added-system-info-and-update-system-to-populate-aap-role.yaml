@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - Added system info and update system to populate_aap role
+...

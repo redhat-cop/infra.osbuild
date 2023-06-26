@@ -1,0 +1,4 @@
+---
+trivial:
+  - Change context dir to build_context for Ansible Execution Environment (AEE)
+...

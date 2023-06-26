@@ -1,0 +1,4 @@
+---
+trivial:
+  - Fix error where cleanup tasks were not executing on test failures (AAP-12358)
+...
