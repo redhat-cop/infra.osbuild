@@ -21,3 +21,4 @@ What is it?
 ## Checklist
 
 - [ ] Added changelog fragment
+- [ ] Tests exist for affected features covering positive and negative scenarios

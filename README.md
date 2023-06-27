@@ -140,3 +140,18 @@ We welcome community contributions to this collection. See [Contributing to Ansi
 * [Issues](https://github.com/redhat-cop/infra.osbuild/issues)
 * [Pull Requests](https://github.com/redhat-cop/infra.osbuild/pulls)
 * [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html)
+
+## Testing policy
+
+It's required for new or existing features to have tests for positive and negative scenarios.
+The tests are executed by `ansible-test` and those run in the CI.
+
+### Units
+```
+ansible-test units --docker --python $PYTHON_VERSION $TEST_FILE_PATH
+```
+
+### Integration
+```
+ansible-test integration --remote rhel/$RHEL_VERSION $IMAGE_TYPE
+```
