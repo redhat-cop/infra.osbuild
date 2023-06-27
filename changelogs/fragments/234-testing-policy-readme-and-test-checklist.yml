@@ -1,0 +1,4 @@
+---
+trivial:
+  - Added testing policy section to the README
+  - Update the pull request template by adding a test check to the checklist
