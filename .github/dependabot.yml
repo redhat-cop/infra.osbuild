@@ -10,3 +10,13 @@ updates:
     schedule:
       interval: "daily"
 version: 2
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /tests/unit
+    schedule:
+      interval: daily
