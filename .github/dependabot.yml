@@ -9,4 +9,15 @@ updates:
     package-ecosystem: "pip"  # See documentation for possible values
     schedule:
       interval: "daily"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+
+  - package-ecosystem: pip
+    directory: /tests/unit
+    schedule:
+      interval: daily
+
 version: 2
