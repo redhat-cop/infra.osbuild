@@ -17,8 +17,8 @@
   check_mode: false
 
 - name: Run different steps if this is ostree based OS
-  ansible.builtin.include_role:
-    name: "{{ _setup_server_infra_osbuild_ostree_os | ternary('ostree.yml','no-ostree.yml') }}"
+  ansible.builtin.include_tasks:
+    file: "{{ _setup_server_infra_osbuild_ostree_os | ternary('ostree.yml','no-ostree.yml') }}"
 
 
 - name: Enable required systemd services
