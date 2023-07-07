@@ -97,8 +97,8 @@
                   - "virsh"
                   - "define"
                   - "{{ libvirt_image_directory }}/{{ vm_name }}.xml"
-              register: virt_define_results
-              changed_when: "virt_define_results.rc != 0"
+              register: virsh_define_results
+              changed_when: "virsh_define_results.rc != 0"
               become: true
 
             - name: Start VM
@@ -107,8 +107,8 @@
                   - "virsh"
                   - "start"
                   - "{{ vm_name }}"
-              register: virt_create_results
-              changed_when: "virt_create_results.rc != 0"
+              register: virsh_create_results
+              changed_when: "virsh_create_results.rc != 0"
               become: true
 
             - name: Wait for VM to start
@@ -116,12 +116,11 @@
                 argv:
                   - "virsh"
                   - "list"
-                  - "{{ vm_name }}"
                   - "--state-running"
                   - "--autostart"
-              register: vm_start_results
-              changed_when: "virt_start_results.rc != 0"
-              until: "vm_start_results is success"
+              register: virsh_start_results
+              changed_when: "virsh_start_results.rc != 0"
+              until: '"{{ vm_name }}" in "virsh_start_results.stdout"'
               retries: 5
               delay: 2
               become: true
