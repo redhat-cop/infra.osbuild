@@ -85,12 +85,18 @@
                 creates: "{{ libvirt_image_directory }}/{{ vm_name }}.qcow2"
               become: true
 
-            - name: Create VM
+            - name: Create VM file
+              ansible.builtin.template:
+                src: "vm-template.xml.j2"
+                dest: "{{ libvirt_image_directory }}/{{ vm_name }}.xml"
+                mode: "0660"
+
+            - name: Define VM
               ansible.builtin.command:
                 argv:
                   - "virsh"
                   - "define"
-                  - "{{ lookup('template', 'vm-template.xml.j2') }}"
+                  - "{{ libvirt_image_directory }}/{{ vm_name }}.xml"
               register: virt_define_results
               changed_when: "virt_define_results.rc != 0"
               become: true
