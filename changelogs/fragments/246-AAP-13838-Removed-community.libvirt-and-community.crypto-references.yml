@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - Remove dependencies on community.libvirt.virt
+  - Remove dependencies on community.crypto
