@@ -1,0 +1,3 @@
+---
+trivial:
+  - Fix typo in "virsh list"
