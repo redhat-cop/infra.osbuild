@@ -1,16 +1,20 @@
 ---
 - name: Shutdown VM
-  community.libvirt.virt:  # noqa only-builtins
-    command: "destroy"
-    name: "{{ vm_name }}"
+  ansible.builtin.command:
+    argv:
+      - "virsh"
+      - "destroy"
+      - "{{ vm_name }}"
   register: virt_destroy_results
   changed_when: "virt_destroy_results.rc != 0"
   failed_when: false
 
 - name: Delete VM
-  community.libvirt.virt:  # noqa only-builtins
-    command: "undefine"
-    name: "{{ vm_name }}"
+  ansible.builtin.command:
+    argv:
+      - "virsh"
+      - "undefine"
+      - "{{ vm_name }}"
   register: virt_undefine_results
   changed_when: "virt_undefine_results.rc != 0"
   failed_when: false

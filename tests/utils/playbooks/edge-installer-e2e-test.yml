@@ -86,23 +86,41 @@
               become: true
 
             - name: Create VM
-              community.libvirt.virt:  # noqa only-builtins
-                command: define
-                xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
+              ansible.builtin.command:
+                argv:
+                  - "virsh"
+                  - "define"
+                  - "{{ lookup('template', 'vm-template.xml.j2') }}"
+              register: virt_define_results
+              changed_when: "virt_define_results.rc != 0"
               become: true
 
             - name: Start VM
-              community.libvirt.virt:  # noqa only-builtins
-                name: "{{ vm_name }}"
-                state: "running"
-                autostart: true
+              ansible.builtin.command:
+                argv:
+                  - "virsh"
+                  - "start"
+                  - "{{ vm_name }}"
+              register: virt_create_results
+              changed_when: "virt_create_results.rc != 0"
+              become: true
+
+            - name: Wait for VM to start
+              ansible.builtin.command:
+                argv:
+                  - "virsh"
+                  - "list"
+                  - "{{ vm_name }}"
+                  - "--state-running"
+                  - "--autostart"
               register: vm_start_results
+              changed_when: "virt_start_results.rc != 0"
               until: "vm_start_results is success"
               retries: 5
               delay: 2
               become: true
 
-            - name: Wait VM have an IP
+            - name: Wait for VM to have an IP
               ansible.builtin.shell: set -o pipefail && virsh domifaddr {{ vm_name }} | awk 'NR==3 {split($4, array, "/") ; print array[1]}'
               register: vm_ip
               until: vm_ip is regex("[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
@@ -111,7 +129,7 @@
               become: true
               changed_when: false
 
-            - name: Wait VM starting up
+            - name: Wait for VM to accept connections
               ansible.builtin.wait_for_connection:
                 delay: 2
                 timeout: 120
