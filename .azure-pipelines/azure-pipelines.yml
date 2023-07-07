@@ -332,8 +332,8 @@ stages:
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: fedora 37 container
-              test: fedora/37/
+            - name: fedora 38 container
+              test: fedora/38/
           groups:
             - 3
       - template: templates/matrix.yml
