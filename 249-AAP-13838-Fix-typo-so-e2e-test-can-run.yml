@@ -1,0 +1,3 @@
+---
+trivial:
+  - Fix typo so e2e test runs without error
