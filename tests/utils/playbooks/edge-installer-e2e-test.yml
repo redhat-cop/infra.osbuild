@@ -119,7 +119,7 @@
                   - "--state-running"
               register: virsh_list_results
               changed_when: virsh_list_results.rc != 0
-              until: vm_name in "virsh_start_results.stdout"
+              until: vm_name in virsh_start_results.stdout
               retries: 5
               delay: 2
               become: true
