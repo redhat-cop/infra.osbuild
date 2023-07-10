@@ -117,7 +117,6 @@
                   - "virsh"
                   - "list"
                   - "--state-running"
-                  - "--autostart"
               register: virsh_start_results
               changed_when: "virsh_start_results.rc != 0"
               until: 'vm_name in "virsh_start_results.stdout"'
