@@ -1,0 +1,3 @@
+---
+trivial:
+  - Remove unnecessary autostart check for virhs list
