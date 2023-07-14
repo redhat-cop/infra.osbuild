@@ -23,14 +23,15 @@
     - not _setup_server_infra_osbuild_ostree_os
   block:
     - name: Setup Repositories
-      community.general.rhsm_repository:  # noqa only-builtins
-        state: enabled
-        purge: true
-        name:
-          - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-rpms"
-          - "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms"
+      vars:
+        rhc_repositories:
+          - {name: "*", state: disabled}
+          - {name: "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-rpms", state: enabled}
+          - {name: "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms", state: enabled}
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.rhc
       when:
-        - ansible_distribution == 'RedHat'
+        - 'ansible_distribution == "RedHat"'
         - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
         - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
         - '"rhui-azure-rhel8" not in ansible_facts["packages"]'

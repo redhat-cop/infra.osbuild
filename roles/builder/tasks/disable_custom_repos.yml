@@ -37,9 +37,11 @@
       loop_control:
         loop_var: __builder_rhsm_repo
     - name: Loop through the repos and configure them
-      community.general.rhsm_repository:  # noqa only-builtins
-        name: "{{ __builder_rhsm_repo['name'] }}"
-        state: "absent"
+      vars:
+        rhc_repositories:
+          - {name: "{{ __builder_rhsm_repo['name'] }}", state: disabled}
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.rhc
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
