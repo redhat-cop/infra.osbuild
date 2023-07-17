@@ -9,6 +9,8 @@ populate_aap_execution_environment_name: osbuild_ee
 populate_aap_inventory_name: osbuild_inventory
 populate_aap_project_name: osbuild_project
 populate_aap_credential_name: osbuild_credential
+populate_aap_default_host_user: user
+populate_aap_default_host_ip: 0.0.0.0
 populate_aap_organizations:
   - name: "{{ populate_aap_organization_name }}"
 populate_aap_execution_environments:
@@ -23,8 +25,8 @@ populate_aap_hosts:
   - name: osbuild_remote_system
     inventory: "{{ populate_aap_inventory_name }}"
     variables:
-      ansible_host: 0.0.0.0
-      ansible_user: user
+      ansible_host: "{{ populate_aap_default_host_ip }}"
+      ansible_user: "{{ populate_aap_default_host_user }}"
 populate_aap_projects:
   - name: "{{ populate_aap_project_name }}"
     organization: "{{ populate_aap_organization_name }}"
@@ -36,8 +38,8 @@ populate_aap_credentials:
     organization: "{{ populate_aap_organization_name }}"
     credential_type: Machine
     inputs:
-      username: user
-      ssh_key_data: "{{ lookup('file', '/home/user/.ssh/id_rsa') }}"
+      username: "{{ populate_aap_default_host_user }}"
+      ssh_key_data: "{{ lookup('file', populate_aap_ssh_key_path) if populate_aap_ssh_key_path is defined else '' }}"
 populate_aap_job_templates:
   - name: osbuild_setup_server
     job_type: run
@@ -57,7 +59,6 @@ populate_aap_job_templates:
     ask_variables_on_launch: true
     extra_vars:
       _docs: 'REPLACE WITH VARS FROM DOCS: https://github.com/redhat-cop/infra.osbuild/blob/main/roles/builder/APP_EXTRA_VARS.md'  # yamllint disable-line rule:line-length
-
     credentials:
       - "{{ populate_aap_credential_name }}"
 

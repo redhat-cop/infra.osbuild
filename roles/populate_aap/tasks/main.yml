@@ -193,7 +193,7 @@
     name: redhat_cop.controller_configuration.organizations
   when: controller_organizations is defined
 
-- name: Configure execution enviornment for AAP
+- name: Configure execution environment for AAP
   ansible.builtin.include_role:
     name: redhat_cop.controller_configuration.execution_environments
   when: controller_execution_environments is defined
