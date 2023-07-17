@@ -273,7 +273,9 @@ def start_compose(module, weldr):
                     if submitted_compose_found_failed:
                         submitted_compose_uuid: str = submitted_compose_found_failed[0]["id"]
                     else:
-                        module.fail_json(msg="Unable to determine state of build, check osbuild-composer system logs")
+                        module.fail_json(
+                            msg="Unable to determine state of build, check osbuild-composer system logs. Also, consider increasing the request timeout"
+                        )
 
             if submitted_compose_uuid:
                 result: dict = weldr.api.get_compose_status(submitted_compose_uuid)

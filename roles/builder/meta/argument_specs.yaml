@@ -152,4 +152,6 @@ argument_specs:
         type: "int"
         required: false
         default: 120
-        description: "Optionally, set OSBuild composer API timeout in seconds"
+        description: |
+          Optionally, set OSBuild composer API timeout in seconds.
+          This can be useful if a compose request times out while waiting for osbuild-composer service to respond on slow machines.
