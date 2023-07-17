@@ -147,3 +147,9 @@ argument_specs:
       builder_aap_ks_password:
         type: "str"
         required: false
+
+      builder_request_timeout:
+        type: "int"
+        required: false
+        default: 120
+        description: "Optionally, set OSBuild composer API timeout in seconds"
