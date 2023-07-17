@@ -40,8 +40,8 @@
       vars:
         rhc_repositories:
           - {name: "{{ __builder_rhsm_repo['name'] }}", state: disabled}
-      notify:
-        - __clear_osbuild_composer_package_cache
+      # notify:
+      #  - __clear_osbuild_composer_package_cache
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.rhc
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
