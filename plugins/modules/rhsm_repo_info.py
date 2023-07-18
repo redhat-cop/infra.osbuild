@@ -67,11 +67,11 @@ def rhsm_repo_info(module):
                 rhsm_info.append(
                     {
                         "name": repo,
-                        "base_url": items["baseurl"] if "baseurl" in items else "baseurl not defined",
+                        "base_url": items["baseurl"] if "baseurl" in items else None,
                         "type": "yum-baseurl",
-                        "check_ssl": True if "sslverify" in items and items["sslverify"] == "1" else False,
-                        "check_gpg": True if "gpgcheck" in items and items["gpgcheck"] == "1" else False,
-                        "gpgkey_paths": items["gpgkey"] if "gpgkey" in items else "gpgkey not defined",
+                        "check_ssl": items.get("sslverify") == "1",
+                        "check_gpg": items.get("gpgcheck") == "1",
+                        "gpgkey_paths": items["gpgkey"] if "gpgkey" in items else None,
                         "state": "present",
                     }
                 )
