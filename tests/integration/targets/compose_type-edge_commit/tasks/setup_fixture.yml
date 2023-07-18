@@ -11,4 +11,5 @@
     enabled: true
     gpgcheck: false
     mode: '0600'
+    name: zoo
     state: present
