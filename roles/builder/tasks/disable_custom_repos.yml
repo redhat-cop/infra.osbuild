@@ -42,8 +42,8 @@
           - {name: "{{ __builder_rhsm_repo['name'] }}", state: disabled}
       # notify:
       #  - __clear_osbuild_composer_package_cache
-      roles:
-        - role: linux-system-roles.rhc
+      ansible.builtin.include_roles:
+        - name: rhc
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
