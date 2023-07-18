@@ -5,7 +5,6 @@
 #
 - name: Create zoo repository
   ansible.builtin.yum_repository:
-    backup: true
     baseurl: https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo
     description: Zoo demo repository
     enabled: true
