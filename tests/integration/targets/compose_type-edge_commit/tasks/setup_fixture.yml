@@ -19,4 +19,3 @@
       name=zoo
     dest: /etc/yum.repos.d/zoo.repo
     mode: '0600'
-    validate: yum repolist -v
