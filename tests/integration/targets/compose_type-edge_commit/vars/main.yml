@@ -10,7 +10,6 @@ builder_blueprint_distro: "{{ 'fedora' if ansible_distribution == 'Fedora' else 
 builder_blueprint_ref: "{{ 'fedora' if ansible_distribution == 'Fedora' else 'centos' }}/{{ ansible_distribution_major_version }}/x86_64/{{ 'iot' if ansible_distribution == 'Fedora' else 'edge' }}"  # yamllint disable-line rule:line-length
 
 builder_rhsm_repos:
-  - "rhocp-4.12-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
-  - "fast-datapath-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
+  - "zoo"
 
 compose_type: "edge-commit"
