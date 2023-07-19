@@ -57,7 +57,7 @@
       # notify:
       #  - __clear_osbuild_composer_package_cache
       ansible.builtin.include_role:
-        name: rhc
+        name: rhel-system-roles.rhc
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
