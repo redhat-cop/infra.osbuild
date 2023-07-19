@@ -57,7 +57,7 @@
       # notify:
       #  - __clear_osbuild_composer_package_cache
       roles:
-        - redhat.rhel_system_roles.rhc
+        - role: redhat.rhel_system_roles.rhc
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
