@@ -7,7 +7,7 @@
   ansible.builtin.dnf:
     name: linux-system-roles
     state: present
-  when: ansible_distribution != 'Fedora'
+  when: ansible_distribution == 'Fedora'
 
 - name: Install rhel-system-roles on rhel
   ansible.builtin.dnf:
