@@ -89,10 +89,6 @@ if [ "${script}" != "sanity" ] && [ "${script}" != "units" ] && [ "${test}" != "
 
     # retry ansible-galaxy -vvv collection install ansible.posix
     retry git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.posix.git "${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/ansible/posix"
-
-    # retry ansible-galaxy -vvv collection install fedora.linux_system_roles
-    retry git clone --depth=1 --single-branch --single-branch https://github.com/linux-system-roles/rhc.git "${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/rhc"
-
 fi
 
 # END: HACK
