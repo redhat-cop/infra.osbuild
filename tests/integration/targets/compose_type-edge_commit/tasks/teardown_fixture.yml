@@ -7,3 +7,15 @@
   ansible.builtin.yum_repository:
     name: zoo
     state: absent
+
+- name: Remove rhel-system-roles on rhel
+  ansible.builtin.dnf:
+    name: rhel-system-roles
+    state: absent
+  when: ansible_distribution in ['RedHat', 'CentOS']
+
+- name: Remove rhel-system-roles on rhel
+  ansible.builtin.dnf:
+    name: linux-system-roles
+    state: absent
+  when: ansible_distribution != 'Fedora'

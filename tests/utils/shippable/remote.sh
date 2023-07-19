@@ -20,20 +20,9 @@ fi
 stage="${S:-prod}"
 provider="${args[2]:-default}"
 
-if [ "${platform}" == "fedora" ];
-then
-    dnf install linux-system-roles
-fi
-if [ "${platform}" == "rhel" ];
-then
-    dnf install rhel-system-roles
-
-    if [[ "${version}" =~ ^8 ]];
-    then
-        if [ "${version}" != "8.7" ];
-        then
-            echo "pynacl >= 1.4.0, < 1.5.0; python_version == '3.6'" >> tests/utils/constraints.txt
-        fi
+if [ "${platform}" == "rhel" ] && [[ "${version}" =~ ^8 ]]; then
+    if [ "${version}" != "8.7" ]; then
+        echo "pynacl >= 1.4.0, < 1.5.0; python_version == '3.6'" >> tests/utils/constraints.txt
     fi
 fi
 
