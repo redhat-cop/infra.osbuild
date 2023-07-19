@@ -29,7 +29,7 @@
           - {name: "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-rpms", state: enabled}
           - {name: "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-rpms", state: enabled}
       ansible.builtin.include_role:
-        name: rhel-system-roles.rhc
+        name: redhat.rhel-system-roles.rhc
       when:
         - 'ansible_distribution == "RedHat"'
         - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
