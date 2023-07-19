@@ -2,4 +2,4 @@
 collections:
   - amazon.aws
   - ansible.posix
-  - fedora.linux_system_roles
+  #  - fedora.linux_system_roles

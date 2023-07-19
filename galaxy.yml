@@ -61,7 +61,7 @@ tags: ["infrastructure"]
 dependencies:
   "amazon.aws": ">1.0.0"
   "ansible.posix": ">1.0.0"
-  "fedora.linux_system_roles": ">1.0.0"
+  # "fedora.linux_system_roles": ">1.0.0"
 
 # The URL of the originating SCM repository
 repository: https://github.com/redhat-cop/infra.osbuild
