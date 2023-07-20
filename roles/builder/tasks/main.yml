@@ -115,6 +115,7 @@
           infra.osbuild.start_compose:  # noqa only-builtins
             blueprint: "{{ builder_blueprint_name }}"
             compose_type: "{{ _builder_compose_type }}"
+            timeout: "{{ builder_request_timeout }}"
           register: builder_compose_start_out
 
         - name: Wait for compose to finish
@@ -252,6 +253,7 @@
         compose_type: "{{ builder_compose_type }}"
         ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + builder_system_ipv4 + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
+        timeout: "{{ builder_request_timeout }}"
       register: builder_compose_start_out
       when:
         - "'edge' not in builder_compose_type and 'iot' not in builder_compose_type"
@@ -262,6 +264,7 @@
         compose_type: "{{ builder_compose_type }}"
         ostree_url: "{{ builder_ostree_url if builder_ostree_url is defined else 'http://' + builder_system_ipv4 + '/' + builder_blueprint_name + '/repo/' }}"  # noqa yaml[line-length]
         ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
+        timeout: "{{ builder_request_timeout }}"
       register: builder_compose_start_out
       when:
         - "'edge' in builder_compose_type or 'iot' in builder_compose_type"

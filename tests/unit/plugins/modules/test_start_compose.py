@@ -28,6 +28,7 @@ args = {
     "ostree_ref": "",
     "ostree_parent": "",
     "ostree_url": "",
+    "timeout": 60,
 }
 
 
