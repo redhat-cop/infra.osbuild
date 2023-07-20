@@ -91,6 +91,12 @@ options:
         type: str
         default: ""
         required: false
+    timeout:
+        description:
+            - timeout for osbuild-compose requests, in seconds
+        type: int
+        default: 120
+        required: false
 notes:
     - THIS MODULE IS NOT IDEMPOTENT UNLESS C(allow_duplicate) is set to C(false)
     - The params C(profile) and C(image_name) are required together.
@@ -150,6 +156,7 @@ argument_spec = dict(
     ostree_ref=dict(type="str", required=False, default=""),
     ostree_parent=dict(type="str", required=False, default=""),
     ostree_url=dict(type="str", required=False, default=""),
+    timeout=dict(type="int", required=False, default=120),
 )
 
 
@@ -224,7 +231,7 @@ def start_compose(module, weldr):
             }
 
         try:
-            result: dict = weldr.api.post_compose(json.dumps(compose_settings))
+            result: dict = weldr.api.post_compose(json.dumps(compose_settings), timeout=module.params["timeout"])
         except socket.timeout:
             # it's possible we don't get a response back from weldr because on the
             # very first run including a new content source composer will build a repo cache
@@ -266,7 +273,9 @@ def start_compose(module, weldr):
                     if submitted_compose_found_failed:
                         submitted_compose_uuid: str = submitted_compose_found_failed[0]["id"]
                     else:
-                        module.fail_json(msg="Unable to determine state of build, check osbuild-composer system logs")
+                        module.fail_json(
+                            msg="Unable to determine state of build, check osbuild-composer system logs. Also, consider increasing the request timeout"
+                        )
 
             if submitted_compose_uuid:
                 result: dict = weldr.api.get_compose_status(submitted_compose_uuid)

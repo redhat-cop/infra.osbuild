@@ -279,7 +279,7 @@ class WeldrV1:
         raise NotImplementedError
 
     # Composes
-    def post_compose(self, compose_settings):
+    def post_compose(self, compose_settings, timeout=120):
         """
         initiate a compose
 
@@ -294,7 +294,7 @@ class WeldrV1:
             data=compose_settings,
             headers={"Content-Type": "application/json"},
             unix_socket=self.weldr.unix_socket,
-            timeout=120,
+            timeout=timeout,
         )
         result = dict()
         result["status_code"] = info["status"]
