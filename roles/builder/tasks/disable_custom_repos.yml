@@ -50,9 +50,11 @@
         loop_var: __builder_rhsm_repo
       when: ansible_distribution == 'Fedora'
 
-    - name: Display COLLECTIONS_PATH
-      ansible.builtin.debug:
-        msg: "COLLECTIONS_PATH is '{{ lookup('ansible.builtin.env', 'COLLECTIONS_PATH') }}'"
+    - name: COLLECTIONS_PATHS value
+      ansible.builtin.shell:
+        cmd: set -o pipefail; ansible-config dump --format json | jq '.[] | select( ."name" == "COLLECTIONS_PATHS" )'
+      register: shellresult
+      changed_when: shellresult.rc != 0
 
     - name: Loop through the repos and configure them on rhel
       vars:
