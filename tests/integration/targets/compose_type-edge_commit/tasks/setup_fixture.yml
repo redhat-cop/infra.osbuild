@@ -14,14 +14,14 @@
     - name: Create rhel-system-roles
       ansible.builtin.file:
         mode: "0644"
-        path: "/root/ansible_collections/rhel-system-roles"
+        path: "/root/ansible_collections/redhat/rhel-system-roles"
         state: directory
       become: true
 
     - name: Make rhel-system-roles.rhc accessible
       ansible.builtin.file:
         mode: "0644"
-        path: "/root/ansible_collections/rhel-system-roles/rhc"
+        path: "/root/ansible_collections/redhat/rhel-system-roles/rhc"
         src: "/usr/share/ansible/roles/rhel-system-roles.rhc"
         state: link
       become: true
