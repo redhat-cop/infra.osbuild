@@ -11,6 +11,15 @@
         name: rhel-system-roles
         state: present
 
+    - name: Show roles
+      ansible.builtin.command:
+        argv:
+          - ls
+          - -alR
+          - /usr/share/ansible/roles
+      register: commandresult
+      changed_when: commandresult.rc != 0
+
     - name: Make rhel-system-roles accessible
       ansible.builtin.file:
         mode: "0644"
