@@ -11,9 +11,16 @@
 - name: RHEL teardown block
   when: ansible_distribution in ['RedHat', 'CentOS']
   block:
-    # - name: Remove rhel-system-roles link
+    # - name: Remove rhel-system-roles.rhc link
     #  ansible.builtin.file:
     #    path: "/root/ansible_collections/rhel-system-roles/rhc"
+    #    state: absent
+    #  become: true
+
+    # - name: Create rhel-system-roles
+    #  ansible.builtin.file:
+    #    mode: "0644"
+    #    path: "/root/ansible_collections/rhel-system-roles"
     #    state: absent
     #  become: true
 

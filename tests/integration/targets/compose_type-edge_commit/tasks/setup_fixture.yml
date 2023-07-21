@@ -11,7 +11,14 @@
         name: rhel-system-roles
         state: present
 
-    - name: Make rhel-system-roles accessible
+    - name: Create rhel-system-roles
+      ansible.builtin.file:
+        mode: "0644"
+        path: "/root/ansible_collections/rhel-system-roles"
+        state: directory
+      become: true
+
+    - name: Make rhel-system-roles.rhc accessible
       ansible.builtin.file:
         mode: "0644"
         path: "/root/ansible_collections/rhel-system-roles/rhc"
