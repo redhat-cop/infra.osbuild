@@ -8,19 +8,15 @@
     name: zoo
     state: absent
 
-- name: Remove rhel-system-roles link
-  ansible.builtin.file:
-    path: "${PWD}/../../../ansible_collections/rhel-system-roles/rhc"
-    state: absent
-
-- name: Remove rhel-system-roles on rhel
-  ansible.builtin.dnf:
-    name: rhel-system-roles
-    state: absent
+- name: RHEL teardown block
   when: ansible_distribution in ['RedHat', 'CentOS']
+  block:
+    - name: Remove rhel-system-roles link
+      ansible.builtin.file:
+        path: "${PWD}/../../../ansible_collections/rhel-system-roles/rhc"
+        state: absent
 
-- name: Remove rhel-system-roles on rhel
-  ansible.builtin.dnf:
-    name: linux-system-roles
-    state: absent
-  when: ansible_distribution != 'Fedora'
+    - name: Remove rhel-system-roles on rhel
+      ansible.builtin.dnf:
+        name: rhel-system-roles
+        state: absent
