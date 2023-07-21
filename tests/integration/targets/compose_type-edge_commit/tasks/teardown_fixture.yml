@@ -8,6 +8,12 @@
     name: zoo
     state: absent
 
+- name: Remove rhel-system-roles link
+  ansible.builtin.file:
+    src: "${PWD}/../../../ansible_collections/ansible/posix"
+    state: absent
+    target: "/usr/share"
+
 - name: Remove rhel-system-roles on rhel
   ansible.builtin.dnf:
     name: rhel-system-roles

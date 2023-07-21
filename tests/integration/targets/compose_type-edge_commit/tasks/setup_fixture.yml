@@ -3,17 +3,18 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-- name: Install linux-system-roles on fedora
-  ansible.builtin.dnf:
-    name: linux-system-roles
-    state: present
-  when: ansible_distribution == 'Fedora'
-
 - name: Install rhel-system-roles on rhel
   ansible.builtin.dnf:
     name: rhel-system-roles
     state: present
   when: ansible_distribution in ['RedHat', 'CentOS']
+
+- name: Make rhel-system-roles accessible
+  ansible.builtin.file:
+    mode: "0644"
+    src: "${PWD}/../../../ansible_collections/rhel-system-roles/rhc"
+    state: link
+    target: "/usr/share/ansible/roles/rhel-system-roles.rhc"
 
 - name: Create zoo repository
   ansible.builtin.yum_repository:
