@@ -10,9 +10,8 @@
 
 - name: Remove rhel-system-roles link
   ansible.builtin.file:
-    path: "${PWD}/../../../ansible_collections/ansible/posix"
+    path: "${PWD}/../../../ansible_collections/rhel-system-roles/rhc"
     state: absent
-    target: "/usr/share"
 
 - name: Remove rhel-system-roles on rhel
   ansible.builtin.dnf:
