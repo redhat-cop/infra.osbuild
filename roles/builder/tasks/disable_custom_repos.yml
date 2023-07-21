@@ -57,7 +57,7 @@
 
     - name: COLLECTIONS_PATHS value
       ansible.builtin.shell:
-        cmd: set -o pipefail; ansible-config dump --format json | jq '.[] | select( ."name" == "COLLECTIONS_PATHS" )'
+        cmd: set -o pipefail; ansible-config dump --format json | jq '.[] | select( ."name" == "DEFAULT_ROLES_PATH" )'
       register: shellresult
       changed_when: shellresult.rc != 0
 
