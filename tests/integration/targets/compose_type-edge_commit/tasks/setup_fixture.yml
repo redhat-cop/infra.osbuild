@@ -12,9 +12,9 @@
 - name: Make rhel-system-roles accessible
   ansible.builtin.file:
     mode: "0644"
+    path: "/usr/share/ansible/roles/rhel-system-roles.rhc"
     src: "${PWD}/../../../ansible_collections/rhel-system-roles/rhc"
     state: link
-    target: "/usr/share/ansible/roles/rhel-system-roles.rhc"
 
 - name: Create zoo repository
   ansible.builtin.yum_repository:

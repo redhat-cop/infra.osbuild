@@ -10,7 +10,7 @@
 
 - name: Remove rhel-system-roles link
   ansible.builtin.file:
-    src: "${PWD}/../../../ansible_collections/ansible/posix"
+    path: "${PWD}/../../../ansible_collections/ansible/posix"
     state: absent
     target: "/usr/share"
 
