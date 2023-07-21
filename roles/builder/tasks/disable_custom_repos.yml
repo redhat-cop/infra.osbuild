@@ -50,6 +50,11 @@
         loop_var: __builder_rhsm_repo
       when: ansible_distribution == 'Fedora'
 
+    - name: Install jq on rhel
+      ansible.builtin.dnf:
+        name: jq
+        state: present
+
     - name: COLLECTIONS_PATHS value
       ansible.builtin.shell:
         cmd: set -o pipefail; ansible-config dump --format json | jq '.[] | select( ."name" == "COLLECTIONS_PATHS" )'
