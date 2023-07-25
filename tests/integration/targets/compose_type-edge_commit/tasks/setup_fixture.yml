@@ -3,29 +3,6 @@
 # GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-- name: RHEL setup block
-  when: ansible_distribution in ['RedHat', 'CentOS']
-  block:
-    - name: Install rhel-system-roles on rhel
-      ansible.builtin.dnf:
-        name: rhel-system-roles
-        state: present
-
-    - name: Create rhel-system-roles
-      ansible.builtin.file:
-        mode: "0644"
-        path: "/root/ansible_collections/redhat/rhel_system_roles"
-        state: directory
-      become: true
-
-      # - name: Make rhel-system-roles.rhc accessible
-      # ansible.builtin.file:
-      #   mode: "0644"
-      # path: "/root/ansible_collections/redhat/rhel_system_roles/rhc"
-      #  src: "/usr/share/ansible/roles/rhel-system-roles.rhc"
-      #  state: link
-      # become: true
-
 - name: Create zoo repository
   ansible.builtin.yum_repository:
     baseurl: https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo
@@ -35,3 +12,4 @@
     mode: '0600'
     name: zoo
     state: present
+...

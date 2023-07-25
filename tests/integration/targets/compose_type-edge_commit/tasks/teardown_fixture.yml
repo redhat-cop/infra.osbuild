@@ -7,24 +7,4 @@
   ansible.builtin.yum_repository:
     name: zoo
     state: absent
-
-- name: RHEL teardown block
-  when: ansible_distribution in ['RedHat', 'CentOS']
-  block:
-    # - name: Remove rhel-system-roles.rhc link
-    #  ansible.builtin.file:
-    #    path: "/root/ansible_collections/redhat/rhel_system_roles/rhc"
-    #    state: absent
-    #  become: true
-
-    # - name: Create rhel-system-roles
-    #  ansible.builtin.file:
-    #    mode: "0644"
-    #    path: "/root/ansible_collections/redhat/rhel_system_roles"
-    #    state: absent
-    #  become: true
-
-    - name: Remove rhel-system-roles on rhel
-      ansible.builtin.dnf:
-        name: rhel-system-roles
-        state: absent
+...
