@@ -6,6 +6,8 @@
 - gather_facts: false
   hosts: testhost
   name: Run compose_type-edge_commit role
-  roles:
-    - {role: compose_type-edge_commit}  # noqa syntax-check[specific]
+  tasks:
+    - name: Run the rule
+      ansible.builtin.include_role:
+        name: compose_type-edge_commit
 ...
