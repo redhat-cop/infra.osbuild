@@ -52,17 +52,6 @@
         loop_var: __builder_rhsm_repo
       when: ansible_distribution == 'Fedora'
 
-    - name: Install jq on rhel
-      ansible.builtin.dnf:
-        name: jq
-        state: present
-
-    - name: DEFAULT_ROLES_PATH value before
-      ansible.builtin.shell:
-        cmd: set -o pipefail; ansible-config dump --format json | jq --raw-output '.[] | select( ."name" == "DEFAULT_ROLES_PATH" ) | ."value"'
-      register: shellresultbefore
-      changed_when: shellresultbefore.rc != 0
-
     - name: Loop through the repos and configure them on rhel
       vars:
         rhc_repositories:
