@@ -1,0 +1,3 @@
+---
+trivial:
+  - Uncomment fedora.linux-system-roles dependency
