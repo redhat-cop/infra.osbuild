@@ -64,14 +64,19 @@ def rhsm_repo_info(module):
             confp.read_file(open("/etc/yum.repos.d/%s" % file))
             if confp.has_section(repo):
                 items = dict(confp.items(repo))
+
+                for repo_option in ["baseurl", "gpgkey"]:
+                    if repo_option not in items:
+                        module.fail_json(msg="Could not find %s in %s repo" % (repo_option, repo))
+
                 rhsm_info.append(
                     {
                         "name": repo,
-                        "base_url": items["baseurl"] if "baseurl" in items else None,
+                        "base_url": items["baseurl"],
                         "type": "yum-baseurl",
                         "check_ssl": items.get("sslverify") == "1",
                         "check_gpg": items.get("gpgcheck") == "1",
-                        "gpgkey_paths": items["gpgkey"] if "gpgkey" in items else None,
+                        "gpgkey_paths": items["gpgkey"],
                         "state": "present",
                     }
                 )
