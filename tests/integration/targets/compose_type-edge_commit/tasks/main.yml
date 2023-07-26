@@ -12,6 +12,10 @@
   ansible.builtin.include_vars:
     file: ../vars/main.yml
 
+- name: Setup test fixture
+  ansible.builtin.include_tasks:
+    file: setup_fixture.yml
+
 - name: Run the infra.osbuild.builder role
   ansible.builtin.import_role:
     name: infra.osbuild.builder
@@ -22,3 +26,7 @@
 
 - name: Validate the role
   ansible.builtin.include_tasks: tests.yml
+
+- name: Teardown test fixture
+  ansible.builtin.include_tasks:
+    file: teardown_fixture.yml

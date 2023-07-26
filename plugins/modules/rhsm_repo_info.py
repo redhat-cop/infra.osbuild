@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 # Copyright: Red Hat Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 __metaclass__ = type
 
@@ -44,10 +44,10 @@ EXAMPLES = """
     var: rhsm_repo_info_out
 """
 
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.basic import AnsibleModule  # noqa E402
 
-import os
-import configparser
+import os  # noqa E402
+import configparser  # noqa E402
 
 argument_spec = dict(
     repos=dict(type="list", required=True, elements="str", no_log=False),
@@ -64,15 +64,22 @@ def rhsm_repo_info(module):
             confp.read_file(open("/etc/yum.repos.d/%s" % file))
             if confp.has_section(repo):
                 items = dict(confp.items(repo))
-                rhsm_info.append({
-                    "name": repo,
-                    "base_url": items["baseurl"],
-                    "type": "yum-baseurl",
-                    "check_ssl": True if items['sslverify'] == '1' else False,
-                    "check_gpg": True if items['gpgcheck'] == '1' else False,
-                    "gpgkey_paths": items['gpgkey'],
-                    "state": 'present',
-                })
+
+                for repo_option in ["baseurl", "gpgkey"]:
+                    if repo_option not in items:
+                        module.fail_json(msg="Could not find %s in %s repo" % (repo_option, repo))
+
+                rhsm_info.append(
+                    {
+                        "name": repo,
+                        "base_url": items["baseurl"],
+                        "type": "yum-baseurl",
+                        "check_ssl": items.get("sslverify") == "1",
+                        "check_gpg": items.get("gpgcheck") == "1",
+                        "gpgkey_paths": items["gpgkey"],
+                        "state": "present",
+                    }
+                )
         if not items:
             module.fail_json(msg="Could not find %s in the files inside /etc/yum.repos.d/ directory. Error: %s" % (repo, Exception))
 

@@ -72,13 +72,13 @@ if [ "${test}" == "sanity/extra" ]; then
 fi
 
 # START: HACK install dependencies
-if [ "${script}" != "sanity" ] || [ "${test}" == "sanity/extra" ]; then
+# if [ "${script}" != "sanity" ] || [ "${test}" == "sanity/extra" ]; then
     # Nothing further should be added to this list.
     # This is to prevent modules or plugins in this collection having a runtime dependency on other collections.
-    retry git clone --depth=1 --single-branch https://github.com/ansible-collections/community.internal_test_tools.git "${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/community/internal_test_tools"
+    # retry git clone --depth=1 --single-branch https://github.com/ansible-collections/community.internal_test_tools.git "${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/community/internal_test_tools"
     # NOTE: we're installing with git to work around Galaxy being a huge PITA (https://github.com/ansible/galaxy/issues/2429)
     # retry ansible-galaxy -vvv collection install community.internal_test_tools
-fi
+# fi
 
 if [ "${script}" != "sanity" ] && [ "${script}" != "units" ] && [ "${test}" != "sanity/extra" ]; then
     # To prevent Python dependencies on other collections only install other collections for integration tests
@@ -90,9 +90,7 @@ if [ "${script}" != "sanity" ] && [ "${script}" != "units" ] && [ "${test}" != "
     # retry ansible-galaxy -vvv collection install ansible.posix
     retry git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.posix.git "${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/ansible/posix"
 
-    # retry ansible-galaxy -vvv collection install community.general
-    retry git clone --depth=1 --single-branch --single-branch https://github.com/ansible-collections/community.general.git "${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/community/general"
-
+    retry ansible-galaxy -vvv collection install fedora.linux_system_roles
 fi
 
 # END: HACK

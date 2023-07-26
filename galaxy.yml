@@ -59,9 +59,9 @@ tags: ["infrastructure"]
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies:
-  "ansible.posix": ">1.0.0"
   "amazon.aws": ">1.0.0"
-  "community.general": ">1.0.0"
+  "ansible.posix": ">1.0.0"
+  # "fedora.linux_system_roles": ">1.0.0"
 
 # The URL of the originating SCM repository
 repository: https://github.com/redhat-cop/infra.osbuild

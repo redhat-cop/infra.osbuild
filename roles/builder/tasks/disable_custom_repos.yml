@@ -27,6 +27,8 @@
         - __clear_osbuild_composer_package_cache
 
 - name: Remove source for additional RHSM packages
+  environment:
+    ANSIBLE_ROLES_PATH: "${ANSIBLE_ROLES_PATH}:/usr/share/ansible/roles"
   when:
     - __builder_rhsm_repos_info['rhsm_info'] is defined
   block:
@@ -36,15 +38,32 @@
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
-    - name: Loop through the repos and configure them
-      community.general.rhsm_repository:  # noqa only-builtins
-        name: "{{ __builder_rhsm_repo['name'] }}"
-        state: "absent"
+
+    - name: Loop through the repos and configure them on fedora
+      vars:
+        rhc_repositories:
+          - {name: "{{ __builder_rhsm_repo['name'] }}", state: disabled}
+      # notify:
+      #  - __clear_osbuild_composer_package_cache
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.rhc
       loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
       loop_control:
         loop_var: __builder_rhsm_repo
-      notify:
-        - __clear_osbuild_composer_package_cache
+      when: ansible_distribution == 'Fedora'
+
+    - name: Loop through the repos and configure them on rhel
+      vars:
+        rhc_repositories:
+          - {name: "{{ __builder_rhsm_repo['name'] }}", state: disabled}
+      # notify:
+      #  - __clear_osbuild_composer_package_cache
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.rhc
+      loop: "{{ __builder_rhsm_repos_info['rhsm_info'] }}"
+      loop_control:
+        loop_var: __builder_rhsm_repo
+      when: ansible_distribution in ['RedHat', 'CentOS']
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers

@@ -1,5 +1,5 @@
 ---
 collections:
-  - community.general
-  - ansible.posix
   - amazon.aws
+  - ansible.posix
+  #  - fedora.linux_system_roles

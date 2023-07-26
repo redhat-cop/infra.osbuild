@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 # Copyright: Red Hat Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 __metaclass__ = type
 
@@ -85,10 +85,10 @@ EXAMPLES = """
     state: present
 """
 
-import json
+import json  # noqa E402
 
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
+from ansible.module_utils.basic import AnsibleModule  # noqa E402
+from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr  # noqa E402
 
 argument_spec = dict(
     repo_name=dict(type="str", required=True),
@@ -99,7 +99,7 @@ argument_spec = dict(
     gpgkey_urls=dict(type="list", required=False, elements="str", no_log=False),
     gpgkey_paths=dict(type="list", required=False, elements="str", no_log=False),
     rhsm=dict(type="bool", required=False),
-    state=dict(type="str", required=True, choices=["present", "absent"])
+    state=dict(type="str", required=True, choices=["present", "absent"]),
 )
 
 
@@ -111,7 +111,6 @@ def repository(module, weldr):
     repo_exists = weldr.api.get_projects_source_info_sources(module.params["repo_name"])
 
     if module.params["state"] == "present":
-
         new_source = {}
         new_source["name"] = module.params["repo_name"]
         new_source["id"] = module.params["repo_name"]
@@ -123,15 +122,15 @@ def repository(module, weldr):
         if module.params["rhsm"]:
             new_source["rhsm"] = bool(module.params["rhsm"])
 
-        if module.params["gpgkey_urls"] or module.params["gpgkey_paths"]:
+        if module.params["check_gpg"]:
             gpgkeys = []
             if module.params["gpgkey_urls"]:
                 for url in module.params["gpgkey_urls"]:
                     gpgkeys.append(url)
             if module.params["gpgkey_paths"]:
                 for path in module.params["gpgkey_paths"]:
-                    clean_path = path.split('file://')[1]
-                    gpg_key = open(clean_path, 'r').read()
+                    clean_path = path.split("file://")[1]
+                    gpg_key = open(clean_path, "r").read()
                     gpgkeys.append(gpg_key)
 
             new_source["gpgkeys"] = gpgkeys
@@ -151,7 +150,6 @@ def repository(module, weldr):
             msg = "New source repository, %s, was added to osbuild composer" % module.params["repo_name"]
 
     elif module.params["state"] == "absent":
-
         if len(repo_exists["errors"]) != 0:
             msg = repo_exists
         else:
@@ -163,10 +161,7 @@ def repository(module, weldr):
 
 
 def main() -> None:
-    module: AnsibleModule = AnsibleModule(
-        argument_spec=argument_spec,
-        required_if=[('state', "present", ('base_url', 'type', 'check_ssl', 'check_gpg'))]
-    )
+    module: AnsibleModule = AnsibleModule(argument_spec=argument_spec, required_if=[("state", "present", ("base_url", "type", "check_ssl", "check_gpg"))])
     weldr: Weldr = Weldr(module)
 
     repository(module=module, weldr=weldr)
