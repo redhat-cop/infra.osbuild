@@ -93,7 +93,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
         remove:
           - invalid
       queue:
-        method: merge
+        method: squash
         name: default
     conditions:
       - base=main
