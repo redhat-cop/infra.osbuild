@@ -141,6 +141,8 @@ else
     timeout=50
 fi
 
+export ANSIBLE_TEST_PREFER_PODMAN=1
+
 ansible-test env --dump --show --timeout "${timeout}" --color -v
 
 "tests/utils/shippable/${script}.sh" "${test}" "${ansible_version}"
