@@ -93,6 +93,7 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
         remove:
           - invalid
       queue:
+        commit_message_template: "{{ commits[0] }}"
         method: squash
         name: default
     conditions:
