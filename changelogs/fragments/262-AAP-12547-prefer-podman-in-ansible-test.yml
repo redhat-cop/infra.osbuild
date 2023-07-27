@@ -1,0 +1,3 @@
+---
+trivial:
+  - Prefer podman in ansible-test
