@@ -142,3 +142,6 @@ testing.extra-vars.yml
 
 # Changelogs
 changelogs/.plugin-cache.yaml
+
+# VSCode settings file
+/.vscode/settings.json
