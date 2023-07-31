@@ -8,9 +8,9 @@
       ansible.builtin.import_role:
         name: infra.osbuild.populate_aap
       vars:
-        controller_hostname: https://0.0.0.0
-        controller_username: admin
-        controller_password: test
+        controller_hostname: https://0.0.0.0 # noqa var-naming[no-role-prefix]
+        controller_username: admin # noqa var-naming[no-role-prefix]
+        controller_password: test # noqa var-naming[no-role-prefix]
         populate_aap_default_host_user: user
         populate_aap_default_host_ip: 0.0.0.0
         populate_aap_organizations:
