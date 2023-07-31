@@ -59,12 +59,85 @@ None.
 ```yaml
 ---
 - name: Run populate_aap role to populate AAP with infra.osbuild content
-  become: true
-  hosts: all
+  hosts: localhost
+  connection: local
+  gather_facts: false
   tasks:
     - name: Run the role
       ansible.builtin.import_role:
         name: infra.osbuild.populate_aap
+      vars:
+        controller_hostname: https://0.0.0.0  # noqa var-naming[no-role-prefix]
+        controller_username: admin  # noqa var-naming[no-role-prefix]
+        controller_password: test  # noqa var-naming[no-role-prefix]
+        populate_aap_default_host_user: user
+        populate_aap_default_host_ip: 0.0.0.0
+        populate_aap_organizations:
+          - name: "{{ populate_aap_organization_name }}"
+        populate_aap_execution_environments:
+          - name: "{{ populate_aap_execution_environment_name }}"
+            image: quay.io/repository/osbuildee/osbuildee
+            pull: always
+            organization: "{{ populate_aap_organization_name }}"
+        populate_aap_inventories:
+          - name: "{{ populate_aap_inventory_name }}"
+            organization: "{{ populate_aap_organization_name }}"
+        populate_aap_hosts:
+          - name: osbuild_remote_system
+            inventory: "{{ populate_aap_inventory_name }}"
+            variables:
+              ansible_host: "{{ populate_aap_default_host_ip }}"
+              ansible_user: "{{ populate_aap_default_host_user }}"
+        populate_aap_projects:
+          - name: "{{ populate_aap_project_name }}"
+            organization: "{{ populate_aap_organization_name }}"
+            default_environment: "{{ populate_aap_execution_environment_name }}"
+            scm_type: git
+            scm_url: https://github.com/redhat-cop/infra.osbuild
+        populate_aap_credentials:
+          - name: "{{ populate_aap_credential_name }}"
+            organization: "{{ populate_aap_organization_name }}"
+            credential_type: Machine
+            inputs:
+              username: "{{ populate_aap_default_host_user }}"
+              ssh_key_data: "{{ lookup('file', populate_aap_ssh_key_path) if populate_aap_ssh_key_path is defined else '' }}"
+        populate_aap_job_templates:
+          - name: osbuild_setup_server
+            job_type: run
+            inventory: "{{ populate_aap_inventory_name }}"
+            project: "{{ populate_aap_project_name }}"
+            playbook: playbooks/osbuild_setup_server.yml
+            credentials:
+              - "{{ populate_aap_credential_name }}"
+
+          - name: osbuild_builder
+            job_type: run
+            inventory: "{{ populate_aap_inventory_name }}"
+            project: "{{ populate_aap_project_name }}"
+            playbook: playbooks/osbuild_builder.yml
+            survey_enabled: true
+            survey: "{{ lookup('template', 'template_surveys/builder_survey.yml') | from_yaml }}"
+            ask_variables_on_launch: true
+            extra_vars:
+              _docs: 'REPLACE WITH VARS FROM DOCS: https://github.com/redhat-cop/infra.osbuild/blob/main/roles/builder/APP_EXTRA_VARS.md'  # yamllint disable-line rule:line-length
+            credentials:
+              - "{{ populate_aap_credential_name }}"
+
+          - name: osbuild_system_info
+            job_type: run
+            inventory: "{{ populate_aap_inventory_name }}"
+            project: "{{ populate_aap_project_name }}"
+            playbook: playbooks/osbuild_system_info.yml
+            credentials:
+              - "{{ populate_aap_credential_name }}"
+
+          - name: osbuild_update_system
+            job_type: run
+            inventory: "{{ populate_aap_inventory_name }}"
+            project: "{{ populate_aap_project_name }}"
+            playbook: playbooks/osbuild_update_system.yml
+            credentials:
+              - "{{ populate_aap_credential_name }}"
 ```
 
 ## License
