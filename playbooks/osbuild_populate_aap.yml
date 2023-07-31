@@ -11,11 +11,6 @@
         controller_hostname: https://0.0.0.0
         controller_username: admin
         controller_password: test
-        populate_aap_organization_name: Osbuild_org
-        populate_aap_execution_environment_name: osbuild_ee
-        populate_aap_inventory_name: osbuild_inventory
-        populate_aap_project_name: osbuild_project
-        populate_aap_credential_name: osbuild_credential
         populate_aap_default_host_user: user
         populate_aap_default_host_ip: 0.0.0.0
         populate_aap_organizations:
