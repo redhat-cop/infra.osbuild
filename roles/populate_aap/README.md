@@ -25,6 +25,27 @@ None
 |`populate_aap_credentials`|None|no|list|Use to populate AAP with credentials. More information can be found in [Configuration Collection credentials role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/credentials)|<pre>populate_aap_credentials:<br>  - name: osbuild_credential<br>    organization: Osbuild_test<br>    credentail_type: Machine<br>    inputs:<br>      username: user<br>      ssh_key_data: "{{ lookup('file', '~/.ssh/id_rsa_aap', errors='warn') }}" </pre>|
 |`populate_aap_job_templates`|None|no|list|Use to populate AAP with job templates. More information can be found in [Configuration Collection job templates role README](https://github.com/redhat-cop/controller_configuration/tree/devel/roles/job_templates)|<pre>populate_aap_job_templates:<br>  - name: osbuild_setup_server<br>      job_type: run<br>      inventory: osbuild_inventory<br>      project: osbuild_project<br>      playbook: playbooks/<br>      osbuild_setup_server.yml<br>      credentials:<br>        - osbuild_credential</pre>|
 
+### populate_aap_default_host_user
+
+Type: string
+Required: false
+
+Default host user for the remote system.
+
+### populate_aap_default_host_ip
+
+Type: string
+Required: false
+
+Default ip for the remote system.
+
+### populate_aap_ssh_key_path
+
+Type: string
+Required: false
+
+Path to the private ssh key that will be used for communication remote systems.
+
 ## Variables Exported by the Role
 
 None.
