@@ -56,17 +56,17 @@ releases:
   2.0.0:
     changes:
       bugfixes:
-          - Conditionally add sshkey and/or user password to kickstart file if defined
-          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/108
-          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/74
-          - Fix issue where kickstart would not properly resolve hostnames
-          - Fixes issue https://github.com/redhat-cop/infra.osbuild/issues/97
-          - Resolve issue https://github.com/redhat-cop/infra.osbuild/issues/73
-          - Update testbuild playbook to new build flow and fix issue 38
-          - Warn if sshkey file is undefined
-          - builder - Fixed remove all images from storage task when UUID is an ID.
-          - builder - Fixes kickstart when passing none as an option to skip all omitted
-            values
+        - Conditionally add sshkey and/or user password to kickstart file if defined
+        - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/108
+        - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/74
+        - Fix issue where kickstart would not properly resolve hostnames
+        - Fixes issue https://github.com/redhat-cop/infra.osbuild/issues/97
+        - Resolve issue https://github.com/redhat-cop/infra.osbuild/issues/73
+        - Update testbuild playbook to new build flow and fix issue 38
+        - Warn if sshkey file is undefined
+        - builder - Fixed remove all images from storage task when UUID is an ID.
+        - builder - Fixes kickstart when passing none as an option to skip all omitted
+          values
         doc_changes:
           - Added builder role documentation
           - updated documentation to explain how to call different build types
@@ -312,19 +312,19 @@ releases:
         - Remove dependencies on community.general.random_string
         - Remove dependencies on community.libvirt.virt
     fragments:
-      - 234-testing-policy-readme-and-test-checklist.yml
-      - 235-turn-off-release-ah.yml
-      - 244-AAP-13847-Remove-community.general.random_string-dependencies.yml
-      - 246-AAP-13838-Removed-community.libvirt-and-community.crypto-references.yml
-      - 247-Fix-issue-where-file-needs-to-be-created-for-VM.yml
-      - 248-Typo-in-virsh-list.yml
-      - 249-AAP-13838-Fix-typo-so-e2e-test-can-run.yml
-      - 250-AAP-13838-Remove-autostart-check.yml
-      - 251-add-start-compose-api-timeout-argument.yml
-      - 252-AAP-13082-Remove-community-general-references.yml
-      - 259-AAP-12547-Properly-list-dependencies.yml
-      - 261-AAP-12547-Change-mergify-method-from-merge-to-squash.yml
-      - 262-AAP-12547-prefer-podman-in-ansible-test.yml
-      - 263-fix-fedora.linux_system_roles-typo.yml
-      - 265-move-defaults-to-playbook.yml
+    - 234-testing-policy-readme-and-test-checklist.yml
+    - 235-turn-off-release-ah.yml
+    - 244-AAP-13847-Remove-community.general.random_string-dependencies.yml
+    - 246-AAP-13838-Removed-community.libvirt-and-community.crypto-references.yml
+    - 247-Fix-issue-where-file-needs-to-be-created-for-VM.yml
+    - 248-Typo-in-virsh-list.yml
+    - 249-AAP-13838-Fix-typo-so-e2e-test-can-run.yml
+    - 250-AAP-13838-Remove-autostart-check.yml
+    - 251-add-start-compose-api-timeout-argument.yml
+    - 252-AAP-13082-Remove-community-general-references.yml
+    - 259-AAP-12547-Properly-list-dependencies.yml
+    - 261-AAP-12547-Change-mergify-method-from-merge-to-squash.yml
+    - 262-AAP-12547-prefer-podman-in-ansible-test.yml
+    - 263-fix-fedora.linux_system_roles-typo.yml
+    - 265-move-defaults-to-playbook.yml
     release_date: '2023-08-01'
