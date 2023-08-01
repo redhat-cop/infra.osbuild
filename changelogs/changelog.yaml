@@ -3,328 +3,328 @@ releases:
   1.0.0:
     changes:
       major_changes:
-      - Add custom repositories as sources for blueprints
-      - Added get_all_finished_images module
-      - Added image_server role
-      - Added osbuild_server role
-      - Implement more weldrapiv1 methods
+        - Add custom repositories as sources for blueprints
+        - Added get_all_finished_images module
+        - Added image_server role
+        - Added osbuild_server role
+        - Implement more weldrapiv1 methods
       minor_changes:
-      - Add blueprint details (semantic versioning, name)
-      - Add rhsm (Red Hat Subscription Manager) option
-      - Add weldr socket timeout
-      - Change name from osbuild.composer to infra.osbuild (Validated Content)
+        - Add blueprint details (semantic versioning, name)
+        - Add rhsm (Red Hat Subscription Manager) option
+        - Add weldr socket timeout
+        - Change name from osbuild.composer to infra.osbuild (Validated Content)
       release_summary: Initial release of infra.osbuild
     fragments:
-    - 1-added-builder-role.yaml
-    - 1.0.0_release_summary.yaml
-    - 10-Fix-image-permissions.yaml
-    - 11-created-variable-for-the-compose-type.yaml
-    - 12-Create-role-for-an-http-server-to-host-images.yaml
-    - 13-fix-sanity-tests-for-core-2-15-branch.yaml
-    - 17-refactor-image-server-role-to-use-blocks-for-logic-grouping.yaml
-    - 19-initial-remote-integration-tests-setup.yaml
-    - 2-Added-Superlinter-and-fixed-linting-issues.yaml
-    - 20-Fix-fedora-support--improve-unsupported-image-err.yaml
-    - 22-Updated-docs-and-fixed-outstanding-issues.yaml
-    - 23-Ci-test-prep-build-server.yaml
-    - 29-Correct-galaxy-yml-metadata.yaml
-    - 3-Corrected-typo-in-variable-name.yaml
-    - 30-add-dependencies-that-we-ve-picked-up-along-the-way.yaml
-    - 31-fix-module-name.yaml
-    - 32-Update-README-md.yaml
-    - 33-add-tests-for-builder-role.yaml
-    - 34-add-proper-output-type-for-compose-type.yaml
-    - 35-enable-integration-tests-for-rhel8-x.yaml
-    - 36-Add-custom-repo-functionality.yaml
-    - 39-drop-support-for-depricated-compose-types.yaml
-    - 4-Added-isort-configuration-so-superlinter-does-not-fail-on-libs-that-are-not-in-the-superlinter-container.yaml
-    - 41-Fix-custom-package-image-build.yaml
-    - 42-Ansible-lint-cleanup.yaml
-    - 43-WIP--enable-ansible-lint---profile-production-for-sanity-tests.yaml
-    - 44-added-versions-and-updates.yaml
-    - 46-move-to-infra-osbuild-name-for-inclusion-as-Validated-Content.yaml
-    - 47-Delete-inventory-ini.yaml
-    - 48-Add-rhsm-option---update-source-repo-if-it-already-exists.yaml
-    - 49-missed-a-couple-rename-items-in-the-migration.yaml
-    - 5-Azure-pipelines.yaml
-    - 50-missed-a-couple-rename-items-in-the-migration.yaml
-    - 6-Fix-sanity-tests.yaml
-    - 7-Fixed-typo-in-method-call.yaml
-    - 8-Make-pubkey-a-var.yaml
-    - 9-fix-image-permissions-issue.yaml
+      - 1-added-builder-role.yaml
+      - 1.0.0_release_summary.yaml
+      - 10-Fix-image-permissions.yaml
+      - 11-created-variable-for-the-compose-type.yaml
+      - 12-Create-role-for-an-http-server-to-host-images.yaml
+      - 13-fix-sanity-tests-for-core-2-15-branch.yaml
+      - 17-refactor-image-server-role-to-use-blocks-for-logic-grouping.yaml
+      - 19-initial-remote-integration-tests-setup.yaml
+      - 2-Added-Superlinter-and-fixed-linting-issues.yaml
+      - 20-Fix-fedora-support--improve-unsupported-image-err.yaml
+      - 22-Updated-docs-and-fixed-outstanding-issues.yaml
+      - 23-Ci-test-prep-build-server.yaml
+      - 29-Correct-galaxy-yml-metadata.yaml
+      - 3-Corrected-typo-in-variable-name.yaml
+      - 30-add-dependencies-that-we-ve-picked-up-along-the-way.yaml
+      - 31-fix-module-name.yaml
+      - 32-Update-README-md.yaml
+      - 33-add-tests-for-builder-role.yaml
+      - 34-add-proper-output-type-for-compose-type.yaml
+      - 35-enable-integration-tests-for-rhel8-x.yaml
+      - 36-Add-custom-repo-functionality.yaml
+      - 39-drop-support-for-depricated-compose-types.yaml
+      - 4-Added-isort-configuration-so-superlinter-does-not-fail-on-libs-that-are-not-in-the-superlinter-container.yaml
+      - 41-Fix-custom-package-image-build.yaml
+      - 42-Ansible-lint-cleanup.yaml
+      - 43-WIP--enable-ansible-lint---profile-production-for-sanity-tests.yaml
+      - 44-added-versions-and-updates.yaml
+      - 46-move-to-infra-osbuild-name-for-inclusion-as-Validated-Content.yaml
+      - 47-Delete-inventory-ini.yaml
+      - 48-Add-rhsm-option---update-source-repo-if-it-already-exists.yaml
+      - 49-missed-a-couple-rename-items-in-the-migration.yaml
+      - 5-Azure-pipelines.yaml
+      - 50-missed-a-couple-rename-items-in-the-migration.yaml
+      - 6-Fix-sanity-tests.yaml
+      - 7-Fixed-typo-in-method-call.yaml
+      - 8-Make-pubkey-a-var.yaml
+      - 9-fix-image-permissions-issue.yaml
     release_date: '2022-11-18'
   2.0.0:
     changes:
       bugfixes:
-      - Conditionally add sshkey and/or user password to kickstart file if defined
-      - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/108
-      - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/74
-      - Fix issue where kickstart would not properly resolve hostnames
-      - Fixes issue https://github.com/redhat-cop/infra.osbuild/issues/97
-      - Resolve issue https://github.com/redhat-cop/infra.osbuild/issues/73
-      - Update testbuild playbook to new build flow and fix issue 38
-      - Warn if sshkey file is undefined
-      - builder - Fixed remove all images from storage task when UUID is an ID.
-      - builder - Fixes kickstart when passing none as an option to skip all omitted
-        values
-      doc_changes:
-      - Added builder role documentation
-      - updated documentation to explain how to call different build types
-      major_changes:
-      - Add edge-installer to builder role
-      - Add role for building edge-installer ISOs using the modules within the collection
-      - Enable rpm-ostree ISO installer builds
-      - Fix compose types ami, edge-container, image-installer, oci, openstack, qcow2,
-        vhd, vmdk, iot-commit, iot-container and container
-      - Modifies the setup_server role for use with an ostree-based operating system
-      minor_changes:
-      - Add Ansible Execution Environment (AEE)
-      - Add example playbook
-      - Add options and post section variables to kickstart template
-      - Add support for RHSM repositories
-      - Added kickstart file to auto register with Ansible Automation Platform (AAP)
-      - Allow edge-installer kickstart file to optionally use a custom Jinja2 template
-      - Allow user to skip repository update
-      - Change test cases to validate function
-      - Conditionally create AAP playbook if builder_aap_url is defined
-      - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/85
-      - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/98
-      - Handle cross-distro composes
-      - Remove Ansible Automation Platform (AAP) defaults
-      - Update builder README.md to provide example of AAP playbook added to kickstart
-        file
-      - builder - added ability to validate kickstart after creation of file
-      release_summary: 'This release adds support for more compose types, ostree-based
-        OS, Ansible Execution Environment (AEE),
+          - Conditionally add sshkey and/or user password to kickstart file if defined
+          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/108
+          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/74
+          - Fix issue where kickstart would not properly resolve hostnames
+          - Fixes issue https://github.com/redhat-cop/infra.osbuild/issues/97
+          - Resolve issue https://github.com/redhat-cop/infra.osbuild/issues/73
+          - Update testbuild playbook to new build flow and fix issue 38
+          - Warn if sshkey file is undefined
+          - builder - Fixed remove all images from storage task when UUID is an ID.
+          - builder - Fixes kickstart when passing none as an option to skip all omitted
+            values
+        doc_changes:
+          - Added builder role documentation
+          - updated documentation to explain how to call different build types
+        major_changes:
+          - Add edge-installer to builder role
+          - Add role for building edge-installer ISOs using the modules within the collection
+          - Enable rpm-ostree ISO installer builds
+          - Fix compose types ami, edge-container, image-installer, oci, openstack, qcow2,
+            vhd, vmdk, iot-commit, iot-container and container
+          - Modifies the setup_server role for use with an ostree-based operating system
+        minor_changes:
+          - Add Ansible Execution Environment (AEE)
+          - Add example playbook
+          - Add options and post section variables to kickstart template
+          - Add support for RHSM repositories
+          - Added kickstart file to auto register with Ansible Automation Platform (AAP)
+          - Allow edge-installer kickstart file to optionally use a custom Jinja2 template
+          - Allow user to skip repository update
+          - Change test cases to validate function
+          - Conditionally create AAP playbook if builder_aap_url is defined
+          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/85
+          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/98
+          - Handle cross-distro composes
+          - Remove Ansible Automation Platform (AAP) defaults
+          - Update builder README.md to provide example of AAP playbook added to kickstart
+            file
+          - builder - added ability to validate kickstart after creation of file
+        release_summary: 'This release adds support for more compose types, ostree-based
+          OS, Ansible Execution Environment (AEE),
 
-        cross-distribution composes, RHSM repositories, and kickstart support (including
-        Ansible Authomation
+          cross-distribution composes, RHSM repositories, and kickstart support (including
+          Ansible Authomation
 
-        Platform (AAP) auto-registration and custom template).
+          Platform (AAP) auto-registration and custom template).
 
-        Documentation expanded for more compose_types and use cases
+          Documentation expanded for more compose_types and use cases
 
-        As always, we corrected a number of bugs.'
-    fragments:
-    - 100-Fix-disable-repos-rhsm.yaml
-    - 101-Remove-no-log.yaml
-    - 104-Build-TOML-data-as-dict-instead-of-string.yaml
-    - 105-Add-always-block-to-disable-repos-after-block.yaml
-    - 106-Fix-kickstart-post-omit-issue.yaml
-    - 107-added-basic-kickstart-validation--fixed-sshkey-error.yaml
-    - 109-changed-default-size-from-8-to-0.yaml
-    - 110-Fix-when-enable-disable-rhsm-repos.yaml
-    - 112-Fix-issues-from-ansible-lint-6-14-0.yaml
-    - 113-Bump-version-number-in-galaxy-yml-for-2-0-0-release.yaml
-    - 2.0.0_release_summary.yaml
-    - 217-fix-remove-id-not-valid-uuid.yaml
-    - 221-change-e2e-tests-for-openstack.yaml
-    - 230-github-workflow-release-osbuild-collection.yaml
-    - 52-fix-ci-lint.yaml
-    - 53-define-execution-environment.yaml
-    - 54-Add-Role-to-Create--edge-installer--Type-Images.yaml
-    - 55-updated-documentation-to-explain-how-to-call-different-build-types.yaml
-    - 56-Update-testbuild-playbook-to-new-build-flow.yaml
-    - 57-Add-kickstart.yaml
-    - 58-Handle-cross-distro-composes--change-test-cases-to-validate-it.yaml
-    - 59-Add-distro-default-omit.yaml
-    - 60-Support-Building-Images-on-ostree-Based-OSes.yaml
-    - 62-merge-edge-installer-builder-and-builder-role--added-kickstart-vars.yaml
-    - 63-add-builder-role-docs.yaml
-    - 65-update-README.yaml
-    - 66-Fix-compose-types.yaml
-    - 67-switch-to-allowing-more-than-one-custom-repo-or-zero-custom-repos.yaml
-    - 68-Add-test-for-all-compose-types.yaml
-    - 75-Fix-customizations-single-and-double-brackets.yaml
-    - 76-update-OS-versions-in-ci-devel-tests.yaml
-    - 78-added-python36-package-for-minimal-systems.yaml
-    - 80-don-t-lock-on-old-version-of-anislbe-lint--issue-was-fixed-and-release.yaml
-    - 81-Try-to-find-our-compose-heuristically-if-weldr-times-out.yaml
-    - 82-Refactor-to-enable-rpm-ostree-ISO-installer-builds.yaml
-    - 83-Remove-aap-defaults--conditionally-create-aap-playbook-in-ks.yaml
-    - 84-warn-if-sshkey-file-is-undefined--add-user-password-for-kickstart--update-README.yaml
-    - 86-Update-kickstart-template-to-add-more-customizable.yaml
-    - 88-updated-kickstart-to-prevent-insufficient-kickstart-message.yaml
-    - 89-Add-custom-kickstart.yaml
-    - 90-Skip-update-repo-if-needed.yaml
-    - 91-fixed-issue-if-hostname-is-provided-instead-of-ip-address.yaml
-    - 93-Update-inject-ks-and-add-to-builder-role-to-inject-ks-to-iso.yaml
-    - 99-Add-support-for-rhsm-repos.yaml
-    release_date: '2023-03-08'
-  2.1.0:
-    changes:
-      bugfixes:
-      - Fix "UnknownUUID is not a valid UUID" issue
-      - Fix improper file extension issue which causes playbook runs to fail
-      - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/123
-      - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/127
-      - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/209
-      - Fix issue with image building by getting the body
-      - Fix issue with weldr post compose status_code
-      - Fixes ansible-lint errors which prevented Azure Pipelines from passing (AAP-12274)
-      - Fixes issue https://github.com/redhat-cop/infra.osbuild/issues/119
-      - Fixes multiple file searching in /etc/yum.repos.d/
-      - builder - fixed bug where passing the env arg builder_compose_type to the
-        playbook overrided an internal variable causing the build to fail.
-      - compose_wait - fixes timeout to fail if timeout is reached.
-      doc_changes:
-      - Added 1.0.0 release notes
-      - Added docs for image hosting
-      - Added docs for kickstart hosting
-      major_changes:
-      - Add AWS as an hosted osbuild server
-      - Add populate_aap role
-      - builder - added new versions image directory structure. From /blueprint_name/images
-        to /blueprint_name/images/version
-      - system_info - created new role to gather information from a running rpm-ostree
-        based system
-      - update_systems - created new role to update system to the latest commit /
-        image
-      minor_changes:
-      - Add Clear package cache and restart service steps to the builder role
-      - Add first set of survey questions for builder role
-      - Add more survey questions
-      - Added argument specification file to validate arguments supplied to builder
-        role
-      - Added system info and update system to populate_aap role
-      - Allow builds with existing ostree commit (skipping building a commit)
-      - When HTTP errors occur, display message body so user has more context
-      - builder - added ability to remove all images when builder_image_storage_cleared
-        is true
-      - builder - added builder_wait_compose_timeout to control how long the timeout
-        is set to.
-      - builder - added check to see if image storage is full based on threshold percentage
-        using the builder_image_store_threshold variable.
-      - builder - added enforce_auth to fail when no ssh key or password is defined.
-        Can be set to false to bypass auth for image.
-      - builder - allowed for passing aap vars to the role will generate the corresponding
-        template instead of doing this manually.
-      - builder - builder_pub_key is for raw ssh keys
-      - builder - created builder_pub_key_path for ssh key lookups
-      - builder - use blueprint for builder_password not kickstart
-      - weldr - added get_job_id using image compose_id to allow us to identify images
-        inside osbuild artifacts
-      release_summary: 'Adds new populate_aap, system_info, and update_systems roles,
+          As always, we corrected a number of bugs.'
+      fragments:
+        - 100-Fix-disable-repos-rhsm.yaml
+        - 101-Remove-no-log.yaml
+        - 104-Build-TOML-data-as-dict-instead-of-string.yaml
+        - 105-Add-always-block-to-disable-repos-after-block.yaml
+        - 106-Fix-kickstart-post-omit-issue.yaml
+        - 107-added-basic-kickstart-validation--fixed-sshkey-error.yaml
+        - 109-changed-default-size-from-8-to-0.yaml
+        - 110-Fix-when-enable-disable-rhsm-repos.yaml
+        - 112-Fix-issues-from-ansible-lint-6-14-0.yaml
+        - 113-Bump-version-number-in-galaxy-yml-for-2-0-0-release.yaml
+        - 2.0.0_release_summary.yaml
+        - 217-fix-remove-id-not-valid-uuid.yaml
+        - 221-change-e2e-tests-for-openstack.yaml
+        - 230-github-workflow-release-osbuild-collection.yaml
+        - 52-fix-ci-lint.yaml
+        - 53-define-execution-environment.yaml
+        - 54-Add-Role-to-Create--edge-installer--Type-Images.yaml
+        - 55-updated-documentation-to-explain-how-to-call-different-build-types.yaml
+        - 56-Update-testbuild-playbook-to-new-build-flow.yaml
+        - 57-Add-kickstart.yaml
+        - 58-Handle-cross-distro-composes--change-test-cases-to-validate-it.yaml
+        - 59-Add-distro-default-omit.yaml
+        - 60-Support-Building-Images-on-ostree-Based-OSes.yaml
+        - 62-merge-edge-installer-builder-and-builder-role--added-kickstart-vars.yaml
+        - 63-add-builder-role-docs.yaml
+        - 65-update-README.yaml
+        - 66-Fix-compose-types.yaml
+        - 67-switch-to-allowing-more-than-one-custom-repo-or-zero-custom-repos.yaml
+        - 68-Add-test-for-all-compose-types.yaml
+        - 75-Fix-customizations-single-and-double-brackets.yaml
+        - 76-update-OS-versions-in-ci-devel-tests.yaml
+        - 78-added-python36-package-for-minimal-systems.yaml
+        - 80-don-t-lock-on-old-version-of-anislbe-lint--issue-was-fixed-and-release.yaml
+        - 81-Try-to-find-our-compose-heuristically-if-weldr-times-out.yaml
+        - 82-Refactor-to-enable-rpm-ostree-ISO-installer-builds.yaml
+        - 83-Remove-aap-defaults--conditionally-create-aap-playbook-in-ks.yaml
+        - 84-warn-if-sshkey-file-is-undefined--add-user-password-for-kickstart--update-README.yaml
+        - 86-Update-kickstart-template-to-add-more-customizable.yaml
+        - 88-updated-kickstart-to-prevent-insufficient-kickstart-message.yaml
+        - 89-Add-custom-kickstart.yaml
+        - 90-Skip-update-repo-if-needed.yaml
+        - 91-fixed-issue-if-hostname-is-provided-instead-of-ip-address.yaml
+        - 93-Update-inject-ks-and-add-to-builder-role-to-inject-ks-to-iso.yaml
+        - 99-Add-support-for-rhsm-repos.yaml
+      release_date: '2023-03-08'
+    2.1.0:
+      changes:
+        bugfixes:
+          - Fix "UnknownUUID is not a valid UUID" issue
+          - Fix improper file extension issue which causes playbook runs to fail
+          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/123
+          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/127
+          - Fix issue https://github.com/redhat-cop/infra.osbuild/issues/209
+          - Fix issue with image building by getting the body
+          - Fix issue with weldr post compose status_code
+          - Fixes ansible-lint errors which prevented Azure Pipelines from passing (AAP-12274)
+          - Fixes issue https://github.com/redhat-cop/infra.osbuild/issues/119
+          - Fixes multiple file searching in /etc/yum.repos.d/
+          - builder - fixed bug where passing the env arg builder_compose_type to the
+            playbook overrided an internal variable causing the build to fail.
+          - compose_wait - fixes timeout to fail if timeout is reached.
+        doc_changes:
+          - Added 1.0.0 release notes
+          - Added docs for image hosting
+          - Added docs for kickstart hosting
+        major_changes:
+          - Add AWS as an hosted osbuild server
+          - Add populate_aap role
+          - builder - added new versions image directory structure. From /blueprint_name/images
+            to /blueprint_name/images/version
+          - system_info - created new role to gather information from a running rpm-ostree
+            based system
+          - update_systems - created new role to update system to the latest commit /
+            image
+        minor_changes:
+          - Add Clear package cache and restart service steps to the builder role
+          - Add first set of survey questions for builder role
+          - Add more survey questions
+          - Added argument specification file to validate arguments supplied to builder
+            role
+          - Added system info and update system to populate_aap role
+          - Allow builds with existing ostree commit (skipping building a commit)
+          - When HTTP errors occur, display message body so user has more context
+          - builder - added ability to remove all images when builder_image_storage_cleared
+            is true
+          - builder - added builder_wait_compose_timeout to control how long the timeout
+            is set to.
+          - builder - added check to see if image storage is full based on threshold percentage
+            using the builder_image_store_threshold variable.
+          - builder - added enforce_auth to fail when no ssh key or password is defined.
+            Can be set to false to bypass auth for image.
+          - builder - allowed for passing aap vars to the role will generate the corresponding
+            template instead of doing this manually.
+          - builder - builder_pub_key is for raw ssh keys
+          - builder - created builder_pub_key_path for ssh key lookups
+          - builder - use blueprint for builder_password not kickstart
+          - weldr - added get_job_id using image compose_id to allow us to identify images
+            inside osbuild artifacts
+        release_summary: 'Adds new populate_aap, system_info, and update_systems roles,
 
-        AWS as a hosted osbuild server, survey questions, substantial enhancements
-        to the
+          AWS as a hosted osbuild server, survey questions, substantial enhancements
+          to the
 
-        builder role and weldr interface, and a large number of bugfixes, test, security,
+          builder role and weldr interface, and a large number of bugfixes, test, security,
 
-        documentation, and environment stabilization enhancements.'
-    fragments:
-    - 114-Fixed-typos.yaml
-    - 116-added-check-for-image-storage.yaml
-    - 117-Fix-internal-key-warning.yaml
-    - 121-Add-builder-ostree-url-variable-to-build-installer-with-existing-commit.yaml
-    - 126-Add-get-job-id-to-get-job-id-using-image-compose-id.yaml
-    - 128-Store-images-built-on-Azure-artifacts.yaml
-    - 131-Change-temporary-iso-name-to-address-issue-123.yaml
-    - 132-Aap-vars-fix.yaml
-    - 135-Add-distro-to-empty-blueprint.yaml
-    - 136-Add-azure-provider-for-ami-group.yaml
-    - 138-updated-how-ssh-and-user-pass-works--removed-unecessary-file.yaml
-    - 139-Fix-compose-wait-timeout.yaml
-    - 140-Add-unit-tests-for-modules.yaml
-    - 141-updated-readme.yaml
-    - 142-fixed-bug-where-cli-env-arg-overrided-internal-builder-compose-type.yaml
-    - 143-Playbook-to-deploy-VM-for-tests.yaml
-    - 144-Add-pull-request-template-and-CODEOWNERS.yaml
-    - 145-Add-unit-test-for-rhsm--repo-info.yaml
-    - 147-AAP-11046-Reorder-weldrapiv1-functions.yaml
-    - 148-AAP-11590--Remove-unneeded-playbooks.yaml
-    - 149-added-tests-for-wait-compose-module.yaml
-    - 150-Fix-issue-with-multiple-yum-repos-files--updated-unit-tests.yaml
-    - 151-Add-repository-unit-tests.yaml
-    - 152-completed-testing-for-start-compose-module.yaml
-    - 153-Add-inject-ks-unit-tests.yaml
-    - 155-Aap-10697.yaml
-    - 156-Properly-handle-builder-rhsm-repos-info-and-dunder-prefix.yaml
-    - 157-AAP-10526-edge-installer-image-e2e-test.yaml
-    - 158-Add-populate-aap-role.yaml
-    - 159-added-fragments-for-past-PRs.yaml
-    - 160-added-arg-validation-for-builder-role.yaml
-    - 161-Fix-weldr-post-compose.yaml
-    - 162-run-all-checks-for-all-PRs.yaml
-    - 163-Fix-image-building-by-getting-the-body.yaml
-    - 165-AAP-12051--New-tests-and-test-stubs-for-weldr-and-weldrapiv1.yaml
-    - 166-AAP-12222--Added-negative-test-for-post-compose.yaml
-    - 167-AAP-12251--Improve-pytest-test-exception-checking.yaml
-    - 168-Delete-all-test-images.yaml
-    - 169-AAP-12203--Initial-Repository-codecov-yml.yaml
-    - 170-AAP-12274--Correct-all-var-naming-ansible-lint-errors-preventing-Azure-Pipeline-from-passing.yaml
-    - 171-AAP-12358-ignore-errors-when-running-cleanup-tasks.yaml
-    - 172-get-system-info.yaml
-    - 173-AAP-12417-remove-copy-the-iso-file-on-tests.yaml
-    - 175-update-systems.yaml
-    - 176-AAP-12427--Correct-codecoverage-options.yaml
-    - 177-fix-ee-build-process.yaml
-    - 178-Fix-ee-remove-context-dir.yaml
-    - 179-Create-dependabot-yml.yaml
-    - 180-Add-fdo-and-installation-device-to-installer-blueprint--skip-inject-ks-for-simplified-installers.yaml
-    - 181-AAP-12598--Add-initial-mergifyio-configuration.yaml
-    - 183-AAP-12689--Added-PR-check-failure-to-mergifyio.yaml
-    - 184-AAP-12745--Add-merge-rules-and-consistent-naming.yaml
-    - 185-added-system-info-and-update-system-to-populate-aap-role.yaml
-    - 186-Added-Code-of-Conduct.yaml
-    - 187-AAP-10732--yamllint-and-ansible-lint-fixes.yaml
-    - 188-AAP-12859-first-cut-at-markdown-lint-fixes.yaml
-    - 189-APP-12867--Add-yamlint-github-action.yaml
-    - 190-Corrected-location-for-github-action.yaml
-    - 191-AAP-12882-fix-yamllint-line-length-too-long.yaml
-    - 192-Switch-to-blue-green-configuration-and-match-edge-api.yaml
-    - 193-AAP-12897-sync-yamllint-blue-green-and-increase-line-length-to-350.yaml
-    - 195-AAP-12916--Reduce-yamllint-max-line-length-from-350-to-250.yaml
-    - 196-AAP-12918-Point-mergify-rules-to-yamllint-green.yaml
-    - 197-AAP-12924--Changed-line-length-from-250-to-200.yaml
-    - 198-Clear-Package-Cache-When-Sources-are-Modified.yaml
-    - 199-AAP-12972--Add-some-positive-tests-and-many-negative-test-stubs-for-w---.yaml
-    - 2.1.0-release-summary.yaml
-    - 200-Aws-support.yaml
-    - 201-AAP-13079--Add-security-policy-and-fix-some-lint-dependency-issues.yaml
-    - 202-Surveyys.yaml
-    - 203-AAP-13106---Change-mergify-rules-to-support--changes-requested--label---.yaml
-    - 204-AAP-13107--Fix-bug-in-new-changes-request-mergifyio-rule.yaml
-    - 205-Per-validation-requirements--added-license-to-README-md.yaml
-    - 206-AAP-12970--Validation-requirement--Add-required-versions.yaml
-    - 207-AAP-13147--Add-OpenSSF-Scorecard-Badge.yaml
-    - 208-AAP-13148--Create-scorecard-yml.yaml
-    - 210-AAP-13167--Fix-one-OpenSSF-badge--add-another--yamllint-fixes.yaml
-    - 211-AAP-13181-Add-contributing-section-to-README.yaml
-    - 212-Add-builder-image-path-var-that-is-returned-at-end-of-builder-role.yaml
-    - 214-Improper-file-extension.yaml
-    - 216-Survey-round-2.yaml
-    - 217-AAP-13348-Fix-UnknownUUID-ID-is-not-a-valid-uuid.yaml
-    - 219-updated-readme-with-included-content.yaml
-    - 220-Add-missing-changelog-fragments-for-1-0-0-release.yaml
-    - 221-changes-e2e-tests-settings-to-run-on-OpenStack.yaml
-    - 222-add-changelog-fragment-require-to-the-checklist.yaml
-    - 229-AAP-13280--Converted-1-0-0-fragments-to-release-notes.yaml
-    - 230-AAP-10052-added-github-workflow-to-release-osbuild-collection.yaml
-    - 231-2-0-0-release-fragments.yaml
+          documentation, and environment stabilization enhancements.'
+      fragments:
+        - 114-Fixed-typos.yaml
+        - 116-added-check-for-image-storage.yaml
+        - 117-Fix-internal-key-warning.yaml
+        - 121-Add-builder-ostree-url-variable-to-build-installer-with-existing-commit.yaml
+        - 126-Add-get-job-id-to-get-job-id-using-image-compose-id.yaml
+        - 128-Store-images-built-on-Azure-artifacts.yaml
+        - 131-Change-temporary-iso-name-to-address-issue-123.yaml
+        - 132-Aap-vars-fix.yaml
+        - 135-Add-distro-to-empty-blueprint.yaml
+        - 136-Add-azure-provider-for-ami-group.yaml
+        - 138-updated-how-ssh-and-user-pass-works--removed-unecessary-file.yaml
+        - 139-Fix-compose-wait-timeout.yaml
+        - 140-Add-unit-tests-for-modules.yaml
+        - 141-updated-readme.yaml
+        - 142-fixed-bug-where-cli-env-arg-overrided-internal-builder-compose-type.yaml
+        - 143-Playbook-to-deploy-VM-for-tests.yaml
+        - 144-Add-pull-request-template-and-CODEOWNERS.yaml
+        - 145-Add-unit-test-for-rhsm--repo-info.yaml
+        - 147-AAP-11046-Reorder-weldrapiv1-functions.yaml
+        - 148-AAP-11590--Remove-unneeded-playbooks.yaml
+        - 149-added-tests-for-wait-compose-module.yaml
+        - 150-Fix-issue-with-multiple-yum-repos-files--updated-unit-tests.yaml
+        - 151-Add-repository-unit-tests.yaml
+        - 152-completed-testing-for-start-compose-module.yaml
+        - 153-Add-inject-ks-unit-tests.yaml
+        - 155-Aap-10697.yaml
+        - 156-Properly-handle-builder-rhsm-repos-info-and-dunder-prefix.yaml
+        - 157-AAP-10526-edge-installer-image-e2e-test.yaml
+        - 158-Add-populate-aap-role.yaml
+        - 159-added-fragments-for-past-PRs.yaml
+        - 160-added-arg-validation-for-builder-role.yaml
+        - 161-Fix-weldr-post-compose.yaml
+        - 162-run-all-checks-for-all-PRs.yaml
+        - 163-Fix-image-building-by-getting-the-body.yaml
+        - 165-AAP-12051--New-tests-and-test-stubs-for-weldr-and-weldrapiv1.yaml
+        - 166-AAP-12222--Added-negative-test-for-post-compose.yaml
+        - 167-AAP-12251--Improve-pytest-test-exception-checking.yaml
+        - 168-Delete-all-test-images.yaml
+        - 169-AAP-12203--Initial-Repository-codecov-yml.yaml
+        - 170-AAP-12274--Correct-all-var-naming-ansible-lint-errors-preventing-Azure-Pipeline-from-passing.yaml
+        - 171-AAP-12358-ignore-errors-when-running-cleanup-tasks.yaml
+        - 172-get-system-info.yaml
+        - 173-AAP-12417-remove-copy-the-iso-file-on-tests.yaml
+        - 175-update-systems.yaml
+        - 176-AAP-12427--Correct-codecoverage-options.yaml
+        - 177-fix-ee-build-process.yaml
+        - 178-Fix-ee-remove-context-dir.yaml
+        - 179-Create-dependabot-yml.yaml
+        - 180-Add-fdo-and-installation-device-to-installer-blueprint--skip-inject-ks-for-simplified-installers.yaml
+        - 181-AAP-12598--Add-initial-mergifyio-configuration.yaml
+        - 183-AAP-12689--Added-PR-check-failure-to-mergifyio.yaml
+        - 184-AAP-12745--Add-merge-rules-and-consistent-naming.yaml
+        - 185-added-system-info-and-update-system-to-populate-aap-role.yaml
+        - 186-Added-Code-of-Conduct.yaml
+        - 187-AAP-10732--yamllint-and-ansible-lint-fixes.yaml
+        - 188-AAP-12859-first-cut-at-markdown-lint-fixes.yaml
+        - 189-APP-12867--Add-yamlint-github-action.yaml
+        - 190-Corrected-location-for-github-action.yaml
+        - 191-AAP-12882-fix-yamllint-line-length-too-long.yaml
+        - 192-Switch-to-blue-green-configuration-and-match-edge-api.yaml
+        - 193-AAP-12897-sync-yamllint-blue-green-and-increase-line-length-to-350.yaml
+        - 195-AAP-12916--Reduce-yamllint-max-line-length-from-350-to-250.yaml
+        - 196-AAP-12918-Point-mergify-rules-to-yamllint-green.yaml
+        - 197-AAP-12924--Changed-line-length-from-250-to-200.yaml
+        - 198-Clear-Package-Cache-When-Sources-are-Modified.yaml
+        - 199-AAP-12972--Add-some-positive-tests-and-many-negative-test-stubs-for-w---.yaml
+        - 2.1.0-release-summary.yaml
+        - 200-Aws-support.yaml
+        - 201-AAP-13079--Add-security-policy-and-fix-some-lint-dependency-issues.yaml
+        - 202-Surveyys.yaml
+        - 203-AAP-13106---Change-mergify-rules-to-support--changes-requested--label---.yaml
+        - 204-AAP-13107--Fix-bug-in-new-changes-request-mergifyio-rule.yaml
+        - 205-Per-validation-requirements--added-license-to-README-md.yaml
+        - 206-AAP-12970--Validation-requirement--Add-required-versions.yaml
+        - 207-AAP-13147--Add-OpenSSF-Scorecard-Badge.yaml
+        - 208-AAP-13148--Create-scorecard-yml.yaml
+        - 210-AAP-13167--Fix-one-OpenSSF-badge--add-another--yamllint-fixes.yaml
+        - 211-AAP-13181-Add-contributing-section-to-README.yaml
+        - 212-Add-builder-image-path-var-that-is-returned-at-end-of-builder-role.yaml
+        - 214-Improper-file-extension.yaml
+        - 216-Survey-round-2.yaml
+        - 217-AAP-13348-Fix-UnknownUUID-ID-is-not-a-valid-uuid.yaml
+        - 219-updated-readme-with-included-content.yaml
+        - 220-Add-missing-changelog-fragments-for-1-0-0-release.yaml
+        - 221-changes-e2e-tests-settings-to-run-on-OpenStack.yaml
+        - 222-add-changelog-fragment-require-to-the-checklist.yaml
+        - 229-AAP-13280--Converted-1-0-0-fragments-to-release-notes.yaml
+        - 230-AAP-10052-added-github-workflow-to-release-osbuild-collection.yaml
+        - 231-2-0-0-release-fragments.yaml
     release_date: '2023-06-26'
   2.2.0:
     changes:
       minor_changes:
-      - Add "builder_request_timeout" argument to infra.osbuild.builder
-      - Moved default vars to populate aap playbook for better availability.
-      - Remove dependencies on community.crypto
-      - Remove dependencies on community.general.random_string
-      - Remove dependencies on community.libvirt.virt
+        - Add "builder_request_timeout" argument to infra.osbuild.builder
+        - Moved default vars to populate aap playbook for better availability.
+        - Remove dependencies on community.crypto
+        - Remove dependencies on community.general.random_string
+        - Remove dependencies on community.libvirt.virt
     fragments:
-    - 234-testing-policy-readme-and-test-checklist.yml
-    - 235-turn-off-release-ah.yml
-    - 244-AAP-13847-Remove-community.general.random_string-dependencies.yml
-    - 246-AAP-13838-Removed-community.libvirt-and-community.crypto-references.yml
-    - 247-Fix-issue-where-file-needs-to-be-created-for-VM.yml
-    - 248-Typo-in-virsh-list.yml
-    - 249-AAP-13838-Fix-typo-so-e2e-test-can-run.yml
-    - 250-AAP-13838-Remove-autostart-check.yml
-    - 251-add-start-compose-api-timeout-argument.yml
-    - 252-AAP-13082-Remove-community-general-references.yml
-    - 259-AAP-12547-Properly-list-dependencies.yml
-    - 261-AAP-12547-Change-mergify-method-from-merge-to-squash.yml
-    - 262-AAP-12547-prefer-podman-in-ansible-test.yml
-    - 263-fix-fedora.linux_system_roles-typo.yml
-    - 265-move-defaults-to-playbook.yml
+      - 234-testing-policy-readme-and-test-checklist.yml
+      - 235-turn-off-release-ah.yml
+      - 244-AAP-13847-Remove-community.general.random_string-dependencies.yml
+      - 246-AAP-13838-Removed-community.libvirt-and-community.crypto-references.yml
+      - 247-Fix-issue-where-file-needs-to-be-created-for-VM.yml
+      - 248-Typo-in-virsh-list.yml
+      - 249-AAP-13838-Fix-typo-so-e2e-test-can-run.yml
+      - 250-AAP-13838-Remove-autostart-check.yml
+      - 251-add-start-compose-api-timeout-argument.yml
+      - 252-AAP-13082-Remove-community-general-references.yml
+      - 259-AAP-12547-Properly-list-dependencies.yml
+      - 261-AAP-12547-Change-mergify-method-from-merge-to-squash.yml
+      - 262-AAP-12547-prefer-podman-in-ansible-test.yml
+      - 263-fix-fedora.linux_system_roles-typo.yml
+      - 265-move-defaults-to-playbook.yml
     release_date: '2023-08-01'
