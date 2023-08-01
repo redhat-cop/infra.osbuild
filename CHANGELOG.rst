@@ -5,6 +5,18 @@ Infra.Osbuild Release Notes
 .. contents:: Topics
 
 
+v2.2.0
+======
+
+Minor Changes
+-------------
+
+- Add "builder_request_timeout" argument to infra.osbuild.builder
+- Moved default vars to populate aap playbook for better availability.
+- Remove dependencies on community.crypto
+- Remove dependencies on community.general.random_string
+- Remove dependencies on community.libvirt.virt
+
 v2.1.0
 ======
 
