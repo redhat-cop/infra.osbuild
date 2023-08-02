@@ -65,7 +65,7 @@
   register: builder_stat_output
 
 - name: Create image directory is it doesn't exist
-  when: not builder_stat_output.stat.exists
+  when: not builder_stat_output.stat.exists and "container" not in builder_compose_type
   block:
     - name: Create blueprint directory
       ansible.builtin.file:
@@ -102,7 +102,7 @@
             src: "{{ builder_blueprint_src_path }}"
 
         - name: Initialize rpm-ostree repo for blueprint
-          when: not builder_stat_output.stat.exists
+          when: not builder_stat_output.stat.exists and "container" not in builder_compose_type
           block:
             - name: Initialize repository
               ansible.builtin.command:
@@ -192,12 +192,14 @@
       changed_when: true
 
 - name: Create kickstart file
+  when: ("container" not in builder_compose_type)
   ansible.builtin.template:
     src: "{{ builder_kickstart | default('templates/kickstart.j2') }}"
     dest: "/var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
     mode: '0755'
 
 - name: Validate kickstart
+  when: ("container" not in builder_compose_type)
   ansible.builtin.command: "/usr/bin/ksvalidator /var/www/html/{{ builder_blueprint_name }}/kickstart.ks"
   changed_when: false
 
