@@ -190,6 +190,13 @@
     - name: Restore context on blueprint directory
       ansible.builtin.command: "restorecon -R /var/www/html/{{ builder_blueprint_name }}"
       changed_when: true
+  rescue:
+    - ansible.builtin.shell: "journalctl --unit osbuild-composer.service | tail -n 5"
+      # changed_when: false
+      register: blargh
+
+    - ansible.builtin.fail:
+        msg: "{{ blargh.stdout }}"
 
 - name: Create kickstart file
   when: ("container" not in builder_compose_type)
