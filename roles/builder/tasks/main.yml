@@ -196,7 +196,7 @@
       changed_when: false
       register: error_output
 
-    - name: Print logs 
+    - name: Print logs
       ansible.builtin.fail:
         msg: "{{ error_output.stdout }}"
 
@@ -329,6 +329,6 @@
       changed_when: false
       register: error_output
 
-    - name: Print logs 
+    - name: Print logs
       ansible.builtin.fail:
         msg: "{{ error_output.stdout }}"
