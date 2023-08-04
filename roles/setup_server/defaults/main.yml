@@ -1,5 +1,5 @@
 ---
-setup_server_rhsatellite: true
+setup_server_rhsatellite: false
 setup_server_rhsatellite_host: "sat6.shadowman.dev"
 setup_server_rhsatellite_organization: "Shadowman"
 setup_server_rhsatellite_environment: "Library"
