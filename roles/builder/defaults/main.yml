@@ -21,7 +21,7 @@ builder_compose_customizations:
       - "users"
       - "wheel"
 builder_image_storage_threshold: 3  # percentage
-builder_image_storage_cleared: true
+builder_image_storage_cleared: false
 builder_system_ipv4: "{{ ansible_default_ipv4.address }}"
 builder_request_timeout: 120
 builder_error_log_length: 5
