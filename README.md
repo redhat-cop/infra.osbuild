@@ -155,3 +155,5 @@ ansible-test units --docker --python $PYTHON_VERSION $TEST_FILE_PATH
 ```
 ansible-test integration --remote rhel/$RHEL_VERSION $IMAGE_TYPE
 ```
+## Known issues
+- rpm-ostree may crash when trying to run the `rpm-ostree upgrade --check` command. This is caused by an open issue in rpm-ostee found here: https://github.com/coreos/rpm-ostree/issues/4280
