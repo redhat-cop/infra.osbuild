@@ -12,8 +12,6 @@ builder_compose_pkgs:
   - "git"
   - "ansible-core"
 builder_compose_customizations:
-  kernel:
-    append: "nomst=force"
   user:
     name: "core"
     description: "test user"
