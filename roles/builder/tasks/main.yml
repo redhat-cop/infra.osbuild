@@ -192,7 +192,9 @@
       changed_when: true
   rescue:
     - name: Get logs from journal
-      ansible.builtin.shell: "set -eo pipefail journalctl --unit osbuild-composer.service | tail -n {{ builder_error_log_length }}"
+      ansible.builtin.shell: |
+        set -eo pipefail
+        journalctl --unit osbuild-composer.service | tail -n {{ builder_error_log_length }}
       changed_when: false
       register: error_output
 
@@ -325,7 +327,9 @@
         builder_image_path: "/var/www/html/{{ builder_blueprint_name }}/images/{{ builder_blueprint_output['current_version'] }}/{{ builder_blueprint_name }}_{{ builder_compose_type }}.{{ builder_compose_start_out['result']['output_type'] }}"  # yamllint disable-line rule:line-length
   rescue:
     - name: Get logs from journal
-      ansible.builtin.shell: "set -eo pipefail journalctl --unit osbuild-composer.service | tail -n {{ builder_error_log_length }}"
+      ansible.builtin.shell: |
+        set -eo pipefail
+        journalctl --unit osbuild-composer.service | tail -n {{ builder_error_log_length }}
       changed_when: false
       register: error_output
 
