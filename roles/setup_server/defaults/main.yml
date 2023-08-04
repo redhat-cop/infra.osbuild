@@ -1,1 +1,6 @@
 ---
+setup_server_rhsatellite: true
+setup_server_rhsatellite_host: "sat6.shadowman.dev"
+setup_server_rhsatellite_organization: "Shadowman"
+setup_server_rhsatellite_environment: "Library"
+setup_server_rhsatellite_contentview: "RHEL_8"
