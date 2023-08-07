@@ -1,4 +1,38 @@
 ---
+# Should match logic in https://github.com/ansible-collections/collection_template/blob/main/.github/workflows/ansible-test.yml
+# README FIRST
+# 1. Subscribe to https://github.com/ansible-collections/news-for-maintainers
+#    (click the Watch button on the homepage > Custom > Issues)
+#    and keep this matrix up to date in accordance to related announcements.
+#    Timely add new ansible-core versions and consider dropping support
+#    and testing against its EOL versions.
+# 2. If your collection repository is under the ansible-collections org,
+#    please keep in mind that the number of GHA jobs is limited
+#    and shared across all the collections in the org.
+#    So, focusing on good test coverage of your collection,
+#    please avoid testing against unnecessary entities such as
+#    ansible-core EOL versions your collection does not support
+#    or ansible-core versions that are not EOL yet but not supported by the collection.
+# 3. If you don't have unit or integration tests, remove corresponding sections.
+# 4. If your collection depends on other collections ensure they are installed,
+#    add them to the "test-deps" input.
+# 5. For the comprehensive list of the inputs supported by the
+#    ansible-community/ansible-test-gh-action GitHub Action, see
+#    https://github.com/marketplace/actions/ansible-test.
+# 6. If you want to prevent merging PRs that do not pass all tests,
+#    make sure to add the "check" job to your repository branch
+#    protection once this workflow is added.
+#    It is also possible to tweak which jobs are allowed to fail. See
+#    https://github.com/marketplace/actions/alls-green#gotchas for more detail.
+# 7. If you need help please ask in #community:ansible.com on Matrix
+#    or in bridged #ansible-community on the Libera.Chat IRC channel.
+#    See https://docs.ansible.com/ansible/devel/community/communication.html
+#    for details.
+# 8. If your collection is [going to get] included in the Ansible package,
+#    it has to adhere to Python compatibility and CI testing requirements described in
+#    https://docs.ansible.com/ansible/latest/community/collection_contributors/collection_requirements.html.
+
+# Run CI against all pushes (direct commits, also merged PRs), Pull Requests
 trigger:
   batch: true
   branches:
@@ -14,7 +48,11 @@ pr:
       - stable-*
 
 schedules:
-  - cron: 0 9 * * *
+  # Run CI once per day (at 06:00 UTC)
+  # This ensures that even if there haven't been commits that we are still
+  # testing against latest version of ansible-test for each ansible-core
+  # version
+  - cron: 0 6 * * *
     displayName: Nightly
     always: true
     branches:
@@ -42,15 +80,40 @@ resources:
 pool: Standard
 
 stages:
-  ## Sanity
+  ###
+  # Sanity tests (REQUIRED)
+  #
+  # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
+  #
+  # It's important that Sanity is tested against all stable-X.Y branches
+  # Testing against `devel` may fail as new tests are added.
+  # An alternative to `devel` is the `milestone` branch with
+  # gets synchronized with `devel` every few weeks and therefore
+  # tends to be a more stable target. Be aware that it is not updated
+  # around creation of a new stable branch, this might cause a problem
+  # that two different versions of ansible-test use the same sanity test
+  # ignore.txt file.
+  # Add new versions announced in
+  # https://github.com/ansible-collections/news-for-maintainers in a timely manner,
+  # consider dropping testing against EOL versions and versions you don't support.
+
+  # Ansible-test on various stable branches does not yet work well with cgroups v2.
+  # Since ubuntu-latest now uses Ubuntu 22.04, we need to fall back to the ubuntu-20.04
+  # image for these stable branches. The list of branches where this is necessary will
+  # shrink over time, check out https://github.com/ansible-collections/news-for-maintainers/issues/28
+  # for the latest list.
+
+  # Unit tests (OPTIONAL)
+  #
+  # https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html
   - stage: Sanity_devel
     displayName: Ansible devel sanity
     dependsOn: []
     jobs:
       - template: templates/matrix.yml
         parameters:
-          nameFormat: '{0}'
-          testFormat: 'devel/{0}'
+          nameFormat: "{0}"
+          testFormat: "devel/{0}"
           targets:
             - name: Sanity
               test: sanity
@@ -64,8 +127,8 @@ stages:
     jobs:
       - template: templates/matrix.yml
         parameters:
-          nameFormat: '{0}'
-          testFormat: '2.15/{0}'
+          nameFormat: "{0}"
+          testFormat: "2.15/{0}"
           targets:
             - name: Sanity
               test: sanity
@@ -77,8 +140,8 @@ stages:
     jobs:
       - template: templates/matrix.yml
         parameters:
-          nameFormat: '{0}'
-          testFormat: '2.14/{0}'
+          nameFormat: "{0}"
+          testFormat: "2.14/{0}"
           targets:
             - name: Sanity
               test: sanity
@@ -90,8 +153,8 @@ stages:
     jobs:
       - template: templates/matrix.yml
         parameters:
-          nameFormat: '{0}'
-          testFormat: '2.13/{0}'
+          nameFormat: "{0}"
+          testFormat: "2.13/{0}"
           targets:
             - name: Sanity
               test: sanity
@@ -99,6 +162,21 @@ stages:
               test: units
 
   ## Remote tests
+  # Integration tests (RECOMMENDED)
+  #
+  # https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html
+
+  # If the application you are testing is available as a docker container and you want to test
+  # multiple versions see the following for an example:
+  # https://github.com/ansible-collections/community.zabbix/tree/master/.github/workflows
+
+  # Add new versions announced in
+  # https://github.com/ansible-collections/news-for-maintainers in a timely manner,
+  # consider dropping testing against EOL versions and versions you don't support.
+
+  # See the documentation for the following GitHub action on
+  # https://github.com/ansible-community/ansible-test-gh-action/blob/main/README.md
+
   # choices of targets defined here:
   #   https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_data/completion/remote.txt
   #
@@ -855,6 +933,9 @@ stages:
             - 19
 
   ## Finally
+  # This job does nothing and is only used for the branch protection
+  # or multi-stage CI jobs, like making sure that all tests pass before
+  # a publishing job is started.
   - stage: Summary
     condition: succeededOrFailed()
     dependsOn:
