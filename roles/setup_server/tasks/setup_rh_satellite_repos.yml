@@ -4,9 +4,9 @@
     path: /etc/rhsm/ca/katello-server-ca.pem
   register: katello_file
 
-- name: Error message if Satallite is missing
+- name: Error message if Satellite is missing
   ansible.builtin.fail:
-    msg: "Satallite not found, please ensure Satallite is configured properly"
+    msg: "Satellite not found, please ensure Satallite is configured properly"
   when: katello_file.stat.exists
 
 - name: Debug
@@ -50,12 +50,3 @@
     owner: root
     group: root
     mode: '0644'
-
-- name: Restart osbuild
-  ansible.builtin.systemd:
-    name: "{{ item }}"
-    state: restarted
-  loop:
-    - osbuild-worker@.service.d
-    - osbuild-worker@1.service
-    - osbuild-composer.service
