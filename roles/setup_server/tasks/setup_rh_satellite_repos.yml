@@ -1,0 +1,52 @@
+---
+- name: Check if Satellite installed
+  ansible.builtin.stat:
+    path: /etc/rhsm/ca/katello-server-ca.pem
+  register: katello_file
+
+- name: Error message if Satellite is missing
+  ansible.builtin.fail:
+    msg: "Satellite not found, please ensure Satallite is configured properly"
+  when: katello_file.stat.exists
+
+- name: Debug
+  ansible.builtin.debug:
+    var: katello_file
+
+- name: Create folder
+  ansible.builtin.file:
+    path: "/etc/osbuild-composer/repositories"
+    recurse: true
+    state: directory
+    owner: root
+    mode: '0755'
+
+- name: Template out file for repo to use satellite for current RHEL version
+  ansible.builtin.template:
+    src: templates/rhel.json.j2
+    dest: /etc/osbuild-composer/repositories/rhel-{{ ansible_distribution_major_version }}{{ (ansible_distribution_version | split('.'))[1] }}.json
+    owner: root
+    mode: '0644'
+
+- name: Copy existing cert
+  ansible.builtin.copy:
+    remote_src: true
+    src: /etc/rhsm/ca/redhat-uep.pem
+    dest: /etc/rhsm/ca/redhat-uep.rpmsave
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Delete file
+  ansible.builtin.file:
+    state: absent
+    path: /etc/rhsm/ca/redhat-uep.pem
+
+- name: Create Sym link
+  ansible.builtin.file:
+    state: link
+    src: /etc/rhsm/ca/katello-server-ca.pem
+    dest: /etc/rhsm/ca/redhat-uep.pem
+    owner: root
+    group: root
+    mode: '0644'

@@ -10,6 +10,71 @@ None
 
 ## Role Variables
 
+### setup_server_rhsatellite
+
+Type: boolean
+Required: false
+
+This variable is used to check when Satellite setup should run. When set to true Satellite setup will run.
+
+Example:
+
+```yaml
+setup_server_rhsatellite: true
+```
+
+### setup_server_rhsatellite_host
+
+Type: string
+Required: false
+
+This variable is used to connect to the Satellite host in order to setup the repositories for baseos and appstream.
+
+Example:
+
+```yaml
+setup_server_rhsatellite_host: "test.dev"
+```
+
+### setup_server_rhsatellite_organization
+
+Type: string
+Required: false
+
+This variable is used to build the url order to setup the repositories for baseos and appstream using Satellite.
+
+Example:
+
+```yaml
+setup_server_rhsatellite_organization: "Default"
+```
+
+### setup_server_rhsatellite_environment
+
+Type: string
+Required: false
+
+This variable is used to build the url order to setup the repositories for baseos and appstream using Satellite.
+
+Example:
+
+```yaml
+setup_server_rhsatellite_environment: "Library"
+```
+
+### setup_server_rhsatellite_contentview
+
+Type: string
+Required: false
+
+This variable is used to build the url order to setup the repositories for baseos and appstream using Satellite.
+
+Example:
+
+```yaml
+setup_server_rhsatellite_contentview: "RHEL_8"
+```
+
 ## Variables Exported by the Role
 
 None.
