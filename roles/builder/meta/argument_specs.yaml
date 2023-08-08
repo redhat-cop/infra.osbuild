@@ -2,6 +2,7 @@
 argument_specs:
   main:
     short_description: The main entry point for the builder role.
+    description: The main entry point for the builder role.
     options:
       builder_custom_repos:
         type: "list"
@@ -139,14 +140,17 @@ argument_specs:
       builder_aap_user:
         type: "str"
         required: false
+        description: "AAP username"
 
       builder_aap_ks_user:
         type: "str"
         required: false
+        description: "AAP Kickstart username"
 
       builder_aap_ks_password:
         type: "str"
         required: false
+        description: "AAP Kickstart password"
 
       builder_request_timeout:
         type: "int"
