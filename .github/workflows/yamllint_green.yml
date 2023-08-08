@@ -19,7 +19,7 @@ jobs:
 
       - name: Lint YAML files
         run: |
-          yamllint -d "{extends: default, rules: {line-length: {max: 200, level: warning}}}" .
+          yamllint -d "{extends: default, rules: {document-start: { ignore: changelogs/changelog.yaml }, line-length: {max: 200} }}" .
 
 on:  # yamllint disable-line rule:truthy
   pull_request:
