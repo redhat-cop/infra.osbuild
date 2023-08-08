@@ -2,7 +2,8 @@
 argument_specs:
   main:
     short_description: The main entry point for the builder role.
-    description: The main entry point for the builder role.
+    description:
+      - The main entry point for the builder role.
     options:
       builder_custom_repos:
         type: "list"
