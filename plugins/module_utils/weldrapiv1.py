@@ -86,7 +86,7 @@ class WeldrV1:
         :source:     dict, a dictionary of a source
         :return:        dict
         """
-        if type(source) != bytes:
+        if not isinstance(source, bytes):
             source = to_bytes(source)
         results = json.load(
             self.weldr.request.open(
@@ -236,7 +236,7 @@ class WeldrV1:
 
         :blueprint:     dict, a dictionary of a blueprint
         """
-        if type(blueprint) != bytes:
+        if not isinstance(blueprint, bytes):
             blueprint = to_bytes(blueprint)
         results = json.load(
             self.weldr.request.open(
@@ -285,7 +285,7 @@ class WeldrV1:
 
         :return:    dict
         """
-        if type(compose_settings) != bytes:
+        if not isinstance(compose_settings, bytes):
             compose_settings = to_bytes(compose_settings)
         response, info = fetch_url(
             module=self.weldr.module,
