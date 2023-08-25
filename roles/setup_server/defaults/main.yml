@@ -1,2 +1,3 @@
 ---
 setup_server_rhsatellite: false
+setup_server_beta_repos: false

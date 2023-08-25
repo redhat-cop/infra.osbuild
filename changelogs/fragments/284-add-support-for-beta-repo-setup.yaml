@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - Add support for beta repos setup for appstream and baseos

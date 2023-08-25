@@ -31,10 +31,27 @@
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.rhc
       when:
+        - not setup_server_beta_repos
         - 'ansible_distribution == "RedHat" and not setup_server_rhsatellite'
         - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
         - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
         - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
+
+    - name: Setup Beta Repositories
+      vars:
+        rhc_repositories:
+          - {name: "*", state: disabled}
+          - {name: "rhel-{{ ansible_distribution_major_version }}-for-x86_64-appstream-beta-rpms", state: enabled}
+          - {name: "rhel-{{ ansible_distribution_major_version }}-for-x86_64-baseos-beta-rpms", state: enabled}
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.rhc
+      when:
+        - setup_server_beta_repos
+
+    - name: Setup Red Hat Satellite Repositories
+      when: setup_server_rhsatellite
+      ansible.builtin.include_tasks:
+        file: setup_rh_satellite_repos.yml
 
     - name: Setup Red Hat Satellite Repositories
       when: setup_server_rhsatellite
