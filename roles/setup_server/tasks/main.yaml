@@ -47,11 +47,10 @@
         name: fedora.linux_system_roles.rhc
       when:
         - setup_server_beta_repos
-
-    - name: Setup Red Hat Satellite Repositories
-      when: setup_server_rhsatellite
-      ansible.builtin.include_tasks:
-        file: setup_rh_satellite_repos.yml
+        - 'ansible_distribution == "RedHat" and not setup_server_rhsatellite'
+        - '"rh-amazon-rhui-client" not in ansible_facts["packages"]'
+        - '"rhui-azure-rhel9" not in ansible_facts["packages"]'
+        - '"rhui-azure-rhel8" not in ansible_facts["packages"]'
 
     - name: Setup Red Hat Satellite Repositories
       when: setup_server_rhsatellite
