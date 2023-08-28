@@ -24,6 +24,7 @@ author:
 - Adam Miller (@maxamillion)
 - Chris Santiago (@resoluteCoder)
 - Matthew Sandoval (@matoval)
+- Josh Swanson (@jjaswanson4)
 options:
     dest:
         description:
@@ -80,6 +81,14 @@ options:
         type: dict
         default: {}
         required: false
+    containers:
+        description:
+            - Dictionary of container images to include in compose
+            - Source must be defined, name and tls-verify are optional
+            - More information can be found here: https://www.osbuild.org/guides/image-builder-on-premises/blueprint-reference.html#containers
+        type: list
+        default: []
+        required: false
 notes:
     - The C(distro) field will default to the distro of the builder server
       the build is executed on. If any other distro is defined than the same
@@ -107,6 +116,18 @@ EXAMPLES = """
         home: "/home/bob/"
         shell: "/usr/bin/bash"
         groups: '["users", "wheel"]'
+
+- name: create blueprint with container images included
+  infra.osbuild.create_blueprint:
+    name: "image-with-containers"
+    packages:
+      - "vim-enhanced"
+      - "ansible-core"
+      - "podman"
+    containers:
+      - name: fedora-m
+        source: "quay.io/fedora/fedora-minimal:latest"
+        tls_verify: true
 """
 
 from ansible.module_utils.basic import AnsibleModule  # noqa E402
@@ -122,6 +143,7 @@ argument_spec = dict(
     packages=dict(type="list", required=False, elements="str", default=[]),
     groups=dict(type="list", required=False, elements="str", default=[]),
     customizations=dict(type="dict", required=False, default={}),
+    containers=dict(type="list", required=False, elements="dict", default=[]),
 )
 
 
@@ -172,6 +194,14 @@ def create_blueprint(module, weldr):
         toml_data["groups"]: list = []
         for group in module.params["groups"]:
             toml_data["groups"].append({"name": f"{group}"})
+
+    if module.params["containers"]:
+        toml_data["containers"]: list = []
+        for container in module.params["containers"]:
+           # This should probably get some validation, source must be defined, others are optional technically
+           #if container.source is None:
+           #    module.fail_json(msg=f'Container source must be defined')
+           toml_data["containers"].append(container)
 
     toml_data["customizations"]: dict = {}
     for key, customization in module.params["customizations"].items():
