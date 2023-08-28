@@ -237,6 +237,25 @@ builder_compose_pkgs:
   - "tmux"
 ```
 
+### builder_compose_containers
+
+Type: list
+Required: false
+
+This variable is a list of [containers](https://www.osbuild.org/guides/image-builder-on-premises/blueprint-reference.html#containers) to include in the compose in YAML.
+
+Example:
+
+```yaml
+builder_compose_containers:
+  - name: fedora-m
+    source: "quay.io/fedora/fedora-minimal:latest"
+    tls_verify: true
+  - name: fedora
+    source: "quay.io/fedora/fedora:latest"
+    tls_verify: false
+```
+
 ### builder_compose_customizations
 
 Type: dict
