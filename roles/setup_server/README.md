@@ -75,6 +75,19 @@ Example:
 setup_server_rhsatellite_contentview: "RHEL_8"
 ```
 
+### setup_server_beta_repos
+
+Type: boolean
+Required: true
+
+This variable is used to setup beta repositories for appstream and baseos, set true to setup beta repositories and false to setup non-beta repositories.
+
+Example:
+
+```yaml
+setup_server_beta_repos: true
+```
+
 ## Variables Exported by the Role
 
 None.
