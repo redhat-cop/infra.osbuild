@@ -95,6 +95,7 @@
             distro: "{{ builder_blueprint_distro | default(omit) }}"
             packages: "{{ builder_compose_pkgs }}"
             customizations: "{{ builder_compose_customizations }}"
+            containers: "{{ builder_compose_containers | default(omit) }}"
           register: builder_blueprint_output
 
         - name: Push the blueprint into image builder
