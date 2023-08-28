@@ -83,7 +83,7 @@ options:
         required: false
     containers:
         description:
-            - Dictionary of container images to include in compose
+            - List of container images to include in compose
             - Source must be defined, name and tls-verify are optional
             - More information can be found here: https://www.osbuild.org/guides/image-builder-on-premises/blueprint-reference.html#containers
         type: list
