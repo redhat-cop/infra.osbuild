@@ -13,3 +13,8 @@ builder_blueprint_ref: "{{ 'fedora' if ansible_distribution == 'Fedora' else 'ce
 #  - "zoo"
 
 compose_type: "edge-commit"
+
+builder_compose_containers:
+  - name: fedora-m
+    source: "quay.io/fedora/fedora-minimal:latest"
+    tls_verify: true
