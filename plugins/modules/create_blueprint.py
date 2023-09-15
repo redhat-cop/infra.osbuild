@@ -197,10 +197,10 @@ def create_blueprint(module, weldr):
 
     if module.params["containers"]:
         toml_data["containers"]: list = []
+        # TODO This should probably get some validation, source must be defined, others are optional technically
+        # if container.source is None:
+        #    module.fail_json(msg=f'Container source must be defined')
         for container in module.params["containers"]:
-           # This should probably get some validation, source must be defined, others are optional technically
-           #if container.source is None:
-           #    module.fail_json(msg=f'Container source must be defined')
            toml_data["containers"].append(container)
 
     toml_data["customizations"]: dict = {}
