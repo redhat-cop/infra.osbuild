@@ -201,7 +201,7 @@ def create_blueprint(module, weldr):
         # if container.source is None:
         #    module.fail_json(msg=f'Container source must be defined')
         for container in module.params["containers"]:
-           toml_data["containers"].append(container)
+            toml_data["containers"].append(container)
 
     toml_data["customizations"]: dict = {}
     for key, customization in module.params["customizations"].items():
