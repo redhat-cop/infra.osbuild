@@ -1,7 +1,7 @@
 ---
 # NOTE: variables with an underscore (_) prefix are considered "private" data
 #       to the Role and are not meant for users to alter these values.
-_setup_server_base_packages:
+_setup_server_base_packages:  # noqa var-naming[no-role-prefix]
   - rsync
   - osbuild-composer
   - composer-cli
@@ -16,4 +16,4 @@ _setup_server_base_packages:
   - python3
   - lorax
   - pykickstart
-_setup_server_infra_osbuild_ostree_os: false
+_setup_server_infra_osbuild_ostree_os: false  # noqa var-naming[no-role-prefix]
