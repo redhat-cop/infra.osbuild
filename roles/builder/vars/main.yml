@@ -15,5 +15,7 @@ builder_kickstart_options:
 _builder_kickstart_post:  # noqa var-naming[no-role-prefix]
   - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') if builder_aap_url is defined | default(None) }}"
 builder_kickstart_post: "{{ _builder_kickstart_post + additional_kickstart_post if additional_kickstart_post is defined else (_builder_kickstart_post if _builder_kickstart_post is defined else None) | default(None) }}"  # yamllint disable-line rule:line-length
-_builder_pub_key: "{{ builder_pub_key if builder_pub_key is defined else (builder_pub_key_path if builder_pub_key_path is defined else '') }}"  # noqa yamllint disable-line rule:line-length var-naming[no-role-prefix]
-_builder_compose_type: "{{ ('iot-commit' if ansible_distribution == 'Fedora' else 'edge-commit') if 'installer' in builder_compose_type or 'raw' in builder_compose_type else builder_compose_type }}"  # noqa yamllint disable-line rule:line-length var-naming[no-role-prefix]
+_builder_pub_key: "{{ builder_pub_key if builder_pub_key is defined else (builder_pub_key_path if builder_pub_key_path is defined else '') }}"  # noqa var-naming[no-role-prefix]
+# yamllint disable-line rule:line-length 
+_builder_compose_type: "{{ ('iot-commit' if ansible_distribution == 'Fedora' else 'edge-commit') if 'installer' in builder_compose_type or 'raw' in builder_compose_type else builder_compose_type }}"  # noqa var-naming[no-role-prefix]
+# yamllint disable-line rule:line-length 
