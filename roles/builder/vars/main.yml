@@ -13,7 +13,7 @@ builder_kickstart_options:
   - services --enabled=ostree-remount
   - ostreesetup --nogpg --osname=rhel --remote=edge --url=http://{{ builder_system_ipv4 }}/{{ builder_blueprint_name }}/repo/ --ref={{ builder_blueprint_ref }}  # noqa yaml[line-length]
 _builder_kickstart_post:  # noqa var-naming[no-role-prefix]
-  - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') if builder_aap_url is defined | default(None) }}"
+  - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') if builder_aap_url is defined else None | default(None) }}"
 builder_kickstart_post: "{{ _builder_kickstart_post + additional_kickstart_post if additional_kickstart_post is defined else (_builder_kickstart_post if _builder_kickstart_post is defined else None) | default(None) }}"  # yamllint disable-line rule:line-length
 _builder_pub_key: "{{ builder_pub_key if builder_pub_key is defined else (builder_pub_key_path if builder_pub_key_path is defined else '') }}"  # noqa var-naming[no-role-prefix] yaml[line-length]
 # yamllint disable-line rule:line-length
