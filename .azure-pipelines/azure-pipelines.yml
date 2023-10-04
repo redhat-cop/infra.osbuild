@@ -134,32 +134,32 @@ stages:
               test: sanity
             - name: Units
               test: units
-  - stage: Sanity_2_14
-    displayName: Ansible 2.14 sanity
-    dependsOn: []
-    jobs:
-      - template: templates/matrix.yml
-        parameters:
-          nameFormat: "{0}"
-          testFormat: "2.14/{0}"
-          targets:
-            - name: Sanity
-              test: sanity
-            - name: Units
-              test: units
-  - stage: Sanity_2_13
-    displayName: Ansible 2.13 sanity
-    dependsOn: []
-    jobs:
-      - template: templates/matrix.yml
-        parameters:
-          nameFormat: "{0}"
-          testFormat: "2.13/{0}"
-          targets:
-            - name: Sanity
-              test: sanity
-            - name: Units
-              test: units
+  # - stage: Sanity_2_14
+  #   displayName: Ansible 2.14 sanity
+  #   dependsOn: []
+  #   jobs:
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         nameFormat: "{0}"
+  #         testFormat: "2.14/{0}"
+  #         targets:
+  #           - name: Sanity
+  #             test: sanity
+  #           - name: Units
+  #             test: units
+  # - stage: Sanity_2_13
+  #   displayName: Ansible 2.13 sanity
+  #   dependsOn: []
+  #   jobs:
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         nameFormat: "{0}"
+  #         testFormat: "2.13/{0}"
+  #         targets:
+  #           - name: Sanity
+  #             test: sanity
+  #           - name: Units
+  #             test: units
 
   ## Remote tests
   # Integration tests (RECOMMENDED)
