@@ -367,13 +367,13 @@ stages:
             - 19
 
   # https://github.com/ansible/ansible/blob/stable-2.15/test/lib/ansible_test/_data/completion/remote.txt
-  - stage: Remote_2_15
-    displayName: Remote 2.15
+  - stage: Remote_2_16
+    displayName: Remote 2.16
     dependsOn: []
     jobs:
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1
               test: rhel/9.1/
@@ -394,7 +394,7 @@ stages:
       #       - 2
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: fedora 38 container
               test: fedora/38/
@@ -402,7 +402,7 @@ stages:
             - 3
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1 edge-commit
               test: rhel/9.1/
@@ -412,7 +412,7 @@ stages:
             - 4
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1 edge-container
               test: rhel/9.1/
@@ -471,7 +471,7 @@ stages:
 
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: fedora 37 iot-commit
               test: fedora/37/
@@ -479,7 +479,7 @@ stages:
             - 10
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: fedora 37 iot-container
               test: fedora/37/
@@ -507,7 +507,7 @@ stages:
       #       - 13
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1 oci
               test: rhel/9.1/
@@ -517,7 +517,7 @@ stages:
             - 14
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1 openstack
               test: rhel/9.1/
@@ -527,7 +527,7 @@ stages:
             - 15
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1 qcow2
               test: rhel/9.1/
@@ -537,7 +537,7 @@ stages:
             - 16
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1 tar
               test: rhel/9.1/
@@ -547,7 +547,7 @@ stages:
             - 17
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1 vhd
               test: rhel/9.1/
@@ -557,7 +557,7 @@ stages:
             - 18
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.15/{0}
+          testFormat: 2.16/{0}
           targets:
             - name: RHEL 9.1 vmdk
               test: rhel/9.1/
@@ -567,13 +567,13 @@ stages:
             - 19
 
   # https://github.com/ansible/ansible/blob/stable-2.14/test/lib/ansible_test/_data/completion/remote.txt
-  - stage: Remote_2_14
-    displayName: Remote 2.14
+  - stage: Remote_2_15
+    displayName: Remote 2.15
     dependsOn: []
     jobs:
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0
               test: rhel/9.0/
@@ -594,7 +594,7 @@ stages:
       #       - 2
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: Fedora 36 container
               test: fedora/36/
@@ -602,7 +602,7 @@ stages:
             - 3
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0 edge-commit
               test: rhel/9.0/
@@ -612,7 +612,7 @@ stages:
             - 4
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0 edge-container
               test: rhel/9.0/
@@ -671,7 +671,7 @@ stages:
 
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: Fedora 36 iot-commit
               test: fedora/36/
@@ -679,7 +679,7 @@ stages:
             - 10
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: Fedora 36 iot-container
               test: fedora/36/
@@ -707,7 +707,7 @@ stages:
       #       - 13
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0 oci
               test: rhel/9.0/
@@ -717,7 +717,7 @@ stages:
             - 14
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0 openstack
               test: rhel/9.0/
@@ -727,7 +727,7 @@ stages:
             - 15
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0 qcow2
               test: rhel/9.0/
@@ -737,7 +737,7 @@ stages:
             - 16
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0 tar
               test: rhel/9.0/
@@ -747,7 +747,7 @@ stages:
             - 17
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0 vhd
               test: rhel/9.0/
@@ -757,7 +757,7 @@ stages:
             - 18
       - template: templates/matrix.yml
         parameters:
-          testFormat: 2.14/{0}
+          testFormat: 2.15/{0}
           targets:
             - name: RHEL 9.0 vmdk
               test: rhel/9.0/
@@ -766,157 +766,157 @@ stages:
           groups:
             - 19
 
-  # https://github.com/ansible/ansible/blob/stable-2.13/test/lib/ansible_test/_data/completion/remote.txt
-  - stage: Remote_2_13
-    displayName: Remote 2.13
-    dependsOn: []
-    jobs:
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0
-              test: rhel/9.0/
-            - name: RHEL 8.5
-              test: rhel/8.5/
-          groups:
-            - 1
-      # FIXME - ami is currently broken in CI
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 ami
-      #         test: rhel/9.0/azure
-      #       - name: RHEL 8.5 ami
-      #         test: rhel/8.5/azure
-      #     groups:
-      #       - 2
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 edge-commit
-              test: rhel/9.0/
-            - name: RHEL 8.5 edge-commit
-              test: rhel/8.5/
-          groups:
-            - 4
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 edge-container
-              test: rhel/9.0/
-            - name: RHEL 8.5 edge-container
-              test: rhel/8.5/
-          groups:
-            - 5
+  # # https://github.com/ansible/ansible/blob/stable-2.13/test/lib/ansible_test/_data/completion/remote.txt
+  # - stage: Remote_2_13
+  #   displayName: Remote 2.13
+  #   dependsOn: []
+  #   jobs:
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 1
+  #     # FIXME - ami is currently broken in CI
+  #     # - template: templates/matrix.yml
+  #     #   parameters:
+  #     #     testFormat: 2.13/{0}
+  #     #     targets:
+  #     #       - name: RHEL 9.0 ami
+  #     #         test: rhel/9.0/azure
+  #     #       - name: RHEL 8.5 ami
+  #     #         test: rhel/8.5/azure
+  #     #     groups:
+  #     #       - 2
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0 edge-commit
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5 edge-commit
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 4
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0 edge-container
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5 edge-container
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 5
 
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-installer
-      #         test: rhel/9.0/
-      #       - name: RHEL 8.5 edge-installer
-      #         test: rhel/8.5/
-      #     groups:
-      #       - 6
+  #     # Fixme
+  #     # - template: templates/matrix.yml
+  #     #   parameters:
+  #     #     testFormat: 2.13/{0}
+  #     #     targets:
+  #     #       - name: RHEL 9.0 edge-installer
+  #     #         test: rhel/9.0/
+  #     #       - name: RHEL 8.5 edge-installer
+  #     #         test: rhel/8.5/
+  #     #     groups:
+  #     #       - 6
 
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-raw-image
-      #         test: rhel/9.0/
-      #     groups:
-      #       - 7
+  #     # Fixme
+  #     # - template: templates/matrix.yml
+  #     #   parameters:
+  #     #     testFormat: 2.13/{0}
+  #     #     targets:
+  #     #       - name: RHEL 9.0 edge-raw-image
+  #     #         test: rhel/9.0/
+  #     #     groups:
+  #     #       - 7
 
-      # comment out because edge-simplified-installer requireds an installation device
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 edge-simplified-installer
-      #         test: rhel/9.0/
-      #     groups:
-      #       - 8
+  #     # comment out because edge-simplified-installer requireds an installation device
+  #     # - template: templates/matrix.yml
+  #     #   parameters:
+  #     #     testFormat: 2.13/{0}
+  #     #     targets:
+  #     #       - name: RHEL 9.0 edge-simplified-installer
+  #     #         test: rhel/9.0/
+  #     #     groups:
+  #     #       - 8
 
-      # Fixme
-      # - template: templates/matrix.yml
-      #   parameters:
-      #     testFormat: 2.13/{0}
-      #     targets:
-      #       - name: RHEL 9.0 image-installer
-      #         test: rhel/9.0/
-      #       - name: RHEL 8.5 image-installer
-      #         test: rhel/8.5/
-      #     groups:
-      #       - 9
+  #     # Fixme
+  #     # - template: templates/matrix.yml
+  #     #   parameters:
+  #     #     testFormat: 2.13/{0}
+  #     #     targets:
+  #     #       - name: RHEL 9.0 image-installer
+  #     #         test: rhel/9.0/
+  #     #       - name: RHEL 8.5 image-installer
+  #     #         test: rhel/8.5/
+  #     #     groups:
+  #     #       - 9
 
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 oci
-              test: rhel/9.0/
-            - name: RHEL 8.5 oci
-              test: rhel/8.5/
-          groups:
-            - 14
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 openstack
-              test: rhel/9.0/
-            - name: RHEL 8.5 openstack
-              test: rhel/8.5/
-          groups:
-            - 15
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 qcow2
-              test: rhel/9.0/
-            - name: RHEL 8.5 qcow2
-              test: rhel/8.5/
-          groups:
-            - 16
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 tar
-              test: rhel/9.0/
-            - name: RHEL 8.5 tar
-              test: rhel/8.5/
-          groups:
-            - 17
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 vhd
-              test: rhel/9.0/
-            - name: RHEL 8.5 vhd
-              test: rhel/8.5/
-          groups:
-            - 18
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.13/{0}
-          targets:
-            - name: RHEL 9.0 vmdk
-              test: rhel/9.0/
-            - name: RHEL 8.5 vmdk
-              test: rhel/8.5/
-          groups:
-            - 19
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0 oci
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5 oci
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 14
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0 openstack
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5 openstack
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 15
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0 qcow2
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5 qcow2
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 16
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0 tar
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5 tar
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 17
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0 vhd
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5 vhd
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 18
+  #     - template: templates/matrix.yml
+  #       parameters:
+  #         testFormat: 2.13/{0}
+  #         targets:
+  #           - name: RHEL 9.0 vmdk
+  #             test: rhel/9.0/
+  #           - name: RHEL 8.5 vmdk
+  #             test: rhel/8.5/
+  #         groups:
+  #           - 19
 
   ## Finally
   # This job does nothing and is only used for the branch protection
