@@ -34,14 +34,14 @@
 
 # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
 trigger:
-  batch: true
+  batch: "true"
   branches:
     include:
       - main
       - stable-*
 
 pr:
-  autoCancel: true
+  autoCancel: "true"
   branches:
     include:
       - main
@@ -54,7 +54,7 @@ schedules:
   # version
   - cron: 0 6 * * *
     displayName: Nightly
-    always: true
+    always: "true"
     branches:
       include:
         - main
@@ -70,7 +70,7 @@ variables:
   - name: entryPoint
     value: tests/utils/shippable/shippable.sh
   - name: fetchDepth
-    value: 0
+    value: "0"
 
 resources:
   containers:
