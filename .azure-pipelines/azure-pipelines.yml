@@ -926,12 +926,10 @@ stages:
     condition: succeededOrFailed()
     dependsOn:
       - Sanity_devel
+      - Sanity_2_16
       - Sanity_2_15
-      - Sanity_2_14
-      - Sanity_2_13
       - Remote_devel
+      - Remote_2_16
       - Remote_2_15
-      - Remote_2_14
-      - Remote_2_13
     jobs:
       - template: templates/coverage.yml
