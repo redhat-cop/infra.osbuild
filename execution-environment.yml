@@ -11,4 +11,3 @@ dependencies:
 images:
   base_image:
     name: docker.io/redhat/ubi9:latest
-
