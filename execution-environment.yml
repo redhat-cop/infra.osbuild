@@ -1,8 +1,13 @@
 ---
-version: 1
-
-build_arg_defaults:
-  EE_BASE_IMAGE: 'quay.io/ansible/ansible-runner:latest'
+version: 3
 
 dependencies:
-  galaxy: build_context/_build/requirements.yml
+  ansible_core:
+    package_pip: ansible-core==2.12.8
+  ansible_runner:
+    package_pip: ansible-runner
+  galaxy: requirements.yml
+
+images:
+  base_image:
+    name: docker.io/redhat/ubi9:latest
