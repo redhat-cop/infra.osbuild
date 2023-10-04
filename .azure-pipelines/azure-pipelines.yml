@@ -191,8 +191,8 @@ stages:
           targets:
             - name: RHEL 9.2
               test: rhel/9.2/
-            - name: RHEL 8.8
-              test: rhel/8.8/
+            # - name: RHEL 8.8
+            #   test: rhel/8.8/
           groups:
             - 1
       # FIXME - ami is currently broken in CI
@@ -220,8 +220,8 @@ stages:
           targets:
             - name: RHEL 9.2 edge-commit
               test: rhel/9.2/
-            - name: RHEL 8.8 edge-commit
-              test: rhel/8.8/
+            # - name: RHEL 8.8 edge-commit
+            #   test: rhel/8.8/
           groups:
             - 4
       - template: templates/matrix.yml
@@ -230,8 +230,8 @@ stages:
           targets:
             - name: RHEL 9.2 edge-container
               test: rhel/9.2/
-            - name: RHEL 8.8 edge-container
-              test: rhel/8.8/
+            # - name: RHEL 8.8 edge-container
+            #   test: rhel/8.8/
           groups:
             - 5
 
@@ -325,8 +325,8 @@ stages:
           targets:
             - name: RHEL 9.2 oci
               test: rhel/9.2/
-            - name: RHEL 8.8 oci
-              test: rhel/8.8/
+            # - name: RHEL 8.8 oci
+            #   test: rhel/8.8/
           groups:
             - 14
       - template: templates/matrix.yml
@@ -335,8 +335,8 @@ stages:
           targets:
             - name: RHEL 9.2 openstack
               test: rhel/9.2/
-            - name: RHEL 8.8 openstack
-              test: rhel/8.8/
+            # - name: RHEL 8.8 openstack
+            #   test: rhel/8.8/
           groups:
             - 15
       - template: templates/matrix.yml
@@ -345,8 +345,8 @@ stages:
           targets:
             - name: RHEL 9.2 qcow2
               test: rhel/9.2/
-            - name: RHEL 8.8 qcow2
-              test: rhel/8.8/
+            # - name: RHEL 8.8 qcow2
+            #   test: rhel/8.8/
           groups:
             - 16
       - template: templates/matrix.yml
@@ -355,8 +355,8 @@ stages:
           targets:
             - name: RHEL 9.2 tar
               test: rhel/9.2/
-            - name: RHEL 8.8 tar
-              test: rhel/8.8/
+            # - name: RHEL 8.8 tar
+            #   test: rhel/8.8/
           groups:
             - 17
       - template: templates/matrix.yml
@@ -365,8 +365,8 @@ stages:
           targets:
             - name: RHEL 9.2 vhd
               test: rhel/9.2/
-            - name: RHEL 8.8 vhd
-              test: rhel/8.8/
+            # - name: RHEL 8.8 vhd
+            #   test: rhel/8.8/
           groups:
             - 18
       - template: templates/matrix.yml
@@ -375,8 +375,8 @@ stages:
           targets:
             - name: RHEL 9.2 vmdk
               test: rhel/9.2/
-            - name: RHEL 8.8 vmdk
-              test: rhel/8.8/
+            # - name: RHEL 8.8 vmdk
+            #   test: rhel/8.8/
           groups:
             - 19
 
