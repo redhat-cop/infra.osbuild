@@ -4,6 +4,21 @@ Infra.Osbuild Release Notes
 
 .. contents:: Topics
 
+v2.3.0
+======
+
+Minor Changes
+-------------
+
+- Add else for _builder_kickstart_post
+- Add support for RH Satellite
+- Add support for beta repos setup for appstream and baseos
+- Added logs to the osbuild composer tasks in the builder role
+- Clean up kickstart post if else
+- Fix builder_kickstart_post else
+- Skip rpm-ostree and blueprint when container
+- Update execution enviornment to v3
+
 
 v2.2.0
 ======
