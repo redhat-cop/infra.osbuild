@@ -5,21 +5,22 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import socket
-from unittest.mock import Mock
-
 import pytest
+import socket
+from copy import deepcopy
+from unittest.mock import Mock
 
 from .....plugins.modules.start_compose import start_compose
 from .utils import AnsibleExitJson
 from .utils import AnsibleFailJson
+from .utils import get_blueprint_info_mock as get_blueprint_info_mock_global
 from .utils import mock_module
 from .utils import mock_weldr
 
 __metaclass = type
 
 args = {
-    "blueprint": "test_blueprint",
+    "blueprint": "base-image-with-tmux",
     "size": 0,
     "profile": "",
     "image_name": "",
@@ -71,6 +72,13 @@ def test_start_compose_submitted_duplicate():
     args["allow_duplicate"] = False
     module = mock_module(args)
     weldr = mock_weldr()
+
+    # Have to change the version of the return status to match the "running"
+    #   blueprints in the mock.
+    get_blueprint_info_mock = deepcopy(get_blueprint_info_mock_global)
+    get_blueprint_info_mock["blueprints"][0]["version"] = "0.0.5"
+    weldr.api.get_blueprints_info = Mock(return_value=get_blueprint_info_mock)
+
     with pytest.raises(AnsibleExitJson) as exit_json_obj:
         start_compose(module, weldr=weldr)
     assert "Not queuing a duplicate versioned" in str(exit_json_obj)
