@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - concatenate lists without embeddeding into an outer layer of list in start_compose to restore idempotent operation
