@@ -212,7 +212,7 @@ def start_compose(module, weldr):
             if (compose["blueprint"] == module.params["blueprint"]) and (compose["version"] == blueprint_version)
         ]
 
-        dupe_compose: list = [compose_queue_run_dupe + compose_queue_new_dupe + compose_failed_dupe + compose_finished_dupe]
+        dupe_compose: list = compose_queue_run_dupe + compose_queue_new_dupe + compose_failed_dupe + compose_finished_dupe
 
     if module.params["allow_duplicate"] or (len(dupe_compose) == 0):
         # FIXME - build to POST payload and POST that ish
