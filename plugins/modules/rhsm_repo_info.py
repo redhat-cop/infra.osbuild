@@ -36,7 +36,7 @@ EXAMPLES = """
 - name: Add source for custom packages
   infra.osbuild.rhsm_repo_info:
     name:
-     - rhocp-ironic-4.12-for-rhel-8-x86_64-rpms
+      - rhocp-ironic-4.12-for-rhel-8-x86_64-rpms
   register: rhsm_repo_info_out
 
 - name: Debug rhsm_repo_info_out

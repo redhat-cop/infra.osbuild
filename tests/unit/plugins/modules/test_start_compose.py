@@ -40,6 +40,7 @@ def test_start_compose_not_valid_image_type():
     with pytest.raises(AnsibleFailJson) as fail_json_obj:
         start_compose(module, weldr=weldr)
     assert "not a valid image type" in str(fail_json_obj)
+    assert not fail_json_obj.value.args[0]['changed']
 
 
 def test_start_compose_not_supported_image_type():
@@ -49,6 +50,7 @@ def test_start_compose_not_supported_image_type():
     with pytest.raises(AnsibleFailJson) as fail_json_obj:
         start_compose(module, weldr=weldr)
     assert "not a supported image type" in str(fail_json_obj)
+    assert not fail_json_obj.value.args[0]['changed']
 
 
 def test_start_compose_unable_to_determine_build():
@@ -58,6 +60,7 @@ def test_start_compose_unable_to_determine_build():
     with pytest.raises(AnsibleFailJson) as fail_json_obj:
         start_compose(module, weldr=weldr)
     assert "Unable to determine state of build" in str(fail_json_obj)
+    assert not fail_json_obj.value.args[0]['changed']
 
 
 def test_start_compose_submitted_queue():
@@ -66,6 +69,7 @@ def test_start_compose_submitted_queue():
     with pytest.raises(AnsibleExitJson) as exit_json_obj:
         start_compose(module, weldr=weldr)
     assert "Compose submitted to queue" in str(exit_json_obj)
+    assert exit_json_obj.value.args[0]['changed']
 
 
 def test_start_compose_submitted_duplicate_allowed():
@@ -82,6 +86,7 @@ def test_start_compose_submitted_duplicate_allowed():
         start_compose(module, weldr=weldr)
     # We expect this to work unless we set allow_duplicate to False
     assert "Compose submitted to queue" in str(exit_json_obj)
+    assert exit_json_obj.value.args[0]['changed']
 
 
 def test_start_compose_submitted_duplicate():
@@ -98,3 +103,4 @@ def test_start_compose_submitted_duplicate():
     with pytest.raises(AnsibleExitJson) as exit_json_obj:
         start_compose(module, weldr=weldr)
     assert "Not queuing a duplicate versioned" in str(exit_json_obj)
+    assert not exit_json_obj.value.args[0]['changed']

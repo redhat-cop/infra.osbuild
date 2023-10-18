@@ -174,13 +174,15 @@ def start_compose(module, weldr):
     if not is_supported:
         module.fail_json(
             msg="%s is not a valid image type, valid types are: %s"
-            % (module.params["compose_type"], [[v for k, v in t.items() if k == "name"] for t in supported_compose_type["types"]])
+            % (module.params["compose_type"], [[v for k, v in t.items() if k == "name"] for t in supported_compose_type["types"]]),
+            changed=changed
         )
     else:
         if not is_supported["enabled"]:
             module.fail_json(
                 msg="%s is not a supported image type, supported image types are: %s"
-                % (module.params["compose_type"], [[v for k, v in t.items() if k == "enabled" and v is True] for t in supported_compose_type["types"]])
+                % (module.params["compose_type"], [[v for k, v in t.items() if k == "enabled" and v is True] for t in supported_compose_type["types"]]),
+                changed=changed
             )
 
     if not module.params["allow_duplicate"]:
@@ -274,7 +276,8 @@ def start_compose(module, weldr):
                         submitted_compose_uuid: str = submitted_compose_found_failed[0]["id"]
                     else:
                         module.fail_json(
-                            msg="Unable to determine state of build, check osbuild-composer system logs. Also, consider increasing the request timeout"
+                            msg="Unable to determine state of build, check osbuild-composer system logs. Also, consider increasing the request timeout",
+                            changed=changed
                         )
 
             if submitted_compose_uuid:
@@ -286,8 +289,12 @@ def start_compose(module, weldr):
         if "status_code" in result.keys():
             if result["status_code"] >= 400:
                 module.fail_json(
-                    msg="Compose returned body: {0}, msg {1}, and status_code {2}".format(result["body"], result["error_msg"], result["status_code"])
+                    msg="Compose returned body: {0}, msg {1}, and status_code {2}".format(result["body"], result["error_msg"], result["status_code"]),
+                    changed=changed
                 )
+
+        # Having received a non-400+ response, we know a compose has started
+        changed: bool = True
 
         compose_output_types: dict[str, list[str]] = {
             "tar": ["tar", "edge-commit", "iot-commit", "edge-container", "iot-container", "container"],
@@ -305,7 +312,7 @@ def start_compose(module, weldr):
                 output_type: str = compose_type
         result["output_type"] = output_type
 
-        module.exit_json(msg="Compose submitted to queue", result=result)
+        module.exit_json(msg="Compose submitted to queue", result=result, changed=changed)
 
     else:
         changed: bool = False
