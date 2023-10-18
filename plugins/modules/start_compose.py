@@ -292,8 +292,9 @@ def start_compose(module, weldr):
                     msg="Compose returned body: {0}, msg {1}, and status_code {2}".format(result["body"], result["error_msg"], result["status_code"]),
                     changed=changed
                 )
-            # Having received a non-400+ response, we know a compose has started
-            changed: bool = True
+
+        # Having received a non-400+ response, we know a compose has started
+        changed: bool = True
 
         compose_output_types: dict[str, list[str]] = {
             "tar": ["tar", "edge-commit", "iot-commit", "edge-container", "iot-container", "container"],
