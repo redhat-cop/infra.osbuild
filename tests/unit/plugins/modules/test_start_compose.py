@@ -68,6 +68,22 @@ def test_start_compose_submitted_queue():
     assert "Compose submitted to queue" in str(exit_json_obj)
 
 
+def test_start_compose_submitted_duplicate_allowed():
+    module = mock_module(args)
+    weldr = mock_weldr()
+
+    # Have to change the version of the return status to match the "running"
+    #   blueprints in the mock.
+    get_blueprint_info_mock = deepcopy(get_blueprint_info_mock_global)
+    get_blueprint_info_mock["blueprints"][0]["version"] = "0.0.5"
+    weldr.api.get_blueprints_info = Mock(return_value=get_blueprint_info_mock)
+
+    with pytest.raises(AnsibleExitJson) as exit_json_obj:
+        start_compose(module, weldr=weldr)
+    # We expect this to work unless we set allow_duplicate to False
+    assert "Compose submitted to queue" in str(exit_json_obj)
+
+
 def test_start_compose_submitted_duplicate():
     args["allow_duplicate"] = False
     module = mock_module(args)
