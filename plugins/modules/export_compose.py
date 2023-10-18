@@ -53,6 +53,7 @@ from ansible_collections.infra.osbuild.plugins.module_utils.weldr import Weldr
 
 
 def main():
+    changed: bool = False
     module = AnsibleModule(
         argument_spec=dict(
             compose_id=dict(type="str", required=True),
@@ -62,12 +63,16 @@ def main():
 
     weldr = Weldr(module)
 
-    weldr.api.get_compose_image(
+    filepath = weldr.api.get_compose_image(
         module.params["compose_id"],
         module.params["dest"],
+        module.digest_from_file,
     )
+    if filepath is not None:
+        changed: bool = True
 
-    module.exit_json(msg="Exported compose payload to %s" % module.params["dest"])
+    module.exit_json(msg="Exported compose payload to %s" % module.params["dest"],
+                     changed=changed)
 
 
 if __name__ == "__main__":

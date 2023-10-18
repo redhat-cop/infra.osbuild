@@ -1,10 +1,12 @@
 #
 # (c) 2022, Adam Miller (admiller@redhat.com)
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+import hashlib
 import json
 import os
 import shutil
 import socket  # noqa E402
+from pathlib import Path
 
 from ansible.module_utils._text import to_bytes
 from ansible.module_utils.six.moves.urllib.parse import quote
@@ -368,7 +370,7 @@ class WeldrV1:
         results = json.load(self.weldr.request.open("GET", "http://localhost/api/v1/compose/failed"))
         return results
 
-    def get_compose_image(self, compose_uuid, dest):
+    def get_compose_image(self, compose_uuid, dest, digest_function):
         """
         # api.router.GET("/api/v:version/compose/image/:uuid", api.composeImageHandler)
         """
@@ -378,11 +380,20 @@ class WeldrV1:
             method="GET",
             unix_socket=self.weldr.unix_socket,
         )
+
+        if Path(dest).exists():
+            # Check if we need to overwrite
+            tmpdigest = digest_function(tmpfile)
+            destdigest = digest_function(dest)
+            if tmpdigest == destdigest:
+                os.remove(tmpfile)
+                return None
+
         shutil.copy(tmpfile, dest)
         with open(dest) as fd:
             os.fsync(fd)
         os.remove(tmpfile)
-        return None
+        return dest
 
     def get_compose_metadata(self, compose_uuid):
         """
