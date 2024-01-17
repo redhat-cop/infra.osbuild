@@ -3,11 +3,13 @@ version: 3
 
 dependencies:
   ansible_core:
-    package_pip: ansible-core==2.12.8
+    package_pip: ansible-core>=2.15.4
   ansible_runner:
     package_pip: ansible-runner
   galaxy: requirements.yml
+  system:
+    - openssh-clients
 
 images:
   base_image:
-    name: docker.io/redhat/ubi9:latest
+    name: registry.access.redhat.com/ubi9/ubi
