@@ -117,7 +117,17 @@ argument_spec = dict(
     dest=dict(type="str", required=True),
     name=dict(type="str", required=True),
     description=dict(type="str", required=False, default=""),
-    distro=dict(type="str", required=False, default="", choices=["", "rhel-8", "rhel-9", "centos-8", "centos-9", "fedora-36", "fedora-37", "fedora-38", "fedora-39"]),
+    distro=dict(type="str", required=False, default="", choices=[
+        "",
+        "rhel-8",
+        "rhel-9",
+        "centos-8",
+        "centos-9",
+        "fedora-36",
+        "fedora-37",
+        "fedora-38",
+        "fedora-39"
+    ]),
     version_type=dict(type="str", required=False, default="patch", choices=["major", "minor", "patch"]),
     packages=dict(type="list", required=False, elements="str", default=[]),
     groups=dict(type="list", required=False, elements="str", default=[]),
