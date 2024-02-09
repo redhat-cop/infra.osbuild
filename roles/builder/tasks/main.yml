@@ -122,7 +122,11 @@
               builder_blueprint_output:
                 msg: "Blueprint file written to location: {{ builder_blueprint_src_path }}"
                 changed: true
-                current_version: "{{ _imported_blueprint_version }}"
+                current_version: "{{ _imported_blueprint_version.stdout }}"
+
+          - name: Show generated variable
+            debug:
+              var: builder_blueprint_output
           when: builder_blueprint_import_file is defined
 
         - name: Push the blueprint into image builder
