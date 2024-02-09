@@ -100,6 +100,11 @@ argument_specs:
         required: false
         description: "SSH public key to inject into the resulting image to allow key-based ssh functionality without extra configuration for systems installed with the resulting build media."  # yamllint disable-line rule:line-length
 
+      builder_blueprint_import_file:
+        type: "string"
+        required: false
+        description: "Blueprint file to be imported."
+
       builder_compose_pkgs:
         type: "list"
         required: false
