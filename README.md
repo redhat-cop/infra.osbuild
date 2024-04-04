@@ -42,7 +42,7 @@ ansible-playbook playbooks/osbuild_setup_server.yml
 ansible-playbook playbooks/osbuild_builder.yml
 ```
 
-You can specify what kind of build you prefer with the variable buidler_compose_type.
+You can specify what kind of build you prefer with the variable builder_compose_type.
 
 Current supported and tested build types are:
 
