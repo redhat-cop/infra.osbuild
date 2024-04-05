@@ -221,6 +221,22 @@ Example:
 builder_pub_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDA8mSWJrMW9PSy3gXpqTu/QQPB/gfahwLIvt007poNHRartDaLQPNOwfGzBRXXaaP5RVAHqwmxStP3eVkIdm1UhzJ1X50KCWz5Oq0PW2UGjxCxdgutNbBEtGqewR9N7jOulcEjV+JQG1//vSuLlPWm/5W3nAE6objc+YQ1RyBSqgN58pvvqfhh2kjBKxAS1urDSc0CUlhefWnV60dYY7dApHemEC/+XZbYP68bVznZVPf4k0s+0Tx1GAxDMxUWUj4owldO6XVwxYkEgTBaMllSYyT95Mq6wqFQZ/k3IKikczwKnqsjFTl3/AFMaWgGlyGurCrKZtPEpZVsZYLlgWUtoZWlbUJHiKgyn4V8ErHVZBzauOkyydTaBp0O2ZxOTvIWlCkzR9129hxK4C2u0eewAfw0m1x8C2sB9OboteWpVFSIKXUb9he72lDguR8rfoTrvMwYKQ27z4FQbLQeAt4I1hPY/7bL4UYnKMszpmV7GuAPfzwtz0tBt2C4uX4b7OE= resolutecoder@fedora
 ```
 
+
+### builder_blueprint_import_file
+
+Type: string
+Required: false
+
+Local path to the blueprint TOML file that will be used. That will be done instead of creating a new blueprint using the `builder_compose_pkgs` and `builder_compose_customizations` variables. The Blueprint name will be overwritten by the `builder_blueprint_name` variable.
+
+Example:
+
+```yaml
+builder_blueprint_import_file: "~/microshift-embedded.toml"
+```
+
+
+
 ### builder_compose_pkgs
 
 Type: list
