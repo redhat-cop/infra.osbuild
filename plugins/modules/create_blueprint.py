@@ -148,7 +148,7 @@ def increment_version(version: str, version_type: str) -> str:
 
 def create_blueprint(module, weldr):
     if not module.params["description"]:
-        description: str = module.params["name"]
+        description: str = module.params["test"]
     else:
         description: str = module.params["description"]
 
