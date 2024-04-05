@@ -121,6 +121,19 @@ stages:
               test: units
             - name: Lint
               test: lint
+  - stage: Sanity_2_17
+    displayName: Ansible 2.17 sanity
+    dependsOn: []
+    jobs:
+      - template: templates/matrix.yml
+        parameters:
+          nameFormat: "{0}"
+          testFormat: "2.17/{0}"
+          targets:
+            - name: Sanity
+              test: sanity
+            - name: Units
+              test: units
   - stage: Sanity_2_16
     displayName: Ansible 2.16 sanity
     dependsOn: []
@@ -129,19 +142,6 @@ stages:
         parameters:
           nameFormat: "{0}"
           testFormat: "2.16/{0}"
-          targets:
-            - name: Sanity
-              test: sanity
-            - name: Units
-              test: units
-  - stage: Sanity_2_15
-    displayName: Ansible 2.15 sanity
-    dependsOn: []
-    jobs:
-      - template: templates/matrix.yml
-        parameters:
-          nameFormat: "{0}"
-          testFormat: "2.15/{0}"
           targets:
             - name: Sanity
               test: sanity
