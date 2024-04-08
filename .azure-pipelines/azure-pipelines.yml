@@ -262,7 +262,6 @@ stages:
       #         test: rhel/8.8/
       #     groups:
       #       - 9
-
       - template: templates/matrix.yml
         parameters:
           testFormat: devel/{0}
