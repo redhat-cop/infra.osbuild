@@ -82,7 +82,8 @@ argument_specs:
 
       builder_enforce_auth:
         type: "str"
-        required: true
+        required: false
+        default: true
         description: "Enforces system authentication using public ssh keys or user password."
 
       builder_password:

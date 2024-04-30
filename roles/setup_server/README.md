@@ -78,7 +78,7 @@ setup_server_rhsatellite_contentview: "RHEL_8"
 ### setup_server_beta_repos
 
 Type: boolean
-Required: true
+Required: false
 
 This variable is used to setup beta repositories for appstream and baseos, set true to setup beta repositories and false to setup non-beta repositories.
 

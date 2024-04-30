@@ -93,7 +93,7 @@ This is the name of the [osbuild blueprint](https://www.osbuild.org/guides/bluep
 to use. The blueprint will be auto generated based on the contents of the
 `builder_compose_customizations` role variable. In the event an of an [rpm-ostree](https://rpm-ostree.readthedocs.io/en/stable/)
 based compose type specified by the `builder_compose_type` role variable, the
-blueprint name defined in this variable will use used to define the resulting [ostree](https://ostreedev.github.io/ostree/)
+blueprint name defined in this variable will be used to define the resulting [ostree](https://ostreedev.github.io/ostree/)
 repository.
 
 ### builder_blueprint_src_path
@@ -165,7 +165,7 @@ builder_wait_compose_timeout: 2400
 ### builder_enforce_auth
 
 Type: bool
-Required: true
+Required: false
 
 Enforces system authentication using public ssh keys or user password
 
