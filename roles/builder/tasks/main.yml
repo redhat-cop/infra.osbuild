@@ -264,10 +264,10 @@
           ansible.builtin.set_fact:
             __simplified_insaller_customizations: {}
 
-        - name: Set __simplified_insaller_customizations value including only fdo and installation_device customizations
+        - name: Set __simplified_insaller_customizations value including only fdo, ignition and installation_device customizations
           ansible.builtin.set_fact:
             __simplified_insaller_customizations: "{{ __simplified_insaller_customizations | combine({item.key: item.value}) }}"
-          when: "item.key in ['fdo', 'installation_device']"
+          when: "item.key in ['fdo', 'installation_device', 'ignition']"
           with_dict: "{{ builder_compose_customizations }}"
 
         - name: Create simplified installer blueprint
