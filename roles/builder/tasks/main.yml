@@ -95,6 +95,7 @@
             distro: "{{ builder_blueprint_distro | default(omit) }}"
             packages: "{{ builder_compose_pkgs  | default(omit) }}"
             customizations: "{{ builder_compose_customizations  | default(omit) }}"
+            containers: "{{ builder_compose_containers | default(omit) }}"
           register: builder_blueprint_output
           when: builder_blueprint_import_file is not defined
 

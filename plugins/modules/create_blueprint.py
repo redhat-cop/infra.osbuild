@@ -73,6 +73,13 @@ options:
         elements: str
         default: []
         required: false
+    containers:
+        description:
+            - List of container images to embed into the image
+        type: list
+        elements: str
+        default: []
+        required: false
     customizations:
         description:
             - Dictionary of customizations
@@ -122,6 +129,7 @@ argument_spec = dict(
     packages=dict(type="list", required=False, elements="str", default=[]),
     groups=dict(type="list", required=False, elements="str", default=[]),
     customizations=dict(type="dict", required=False, default={}),
+    containers=dict(type="list", required=False, elements="str", default=[]), 
 )
 
 
@@ -187,6 +195,12 @@ def create_blueprint(module, weldr):
             toml_data["customizations"][key].append(customization)
         else:
             toml_data["customizations"][key]: dict = customization
+
+    if module.params["containers"]:
+        toml_data["containers"]: list = []
+        for container in module.params["containers"]:
+            container = container.strip()
+            toml_data["containers"].append({"source": f"{container}"})
 
     try:
         with open(module.params["dest"], "w") as fd:
