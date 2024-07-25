@@ -20,7 +20,8 @@ args = {
     "version_type": "patch",
     "packages": [],
     "groups": [],
-    "customizations": {"user": "bob"}
+    "customizations": {"user": "bob"},
+    "containers": []
 }
 
 

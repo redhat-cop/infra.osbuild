@@ -111,6 +111,12 @@ argument_specs:
         description: "List of RPMs to include in the image."
         elements: "str"
 
+      builder_compose_containers:
+        type: "list"
+        required: false
+        description: "List of Container Images to include in the image."
+        elements: "str"
+
       builder_compose_customizations:
         type: "dict"
         required: false
