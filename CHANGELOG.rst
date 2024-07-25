@@ -4,6 +4,17 @@ Infra.Osbuild Release Notes
 
 .. contents:: Topics
 
+
+v2.3.2
+======
+
+Minor Changes
+-------------
+
+- Add [[container]] section in generated blueprint, to support embedded container images
+
+=======
+
 v2.3.1
 ======
 
@@ -12,6 +23,10 @@ Minor Changes
 
 - Include blueprint import file option
 - Add ignition to simplified installer blueprint
+
+
+
+=======
 
 v2.3.0
 ======

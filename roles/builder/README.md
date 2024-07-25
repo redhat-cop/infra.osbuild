@@ -253,6 +253,23 @@ builder_compose_pkgs:
   - "tmux"
 ```
 
+
+### builder_compose_containers
+
+Type: list
+Required: false
+
+List of Container images to include in the image.
+
+Example:
+
+```yaml
+builder_compose_containers:
+  - quay.io/luisarizmendi/kiosk-token:latest
+  - quay.io/luisarizmendi/secret-http:latest
+```
+
+
 ### builder_compose_customizations
 
 Type: dict
