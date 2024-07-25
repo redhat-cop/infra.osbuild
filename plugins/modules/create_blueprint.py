@@ -129,7 +129,7 @@ argument_spec = dict(
     packages=dict(type="list", required=False, elements="str", default=[]),
     groups=dict(type="list", required=False, elements="str", default=[]),
     customizations=dict(type="dict", required=False, default={}),
-    containers=dict(type="list", required=False, elements="str", default=[]), 
+    containers=dict(type="list", required=False, elements="str", default=[]),
 )
 
 
