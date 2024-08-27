@@ -90,7 +90,7 @@
 
         - name: Create a blueprint
           infra.osbuild.create_blueprint:  # noqa only-builtins
-            dest: "{{ builder_blueprint_src_path }}"
+            dest: "{{ builder_blueprint_src_path }}" # noqa jinja[spacing]
             name: "{{ builder_blueprint_name }}"
             distro: "{{ builder_blueprint_distro | default(omit) }}"
             packages: "{{ builder_compose_pkgs  | default(omit) }}"
@@ -122,7 +122,7 @@
               changed_when: _imported_blueprint_version.rc != 0 # <- Uses the return code to define when the task has changed.
 
             - name: Set blueprint name in the imported TOML file
-              ansible.builtin.shell: "sed -i '0,/name =/ s/name =.*/name = \"{{ builder_blueprint_name }}\"/' {{ builder_blueprint_src_path }}"
+              ansible.builtin.shell: "sed -i '0,/name =/ s/name =.*/name = \"{{ builder_blueprint_name }}\"/' {{ builder_blueprint_src_path }}" # noqa command-instead-of-module yaml[line-length]
               register: _sed_rc
               changed_when: _sed_rc.rc != 0  # <- Uses the return code to define when the task has changed.
 
