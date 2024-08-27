@@ -99,11 +99,14 @@
           register: builder_blueprint_output
           when: builder_blueprint_import_file is not defined
 
-        - block:
+        - name: Create a blueprint TOML Tasks Block
+          when: builder_blueprint_import_file is defined
+          block:
             - name: Copy the blueprint file
               ansible.builtin.copy:
                 src: "{{ builder_blueprint_import_file }}"
                 dest: "{{ builder_blueprint_src_path }}"
+                mode: '0644'
 
             ## TODO: Check the imported file TOML format
             - name: Read the content of the TOML file
@@ -116,9 +119,12 @@
                 set -o pipefail
                 echo '{{ toml_file_content.content | b64decode }}' | python -c 'import sys, toml; print(toml.loads(sys.stdin.read())[\"version\"])'
               register: _imported_blueprint_version
+              changed_when: _imported_blueprint_version.rc != 0 # <- Uses the return code to define when the task has changed.
 
             - name: Set blueprint name in the imported TOML file
               ansible.builtin.shell: "sed -i '0,/name =/ s/name =.*/name = \"{{ builder_blueprint_name }}\"/' {{ builder_blueprint_src_path }}"
+              register: _sed_rc
+              changed_when: _sed_rc.rc != 0  # <- Uses the return code to define when the task has changed.
 
             - name: Set expected var output with current_version from TOML
               ansible.builtin.set_fact:
@@ -126,8 +132,7 @@
                   msg: "Blueprint file written to location: {{ builder_blueprint_src_path }}"
                   changed: true
                   current_version: "{{ _imported_blueprint_version.stdout }}"
-          when: builder_blueprint_import_file is defined
-
+                  
         - name: Push the blueprint into image builder
           infra.osbuild.push_blueprint:  # noqa only-builtins
             src: "{{ builder_blueprint_src_path }}"
