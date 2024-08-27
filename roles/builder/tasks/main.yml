@@ -132,7 +132,7 @@
                   msg: "Blueprint file written to location: {{ builder_blueprint_src_path }}"
                   changed: true
                   current_version: "{{ _imported_blueprint_version.stdout }}"
-                  
+
         - name: Push the blueprint into image builder
           infra.osbuild.push_blueprint:  # noqa only-builtins
             src: "{{ builder_blueprint_src_path }}"
