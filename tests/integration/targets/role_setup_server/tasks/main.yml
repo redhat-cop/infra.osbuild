@@ -29,7 +29,7 @@
         dest: "/etc/osbuild-composer/repositories/{{ item }}.json"
       loop:
         - centos-9
-        - centos-8
+#        - centos-8
 
 - name: Run the infra.osbuild.setup_server role
   ansible.builtin.import_role:
