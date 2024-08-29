@@ -33,7 +33,7 @@ ansible-test integration --color -v --retry-on-error \
     ${CHANGED:+"$CHANGED"} \
     ${UNSTABLE:+"$UNSTABLE"} \
     --python 3.11 \
-    --python-interpreter /usr/bin/python3 \
+    --python-interpreter /usr/bin/python3.11 \
     --remote "${platform}/${version}" \
     --remote-terminate always \
     --remote-stage "${stage}" \
