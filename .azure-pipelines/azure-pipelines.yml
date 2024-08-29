@@ -175,8 +175,8 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.3
-              test: rhel/9.3/
+            - name: RHEL 9
+              test: rhel/9/
             # - name: RHEL 9.2
             #  test: rhel/9.2/
             # - name: RHEL 8.8
@@ -961,11 +961,11 @@ stages:
   - stage: Summary
     condition: succeededOrFailed()
     dependsOn:
-      - Sanity_devel
+      # - Sanity_devel
       - Sanity_2_16
-      - Sanity_2_15
-      - Remote_devel
+      # - Sanity_2_15
+      # - Remote_devel
       - Remote_2_16
-      - Remote_2_15
+      # - Remote_2_15
     jobs:
       - template: templates/coverage.yml
