@@ -13,6 +13,8 @@ jobs:
       - job: test_${{ replace(replace(replace(job.test, '/', '_'), '.', '_'), '-', '_') }}
         displayName: ${{ job.name }}
         container: default
+        timeoutInMinutes: 120
+        cancelTimeoutInMinutes: 120
         workspace:
           clean: all
         steps:
