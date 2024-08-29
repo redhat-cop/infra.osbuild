@@ -218,8 +218,8 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.2 edge-container
-              test: rhel/9.2/
+            - name: RHEL 9.3 edge-container
+              test: rhel/9.3/
             # - name: RHEL 9.2 edge-container
             #   test: rhel/9.2/
             # - name: RHEL 8.8 edge-container
