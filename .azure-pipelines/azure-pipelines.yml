@@ -175,8 +175,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.2
-              test: rhel/9.2/
+            - name: RHEL 9.3
+              test: rhel/9.3/
+            # - name: RHEL 9.2
+            #  test: rhel/9.2/
             # - name: RHEL 8.8
             #   test: rhel/8.8/
           groups:
@@ -192,20 +194,22 @@ stages:
       #         test: rhel/8.8/azure
       #     groups:
       #       - 2
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: devel/{0}
+      #     targets:
+      #       - name: fedora 38 container
+      #         test: fedora/38/
+      #     groups:
+      #       - 3
       - template: templates/matrix.yml
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: fedora 38 container
-              test: fedora/38/
-          groups:
-            - 3
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: devel/{0}
-          targets:
-            - name: RHEL 9.2 edge-commit
-              test: rhel/9.2/
+            - name: RHEL 9.3 edge-commit
+              test: rhel/9.3/
+            # - name: RHEL 9.2 edge-commit
+            #   test: rhel/9.2/
             # - name: RHEL 8.8 edge-commit
             #   test: rhel/8.8/
           groups:
@@ -216,6 +220,8 @@ stages:
           targets:
             - name: RHEL 9.2 edge-container
               test: rhel/9.2/
+            # - name: RHEL 9.2 edge-container
+            #   test: rhel/9.2/
             # - name: RHEL 8.8 edge-container
             #   test: rhel/8.8/
           groups:
@@ -269,22 +275,22 @@ stages:
       #     groups:
       #       - 9
 
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: devel/{0}
-          targets:
-            - name: fedora 38 iot-commit
-              test: fedora/38/
-          groups:
-            - 10
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: devel/{0}
-          targets:
-            - name: fedora 38 iot-container
-              test: fedora/38/
-          groups:
-            - 11
+      # - template: templates/matrix.yml
+      #  parameters:
+      #     testFormat: devel/{0}
+      #     targets:
+      #       - name: fedora 38 iot-commit
+      #         test: fedora/38/
+      #     groups:
+      #       - 10
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: devel/{0}
+      #     targets:
+      #       - name: fedora 38 iot-container
+      #         test: fedora/38/
+      #     groups:
+      #       - 11
 
       # Fixme
       # - template: templates/matrix.yml
@@ -309,8 +315,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.2 oci
-              test: rhel/9.2/
+            - name: RHEL 9.3 oci
+              test: rhel/9.3/
+            # - name: RHEL 9.2 oci
+            #   test: rhel/9.2/
             # - name: RHEL 8.8 oci
             #   test: rhel/8.8/
           groups:
@@ -319,8 +327,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.2 openstack
-              test: rhel/9.2/
+            - name: RHEL 9.3 openstack
+              test: rhel/9.3/
+            # - name: RHEL 9.2 openstack
+            # test: rhel/9.2/
             # - name: RHEL 8.8 openstack
             #   test: rhel/8.8/
           groups:
@@ -329,8 +339,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.2 qcow2
-              test: rhel/9.2/
+            - name: RHEL 9.3 qcow2
+              test: rhel/9.3/
+            # - name: RHEL 9.2 qcow2
+            #   test: rhel/9.2/
             # - name: RHEL 8.8 qcow2
             #   test: rhel/8.8/
           groups:
@@ -339,8 +351,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.2 tar
-              test: rhel/9.2/
+            - name: RHEL 9.3 tar
+              test: rhel/9.3/
+            # - name: RHEL 9.2 tar
+            #   test: rhel/9.2/
             # - name: RHEL 8.8 tar
             #   test: rhel/8.8/
           groups:
@@ -349,8 +363,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.2 vhd
-              test: rhel/9.2/
+            - name: RHEL 9.3 vhd
+              test: rhel/9.3/
+            # - name: RHEL 9.2 vhd
+            #   test: rhel/9.2/
             # - name: RHEL 8.8 vhd
             #   test: rhel/8.8/
           groups:
@@ -359,8 +375,10 @@ stages:
         parameters:
           testFormat: devel/{0}
           targets:
-            - name: RHEL 9.2 vmdk
-              test: rhel/9.2/
+            - name: RHEL 9.3 vmdk
+              test: rhel/9.3/
+            # - name: RHEL 9.2 vmdk
+            #   test: rhel/9.2/
             # - name: RHEL 8.8 vmdk
             #   test: rhel/8.8/
           groups:
@@ -375,10 +393,12 @@ stages:
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: RHEL 9.2
-              test: rhel/9.2/
-            - name: RHEL 8.8
-              test: rhel/8.8/
+            - name: RHEL 9.3
+              test: rhel/9.3/
+            # - name: RHEL 9.2
+            #   test: rhel/9.2/
+            # - name: RHEL 8.8
+            #   test: rhel/8.8/
           groups:
             - 1
       # FIXME - ami is currently broken in CI
@@ -392,32 +412,36 @@ stages:
       #         test: rhel/8.7/azure
       #     groups:
       #       - 2
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.16/{0}
+      #     targets:
+      #       - name: fedora 38 container
+      #         test: fedora/38/
+      #     groups:
+      #       - 3
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: fedora 38 container
-              test: fedora/38/
-          groups:
-            - 3
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.16/{0}
-          targets:
-            - name: RHEL 9.2 edge-commit
-              test: rhel/9.2/
-            - name: RHEL 8.8 edge-commit
-              test: rhel/8.8/
+            - name: RHEL 9.3 edge-commit
+              test: rhel/9.3/
+            # - name: RHEL 9.2 edge-commit
+            # test: rhel/9.2/
+            # - name: RHEL 8.8 edge-commit
+            #   test: rhel/8.8/
           groups:
             - 4
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: RHEL 9.2 edge-container
-              test: rhel/9.2/
-            - name: RHEL 8.8 edge-container
-              test: rhel/8.8/
+            - name: RHEL 9.3 edge-container
+              test: rhel/9.3/
+            # - name: RHEL 9.2 edge-container
+            #   test: rhel/9.2/
+            # - name: RHEL 8.8 edge-container
+            #   test: rhel/8.8/
           groups:
             - 5
 
@@ -469,22 +493,22 @@ stages:
       #     groups:
       #       - 9
 
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.16/{0}
-          targets:
-            - name: fedora 38 iot-commit
-              test: fedora/38/
-          groups:
-            - 10
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.16/{0}
-          targets:
-            - name: fedora 38 iot-container
-              test: fedora/38/
-          groups:
-            - 11
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.16/{0}
+      #     targets:
+      #       - name: fedora 38 iot-commit
+      #         test: fedora/38/
+      #     groups:
+      #       - 10
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.16/{0}
+      #     targets:
+      #       - name: fedora 38 iot-container
+      #         test: fedora/38/
+      #     groups:
+      #       - 11
 
       # Fixme
       # - template: templates/matrix.yml
@@ -509,60 +533,72 @@ stages:
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: RHEL 9.2 oci
-              test: rhel/9.2/
-            - name: RHEL 8.8 oci
-              test: rhel/8.8/
+            - name: RHEL 9.3 oci
+              test: rhel/9.3/
+            # - name: RHEL 9.2 oci
+            #   test: rhel/9.2/
+            # - name: RHEL 8.8 oci
+            #   test: rhel/8.8/
           groups:
             - 14
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: RHEL 9.2 openstack
-              test: rhel/9.2/
-            - name: RHEL 8.8 openstack
-              test: rhel/8.8/
+            - name: RHEL 9.3 openstack
+              test: rhel/9.3/
+            # - name: RHEL 9.2 openstack
+            #   test: rhel/9.2/
+            # - name: RHEL 8.8 openstack
+            #   test: rhel/8.8/
           groups:
             - 15
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: RHEL 9.2 qcow2
-              test: rhel/9.2/
-            - name: RHEL 8.8 qcow2
-              test: rhel/8.8/
+            - name: RHEL 9.3 qcow2
+              test: rhel/9.3/
+            # - name: RHEL 9.2 qcow2
+            #   test: rhel/9.2/
+            # - name: RHEL 8.8 qcow2
+            #   test: rhel/8.8/
           groups:
             - 16
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: RHEL 9.2 tar
-              test: rhel/9.2/
-            - name: RHEL 8.8 tar
-              test: rhel/8.8/
+            - name: RHEL 9.3 tar
+              test: rhel/9.3/
+            # - name: RHEL 9.2 tar
+            #   test: rhel/9.2/
+            # - name: RHEL 8.8 tar
+            #   test: rhel/8.8/
           groups:
             - 17
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: RHEL 9.2 vhd
-              test: rhel/9.2/
-            - name: RHEL 8.8 vhd
-              test: rhel/8.8/
+            - name: RHEL 9.3 vhd
+              test: rhel/9.3/
+            # - name: RHEL 9.2 vhd
+            #   test: rhel/9.2/
+            # - name: RHEL 8.8 vhd
+            #   test: rhel/8.8/
           groups:
             - 18
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.16/{0}
           targets:
-            - name: RHEL 9.2 vmdk
-              test: rhel/9.2/
-            - name: RHEL 8.8 vmdk
-              test: rhel/8.8/
+            - name: RHEL 9.3 vmdk
+              test: rhel/9.3/
+            # - name: RHEL 9.2 vmdk
+            #   test: rhel/9.2/
+            # - name: RHEL 8.8 vmdk
+            #   test: rhel/8.8/
           groups:
             - 19
 
@@ -575,10 +611,10 @@ stages:
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: RHEL 9.1
-              test: rhel/9.1/
-            - name: RHEL 8.7
-              test: rhel/8.7/
+            - name: RHEL 9.3
+              test: rhel/9.3/
+            # - name: RHEL 8.7
+            #   test: rhel/8.7/
           groups:
             - 1
       # FIXME - ami is currently broken in CI
@@ -592,32 +628,32 @@ stages:
       #         test: rhel/8.6/azure
       #     groups:
       #       - 2
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: Fedora 37 container
+      #         test: fedora/37/
+      #     groups:
+      #       - 3
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: Fedora 37 container
-              test: fedora/37/
-          groups:
-            - 3
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.15/{0}
-          targets:
-            - name: RHEL 9.1 edge-commit
-              test: rhel/9.1/
-            - name: RHEL 8.7 edge-commit
-              test: rhel/8.7/
+            - name: RHEL 9.3 edge-commit
+              test: rhel/9.3/
+            # - name: RHEL 8.7 edge-commit
+            #   test: rhel/8.7/
           groups:
             - 4
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: RHEL 9.1 edge-container
-              test: rhel/9.1/
-            - name: RHEL 8.7 edge-container
-              test: rhel/8.7/
+            - name: RHEL 9.3 edge-container
+              test: rhel/9.3/
+            # - name: RHEL 8.7 edge-container
+            #   test: rhel/8.7/
           groups:
             - 5
 
@@ -669,22 +705,22 @@ stages:
       #     groups:
       #       - 9
 
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.15/{0}
-          targets:
-            - name: Fedora 37 iot-commit
-              test: fedora/37/
-          groups:
-            - 10
-      - template: templates/matrix.yml
-        parameters:
-          testFormat: 2.15/{0}
-          targets:
-            - name: Fedora 37 iot-container
-              test: fedora/37/
-          groups:
-            - 11
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: Fedora 37 iot-commit
+      #         test: fedora/37/
+      #     groups:
+      #       - 10
+      # - template: templates/matrix.yml
+      #   parameters:
+      #     testFormat: 2.15/{0}
+      #     targets:
+      #       - name: Fedora 37 iot-container
+      #         test: fedora/37/
+      #     groups:
+      #       - 11
 
       # Fixme
       # - template: templates/matrix.yml
@@ -709,60 +745,60 @@ stages:
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: RHEL 9.1 oci
-              test: rhel/9.1/
-            - name: RHEL 8.7 oci
-              test: rhel/8.7/
+            - name: RHEL 9.3 oci
+              test: rhel/9.3/
+            # - name: RHEL 8.7 oci
+            #   test: rhel/8.7/
           groups:
             - 14
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: RHEL 9.1 openstack
-              test: rhel/9.1/
-            - name: RHEL 8.7 openstack
-              test: rhel/8.7/
+            - name: RHEL 9.3 openstack
+              test: rhel/9.3/
+            # - name: RHEL 8.7 openstack
+            #   test: rhel/8.7/
           groups:
             - 15
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: RHEL 9.1 qcow2
-              test: rhel/9.1/
-            - name: RHEL 8.7 qcow2
-              test: rhel/8.7/
+            - name: RHEL 9.3 qcow2
+              test: rhel/9.3/
+            # - name: RHEL 8.7 qcow2
+            #   test: rhel/8.7/
           groups:
             - 16
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: RHEL 9.1 tar
-              test: rhel/9.1/
-            - name: RHEL 8.7 tar
-              test: rhel/8.7/
+            - name: RHEL 9.3 tar
+              test: rhel/9.3/
+            # - name: RHEL 8.7 tar
+            #   test: rhel/8.7/
           groups:
             - 17
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: RHEL 9.1 vhd
-              test: rhel/9.1/
-            - name: RHEL 8.7 vhd
-              test: rhel/8.7/
+            - name: RHEL 9.3 vhd
+              test: rhel/9.3/
+            # - name: RHEL 8.7 vhd
+            #   test: rhel/8.7/
           groups:
             - 18
       - template: templates/matrix.yml
         parameters:
           testFormat: 2.15/{0}
           targets:
-            - name: RHEL 9.1 vmdk
-              test: rhel/9.1/
-            - name: RHEL 8.7 vmdk
-              test: rhel/8.7/
+            - name: RHEL 9.3 vmdk
+              test: rhel/9.3/
+            # - name: RHEL 8.7 vmdk
+            #   test: rhel/8.7/
           groups:
             - 19
 
