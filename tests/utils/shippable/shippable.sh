@@ -138,7 +138,7 @@ find plugins -type d -empty -print -delete
 if [[ "${COVERAGE:-}" == "--coverage" ]]; then
     timeout=60
 else
-    timeout=120
+    timeout=60
 fi
 
 export ANSIBLE_TEST_PREFER_PODMAN=1
