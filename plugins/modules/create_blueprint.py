@@ -204,8 +204,8 @@ def create_blueprint(module, weldr):
 
     try:
         with open(module.params["dest"], "w") as fd:
-            if hasattr(weldr, 'toml'):
-                weldr.toml.dump(toml_data, fd)
+            # if hasattr(weldr, 'toml'):
+            weldr.toml.dump(toml_data, fd)
     except Exception as e:
         module.fail_json(msg=f'Failed to write to file: {module.params["dest"]}', error=e)
 
