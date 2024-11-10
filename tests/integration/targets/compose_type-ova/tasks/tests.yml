@@ -1,0 +1,17 @@
+---
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# NOTE: the compose_start_out variable comes into scope via the
+#       execution of the infra.osbuild.builder role and is not defined
+#       within these test cases (yet?).
+- name: Check if image was built and served
+  ansible.builtin.stat:
+    path: "/var/www/html/{{ builder_blueprint_name }}/images/0.0.1/{{ builder_blueprint_name }}_ova.ova"  # noqa yaml[line-length]
+  register: ova_stat_result
+
+- name: Assert that the image was successful and that it is available on the server.
+  ansible.builtin.assert:
+    that:
+      - ova_stat_result.stat.exists

@@ -1,0 +1,24 @@
+---
+####################################################################
+# WARNING: These are designed specifically for Ansible tests       #
+# and should not be used as examples of how to write Ansible roles #
+####################################################################
+
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+- name: Include variables
+  ansible.builtin.include_vars:
+    file: ../vars/main.yml
+
+- name: Run the infra.osbuild.builder role
+  ansible.builtin.import_role:
+    name: infra.osbuild.builder
+  vars:
+    builder_pub_key: "{{ pubkey }}"
+    builder_blueprint_src_path: "{{ blueprint_src_path }}"
+    builder_compose_type: "{{ compose_type }}"
+
+- name: Validate the role
+  ansible.builtin.include_tasks: tests.yml

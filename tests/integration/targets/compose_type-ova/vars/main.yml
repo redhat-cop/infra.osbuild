@@ -1,0 +1,12 @@
+---
+# Copyright (c) Ansible Project
+# GNU General Public License v3.0+ (see LICENSES/GPL-3.0-or-later.txt or https://www.gnu.org/licenses/gpl-3.0.txt)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+blueprint_src_path: "/tmp/blueprint.toml"
+pubkey: "ssh-rsa FAKEPUBKEY"
+
+builder_blueprint_distro: "{{ 'fedora' if ansible_distribution == 'Fedora' else 'centos' }}-{{ ansible_distribution_major_version }}"
+builder_blueprint_ref: "{{ 'fedora' if ansible_distribution == 'Fedora' else 'centos' }}/{{ ansible_distribution_major_version }}/x86_64/{{ 'iot' if ansible_distribution == 'Fedora' else 'edge' }}"  # yamllint disable-line rule:line-length
+
+compose_type: "ova"
