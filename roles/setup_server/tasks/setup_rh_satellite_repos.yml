@@ -7,7 +7,7 @@
 - name: Error message if Satellite is missing
   ansible.builtin.fail:
     msg: "Satellite not found, please ensure Satallite is configured properly"
-  when: katello_file.stat.exists
+  when: not katello_file.stat.exists
 
 - name: Debug
   ansible.builtin.debug:
