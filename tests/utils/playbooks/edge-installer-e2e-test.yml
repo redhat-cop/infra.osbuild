@@ -33,7 +33,7 @@
 
         packages:
           - "vim-enhanced"
-          - "git"
+          - "git==2.*"
           - "ansible-core"
       run_once: true
 
@@ -151,7 +151,7 @@
           ansible.builtin.assert:
             that:
               - item in package_installed.stdout_lines
-          loop: "{{ packages }}"
+          loop: "{{ packages | map('ansible.builtin.regex_replace', '==.*', '') }}"
 
       always:
         - name: Cleanup test environment
