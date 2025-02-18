@@ -62,6 +62,7 @@ options:
     packages:
         description:
             - List of package names to add to the blueprint
+            - Each name can be followed by two equal signs and a version glob
         type: list
         elements: str
         default: []
@@ -102,7 +103,7 @@ EXAMPLES = """
     packages:
       - "vim-enhanced"
       - "ansible-core"
-      - "git"
+      - "git==2.*"
     customizations:
       kernel:
         append: "nomst=force"
@@ -174,7 +175,13 @@ def create_blueprint(module, weldr):
     if module.params["packages"]:
         toml_data["packages"]: list = []
         for package in module.params["packages"]:
-            toml_data["packages"].append({"name": f"{package}", "version": "*"})
+            if "==" in package:
+                package_name, package_version = package.split("==")
+                toml_data["packages"].append(
+                    {"name": f"{package_name}", "version": f"{package_version}"}
+                )
+            else:
+                toml_data["packages"].append({"name": f"{package}", "version": "*"})
 
     if module.params["groups"]:
         toml_data["groups"]: list = []
