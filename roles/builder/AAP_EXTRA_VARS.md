@@ -104,7 +104,7 @@ builder_compose_customizations:
     description: "test user"
     password: "testpassword"
     key: "{{ builder_pub_key }}"
-    groups: '["users", "wheel"]'
+    groups: ["users", "wheel"]
   kernel:
     append: "nomst=force"
   services:
