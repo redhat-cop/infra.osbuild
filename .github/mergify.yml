@@ -1,4 +1,3 @@
----
 #
 # Shared keys
 shared:
@@ -11,6 +10,7 @@ shared:
 #
 # Pull request rules https://docs.mergify.com/configuration/#pull-request-rules
 # N.B. Evaluated in order defined
+
 pull_request_rules:  # yamllint disable-line rule:key-ordering
   #
   # PR.1) Remove stale approvals or changes requests
@@ -93,9 +93,6 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
         remove:
           - invalid
       queue:
-        commit_message_template: "{{ commits[0] }}"
-        method: squash
-        name: default
     conditions:
       - base=main
       - label!=work in progress
@@ -107,7 +104,8 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
       - check-success="CI (Summary Code Coverage)"
       - check-success="Lint Blue"
       # - check-success="Lint Green"
-      - and: *common_merge_criteria
+      - &id001
+        and: *common_merge_criteria
     name: Automatic merge on approval for Pull Requests
   #
   # PR.8) Detect when Pull Request has conflicts and add conflicts label
@@ -263,7 +261,20 @@ pull_request_rules:  # yamllint disable-line rule:key-ordering
 queue_rules:  # yamllint disable-line rule:key-ordering
   #
   # Q.1) Add this Pull Request to the merge queue
-  - conditions:
+  - name: default
+    queue_conditions:
+      - base=main
+      - label!=work in progress
+      - label!=do not merge
+      - check-success="CI"
+      - check-success="CI (Ansible devel sanity Lint)"
+      - check-success="CI (Ansible devel sanity Sanity)"
+      - check-success="CI (Ansible devel sanity Units)"
+      - check-success="CI (Summary Code Coverage)"
+      - check-success="Lint Blue"
+      - *id001
+    merge_conditions:
       - base=main
       - and: *common_merge_criteria
-    name: default
+    commit_message_template: "{{ commits[0] }}"
+    merge_method: squash
