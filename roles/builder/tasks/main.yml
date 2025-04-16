@@ -73,8 +73,7 @@
         mode: '0755'
         state: directory
 
-- name: Process when existing commit isn't defined in builder_ostree_url variable
-  when: builder_ostree_url is not defined
+- name: Create a new commit if builder_ostree_url is not defined and update commit if builder_ostree_url is defined
   block:
     - name: Get rhsm repos properties
       when: builder_rhsm_repos is defined
@@ -144,6 +143,8 @@
           infra.osbuild.start_compose:  # noqa only-builtins
             blueprint: "{{ builder_blueprint_name }}"
             compose_type: "{{ _builder_compose_type }}"
+            ostree_url: "{{ builder_ostree_url | default(omit) }}"  # noqa yaml[line-length]
+            ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
             timeout: "{{ builder_request_timeout }}"
           register: builder_compose_start_out
 
