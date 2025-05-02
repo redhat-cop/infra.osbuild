@@ -143,7 +143,7 @@
           infra.osbuild.start_compose:  # noqa only-builtins
             blueprint: "{{ builder_blueprint_name }}"
             compose_type: "{{ _builder_compose_type }}"
-            ostree_url: "{{ builder_ostree_url | default(omit) }}"  # noqa yaml[line-length]
+            ostree_url: "{{ builder_ostree_url | default(omit) }}"
             ostree_ref: "{{ builder_blueprint_ref | default(omit) }}"
             timeout: "{{ builder_request_timeout }}"
           register: builder_compose_start_out
