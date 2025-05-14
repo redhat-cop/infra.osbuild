@@ -365,6 +365,14 @@ stages:
             #   test: rhel/8.8/
           groups:
             - 19
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: devel/{0}
+          targets:
+            - name: RHEL 9.2 ova
+              test: rhel/9.2/
+          groups:
+            - 20
 
   # https://github.com/ansible/ansible/blob/stable-2.15/test/lib/ansible_test/_data/completion/remote.txt
   - stage: Remote_2_16
@@ -565,6 +573,16 @@ stages:
               test: rhel/8.8/
           groups:
             - 19
+      - template: templates/matrix.yml
+        parameters:
+          testFormat: 2.16/{0}
+          targets:
+            - name: RHEL 9.2 ova
+              test: rhel/9.2/
+            - name: RHEL 8.8 ova
+              test: rhel/8.8/
+          groups:
+            - 20
 
   # https://github.com/ansible/ansible/blob/stable-2.14/test/lib/ansible_test/_data/completion/remote.txt
   - stage: Remote_2_15

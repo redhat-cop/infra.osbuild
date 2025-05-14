@@ -64,6 +64,7 @@ options:
             - image-installer
             - oci
             - openstack
+            - ova
             - qcow2
             - tar
             - vhd
@@ -142,6 +143,7 @@ argument_spec = dict(
             "image-installer",
             "oci",
             "openstack",
+            "ova",
             "qcow2",
             "tar",
             "vhd",
@@ -299,6 +301,7 @@ def start_compose(module, weldr):
         compose_output_types: dict[str, list[str]] = {
             "tar": ["tar", "edge-commit", "iot-commit", "edge-container", "iot-container", "container"],
             "iso": ["edge-installer", "edge-simplified-installer", "iot-installer", "image-installer"],
+            "ova": ["ova"],
             "qcow2": ["qcow2", "openstack", "oci"],
             "vmdk": ["vmdk"],
             "vhd": ["vhd"],
