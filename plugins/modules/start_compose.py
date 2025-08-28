@@ -227,7 +227,7 @@ def start_compose(module, weldr):
             "size": module.params["size"],
         }
 
-        if "installer" in module.params["compose_type"] or "raw" in module.params["compose_type"] or "edge-commit" in module.params["compose_type"]:
+        if module.params["compose_type"] in ["installer", "raw", "edge-commit", "edge-container"]:
             compose_settings["ostree"] = {
                 "ref": module.params["ostree_ref"],
                 "parent": module.params["ostree_parent"],
